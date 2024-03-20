@@ -8,5 +8,13 @@
 		"node_modules",
 		"pnpm-lock.yaml"
 	],
-	"words": ["knip", "packagejson", "tsup"]
+	"words": [
+		"cldr",
+		"emojipedia",
+		"fluemoji",
+		"gemoji",
+		"knip",
+		"packagejson",
+		"skintones"
+	]
 }

@@ -1,6 +1,7 @@
 {
 	"$schema": "https://unpkg.com/knip@latest/schema.json",
-	"entry": ["src/index.ts!"],
+	"entry": ["src/index.ts!", "src/types.ts!"],
+	"ignoreDependencies": ["fluemoji", "twemoji-parser"],
 	"ignoreExportsUsedInFile": { "interface": true, "type": true },
 	"project": ["src/**/*.ts!"]
 }

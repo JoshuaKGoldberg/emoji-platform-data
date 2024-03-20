@@ -13,16 +13,18 @@ pnpm install
 
 ## Building
 
-Run [**tsup**](https://tsup.egoist.dev) locally to build source files from `src/` into output files in `lib/`:
+This project doesn't use the TypeScript compiler or other transpilers to turn TypeScript syntax into JavaScript.
+The `lib/data` directory, including `lib/data/index.mjs` and its sibling `*.json` files, is populated by the script at `src/buildData.ts`.
+Run source code with [tsx](https://github.com/privatenumber/tsx) to manually generate files under the `lib/` directory:
 
 ```shell
-pnpm build
+npm run build
 ```
 
-Add `--watch` to run the builder in a watch mode that continuously cleans and recreates `lib/` as you save files:
+To continuously build in watch mode, run:
 
 ```shell
-pnpm build --watch
+npx tsx --watch src/buildData.ts
 ```
 
 ## Formatting
@@ -56,29 +58,6 @@ pnpm run lint --fix
 ```
 
 Note that you'll likely need to run `pnpm build` before `pnpm lint` so that lint rules which check the file system can pick up on any built files.
-
-## Testing
-
-[Vitest](https://vitest.dev) is used for tests.
-You can run it locally on the command-line:
-
-```shell
-pnpm run test
-```
-
-Add the `--coverage` flag to compute test coverage and place reports in the `coverage/` directory:
-
-```shell
-pnpm run test --coverage
-```
-
-Note that [console-fail-test](https://github.com/JoshuaKGoldberg/console-fail-test) is enabled for all test runs.
-Calls to `console.log`, `console.warn`, and other console methods will cause a test to fail.
-
-### Debugging Tests
-
-This repository includes a [VS Code launch configuration](https://code.visualstudio.com/docs/editor/debugging) for debugging unit tests.
-To launch it, open a test file, then run _Debug Current Test File_ from the VS Code Debug panel (or press F5).
 
 ## Type Checking
 

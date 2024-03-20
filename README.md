@@ -9,7 +9,6 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 	<!-- prettier-ignore-end -->
 	<a href="https://github.com/JoshuaKGoldberg/emoji-platform-data/blob/main/.github/CODE_OF_CONDUCT.md" target="_blank"><img alt="🤝 Code of Conduct: Kept" src="https://img.shields.io/badge/%F0%9F%A4%9D_code_of_conduct-kept-21bb42" /></a>
-	<a href="https://codecov.io/gh/JoshuaKGoldberg/emoji-platform-data" target="_blank"><img alt="🧪 Coverage" src="https://img.shields.io/codecov/c/github/JoshuaKGoldberg/emoji-platform-data?label=%F0%9F%A7%AA%20coverage" /></a>
 	<a href="https://github.com/JoshuaKGoldberg/emoji-platform-data/blob/main/LICENSE.md" target="_blank"><img alt="📝 License: MIT" src="https://img.shields.io/badge/%F0%9F%93%9D_license-MIT-21bb42.svg"></a>
 	<a href="http://npmjs.com/package/emoji-platform-data"><img alt="📦 npm version" src="https://img.shields.io/npm/v/emoji-platform-data?color=21bb42&label=%F0%9F%93%A6%20npm" /></a>
 	<img alt="💪 TypeScript: Strict" src="https://img.shields.io/badge/%F0%9F%92%AA_typescript-strict-21bb42.svg" />
@@ -22,10 +21,34 @@ npm i emoji-platform-data
 ```
 
 ```ts
-import { greet } from "emoji-platform-data";
+import { byTitle } from "emoji-platform-data";
 
-greet("Hello, world! 💖");
+console.log(byTitle["Sparkling Heart"]);
+/*
+{
+	emoji: "💖",
+	emojipedia: { "currentCldrName": "Sparkling Heart", ... },
+	fluemoji: { "cldr": "sparkling heart", ... },
+	gemoji: { "description": "sparkling heart", ... },
+	twemoji: { "description": "Sparkling heart", ... },
+	...
+}
+*/
 ```
+
+`emoji-platform-data` combines emoji data from the following projects:
+
+- [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia)
+- [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji) ("fluemoji")
+- [Gemoji](https://github.com/wooorm/gemoji)
+- [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser)
+
+Each emoji supported in at least one of those projects is stored by its emoji glyph and Emojipedia title.
+
+## Why?
+
+This is useful if you're looking to see the metadata supported for emojis in each of those platforms.
+For example, if you wanted to [determine the keywords associated with any emoji](https://github.com/muan/emojilib/issues/194), this would let you know accumulate all the keywords across the supported platforms.
 
 ## Contributors
 
