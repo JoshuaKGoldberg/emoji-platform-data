@@ -19,6 +19,15 @@
         "projectManagement",
         "tool"
       ]
+    },
+    {
+      "login": "vladimyr",
+      "name": "Dario Vladović",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1170440?v=4",
+      "profile": "https://github.com/vladimyr",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
