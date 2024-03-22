@@ -70,7 +70,7 @@ For example, [👿](https://emojipedia.org/angry-face-with-horns) can be referre
 
 ### 🔗 Keywords
 
-In addition to their name(s), emojis commonly have search keywords, or _🔗 relations_, associated with them.
+In addition to their name(s), emojis commonly have related terms, or _🔗 keywords_, associated with them.
 These keywords are not standardized and may vary drastically across the various chat applications, operating systems, and shared open source libraries that each separately implement emoji pickers.
 
 For example, [🐙 (`octopus`)](https://emojipedia.org/octopus) is defined in [emoji-mart@5.5.2](https://github.com/missive/emoji-mart/tree/21a2708be931c0dd16d6d0e96b47a45503576ac5/) -used by Bluesky and other projects- with `["animal", "creature", "ocean", "sea", "nature", "beach"]`.
