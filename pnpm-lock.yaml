@@ -78,7 +78,7 @@ devDependencies:
     version: 2.4.0
   knip:
     specifier: ^5.1.2
-    version: 5.1.5(@types/node@20.11.30)(typescript@5.4.3)
+    version: 5.1.6(@types/node@20.11.30)(typescript@5.4.3)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.2
@@ -4366,8 +4366,8 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /knip@5.1.5(@types/node@20.11.30)(typescript@5.4.3):
-    resolution: {integrity: sha512-uc5tOc70L4v+4QeeLVXAEwQJ1cxTnR91I5YhWpXurSb4lXbqiRibiAAm4y7JQsrtgPLhRf4FYWQJRsB45MdmKA==}
+  /knip@5.1.6(@types/node@20.11.30)(typescript@5.4.3):
+    resolution: {integrity: sha512-lDQu1tKqk3FSXdgOBln3DAokInl6oPw7otZ970F1uIcWLx0AO2OgIs92bZ1/IZKkZx4qymfB1HgEZmW809jR/g==}
     engines: {node: '>=18.6.0'}
     hasBin: true
     peerDependencies:
@@ -5493,7 +5493,7 @@ packages:
     dependencies:
       find-up: 6.3.0
       read-pkg: 8.1.0
-      type-fest: 4.13.1
+      type-fest: 4.14.0
     dev: true
 
   /read-pkg@8.1.0:
@@ -5503,7 +5503,7 @@ packages:
       '@types/normalize-package-data': 2.4.4
       normalize-package-data: 6.0.0
       parse-json: 7.1.1
-      type-fest: 4.13.1
+      type-fest: 4.14.0
     dev: true
 
   /readable-stream@3.6.2:
@@ -6300,8 +6300,8 @@ packages:
     engines: {node: '>=14.16'}
     dev: true
 
-  /type-fest@4.13.1:
-    resolution: {integrity: sha512-ASMgM+Vf2cLwDMt1KXSkMUDSYCxtckDJs8zsaVF/mYteIsiARKCVtyXtcK38mIKbLTctZP8v6GMqdNaeI3fo7g==}
+  /type-fest@4.14.0:
+    resolution: {integrity: sha512-on5/Cw89wwqGZQu+yWO0gGMGu8VNxsaW9SB2HE8yJjllEk7IDTwnSN1dUVldYILhYPN5HzD7WAaw2cc/jBfn0Q==}
     engines: {node: '>=16'}
     dev: true
 
