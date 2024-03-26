@@ -45,10 +45,53 @@ console.log(byTitle["Sparkling Heart"]);
 
 Each emoji supported in at least one of those projects is stored by its emoji glyph and Emojipedia title.
 
+## Explainer
+
+> 📙 This documentation uses the excellent [emojipedia.org](https://emojipedia.org) as a source of information.
+
+### Emojis
+
+An **emoji** is a small image represented by a glyph in text.
+The [Unicode Standard](https://unicode.org/standard/standard.html) defines which characters in text map to which emojis, as well as how combinations of emoji characters combine to more emojis.
+For example:
+
+- [🔥 (`fire`)](https://emojipedia.org/fire) is represented by the string code _U+1F525_
+- [❤️ (`red heart`)](https://emojipedia.org/red-heart) is represented by the string codes: _U+2764_ _U+FE0F_
+- [❤️‍🔥 (`heart on fire`)](https://emojipedia.org/heart-on-fire) is represented by ❤️ + a ["zero-width joiner"](https://emojipedia.org/zero-width-joiner) + 🔥: _U+2764 U+FE0F U+200D U+1F525_
+
+> 💡 _Emojis_ are not the same as their predecessors, _emoticons_.
+> Emoticons are symbols that combine traditional text characters, such as `:)` for "smiley" and `(╯°□°)╯︵ ┻━┻` for "table flip".
+
+### 🆔 Identity
+
+The formal name, or 🆔 _identity_, for each emoji is standardized in Unicode.
+However, emojis may be associated with multiple names across different specifications.
+For example, [👿](https://emojipedia.org/angry-face-with-horns) can be referred to either as _"Angry Face with Horns"_ or _"Imp"_ depending on the source.
+
+### 🔗 Keywords
+
+In addition to their name(s), emojis commonly have related terms, or _🔗 keywords_, associated with them.
+These keywords are not standardized and may vary drastically across the various chat applications, operating systems, and shared open source libraries that each separately implement emoji pickers.
+
+For example, [🐙 (`octopus`)](https://emojipedia.org/octopus) is defined in [emoji-mart@5.5.2](https://github.com/missive/emoji-mart/tree/21a2708be931c0dd16d6d0e96b47a45503576ac5/) -used by Bluesky and other projects- with `["animal", "creature", "ocean", "sea", "nature", "beach"]`.
+
+### Platforms
+
+This project attempts to bring together the 🆔 _identity_ and _🔗 keywords_ across several sources of emoji data, each defined as a "platform".
+Platforms include:
+
+- Chat platforms ([Discord](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/16), [Slack](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/7), ...)
+- Operating systems ([macOS](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/5), [Windows](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/6), ...)
+- Open source libraries used by platforms ([`emoji-mart`](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/14), [GNOME](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/9)...)
+
+Any grouping of emoji 🆔 _identity_ and _🔗 keywords_ used by consumers today can qualify as a platform.
+
+> 🚀 If your platform isn't included in `emoji-platform-data` and doesn't have a tracking [`platform-support` issue](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues?q=is%3Aissue+is%3Aopen+label%3A%22platform+support%22), please file an issue asking for it!
+
 ## Why?
 
 This is useful if you're looking to see the metadata supported for emojis in each of those platforms.
-For example, if you wanted to [determine the keywords associated with any emoji](https://github.com/muan/emojilib/issues/194), this would let you know accumulate all the keywords across the supported platforms.
+For example, if you wanted to [determine the keywords associated with any emoji](https://github.com/muan/emojilib/issues/194), this would let you accumulate all the keywords across the supported platforms.
 
 ## Contributors
 
