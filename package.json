@@ -76,7 +76,7 @@
 		"yaml": "^2.4.1",
 		"yaml-eslint-parser": "^1.2.2"
 	},
-	"packageManager": "pnpm@8.15.5",
+	"packageManager": "pnpm@8.15.6",
 	"engines": {
 		"node": ">=18"
 	},
