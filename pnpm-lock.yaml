@@ -24,7 +24,7 @@ devDependencies:
     version: 7.5.0(eslint@8.57.0)(typescript@5.4.3)
   change-case:
     specifier: ^5.4.3
-    version: 5.4.3
+    version: 5.4.4
   cspell:
     specifier: ^8.6.0
     version: 8.6.1
@@ -1935,8 +1935,8 @@ packages:
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
     dev: true
 
-  /change-case@5.4.3:
-    resolution: {integrity: sha512-4cdyvorTy/lViZlVzw2O8/hHCLUuHqp4KpSSP3DlauhFCf3LdnfF+p5s0EAhjKsU7bqrMzu7iQArYfoPiHO2nw==}
+  /change-case@5.4.4:
+    resolution: {integrity: sha512-HRQyTk2/YPEkt9TnUPbOpr64Uw3KOicFWPVBb+xiHvd6eBx/qPr9xqfBFDT8P2vWsvvz4jbEkfDe71W3VyNu2w==}
 
   /character-entities-legacy@1.1.4:
     resolution: {integrity: sha512-3Xnr+7ZFS1uxeiUDvV02wQ+QDbc55o97tIV5zHScSPJpcLm/r0DFPcoY3tYRp+VZukxuMeKgXYmsXQHO05zQeA==}
@@ -2625,7 +2625,7 @@ packages:
     resolution: {integrity: sha512-bQ6D92mcENmXiuZJrq0SMsHJzjrpXSZQYfQhYHf/qC1IBx1InourtVcnpapmpMaP9PcZQ09NCZW6DmYGbYTD4A==}
     engines: {node: '>=18'}
     dependencies:
-      change-case: 5.4.3
+      change-case: 5.4.4
       graphql-request: 6.1.0(graphql@16.8.1)
       p-throttle: 6.1.0
       unicode-emoji-json: 0.4.0
