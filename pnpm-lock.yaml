@@ -78,7 +78,7 @@ devDependencies:
     version: 2.4.0
   knip:
     specifier: ^5.1.2
-    version: 5.17.1(@types/node@20.12.13)(typescript@5.4.5)
+    version: 5.17.2(@types/node@20.12.13)(typescript@5.4.5)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.5
@@ -4117,8 +4117,8 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /knip@5.17.1(@types/node@20.12.13)(typescript@5.4.5):
-    resolution: {integrity: sha512-3uRwsnr5l7djGGWH70W0J3/19ZK8e5Pdy2sEYurGs0WmyetKdpq7grkITb+3Mbp5B5O9XMcZxhJ9CBHPF9/lmg==}
+  /knip@5.17.2(@types/node@20.12.13)(typescript@5.4.5):
+    resolution: {integrity: sha512-1DFsVQJpWeR2+RblRbf1TAmEfQkgUvYyhWpZdBIj8taR2GpTN2GpAf+iBuMlFpLkVYCsR++cp/G3bR68M5u68g==}
     engines: {node: '>=18.6.0'}
     hasBin: true
     peerDependencies:
