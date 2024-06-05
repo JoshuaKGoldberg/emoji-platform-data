@@ -78,7 +78,7 @@ devDependencies:
     version: 2.4.0
   knip:
     specifier: ^5.1.2
-    version: 5.17.3(@types/node@20.14.1)(typescript@5.4.5)
+    version: 5.17.3(@types/node@20.14.2)(typescript@5.4.5)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.5
@@ -117,7 +117,7 @@ devDependencies:
     version: 5.4.5
   yaml:
     specifier: ^2.4.1
-    version: 2.4.2
+    version: 2.4.3
   yaml-eslint-parser:
     specifier: ^1.2.2
     version: 1.2.3
@@ -1160,7 +1160,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.14.1
+      '@types/node': 20.14.2
     dev: true
 
   /@types/http-cache-semantics@4.0.4:
@@ -1181,8 +1181,8 @@ packages:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
     dev: true
 
-  /@types/node@20.14.1:
-    resolution: {integrity: sha512-T2MzSGEu+ysB/FkWfqmhV3PLyQlowdptmmgD20C6QxsS8Fmv5SjpZ1ayXaEC0S21/h5UJ9iA6W/5vSNU5l00OA==}
+  /@types/node@20.14.2:
+    resolution: {integrity: sha512-xyu6WAMVwv6AKFLB+e/7ySZVr/0zLCzOa7rSpq6jNwpqOrUbcACDWC+53d4n2QHOnDou0fbIsg8wZu/sxrnI4Q==}
     dependencies:
       undici-types: 5.26.5
     dev: true
@@ -2097,7 +2097,7 @@ packages:
     dependencies:
       '@cspell/cspell-types': 8.8.3
       comment-json: 4.2.3
-      yaml: 2.4.2
+      yaml: 2.4.3
     dev: true
 
   /cspell-dictionary@8.8.3:
@@ -4117,7 +4117,7 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /knip@5.17.3(@types/node@20.14.1)(typescript@5.4.5):
+  /knip@5.17.3(@types/node@20.14.2)(typescript@5.4.5):
     resolution: {integrity: sha512-x2paKB0BOzFjnetYolGwg9Dwa8ZIYwBuVP2V4bWRFfTeLs7BymARb7I00R3OCbr09gKKr8TPLQVx2GQ6RF9llQ==}
     engines: {node: '>=18.6.0'}
     hasBin: true
@@ -4128,7 +4128,7 @@ packages:
       '@ericcornelissen/bash-parser': 0.5.2
       '@nodelib/fs.walk': 2.0.0
       '@snyk/github-codeowners': 1.1.0
-      '@types/node': 20.14.1
+      '@types/node': 20.14.2
       easy-table: 1.2.0
       fast-glob: 3.3.2
       file-entry-cache: 8.0.0
@@ -4202,7 +4202,7 @@ packages:
       micromatch: 4.0.7
       pidtree: 0.6.0
       string-argv: 0.3.2
-      yaml: 2.4.2
+      yaml: 2.4.3
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6149,11 +6149,11 @@ packages:
     dependencies:
       eslint-visitor-keys: 3.4.3
       lodash: 4.17.21
-      yaml: 2.4.2
+      yaml: 2.4.3
     dev: true
 
-  /yaml@2.4.2:
-    resolution: {integrity: sha512-B3VqDZ+JAg1nZpaEmWtTXUlBneoGx6CPM9b0TENK6aoSu5t73dItudwdgmi6tHlIZZId4dZ9skcAQ2UbcyAeVA==}
+  /yaml@2.4.3:
+    resolution: {integrity: sha512-sntgmxj8o7DE7g/Qi60cqpLBA3HG3STcDA0kO+WfB05jEKhZMbY7umNm2rBpQvsmZ16/lPXCJGW2672dgOUkrg==}
     engines: {node: '>= 14'}
     hasBin: true
     dev: true
