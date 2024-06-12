@@ -108,7 +108,7 @@ devDependencies:
     version: 4.3.1
   tsx:
     specifier: ^4.7.1
-    version: 4.14.0
+    version: 4.14.1
   twemoji-parser:
     specifier: git+https://github.com/twitter/twemoji-parser.git
     version: github.com/twitter/twemoji-parser/f8312f35fdee0e79874bb50213c4544c14fa759b
@@ -5771,8 +5771,8 @@ packages:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
     dev: true
 
-  /tsx@4.14.0:
-    resolution: {integrity: sha512-DsDLlJlusAPyCnz07S4y0gqJoUl8GciBeYcXQd75/5DqkZ4gfjKpvAUFUzmZf62nEotkcqC7JCWrdL8d+PXSng==}
+  /tsx@4.14.1:
+    resolution: {integrity: sha512-GU8pPJq8DdxcJDSK6Bc64c2jW8zBK2hb0jzwHZDfjapbwu6AqvFnAElnzZ17Xb9TH5a/j6/sicTCVYF+eO/cmA==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     dependencies:
