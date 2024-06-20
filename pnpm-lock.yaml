@@ -78,7 +78,7 @@ devDependencies:
     version: 2.4.0
   knip:
     specifier: ^5.1.2
-    version: 5.20.0(@types/node@20.14.5)(typescript@5.4.5)
+    version: 5.20.0(@types/node@20.14.6)(typescript@5.4.5)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.7
@@ -108,7 +108,7 @@ devDependencies:
     version: 4.3.1
   tsx:
     specifier: ^4.7.1
-    version: 4.15.5
+    version: 4.15.6
   twemoji-parser:
     specifier: git+https://github.com/twitter/twemoji-parser.git
     version: github.com/twitter/twemoji-parser/f8312f35fdee0e79874bb50213c4544c14fa759b
@@ -1160,7 +1160,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.14.5
+      '@types/node': 20.14.6
     dev: true
 
   /@types/http-cache-semantics@4.0.4:
@@ -1181,8 +1181,8 @@ packages:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
     dev: true
 
-  /@types/node@20.14.5:
-    resolution: {integrity: sha512-aoRR+fJkZT2l0aGOJhuA8frnCSoNX6W7U2mpNq63+BxBIj5BQFt8rHy627kijCmm63ijdSdwvGgpUsU6MBsZZA==}
+  /@types/node@20.14.6:
+    resolution: {integrity: sha512-JbA0XIJPL1IiNnU7PFxDXyfAwcwVVrOoqyzzyQTyMeVhBzkJVMSkC1LlVsRQ2lpqiY4n6Bb9oCS6lzDKVQxbZw==}
     dependencies:
       undici-types: 5.26.5
     dev: true
@@ -4115,7 +4115,7 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /knip@5.20.0(@types/node@20.14.5)(typescript@5.4.5):
+  /knip@5.20.0(@types/node@20.14.6)(typescript@5.4.5):
     resolution: {integrity: sha512-pQ8fJ6Be7dVsKIqEW06g8TOjiTW9knQPkN0hg2fQTY/Jw16L3EmngAx6cg+5pVLpyxo2wVChCUAn93/ATcatIA==}
     engines: {node: '>=18.6.0'}
     hasBin: true
@@ -4126,7 +4126,7 @@ packages:
       '@ericcornelissen/bash-parser': 0.5.3
       '@nodelib/fs.walk': 2.0.0
       '@snyk/github-codeowners': 1.1.0
-      '@types/node': 20.14.5
+      '@types/node': 20.14.6
       easy-table: 1.2.0
       fast-glob: 3.3.2
       file-entry-cache: 8.0.0
@@ -5782,8 +5782,8 @@ packages:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
     dev: true
 
-  /tsx@4.15.5:
-    resolution: {integrity: sha512-iKi8jQ2VBmZ2kU/FkGkL2OSHBHsazsUzsdC/W/RwhKIEsIoZ1alCclZHP5jGfNHEaEWUJFM1GquzCf+4db3b0w==}
+  /tsx@4.15.6:
+    resolution: {integrity: sha512-is0VQQlfNZRHEuSSTKA6m4xw74IU4AizmuB6lAYLRt9XtuyeQnyJYexhNZOPCB59SqC4JzmSzPnHGBXxf3k0hA==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     dependencies:
