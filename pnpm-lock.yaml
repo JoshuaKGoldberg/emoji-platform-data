@@ -78,7 +78,7 @@ devDependencies:
     version: 2.4.0
   knip:
     specifier: ^5.1.2
-    version: 5.21.0(@types/node@20.14.7)(typescript@5.4.5)
+    version: 5.21.1(@types/node@20.14.7)(typescript@5.4.5)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.7
@@ -3723,8 +3723,9 @@ packages:
       ci-info: 3.9.0
     dev: true
 
-  /is-core-module@2.13.1:
-    resolution: {integrity: sha512-hHrIjvZsftOsvKSn2TRYl63zvxsgE0K+0mYMoH6gD4omR5IWB2KynivBQczo3+wF1cCkjzvptnI9Q0sPU66ilw==}
+  /is-core-module@2.14.0:
+    resolution: {integrity: sha512-a5dFJih5ZLYlRtDc0dZWP7RiKr6xIKzmn/oAYCDvdLThadVgyJwlaoQPmRtMSpz+rk0OGAgIu+TcM9HUF0fk1A==}
+    engines: {node: '>= 0.4'}
     dependencies:
       hasown: 2.0.2
     dev: true
@@ -4115,8 +4116,8 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /knip@5.21.0(@types/node@20.14.7)(typescript@5.4.5):
-    resolution: {integrity: sha512-bQNqa9GdzZ8Q7kW5jpCyz1e7oRR2Aa4W9P5+hny7dgFxg51ZeM9skVNE3nbKqP+X/DjjNkNkpcfN04byCvRquw==}
+  /knip@5.21.1(@types/node@20.14.7)(typescript@5.4.5):
+    resolution: {integrity: sha512-FP4X1XY828UvijF3Fn4f+xmERdDn9nXiwuO1YBp3483CHMh/MZZGiKFIb6RXuC6AtFaMmIRUScqYxZypjV3xEQ==}
     engines: {node: '>=18.6.0'}
     hasBin: true
     peerDependencies:
@@ -4567,7 +4568,7 @@ packages:
     engines: {node: ^16.14.0 || >=18.0.0}
     dependencies:
       hosted-git-info: 7.0.1
-      is-core-module: 2.13.1
+      is-core-module: 2.14.0
       semver: 7.6.2
       validate-npm-package-license: 3.0.4
     dev: true
@@ -5191,7 +5192,7 @@ packages:
     resolution: {integrity: sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==}
     hasBin: true
     dependencies:
-      is-core-module: 2.13.1
+      is-core-module: 2.14.0
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
