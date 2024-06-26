@@ -39,7 +39,7 @@ devDependencies:
     version: 3.2.0(eslint@8.57.0)
   eslint-plugin-jsdoc:
     specifier: ^48.2.1
-    version: 48.2.13(eslint@8.57.0)
+    version: 48.2.15(eslint@8.57.0)
   eslint-plugin-jsonc:
     specifier: ^2.14.1
     version: 2.16.0(eslint@8.57.0)
@@ -78,7 +78,7 @@ devDependencies:
     version: 2.4.0
   knip:
     specifier: ^5.1.2
-    version: 5.22.2(@types/node@20.14.8)(typescript@5.5.2)
+    version: 5.22.2(@types/node@20.14.9)(typescript@5.5.2)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.7
@@ -1165,7 +1165,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.14.8
+      '@types/node': 20.14.9
     dev: true
 
   /@types/http-cache-semantics@4.0.4:
@@ -1186,8 +1186,8 @@ packages:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
     dev: true
 
-  /@types/node@20.14.8:
-    resolution: {integrity: sha512-DO+2/jZinXfROG7j7WKFn/3C6nFwxy2lLpgLjEXJz+0XKphZlTLJ14mo8Vfg8X5BWN6XjyESXq+LcYdT7tR3bA==}
+  /@types/node@20.14.9:
+    resolution: {integrity: sha512-06OCtnTXtWOZBJlRApleWndH4JsRVs1pDCc8dLSQp+7PpUpX3ePdHyeNSFTeSe7FtKyQkrlPvHwJOW3SLd8Oyg==}
     dependencies:
       undici-types: 5.26.5
     dev: true
@@ -2679,8 +2679,8 @@ packages:
       ignore: 5.3.1
     dev: true
 
-  /eslint-plugin-jsdoc@48.2.13(eslint@8.57.0):
-    resolution: {integrity: sha512-4MzMKN0uMIehmFUVzJxNmjc573HnTKLt7Qrg7QQyXC3JkHBweaVbHwgwG+T3boefD3NyLXRHNOYYPJqmslDvHA==}
+  /eslint-plugin-jsdoc@48.2.15(eslint@8.57.0):
+    resolution: {integrity: sha512-ScHhf9thOoJQ4dXpS+nJXTfNfslG8NBtzQ165PiXWIyGlJcAmkiEeTIEAlIcLA7uztJF7zRiuiKIqOBX4JpVzw==}
     engines: {node: '>=18'}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
@@ -4128,7 +4128,7 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /knip@5.22.2(@types/node@20.14.8)(typescript@5.5.2):
+  /knip@5.22.2(@types/node@20.14.9)(typescript@5.5.2):
     resolution: {integrity: sha512-eMEnuLOkLN5wn1Os9v0cujZQAhcZ8dYZ23ZsVizfWaaeIx9/s8PaaW4HlbnePQ+ci463X61/+CboGSkmmB8OZA==}
     engines: {node: '>=18.6.0'}
     hasBin: true
@@ -4139,7 +4139,7 @@ packages:
       '@ericcornelissen/bash-parser': 0.5.3
       '@nodelib/fs.walk': 2.0.0
       '@snyk/github-codeowners': 1.1.0
-      '@types/node': 20.14.8
+      '@types/node': 20.14.9
       easy-table: 1.2.0
       fast-glob: 3.3.2
       jiti: 1.21.6
