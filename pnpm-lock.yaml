@@ -39,7 +39,7 @@ devDependencies:
     version: 3.2.0(eslint@8.57.0)
   eslint-plugin-jsdoc:
     specifier: ^48.2.1
-    version: 48.2.15(eslint@8.57.0)
+    version: 48.3.0(eslint@8.57.0)
   eslint-plugin-jsonc:
     specifier: ^2.14.1
     version: 2.16.0(eslint@8.57.0)
@@ -2548,6 +2548,10 @@ packages:
       stop-iteration-iterator: 1.0.0
     dev: true
 
+  /es-module-lexer@1.5.4:
+    resolution: {integrity: sha512-MVNK56NiMrOwitFB7cqDwq0CQutbw+0BvLshJSse0MUNU+y1FC3bUS/AQg7oUng+/wKrrki7JfmwtVHkVfPLlw==}
+    dev: true
+
   /es-object-atoms@1.0.0:
     resolution: {integrity: sha512-MZ4iQ6JwHOBQjahnjwaC1ZtIBH+2ohjamzAO3oaHcXYup7qxjF2fixyH+Q71voWHeOkI2q/TnJao/KfXYIZWbw==}
     engines: {node: '>= 0.4'}
@@ -2679,8 +2683,8 @@ packages:
       ignore: 5.3.1
     dev: true
 
-  /eslint-plugin-jsdoc@48.2.15(eslint@8.57.0):
-    resolution: {integrity: sha512-ScHhf9thOoJQ4dXpS+nJXTfNfslG8NBtzQ165PiXWIyGlJcAmkiEeTIEAlIcLA7uztJF7zRiuiKIqOBX4JpVzw==}
+  /eslint-plugin-jsdoc@48.3.0(eslint@8.57.0):
+    resolution: {integrity: sha512-lzQSh2gjPqrqYTL0774sLj/rJywP1UESxD43xBwAlehuI2H6mIKTwj6i4tdvVzmUMflx8yMzHzy4e4XWrKaNZQ==}
     engines: {node: '>=18'}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
@@ -2692,8 +2696,10 @@ packages:
       escape-string-regexp: 4.0.0
       eslint: 8.57.0
       esquery: 1.5.0
+      parse-imports: 2.1.0
       semver: 7.6.2
       spdx-expression-parse: 4.0.0
+      synckit: 0.9.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4835,6 +4841,14 @@ packages:
       is-hexadecimal: 1.0.4
     dev: true
 
+  /parse-imports@2.1.0:
+    resolution: {integrity: sha512-JQWgmK2o4w8leUkZeZPatWdAny6vXGU/3siIUvMF6J2rDCud9aTt8h/px9oZJ6U3EcfhngBJ635uPFI0q0VAeA==}
+    engines: {node: '>= 18'}
+    dependencies:
+      es-module-lexer: 1.5.4
+      slashes: 3.0.12
+    dev: true
+
   /parse-json@5.2.0:
     resolution: {integrity: sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==}
     engines: {node: '>=8'}
@@ -5425,6 +5439,10 @@ packages:
   /slash@5.1.0:
     resolution: {integrity: sha512-ZA6oR3T/pEyuqwMgAKT0/hAv8oAXckzbkmR0UkUosQ+Mc4RxGoJkRmwHgHufaenlyAgE1Mxgpdcrf75y6XcnDg==}
     engines: {node: '>=14.16'}
+    dev: true
+
+  /slashes@3.0.12:
+    resolution: {integrity: sha512-Q9VME8WyGkc7pJf6QEkj3wE+2CnvZMI+XJhwdTPR8Z/kWQRXi7boAWLDibRPyHRTUTPx5FaU7MsyrjI3yLB4HA==}
     dev: true
 
   /slice-ansi@5.0.0:
