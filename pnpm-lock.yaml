@@ -72,13 +72,13 @@ devDependencies:
     version: 8.1.0
   husky:
     specifier: ^9.0.11
-    version: 9.1.1
+    version: 9.1.2
   jsonc-eslint-parser:
     specifier: ^2.4.0
     version: 2.4.0
   knip:
     specifier: ^5.1.2
-    version: 5.27.0(@types/node@20.14.12)(typescript@5.5.4)
+    version: 5.27.0(@types/node@22.0.0)(typescript@5.5.4)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.7
@@ -1113,7 +1113,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.14.12
+      '@types/node': 22.0.0
     dev: true
 
   /@types/http-cache-semantics@4.0.4:
@@ -1134,10 +1134,10 @@ packages:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
     dev: true
 
-  /@types/node@20.14.12:
-    resolution: {integrity: sha512-r7wNXakLeSsGT0H1AU863vS2wa5wBOK4bWMjZz2wj+8nBx+m5PeIn0k8AloSLpRuiwdRQZwarZqHE4FNArPuJQ==}
+  /@types/node@22.0.0:
+    resolution: {integrity: sha512-VT7KSYudcPOzP5Q0wfbowyNLaVR8QWUdw+088uFWwfvpY6uCWaXpqV6ieLAu9WBcnTa7H4Z5RLK8I5t2FuOcqw==}
     dependencies:
-      undici-types: 5.26.5
+      undici-types: 6.11.1
     dev: true
 
   /@types/normalize-package-data@2.4.4:
@@ -3089,7 +3089,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.19.0
+      uglify-js: 3.19.1
     dev: true
 
   /has-flag@3.0.0:
@@ -3163,8 +3163,8 @@ packages:
     engines: {node: '>=16.17.0'}
     dev: true
 
-  /husky@9.1.1:
-    resolution: {integrity: sha512-fCqlqLXcBnXa/TJXmT93/A36tJsjdJkibQ1MuIiFyCCYUlpYpIaj2mv1w+3KR6Rzu1IC3slFTje5f6DUp2A2rg==}
+  /husky@9.1.2:
+    resolution: {integrity: sha512-1/aDMXZdhr1VdJJTLt6e7BipM0Jd9qkpubPiIplon1WmCeOy3nnzsCMeBqS9AsL5ioonl8F8y/F2CLOmk19/Pw==}
     engines: {node: '>=18'}
     hasBin: true
     dev: true
@@ -3575,7 +3575,7 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /knip@5.27.0(@types/node@20.14.12)(typescript@5.5.4):
+  /knip@5.27.0(@types/node@22.0.0)(typescript@5.5.4):
     resolution: {integrity: sha512-W8+jhO7i5pXRUqOzhJGm2DT5/d9aQjyrYTCSojqJxFOvi7ku/nHKzpBO3WNf4eflJo0t3zitmUkM69g53qoZQw==}
     engines: {node: '>=18.6.0'}
     hasBin: true
@@ -3585,7 +3585,7 @@ packages:
     dependencies:
       '@nodelib/fs.walk': 1.2.8
       '@snyk/github-codeowners': 1.1.0
-      '@types/node': 20.14.12
+      '@types/node': 22.0.0
       easy-table: 1.2.0
       fast-glob: 3.3.2
       jiti: 1.21.6
@@ -5140,16 +5140,16 @@ packages:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
     dev: true
 
-  /uglify-js@3.19.0:
-    resolution: {integrity: sha512-wNKHUY2hYYkf6oSFfhwwiHo4WCHzHmzcXsqXYTN9ja3iApYIFbb2U6ics9hBcYLHcYGQoAlwnZlTrf3oF+BL/Q==}
+  /uglify-js@3.19.1:
+    resolution: {integrity: sha512-y/2wiW+ceTYR2TSSptAhfnEtpLaQ4Ups5zrjB2d3kuVxHj16j/QJwPl5PvuGy9uARb39J0+iKxcRPvtpsx4A4A==}
     engines: {node: '>=0.8.0'}
     hasBin: true
     requiresBuild: true
     dev: true
     optional: true
 
-  /undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+  /undici-types@6.11.1:
+    resolution: {integrity: sha512-mIDEX2ek50x0OlRgxryxsenE5XaQD4on5U2inY7RApK3SOJpofyw7uW2AyfMKkhAxXIceo2DeWGVGwyvng1GNQ==}
     dev: true
 
   /unicode-emoji-json@0.4.0:
