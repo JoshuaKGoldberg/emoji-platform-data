@@ -78,7 +78,7 @@ devDependencies:
     version: 2.4.0
   knip:
     specifier: ^5.1.2
-    version: 5.27.1(@types/node@22.2.0)(typescript@5.5.4)
+    version: 5.27.2(@types/node@22.2.0)(typescript@5.5.4)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.8
@@ -3161,7 +3161,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.19.1
+      uglify-js: 3.19.2
     dev: true
 
   /has-flag@3.0.0:
@@ -3647,8 +3647,8 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /knip@5.27.1(@types/node@22.2.0)(typescript@5.5.4):
-    resolution: {integrity: sha512-Cz1Mebby5oJNd11bEErhbu3Vnw678nrxTtwJEJjNFJ5f4OuCXGS1Uwc3Ml8B0Uh9JcolT4+5KPlw+sOsB/NBAg==}
+  /knip@5.27.2(@types/node@22.2.0)(typescript@5.5.4):
+    resolution: {integrity: sha512-Mya1XEDq1oygibQf0uocQd02Fil8RtvNVhcFAcxypjcc6zakT7wsJtS0xvuwEitilfI0tiFC9PghmJQ3DMKuTg==}
     engines: {node: '>=18.6.0'}
     hasBin: true
     peerDependencies:
@@ -5232,8 +5232,8 @@ packages:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
     dev: true
 
-  /uglify-js@3.19.1:
-    resolution: {integrity: sha512-y/2wiW+ceTYR2TSSptAhfnEtpLaQ4Ups5zrjB2d3kuVxHj16j/QJwPl5PvuGy9uARb39J0+iKxcRPvtpsx4A4A==}
+  /uglify-js@3.19.2:
+    resolution: {integrity: sha512-S8KA6DDI47nQXJSi2ctQ629YzwOVs+bQML6DAtvy0wgNdpi+0ySpQK0g2pxBq2xfF2z3YCscu7NNA8nXT9PlIQ==}
     engines: {node: '>=0.8.0'}
     hasBin: true
     requiresBuild: true
