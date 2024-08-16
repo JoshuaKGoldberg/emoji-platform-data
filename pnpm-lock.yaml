@@ -39,7 +39,7 @@ devDependencies:
     version: 3.2.0(eslint@8.57.0)
   eslint-plugin-jsdoc:
     specifier: ^50.0.0
-    version: 50.1.0(eslint@8.57.0)
+    version: 50.2.0(eslint@8.57.0)
   eslint-plugin-jsonc:
     specifier: ^2.14.1
     version: 2.16.0(eslint@8.57.0)
@@ -78,7 +78,7 @@ devDependencies:
     version: 2.4.0
   knip:
     specifier: ^5.1.2
-    version: 5.27.2(@types/node@22.3.0)(typescript@5.5.4)
+    version: 5.27.2(@types/node@22.4.0)(typescript@5.5.4)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.9
@@ -1122,7 +1122,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 22.3.0
+      '@types/node': 22.4.0
     dev: true
 
   /@types/http-cache-semantics@4.0.4:
@@ -1143,10 +1143,10 @@ packages:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
     dev: true
 
-  /@types/node@22.3.0:
-    resolution: {integrity: sha512-nrWpWVaDZuaVc5X84xJ0vNrLvomM205oQyLsRt7OHNZbSHslcWsvgFR7O7hire2ZonjLrWBbedmotmIlJDVd6g==}
+  /@types/node@22.4.0:
+    resolution: {integrity: sha512-49AbMDwYUz7EXxKU/r7mXOsxwFr4BYbvB7tWYxVuLdb2ibd30ijjXINSMAHiEEZk5PCRBmW1gUeisn2VMKt3cQ==}
     dependencies:
-      undici-types: 6.18.2
+      undici-types: 6.19.6
     dev: true
 
   /@types/normalize-package-data@2.4.4:
@@ -2470,8 +2470,8 @@ packages:
       ignore: 5.3.1
     dev: true
 
-  /eslint-plugin-jsdoc@50.1.0(eslint@8.57.0):
-    resolution: {integrity: sha512-l4yg0ZIZ0Te5l/HHgz5FRyZM7eol2jgPnB3aOycooWr8pLqA8NCkSej+NcMVU9zIpt6BlPHqhPa8Vo+z4/Y51A==}
+  /eslint-plugin-jsdoc@50.2.0(eslint@8.57.0):
+    resolution: {integrity: sha512-HAmTcHgPFmiM0kfI3Z5Gt39DNjTsdrfFJKk6tmWscnDk8iAuA+72uHz8v2OToYVNiWN8ihX5uWQKDezU7nnNoQ==}
     engines: {node: '>=18'}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
@@ -3657,7 +3657,7 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /knip@5.27.2(@types/node@22.3.0)(typescript@5.5.4):
+  /knip@5.27.2(@types/node@22.4.0)(typescript@5.5.4):
     resolution: {integrity: sha512-Mya1XEDq1oygibQf0uocQd02Fil8RtvNVhcFAcxypjcc6zakT7wsJtS0xvuwEitilfI0tiFC9PghmJQ3DMKuTg==}
     engines: {node: '>=18.6.0'}
     hasBin: true
@@ -3667,7 +3667,7 @@ packages:
     dependencies:
       '@nodelib/fs.walk': 1.2.8
       '@snyk/github-codeowners': 1.1.0
-      '@types/node': 22.3.0
+      '@types/node': 22.4.0
       easy-table: 1.2.0
       enhanced-resolve: 5.17.1
       fast-glob: 3.3.2
@@ -5250,8 +5250,8 @@ packages:
     dev: true
     optional: true
 
-  /undici-types@6.18.2:
-    resolution: {integrity: sha512-5ruQbENj95yDYJNS3TvcaxPMshV7aizdv/hWYjGIKoANWKjhWNBsr2YEuYZKodQulB1b8l7ILOuDQep3afowQQ==}
+  /undici-types@6.19.6:
+    resolution: {integrity: sha512-e/vggGopEfTKSvj4ihnOLTsqhrKRN3LeO6qSN/GxohhuRv8qH9bNQ4B8W7e/vFL+0XTnmHPB4/kegunZGA4Org==}
     dev: true
 
   /unicode-emoji-json@0.4.0:
