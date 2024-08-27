@@ -96,7 +96,7 @@ devDependencies:
     version: 0.2.2(prettier@3.3.3)
   prettier-plugin-packagejson:
     specifier: ^2.4.12
-    version: 2.5.1(prettier@3.3.3)
+    version: 2.5.2(prettier@3.3.3)
   release-it:
     specifier: ^17.1.1
     version: 17.6.0(typescript@5.5.4)
@@ -1535,7 +1535,7 @@ packages:
     resolution: {integrity: sha512-x1FCFnFifvYDDzTaLII71vG5uvDwgtmDTEVWAxrgeiR8VjMONcCXJx7E+USjDtHlwFmt9MysbqgF9b9Vjr6w+w==}
     engines: {node: '>=4'}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
     dev: true
 
   /async-retry@1.3.3:
@@ -2447,7 +2447,7 @@ packages:
       '@typescript-eslint/utils': 7.18.0(eslint@8.57.0)(typescript@5.5.4)
       eslint: 8.57.0
       ts-api-utils: 1.3.0(typescript@5.5.4)
-      tslib: 2.6.3
+      tslib: 2.7.0
       typescript: 5.5.4
     transitivePeerDependencies:
       - supports-color
@@ -4472,8 +4472,8 @@ packages:
       - supports-color
     dev: true
 
-  /prettier-plugin-packagejson@2.5.1(prettier@3.3.3):
-    resolution: {integrity: sha512-6i4PW1KxEA+VrokYNGeI/q8qQX3u5DNBc7eLr9GX4OrvWr9DMls1lhbuNopkKG7Li9rTNxerWnYQyjxoUO4ROA==}
+  /prettier-plugin-packagejson@2.5.2(prettier@3.3.3):
+    resolution: {integrity: sha512-w+TmoLv2pIa+siplW1cCj2ujEXQQS6z7wmWLOiLQK/2QVl7Wy6xh/ZUpqQw8tbKMXDodmSW4GONxlA33xpdNOg==}
     peerDependencies:
       prettier: '>= 1.16.0'
     peerDependenciesMeta:
@@ -4481,7 +4481,7 @@ packages:
         optional: true
     dependencies:
       prettier: 3.3.3
-      sort-package-json: 2.10.0
+      sort-package-json: 2.10.1
       synckit: 0.9.1
     dev: true
 
@@ -4776,7 +4776,7 @@ packages:
   /rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
     dev: true
 
   /safe-buffer@5.2.1:
@@ -4937,8 +4937,8 @@ packages:
       sort-object-keys: 1.1.3
     dev: true
 
-  /sort-package-json@2.10.0:
-    resolution: {integrity: sha512-MYecfvObMwJjjJskhxYfuOADkXp1ZMMnCFC8yhp+9HDsk7HhR336hd7eiBs96lTXfiqmUNI+WQCeCMRBhl251g==}
+  /sort-package-json@2.10.1:
+    resolution: {integrity: sha512-d76wfhgUuGypKqY72Unm5LFnMpACbdxXsLPcL27pOsSrmVqH3PztFp1uq+Z22suk15h7vXmTesuh2aEjdCqb5w==}
     hasBin: true
     dependencies:
       detect-indent: 7.0.1
@@ -5107,7 +5107,7 @@ packages:
     resolution: {integrity: sha512-Vhf+bUa//YSTYKseDiiEuQmhGCoIF3CVBhunm3r/DQnYiGT4JssmnKQc44BIyOZRK2pKjXXAgbhfmbeoC9CJpA==}
     engines: {node: '>=12.20'}
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
     dev: true
 
   /synckit@0.9.1:
@@ -5115,7 +5115,7 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
     dependencies:
       '@pkgr/core': 0.1.1
-      tslib: 2.6.3
+      tslib: 2.7.0
     dev: true
 
   /tapable@2.2.1:
@@ -5172,8 +5172,8 @@ packages:
       typescript: 5.5.4
     dev: true
 
-  /tslib@2.6.3:
-    resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
+  /tslib@2.7.0:
+    resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
     dev: true
 
   /tsx@4.17.0:
