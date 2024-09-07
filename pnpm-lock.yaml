@@ -117,7 +117,7 @@ devDependencies:
     version: 5.5.4
   yaml:
     specifier: ^2.4.1
-    version: 2.5.0
+    version: 2.5.1
   yaml-eslint-parser:
     specifier: ^1.2.2
     version: 1.2.3
@@ -2042,7 +2042,7 @@ packages:
     dependencies:
       '@cspell/cspell-types': 8.14.2
       comment-json: 4.2.5
-      yaml: 2.5.0
+      yaml: 2.5.1
     dev: true
 
   /cspell-dictionary@8.14.2:
@@ -3751,7 +3751,7 @@ packages:
       micromatch: 4.0.8
       pidtree: 0.6.0
       string-argv: 0.3.2
-      yaml: 2.5.0
+      yaml: 2.5.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -5476,11 +5476,11 @@ packages:
     dependencies:
       eslint-visitor-keys: 3.4.3
       lodash: 4.17.21
-      yaml: 2.5.0
+      yaml: 2.5.1
     dev: true
 
-  /yaml@2.5.0:
-    resolution: {integrity: sha512-2wWLbGbYDiSqqIKoPjar3MPgB94ErzCtrNE1FdqGuaO0pi2JGjmE8aW8TDZwzU7vuxcGRdL/4gPQwQ7hD5AMSw==}
+  /yaml@2.5.1:
+    resolution: {integrity: sha512-bLQOjaX/ADgQ20isPJRvF0iRUHIxVhYvr53Of7wGcWlO2jvtUlH5m87DsmulFVxRpNLOnI4tB6p/oh8D7kpn9Q==}
     engines: {node: '>= 14'}
     hasBin: true
     dev: true
