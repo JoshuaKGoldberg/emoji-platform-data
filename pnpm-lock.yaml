@@ -105,7 +105,7 @@ devDependencies:
     version: 0.2.1
   title-case:
     specifier: ^4.3.1
-    version: 4.3.1
+    version: 4.3.2
   tsx:
     specifier: ^4.7.1
     version: 4.19.1
@@ -5185,8 +5185,8 @@ packages:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
     dev: true
 
-  /title-case@4.3.1:
-    resolution: {integrity: sha512-VnPxQ+/j0X2FZ4ceGq1oLruTLjtN5Ul4sam5ypd4mDZLm1eHwkwip1gLxqhON/j4qyTlUlfPKslE/t4NPSlxhg==}
+  /title-case@4.3.2:
+    resolution: {integrity: sha512-I/nkcBo73mO42Idfv08jhInV61IMb61OdIFxk+B4Gu1oBjWBPOLmhZdsli+oJCVaD+86pYQA93cJfFt224ZFAA==}
     dev: true
 
   /tmp@0.0.33:
