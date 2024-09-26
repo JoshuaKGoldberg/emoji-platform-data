@@ -78,7 +78,7 @@ devDependencies:
     version: 2.4.0
   knip:
     specifier: ^5.1.2
-    version: 5.30.4(@types/node@22.7.0)(typescript@5.6.2)
+    version: 5.30.5(@types/node@22.7.2)(typescript@5.6.2)
   lint-staged:
     specifier: ^15.2.2
     version: 15.2.10
@@ -1147,7 +1147,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 22.7.0
+      '@types/node': 22.7.2
     dev: true
 
   /@types/http-cache-semantics@4.0.4:
@@ -1168,8 +1168,8 @@ packages:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
     dev: true
 
-  /@types/node@22.7.0:
-    resolution: {integrity: sha512-MOdOibwBs6KW1vfqz2uKMlxq5xAfAZ98SZjO8e3XnAbFnTJtAspqhWk7hrdSAs9/Y14ZWMiy7/MxMUzAOadYEw==}
+  /@types/node@22.7.2:
+    resolution: {integrity: sha512-866lXSrpGpgyHBZUa2m9YNWqHDjjM0aBTJlNtYaGEw4rqY/dcD7deRVTbBBAJelfA7oaGDbNftXF/TL/A6RgoA==}
     dependencies:
       undici-types: 6.19.8
     dev: true
@@ -3695,8 +3695,8 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /knip@5.30.4(@types/node@22.7.0)(typescript@5.6.2):
-    resolution: {integrity: sha512-ws9HtVEMyEFFlGZ3+XCC/XQ0dRfllaW0TVWQJzYTJprAvB98cy3mSH4wZo1UkzdPe6l+qbJJxnGuG69Jm916BQ==}
+  /knip@5.30.5(@types/node@22.7.2)(typescript@5.6.2):
+    resolution: {integrity: sha512-opta1VVKAfIzhvj1iyOr/3SgSDC6jYPoUaYkvjftNqMTeURppYY5VqrAa5DOcJnIsdcAdyoIKHUFg9NRiFaM5w==}
     engines: {node: '>=18.6.0'}
     hasBin: true
     peerDependencies:
@@ -3705,7 +3705,7 @@ packages:
     dependencies:
       '@nodelib/fs.walk': 1.2.8
       '@snyk/github-codeowners': 1.1.0
-      '@types/node': 22.7.0
+      '@types/node': 22.7.2
       easy-table: 1.2.0
       enhanced-resolve: 5.17.1
       fast-glob: 3.3.2
