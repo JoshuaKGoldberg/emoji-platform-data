@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       emojipedia:
-        specifier: ^0.3.0
-        version: 0.3.0(graphql@16.9.0)
+        specifier: ^0.4.0
+        version: 0.4.0(graphql@16.9.0)
     devDependencies:
       '@eslint-community/eslint-plugin-eslint-comments':
         specifier: ^4.4.0
@@ -1273,8 +1273,8 @@ packages:
   emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
 
-  emojipedia@0.3.0:
-    resolution: {integrity: sha512-bQ6D92mcENmXiuZJrq0SMsHJzjrpXSZQYfQhYHf/qC1IBx1InourtVcnpapmpMaP9PcZQ09NCZW6DmYGbYTD4A==}
+  emojipedia@0.4.0:
+    resolution: {integrity: sha512-s8bo94m029HU9nLpupGa+sZeViYzN71QlrVmFUk1fwsUwYVhitaDdS6nzYUXGFVm5oVNL/UKqhRr8jXL7w6oKQ==}
     engines: {node: '>=18'}
 
   enhanced-resolve@5.17.1:
@@ -4081,7 +4081,7 @@ snapshots:
 
   emoji-regex@9.2.2: {}
 
-  emojipedia@0.3.0(graphql@16.9.0):
+  emojipedia@0.4.0(graphql@16.9.0):
     dependencies:
       change-case: 5.4.4
       graphql-request: 6.1.0(graphql@16.9.0)
