@@ -1,11 +1,12 @@
 import * as fs from "node:fs/promises";
+import * as path from "node:path";
 import { parse } from "yaml";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllTwemojiData, TwemojiItem, TwemojiItemIncluded } from "./types.js";
 import { getEntryCldr } from "./utils.js";
 
-type TwemojiItemRaw = Omit<TwemojiItem, "keywords"> & { keywords?: string };
+type TwemojiItemRaw = { keywords?: string } & Omit<TwemojiItem, "keywords">;
 
 interface TwemojiGroupRaw {
 	id: string;
@@ -21,9 +22,7 @@ export async function generateTwemoji(
 	emojipedia: GeneratedEmojipediaData,
 ): Promise<Partial<AllTwemojiData>> {
 	const rawTwemoji = (
-		await fs.readFile(
-			`./node_modules/twemoji-parser/src/scala/config/src/main/resources/config/emoji.yml`,
-		)
+		await fs.readFile(path.join(import.meta.dirname, "emoji.yml"))
 	).toString();
 	const parsed = (await parse(rawTwemoji)) as TwemojiGroupRaw[];
 
