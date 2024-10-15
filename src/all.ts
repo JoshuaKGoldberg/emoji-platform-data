@@ -41,10 +41,8 @@ export async function generateAll(): Promise<AllEmojiPlatformData> {
 					fluemoji,
 					gemoji,
 					slug:
-						// So far, only the occasional Twemoji entry hasn't been on Emojipedia.
-						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-						(emojipedia?.slug ??
-							twemoji?.description.replaceAll(" ", "-").toLowerCase())!,
+						emojipedia?.slug ??
+						(twemoji?.description ?? title).replaceAll(" ", "-").toLowerCase(),
 					title,
 					twemoji,
 				};
