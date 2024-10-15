@@ -15,6 +15,7 @@
 		"gemoji",
 		"knip",
 		"packagejson",
-		"skintones"
+		"skintones",
+		"tseslint"
 	]
 }

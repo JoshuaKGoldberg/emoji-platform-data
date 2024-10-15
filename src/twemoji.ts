@@ -5,7 +5,7 @@ import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllTwemojiData, TwemojiItem, TwemojiItemIncluded } from "./types.js";
 import { getEntryCldr } from "./utils.js";
 
-type TwemojiItemRaw = Omit<TwemojiItem, "keywords"> & { keywords?: string };
+type TwemojiItemRaw = { keywords?: string } & Omit<TwemojiItem, "keywords">;
 
 interface TwemojiGroupRaw {
 	id: string;
