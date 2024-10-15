@@ -108,9 +108,6 @@ importers:
       tsx:
         specifier: ^4.19.1
         version: 4.19.1
-      twemoji-parser:
-        specifier: git+https://github.com/twitter/twemoji-parser.git
-        version: https://codeload.github.com/twitter/twemoji-parser/tar.gz/f8312f35fdee0e79874bb50213c4544c14fa759b
       typescript:
         specifier: 5.5.4
         version: 5.5.4
@@ -2735,10 +2732,6 @@ packages:
     resolution: {integrity: sha512-0flMz1lh74BR4wOvBjuh9olbnwqCPc35OOlfyzHba0Dc+QNUeWX/Gq2YTbnwcWPO3BMd8fkzRVrHcsR+a7z7rA==}
     engines: {node: '>=18.0.0'}
     hasBin: true
-
-  twemoji-parser@https://codeload.github.com/twitter/twemoji-parser/tar.gz/f8312f35fdee0e79874bb50213c4544c14fa759b:
-    resolution: {tarball: https://codeload.github.com/twitter/twemoji-parser/tar.gz/f8312f35fdee0e79874bb50213c4544c14fa759b}
-    version: 14.0.0
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -5657,8 +5650,6 @@ snapshots:
       get-tsconfig: 4.8.1
     optionalDependencies:
       fsevents: 2.3.3
-
-  twemoji-parser@https://codeload.github.com/twitter/twemoji-parser/tar.gz/f8312f35fdee0e79874bb50213c4544c14fa759b: {}
 
   type-check@0.4.0:
     dependencies:

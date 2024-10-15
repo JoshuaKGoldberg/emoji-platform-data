@@ -73,7 +73,6 @@
 		"sentences-per-line": "^0.2.1",
 		"title-case": "^4.3.2",
 		"tsx": "^4.19.1",
-		"twemoji-parser": "git+https://github.com/twitter/twemoji-parser.git",
 		"typescript": "5.5.4",
 		"typescript-eslint": "8.9.0",
 		"yaml": "^2.6.0"

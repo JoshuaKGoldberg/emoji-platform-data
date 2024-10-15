@@ -1,4 +1,5 @@
 import * as fs from "node:fs/promises";
+import * as path from "node:path";
 import { parse } from "yaml";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
@@ -21,9 +22,7 @@ export async function generateTwemoji(
 	emojipedia: GeneratedEmojipediaData,
 ): Promise<Partial<AllTwemojiData>> {
 	const rawTwemoji = (
-		await fs.readFile(
-			`./node_modules/twemoji-parser/src/scala/config/src/main/resources/config/emoji.yml`,
-		)
+		await fs.readFile(path.join(import.meta.dirname, "emoji.yml"))
 	).toString();
 	const parsed = (await parse(rawTwemoji)) as TwemojiGroupRaw[];
 
