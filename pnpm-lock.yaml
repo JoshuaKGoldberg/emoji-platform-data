@@ -20,7 +20,7 @@ importers:
         version: 9.12.0
       '@release-it/conventional-changelog':
         specifier: ^9.0.0
-        version: 9.0.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.0.0)(release-it@17.9.0(typescript@5.6.3))
+        version: 9.0.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.0.0)(release-it@17.10.0(typescript@5.6.3))
       '@types/eslint-plugin-markdown':
         specifier: ^2.0.2
         version: 2.0.2
@@ -98,7 +98,7 @@ importers:
         version: 2.5.3(prettier@3.3.3)
       release-it:
         specifier: ^17.9.0
-        version: 17.9.0(typescript@5.6.3)
+        version: 17.10.0(typescript@5.6.3)
       sentences-per-line:
         specifier: ^0.2.1
         version: 0.2.1
@@ -590,8 +590,8 @@ packages:
   '@iarna/toml@2.2.5':
     resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
 
-  '@inquirer/figures@1.0.4':
-    resolution: {integrity: sha512-R7Gsg6elpuqdn55fBH2y9oYzrU/yKrSmIsDX4ROT51vohrECFzTf2zw9BfUbOW8xjfmM2QbVoVYdTwhrtEKWSQ==}
+  '@inquirer/figures@1.0.7':
+    resolution: {integrity: sha512-m+Trk77mp54Zma6xLkLuY+mvanPxlE4A7yNKs2HBiyZ4UkVs28Mv5c/pgWrHeInx+USHeX/WEPzjrWrcJiQgjw==}
     engines: {node: '>=18'}
 
   '@isaacs/cliui@8.0.2':
@@ -677,8 +677,8 @@ packages:
     resolution: {integrity: sha512-MB4AYDsM5jhIHro/dq4ix1iWTLGToIGk6cWF5L6vanFaMble5jTX/UBQyiv05HsWnwUtY8JrfHy2LWfKwihqMw==}
     engines: {node: '>= 18'}
 
-  '@octokit/types@13.5.0':
-    resolution: {integrity: sha512-HdqWTf5Z3qwDVlzCrP8UJquMwunpDiMPt5er+QjGzL4hqr/vBVY/MauQgS1xWxCDT1oMx1EULyqxncdCY/NVSQ==}
+  '@octokit/types@13.6.1':
+    resolution: {integrity: sha512-PHZE9Z+kWXb23Ndik8MKPirBPziOc0D2/3KH1P+6jK5nGWe96kadZuE4jev2/Jq7FvIfTlT2Ltg8Fv2x1v0a5g==}
 
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
@@ -692,8 +692,8 @@ packages:
     resolution: {integrity: sha512-YcPQ8a0jwYU9bTdJDpXjMi7Brhkr1mXsXrUJvjqM2mQDgkRiz8jFaQGOdaLxgjtUfQgZhKy/O3cG/YwmgKaxLA==}
     engines: {node: '>=12.22.0'}
 
-  '@pnpm/npm-conf@2.2.2':
-    resolution: {integrity: sha512-UA91GwWPhFExt3IizW6bOeY/pQ0BkuNwKjk9iQW9KqxluGCrg4VenZ0/L+2Y0+ZOtme72EVvg6v0zo3AMQRCeA==}
+  '@pnpm/npm-conf@2.3.1':
+    resolution: {integrity: sha512-c83qWb22rNRuB0UaVCI0uRPNRr8Z0FWnEIvT47jiHAmOIUHbBOg5XvV7pM5x+rKn9HRpjxquDbXYSXr3fAKFcw==}
     engines: {node: '>=12'}
 
   '@release-it/conventional-changelog@9.0.0':
@@ -1558,8 +1558,8 @@ packages:
     resolution: {integrity: sha512-47Frx13aZh01afHJTB3zTtKIlFI6vWY+MYCN9Qpew6i52rfKjnhCF/l1YlC8UmEMvvntZZ6z4PiCcmyuedR2aQ==}
     engines: {node: '>=18'}
 
-  get-east-asian-width@1.2.0:
-    resolution: {integrity: sha512-2nk+7SIVb14QrgXFHcm84tD4bKQz0RxPuMT8Ag5KPOq7J5fEmAg0UbXdTOSHqNuHSU28k55qnceesxXRZGzKWA==}
+  get-east-asian-width@1.3.0:
+    resolution: {integrity: sha512-vpeMIQKxczTD/0s2CdEWHcb0eeJe6TFjxb+J5xgX7hScxqrGuyjmv4c1D4A/gelKfyox0gJJwIHF+fLjeaM8kQ==}
     engines: {node: '>=18'}
 
   get-stdin@9.0.0:
@@ -1785,8 +1785,8 @@ packages:
   is-arrayish@0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
 
-  is-core-module@2.15.0:
-    resolution: {integrity: sha512-Dd+Lb2/zvk9SKy1TGCt1wFJFo/MWBPMX5x7KcvLajWTGuomczdQX61PvY5yK6SVACwpoexWo81IfFyoKY2QnTA==}
+  is-core-module@2.15.1:
+    resolution: {integrity: sha512-z0vtXSwucUJtANQWldhbtbt7BnL0vxiFjIdDLAatwhDYty2bad6s+rijD6Ri4YuYJubLzIJLUidCh09e1djEVQ==}
     engines: {node: '>= 0.4'}
 
   is-decimal@1.0.4:
@@ -1885,8 +1885,8 @@ packages:
     resolution: {integrity: sha512-43r2mRvz+8JRIKnWJ+3j8JtjRKZ6GmjzfaE/qiBJnikNnYv/6bagRJ1kUhNk8R5EX/GkobD+r+sfxCPJsiKBLQ==}
     engines: {node: '>=12'}
 
-  is-unicode-supported@2.0.0:
-    resolution: {integrity: sha512-FRdAyx5lusK1iHG0TWpVtk9+1i+GjrzRffhDg4ovQ7mcidMQ6mj+MhKPmvh7Xwyv5gIS06ns49CA7Sqg7lC22Q==}
+  is-unicode-supported@2.1.0:
+    resolution: {integrity: sha512-mE00Gnza5EEB3Ds0HfMyllZzbBrmLOX3vfWoj9A9PEnTfratQ/BcaJOuMhnkhjXvb2+FkY3VuHqtAGpTPmglFQ==}
     engines: {node: '>=18'}
 
   is-wsl@3.1.0:
@@ -1964,8 +1964,8 @@ packages:
       '@types/node': '>=18'
       typescript: '>=5.0.4'
 
-  ky@1.4.0:
-    resolution: {integrity: sha512-tPhhoGUiEiU/WXR4rt8klIoLdnTtyu+9jVKHd/wauEjYud32jyn63mzKWQweaQrHWxBQtYoVtdcEnYX1LosnFQ==}
+  ky@1.7.2:
+    resolution: {integrity: sha512-OzIvbHKKDpi60TnF9t7UUVAF1B4mcqc02z5PIvrm08Wyb+yOcz63GRvEuVxNT18a9E1SrNouhB4W2NNLeD7Ykg==}
     engines: {node: '>=18'}
 
   latest-version@9.0.0:
@@ -2046,8 +2046,8 @@ packages:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
 
-  macos-release@3.2.0:
-    resolution: {integrity: sha512-fSErXALFNsnowREYZ49XCdOHF8wOPWuFOGQrAhP7x5J/BqQv+B02cNsTykGpDgRVx43EKg++6ANmTaGTtW+hUA==}
+  macos-release@3.3.0:
+    resolution: {integrity: sha512-tPJQ1HeyiU2vRruNGhZ+VleWuMQRro8iFtJxYgnS4NQe+EukKF6aGiIT+7flZhISAt2iaXBCfFGvAyif7/f8nQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   markdown-it@14.1.0:
@@ -2439,8 +2439,8 @@ packages:
     resolution: {integrity: sha512-+crtS5QjFRqFCoQmvGduwYWEBng99ZvmFvF+cUJkGYF1L1BfU8C6Zp9T7f5vPAwyLkUExpvK+ANVZmGU49qi4Q==}
     engines: {node: '>=12'}
 
-  release-it@17.9.0:
-    resolution: {integrity: sha512-KAZqvYcfYI/Rva8yr7vzVruM3mN8kuUR1WeQfOtGrc4ub7bGYf8eN91NOXC73LJE1uNpVlppF5xB8KOvKtQosg==}
+  release-it@17.10.0:
+    resolution: {integrity: sha512-00cXYEl7RFD5NnjXpwaH9JFjpwe8w3NcfUd4XPxrKQkszp1xppPo42zK9eSbxStKyPA5CVk2KmKPDPDiAKVJTA==}
     engines: {node: ^18.18.0 || ^20.9.0 || ^22.0.0}
     hasBin: true
 
@@ -2725,8 +2725,8 @@ packages:
     peerDependencies:
       typescript: '>=4.2.0'
 
-  tslib@2.7.0:
-    resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
+  tslib@2.8.0:
+    resolution: {integrity: sha512-jWVzBLplnCmoaTr13V9dYbiQ99wvZRd0vNWaDRg+aVYRcjDF3nDksxFDE/+fkXnKhpnUUkmx5pK/v8mCtLVqZA==}
 
   tsx@4.19.1:
     resolution: {integrity: sha512-0flMz1lh74BR4wOvBjuh9olbnwqCPc35OOlfyzHba0Dc+QNUeWX/Gq2YTbnwcWPO3BMd8fkzRVrHcsR+a7z7rA==}
@@ -3316,7 +3316,7 @@ snapshots:
 
   '@iarna/toml@2.2.5': {}
 
-  '@inquirer/figures@1.0.4': {}
+  '@inquirer/figures@1.0.7': {}
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -3364,19 +3364,19 @@ snapshots:
       '@octokit/graphql': 7.1.0
       '@octokit/request': 8.4.0
       '@octokit/request-error': 5.1.0
-      '@octokit/types': 13.5.0
+      '@octokit/types': 13.6.1
       before-after-hook: 2.2.3
       universal-user-agent: 6.0.1
 
   '@octokit/endpoint@9.0.5':
     dependencies:
-      '@octokit/types': 13.5.0
+      '@octokit/types': 13.6.1
       universal-user-agent: 6.0.1
 
   '@octokit/graphql@7.1.0':
     dependencies:
       '@octokit/request': 8.4.0
-      '@octokit/types': 13.5.0
+      '@octokit/types': 13.6.1
       universal-user-agent: 6.0.1
 
   '@octokit/openapi-types@22.2.0': {}
@@ -3384,7 +3384,7 @@ snapshots:
   '@octokit/plugin-paginate-rest@11.3.1(@octokit/core@5.2.0)':
     dependencies:
       '@octokit/core': 5.2.0
-      '@octokit/types': 13.5.0
+      '@octokit/types': 13.6.1
 
   '@octokit/plugin-request-log@4.0.1(@octokit/core@5.2.0)':
     dependencies:
@@ -3393,11 +3393,11 @@ snapshots:
   '@octokit/plugin-rest-endpoint-methods@13.2.2(@octokit/core@5.2.0)':
     dependencies:
       '@octokit/core': 5.2.0
-      '@octokit/types': 13.5.0
+      '@octokit/types': 13.6.1
 
   '@octokit/request-error@5.1.0':
     dependencies:
-      '@octokit/types': 13.5.0
+      '@octokit/types': 13.6.1
       deprecation: 2.3.1
       once: 1.4.0
 
@@ -3405,7 +3405,7 @@ snapshots:
     dependencies:
       '@octokit/endpoint': 9.0.5
       '@octokit/request-error': 5.1.0
-      '@octokit/types': 13.5.0
+      '@octokit/types': 13.6.1
       universal-user-agent: 6.0.1
 
   '@octokit/rest@20.1.1':
@@ -3415,7 +3415,7 @@ snapshots:
       '@octokit/plugin-request-log': 4.0.1(@octokit/core@5.2.0)
       '@octokit/plugin-rest-endpoint-methods': 13.2.2(@octokit/core@5.2.0)
 
-  '@octokit/types@13.5.0':
+  '@octokit/types@13.6.1':
     dependencies:
       '@octokit/openapi-types': 22.2.0
 
@@ -3427,19 +3427,19 @@ snapshots:
     dependencies:
       graceful-fs: 4.2.10
 
-  '@pnpm/npm-conf@2.2.2':
+  '@pnpm/npm-conf@2.3.1':
     dependencies:
       '@pnpm/config.env-replace': 1.1.0
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
 
-  '@release-it/conventional-changelog@9.0.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.0.0)(release-it@17.9.0(typescript@5.6.3))':
+  '@release-it/conventional-changelog@9.0.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.0.0)(release-it@17.10.0(typescript@5.6.3))':
     dependencies:
       concat-stream: 2.0.0
       conventional-changelog: 6.0.0(conventional-commits-filter@5.0.0)
       conventional-recommended-bump: 10.0.0
       git-semver-tags: 8.0.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.0.0)
-      release-it: 17.9.0(typescript@5.6.3)
+      release-it: 17.10.0(typescript@5.6.3)
       semver: 7.6.3
     transitivePeerDependencies:
       - conventional-commits-filter
@@ -3639,7 +3639,7 @@ snapshots:
 
   ast-types@0.13.4:
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
 
   async-retry@1.3.3:
     dependencies:
@@ -4451,7 +4451,7 @@ snapshots:
 
   gensequence@7.0.0: {}
 
-  get-east-asian-width@1.2.0: {}
+  get-east-asian-width@1.3.0: {}
 
   get-stdin@9.0.0: {}
 
@@ -4662,7 +4662,7 @@ snapshots:
 
   inquirer@9.3.2:
     dependencies:
-      '@inquirer/figures': 1.0.4
+      '@inquirer/figures': 1.0.7
       ansi-escapes: 4.3.2
       cli-width: 4.1.0
       external-editor: 3.1.0
@@ -4691,7 +4691,7 @@ snapshots:
 
   is-arrayish@0.2.1: {}
 
-  is-core-module@2.15.0:
+  is-core-module@2.15.1:
     dependencies:
       hasown: 2.0.2
 
@@ -4707,7 +4707,7 @@ snapshots:
 
   is-fullwidth-code-point@5.0.0:
     dependencies:
-      get-east-asian-width: 1.2.0
+      get-east-asian-width: 1.3.0
 
   is-glob@4.0.3:
     dependencies:
@@ -4754,7 +4754,7 @@ snapshots:
 
   is-unicode-supported@1.3.0: {}
 
-  is-unicode-supported@2.0.0: {}
+  is-unicode-supported@2.1.0: {}
 
   is-wsl@3.1.0:
     dependencies:
@@ -4838,7 +4838,7 @@ snapshots:
       zod: 3.23.8
       zod-validation-error: 3.4.0(zod@3.23.8)
 
-  ky@1.4.0: {}
+  ky@1.7.2: {}
 
   latest-version@9.0.0:
     dependencies:
@@ -4927,7 +4927,7 @@ snapshots:
 
   lru-cache@7.18.3: {}
 
-  macos-release@3.2.0: {}
+  macos-release@3.3.0: {}
 
   markdown-it@14.1.0:
     dependencies:
@@ -5124,7 +5124,7 @@ snapshots:
       cli-cursor: 5.0.0
       cli-spinners: 2.9.2
       is-interactive: 2.0.0
-      is-unicode-supported: 2.0.0
+      is-unicode-supported: 2.1.0
       log-symbols: 6.0.0
       stdin-discarder: 0.2.2
       string-width: 7.2.0
@@ -5132,7 +5132,7 @@ snapshots:
 
   os-name@5.1.0:
     dependencies:
-      macos-release: 3.2.0
+      macos-release: 3.3.0
       windows-release: 5.1.1
 
   os-tmpdir@1.0.2: {}
@@ -5177,7 +5177,7 @@ snapshots:
 
   package-json@10.0.1:
     dependencies:
-      ky: 1.4.0
+      ky: 1.7.2
       registry-auth-token: 5.0.2
       registry-url: 6.0.1
       semver: 7.6.3
@@ -5349,13 +5349,13 @@ snapshots:
 
   registry-auth-token@5.0.2:
     dependencies:
-      '@pnpm/npm-conf': 2.2.2
+      '@pnpm/npm-conf': 2.3.1
 
   registry-url@6.0.1:
     dependencies:
       rc: 1.2.8
 
-  release-it@17.9.0(typescript@5.6.3):
+  release-it@17.10.0(typescript@5.6.3):
     dependencies:
       '@iarna/toml': 2.2.5
       '@octokit/rest': 20.1.1
@@ -5395,7 +5395,7 @@ snapshots:
 
   resolve@1.22.8:
     dependencies:
-      is-core-module: 2.15.0
+      is-core-module: 2.15.1
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
@@ -5432,7 +5432,7 @@ snapshots:
 
   rxjs@7.8.1:
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
 
   safe-buffer@5.2.1: {}
 
@@ -5567,7 +5567,7 @@ snapshots:
   string-width@7.2.0:
     dependencies:
       emoji-regex: 10.4.0
-      get-east-asian-width: 1.2.0
+      get-east-asian-width: 1.3.0
       strip-ansi: 7.1.0
 
   string_decoder@1.3.0:
@@ -5608,12 +5608,12 @@ snapshots:
 
   synckit@0.6.2:
     dependencies:
-      tslib: 2.7.0
+      tslib: 2.8.0
 
   synckit@0.9.2:
     dependencies:
       '@pkgr/core': 0.1.1
-      tslib: 2.7.0
+      tslib: 2.8.0
 
   tapable@2.2.1: {}
 
@@ -5642,7 +5642,7 @@ snapshots:
     dependencies:
       typescript: 5.6.3
 
-  tslib@2.7.0: {}
+  tslib@2.8.0: {}
 
   tsx@4.19.1:
     dependencies:
