@@ -73,7 +73,7 @@
 		"sentences-per-line": "^0.2.1",
 		"title-case": "^4.3.2",
 		"tsx": "^4.19.1",
-		"typescript": "5.6.3",
+		"typescript": "5.7.2",
 		"typescript-eslint": "8.15.0",
 		"yaml": "^2.6.0"
 	},
