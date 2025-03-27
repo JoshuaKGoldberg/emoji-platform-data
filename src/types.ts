@@ -1,7 +1,23 @@
 import type * as emojipedia from "emojipedia/data";
 import type { Gemoji } from "gemoji";
 
+export type AllEmojipediaData = Record<Emoji, EmojipediaItem>;
+
 export type AllEmojiPlatformData = Record<string, EmojiPlatformData>;
+
+export type AllFluemojiData = Record<Emoji, FluemojiItem>;
+
+export type AllGemojiData = Record<Emoji, Gemoji>;
+
+export type AllTwemojiData = Record<Emoji, TwemojiItem>;
+
+export type Emoji = string;
+
+export type EmojipediaItem = (typeof emojipedia)[keyof typeof emojipedia] & {
+	alsoKnownAs?: string[];
+	appleName?: string;
+	currentCldrName?: string;
+};
 
 export interface EmojiPlatformData {
 	emoji: string;
@@ -12,16 +28,6 @@ export interface EmojiPlatformData {
 	title: string;
 	twemoji?: TwemojiItem;
 }
-
-export type Emoji = string;
-
-export type EmojipediaItem = (typeof emojipedia)[keyof typeof emojipedia] & {
-	alsoKnownAs?: string[];
-	appleName?: string;
-	currentCldrName?: string;
-};
-
-export type AllEmojipediaData = Record<Emoji, EmojipediaItem>;
 
 export interface FluemojiItem {
 	cldr: string;
@@ -35,9 +41,7 @@ export interface FluemojiItem {
 	unicodeSkintones?: string[];
 }
 
-export type AllFluemojiData = Record<Emoji, FluemojiItem>;
-
-export type AllGemojiData = Record<Emoji, Gemoji>;
+export type TwemojiItem = TwemojiItemExcluded | TwemojiItemIncluded;
 
 export interface TwemojiItemBase {
 	description: string;
@@ -52,7 +56,3 @@ export interface TwemojiItemExcluded extends TwemojiItemBase {
 export interface TwemojiItemIncluded extends TwemojiItemBase {
 	keywords: string[];
 }
-
-export type TwemojiItem = TwemojiItemExcluded | TwemojiItemIncluded;
-
-export type AllTwemojiData = Record<Emoji, TwemojiItem>;

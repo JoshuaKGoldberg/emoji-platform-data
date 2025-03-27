@@ -3,29 +3,13 @@
 After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo) and [installing pnpm](https://pnpm.io/installation):
 
 ```shell
-git clone https://github.com/<your-name-here>/emoji-platform-data
+git clone https://github.com/(your-name-here)/emoji-platform-data
 cd emoji-platform-data
 pnpm install
 ```
 
 > This repository includes a list of suggested VS Code extensions.
 > It's a good idea to use [VS Code](https://code.visualstudio.com) and accept its suggestion to install them, as they'll help with development.
-
-## Building
-
-This project doesn't use the TypeScript compiler or other transpilers to turn TypeScript syntax into JavaScript.
-The `lib/data` directory, including `lib/data/index.mjs` and its sibling `*.json` files, is populated by the script at `src/buildData.ts`.
-Run source code with [tsx](https://github.com/privatenumber/tsx) to manually generate files under the `lib/` directory:
-
-```shell
-npm run build
-```
-
-To continuously build in watch mode, run:
-
-```shell
-npx tsx --watch src/buildData.ts
-```
 
 ## Formatting
 
@@ -45,7 +29,7 @@ Each should be shown in VS Code, and can be run manually on the command-line:
 
 - `pnpm lint` ([ESLint](https://eslint.org) with [typescript-eslint](https://typescript-eslint.io)): Lints JavaScript and TypeScript source files
 - `pnpm lint:knip` ([knip](https://github.com/webpro/knip)): Detects unused files, dependencies, and code exports
-- `pnpm lint:md` ([Markdownlint](https://github.com/DavidAnson/markdownlint): Checks Markdown source files
+- `pnpm lint:md` ([Markdownlint](https://github.com/DavidAnson/markdownlint)): Checks Markdown source files
 - `pnpm lint:packages` ([pnpm dedupe --check](https://pnpm.io/cli/dedupe)): Checks for unnecessarily duplicated packages in the `pnpm-lock.yml` file
 - `pnpm lint:spelling` ([cspell](https://cspell.org)): Spell checks across all source files
 
@@ -57,7 +41,10 @@ For example, ESLint can be run with `--fix` to auto-fix some lint rule complaint
 pnpm run lint --fix
 ```
 
-Note that you'll likely need to run `pnpm build` before `pnpm lint` so that lint rules which check the file system can pick up on any built files.
+### Debugging Tests
+
+This repository includes a [VS Code launch configuration](https://code.visualstudio.com/docs/editor/debugging) for debugging unit tests.
+To launch it, open a test file, then run _Debug Current Test File_ from the VS Code Debug panel (or press F5).
 
 ## Type Checking
 

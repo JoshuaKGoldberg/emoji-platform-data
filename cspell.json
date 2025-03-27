@@ -1,20 +1,24 @@
 {
-	"dictionaries": ["typescript"],
+	"dictionaries": ["npm", "node", "typescript"],
 	"ignorePaths": [
+		".all-contributorsrc",
 		".github",
 		"CHANGELOG.md",
 		"lib",
 		"node_modules",
-		"pnpm-lock.yaml",
-		"src/emoji.yml"
+		"pnpm-lock.yaml"
 	],
 	"words": [
 		"Bluesky",
+		"apexskier",
+		"automerge",
 		"cldr",
 		"emojipedia",
 		"fluemoji",
 		"gemoji",
+		"joshuakgoldberg",
 		"knip",
+		"markdownlintignore",
 		"packagejson",
 		"skintones",
 		"tseslint"

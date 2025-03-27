@@ -6,17 +6,13 @@ import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllTwemojiData, TwemojiItem, TwemojiItemIncluded } from "./types.js";
 import { getEntryCldr } from "./utils.js";
 
-type TwemojiItemRaw = { keywords?: string } & Omit<TwemojiItem, "keywords">;
-
 interface TwemojiGroupRaw {
 	id: string;
 	items: TwemojiItemRaw[];
 	title: string;
 }
 
-function isIncludedTwemojiItem(item: TwemojiItem): item is TwemojiItemIncluded {
-	return !("exclude_from_picker" in item);
-}
+type TwemojiItemRaw = Omit<TwemojiItem, "keywords"> & { keywords?: string };
 
 export async function generateTwemoji(
 	emojipedia: GeneratedEmojipediaData,
@@ -44,4 +40,8 @@ export async function generateTwemoji(
 				entry,
 			]),
 	);
+}
+
+function isIncludedTwemojiItem(item: TwemojiItem): item is TwemojiItemIncluded {
+	return !("exclude_from_picker" in item);
 }
