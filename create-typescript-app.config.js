@@ -7,7 +7,9 @@
 //   https://github.com/JoshuaKGoldberg/bingo/issues/128
 import {
 	blockCodecov,
+	blockCSpell,
 	blockCTATransitions,
+	blockKnip,
 	blockMain,
 	blockPackageJson,
 	blockTSup,
@@ -22,6 +24,12 @@ export default createConfig({
 				env: {
 					CODECOV_TOKEN: "${{ secrets.CODECOV_TOKEN }}",
 				},
+			}),
+			blockCSpell({
+				ignores: ["src/emoji.yml"],
+			}),
+			blockKnip({
+				ignoreDependencies: ["fluemoji"],
 			}),
 			blockPackageJson({
 				properties: {

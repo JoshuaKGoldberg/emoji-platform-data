@@ -2,9 +2,7 @@ import { generateEmojipedia } from "./emojipedia.js";
 import { generateFluemoji } from "./fluemoji.js";
 import { generateGemoji } from "./gemoji.js";
 import { generateTwemoji } from "./twemoji.js";
-import { EmojiPlatformData } from "./types.js";
-
-export type AllEmojiPlatformData = Record<string, EmojiPlatformData>;
+import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
 
 export async function generateAll(): Promise<AllEmojiPlatformData> {
 	const allEmojipedia = generateEmojipedia();
