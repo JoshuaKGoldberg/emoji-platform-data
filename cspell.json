@@ -1,6 +1,7 @@
 {
-	"dictionaries": ["typescript"],
+	"dictionaries": ["npm", "node", "typescript"],
 	"ignorePaths": [
+		".all-contributorsrc",
 		".github",
 		"CHANGELOG.md",
 		"lib",
@@ -10,11 +11,15 @@
 	],
 	"words": [
 		"Bluesky",
+		"apexskier",
+		"automerge",
 		"cldr",
 		"emojipedia",
 		"fluemoji",
 		"gemoji",
+		"joshuakgoldberg",
 		"knip",
+		"markdownlintignore",
 		"packagejson",
 		"skintones",
 		"tseslint"

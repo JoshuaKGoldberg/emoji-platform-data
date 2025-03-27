@@ -2,10 +2,6 @@ import { titleCase } from "title-case";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 
-export function normalizeTitle(text: string) {
-	return text.replaceAll(/\W/g, "").toLowerCase();
-}
-
 export function getEntryCldr(
 	emojipedia: GeneratedEmojipediaData,
 	glyph: string | undefined,
@@ -44,4 +40,8 @@ export function getEntryCldr(
 		.replaceAll("#", "Hash")
 		.replaceAll("*", "Asterisk")
 		.replaceAll("’s Symbol", "’s Room");
+}
+
+export function normalizeTitle(text: string) {
+	return text.replaceAll(/\W/g, "").toLowerCase();
 }
