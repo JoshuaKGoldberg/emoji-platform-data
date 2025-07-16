@@ -78,7 +78,7 @@
 		"typescript-eslint": "8.36.0",
 		"yaml": "2.8.0"
 	},
-	"packageManager": "pnpm@10.12.1",
+	"packageManager": "pnpm@10.13.0",
 	"engines": {
 		"node": ">=18"
 	},
