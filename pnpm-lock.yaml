@@ -68,7 +68,7 @@ importers:
         version: 3.3.3
       fluemoji:
         specifier: git+https://github.com/microsoft/fluentui-emoji.git
-        version: fluentui-emoji.git@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4
+        version: https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4
       gemoji:
         specifier: 8.1.0
         version: 8.1.0
@@ -2027,7 +2027,7 @@ packages:
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
 
-  fluentui-emoji.git@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4:
+  fluemoji@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4:
     resolution: {tarball: https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4}
     version: 0.0.0
 
@@ -5829,7 +5829,7 @@ snapshots:
 
   flatted@3.3.3: {}
 
-  fluentui-emoji.git@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4: {}
+  fluemoji@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4: {}
 
   foreground-child@3.1.1:
     dependencies:
