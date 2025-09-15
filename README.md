@@ -8,7 +8,7 @@
 <p align="center">
 	<!-- prettier-ignore-start -->
 	<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-	<a href="#contributors" target="_blank"><img alt="👪 All Contributors: 4" src="https://img.shields.io/badge/%F0%9F%91%AA_all_contributors-4-21bb42.svg" /></a>
+	<a href="#contributors" target="_blank"><img alt="👪 All Contributors: 5" src="https://img.shields.io/badge/%F0%9F%91%AA_all_contributors-5-21bb42.svg" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 	<!-- prettier-ignore-end -->
 	<a href="https://github.com/JoshuaKGoldberg/emoji-platform-data/blob/main/.github/CODE_OF_CONDUCT.md" target="_blank"><img alt="🤝 Code of Conduct: Kept" src="https://img.shields.io/badge/%F0%9F%A4%9D_code_of_conduct-kept-21bb42" /></a>
@@ -115,6 +115,7 @@ Thanks! 🗝
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/vladimyr"><img src="https://avatars.githubusercontent.com/u/1170440?v=4?s=100" width="100px;" alt="Dario Vladović"/><br /><sub><b>Dario Vladović</b></sub></a><br /><a href="#ideas-vladimyr" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/JoshuaKGoldberg/emoji-platform-data/commits?author=vladimyr" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://piou.io"><img src="https://avatars.githubusercontent.com/u/3654180?v=4?s=100" width="100px;" alt="Gilles Piou"/><br /><sub><b>Gilles Piou</b></sub></a><br /><a href="https://github.com/JoshuaKGoldberg/emoji-platform-data/commits?author=pioug" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://www.joshuakgoldberg.com/"><img src="https://avatars.githubusercontent.com/u/3335181?v=4?s=100" width="100px;" alt="Josh Goldberg ✨"/><br /><sub><b>Josh Goldberg ✨</b></sub></a><br /><a href="https://github.com/JoshuaKGoldberg/emoji-platform-data/commits?author=JoshuaKGoldberg" title="Code">💻</a> <a href="#content-JoshuaKGoldberg" title="Content">🖋</a> <a href="https://github.com/JoshuaKGoldberg/emoji-platform-data/commits?author=JoshuaKGoldberg" title="Documentation">📖</a> <a href="#ideas-JoshuaKGoldberg" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-JoshuaKGoldberg" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-JoshuaKGoldberg" title="Maintenance">🚧</a> <a href="#projectManagement-JoshuaKGoldberg" title="Project Management">📆</a> <a href="#tool-JoshuaKGoldberg" title="Tools">🔧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://madelinemiller.dev/"><img src="https://avatars.githubusercontent.com/u/546754?v=4?s=100" width="100px;" alt="Maddy Miller"/><br /><sub><b>Maddy Miller</b></sub></a><br /><a href="https://github.com/JoshuaKGoldberg/emoji-platform-data/issues?q=author%3Ame4502" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
