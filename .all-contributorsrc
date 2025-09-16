@@ -1,48 +1,68 @@
 {
-	"badgeTemplate": "\t<a href=\"#contributors\" target=\"_blank\"><img alt=\"👪 All Contributors: <%= contributors.length %>\" src=\"https://img.shields.io/badge/%F0%9F%91%AA_all_contributors-<%= contributors.length %>-21bb42.svg\" /></a>",
-	"contributors": [
-		{
-			"login": "JoshuaKGoldberg",
-			"name": "Josh Goldberg ✨",
-			"avatar_url": "https://avatars.githubusercontent.com/u/3335181?v=4",
-			"profile": "http://www.joshuakgoldberg.com/",
-			"contributions": [
-				"code",
-				"content",
-				"doc",
-				"ideas",
-				"infra",
-				"maintenance",
-				"projectManagement",
-				"tool"
-			]
-		},
-		{
-			"login": "vladimyr",
-			"name": "Dario Vladović",
-			"avatar_url": "https://avatars.githubusercontent.com/u/1170440?v=4",
-			"profile": "https://github.com/vladimyr",
-			"contributions": ["ideas", "doc"]
-		},
-		{
-			"login": "theswerd",
-			"name": "Benjamin Swerdlow",
-			"avatar_url": "https://avatars.githubusercontent.com/u/38309438?v=4",
-			"profile": "https://github.com/theswerd",
-			"contributions": ["ideas"]
-		},
-		{
-			"login": "pioug",
-			"name": "Gilles Piou",
-			"avatar_url": "https://avatars.githubusercontent.com/u/3654180?v=4",
-			"profile": "http://piou.io",
-			"contributions": ["code"]
-		}
-	],
-	"contributorsSortAlphabetically": true,
-	"projectName": "emoji-platform-data",
-	"projectOwner": "JoshuaKGoldberg",
-	"repoType": "github",
-	"commitConvention": "angular"
+  "badgeTemplate": "\t<a href=\"#contributors\" target=\"_blank\"><img alt=\"👪 All Contributors: <%= contributors.length %>\" src=\"https://img.shields.io/badge/%F0%9F%91%AA_all_contributors-<%= contributors.length %>-21bb42.svg\" /></a>",
+  "contributors": [
+    {
+      "login": "JoshuaKGoldberg",
+      "name": "Josh Goldberg ✨",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3335181?v=4",
+      "profile": "http://www.joshuakgoldberg.com/",
+      "contributions": [
+        "code",
+        "content",
+        "doc",
+        "ideas",
+        "infra",
+        "maintenance",
+        "projectManagement",
+        "tool"
+      ]
+    },
+    {
+      "login": "vladimyr",
+      "name": "Dario Vladović",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1170440?v=4",
+      "profile": "https://github.com/vladimyr",
+      "contributions": [
+        "ideas",
+        "doc"
+      ]
+    },
+    {
+      "login": "theswerd",
+      "name": "Benjamin Swerdlow",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38309438?v=4",
+      "profile": "https://github.com/theswerd",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "pioug",
+      "name": "Gilles Piou",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3654180?v=4",
+      "profile": "http://piou.io",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "me4502",
+      "name": "Maddy Miller",
+      "avatar_url": "https://avatars.githubusercontent.com/u/546754?v=4",
+      "profile": "https://madelinemiller.dev/",
+      "contributions": [
+        "bug"
+      ]
+    }
+  ],
+  "contributorsSortAlphabetically": true,
+  "projectName": "emoji-platform-data",
+  "projectOwner": "JoshuaKGoldberg",
+  "repoType": "github",
+  "commitConvention": "angular",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "contributorsPerLine": 7
 }
-
