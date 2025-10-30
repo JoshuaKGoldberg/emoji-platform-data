@@ -91,8 +91,8 @@ importers:
         specifier: 3.6.0
         version: 3.6.0
       prettier-plugin-curly:
-        specifier: 0.3.1
-        version: 0.3.1(prettier@3.6.0)
+        specifier: 0.4.0
+        version: 0.4.0(prettier@3.6.0)
       prettier-plugin-packagejson:
         specifier: 2.5.10
         version: 2.5.10(prettier@3.6.0)
@@ -130,37 +130,12 @@ packages:
     resolution: {integrity: sha512-0xZJFNE5XMpENsgfHYTw8FbX4kv53mFLn2i3XPoq69LyhYSCBJtitaHx9QnsVTrsogI4Z3+HtEfZ2/GFPOtf5g==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/generator@7.25.7':
-    resolution: {integrity: sha512-5Dqpl5fyV9pIAD62yK9P7fcA768uVPUyrQmqpqstHWgMma4feF1x/oFysBCVZLY5wJ2GkMUCdsNDnGZrPoR6rA==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-string-parser@7.25.7':
-    resolution: {integrity: sha512-CbkjYdsJNHFk8uqpEkpCvRs3YRp9tY6FmFY7wLMSYuGYkrdUi7r2lc4/wqsvlHoMznX3WJ9IP8giGPq68T/Y6g==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/helper-validator-identifier@7.25.7':
     resolution: {integrity: sha512-AM6TzwYqGChO45oiuPqwL2t20/HdMC1rTPAesnBCgPCSF1x3oN9MVUwQV2iyz4xqWrctwK5RNC8LV22kaQCNYg==}
     engines: {node: '>=6.9.0'}
 
   '@babel/highlight@7.25.7':
     resolution: {integrity: sha512-iYyACpW3iW8Fw+ZybQK+drQre+ns/tKpXbNESfrhNnPLIklLbXr7MYJ6gPEd0iETGLOK+SxMjVvKb/ffmk+FEw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/parser@7.25.8':
-    resolution: {integrity: sha512-HcttkxzdPucv3nNFmfOOMfFf64KgdJVqm1KaCm25dPGMLElo9nsLvXeJECQg8UzPuBGLyTSA0ZzqCtDSzKTEoQ==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-
-  '@babel/template@7.25.7':
-    resolution: {integrity: sha512-wRwtAgI3bAS+JGU2upWNL9lSlDcRCqD05BZ1n3X2ONLH1WilFP6O1otQjeMK/1g0pvYcXC7b/qVUB1keofjtZA==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/traverse@7.25.7':
-    resolution: {integrity: sha512-jatJPT1Zjqvh/1FyJs6qAHL+Dzb7sTb+xr7Q+gM1b+1oBsMsQQ4FkVKb6dFlJvLlVssqkRzV05Jzervt9yhnzg==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/types@7.25.8':
-    resolution: {integrity: sha512-JWtuCu8VQsMladxVz/P4HzHUGCAwpuqacmowgXFs5XjxIgKuNjnLokQzuVjlTvIzODaDmpjT3oxcC48vyk9EWg==}
     engines: {node: '>=6.9.0'}
 
   '@clack/core@0.4.1':
@@ -803,24 +778,6 @@ packages:
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
-
-  '@jridgewell/gen-mapping@0.3.5':
-    resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
-    engines: {node: '>=6.0.0'}
-
-  '@jridgewell/resolve-uri@3.1.2':
-    resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
-    engines: {node: '>=6.0.0'}
-
-  '@jridgewell/set-array@1.2.1':
-    resolution: {integrity: sha512-R8gLRTZeyp03ymzP/6Lil/28tGeGEzhx1q2k703KGWRAI1VdvPIXdG70VJc2pAMw3NA6JKL5hhFu1sJX0Mnn/A==}
-    engines: {node: '>=6.0.0'}
-
-  '@jridgewell/sourcemap-codec@1.5.0':
-    resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
-
-  '@jridgewell/trace-mapping@0.3.25':
-    resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
   '@napi-rs/wasm-runtime@1.0.5':
     resolution: {integrity: sha512-TBr9Cf9onSAS2LQ2+QHx6XcC6h9+RIzJgbqG3++9TUZSH204AwEy5jg3BTQ0VATsyoGj4ee49tN/y6rvaOOtcg==}
@@ -2184,10 +2141,6 @@ packages:
     resolution: {integrity: sha512-wHTUcDUoZ1H5/0iVqEudYW4/kAlN5cZ3j/bXn0Dpbizl9iaUVeWSHqiOjsgk6OW2bkLclbBjzewBz6weQ1zA2Q==}
     engines: {node: '>=18'}
 
-  globals@11.12.0:
-    resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
-    engines: {node: '>=4'}
-
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
     engines: {node: '>=18'}
@@ -2490,11 +2443,6 @@ packages:
   jsdoc-type-pratt-parser@6.10.0:
     resolution: {integrity: sha512-+LexoTRyYui5iOhJGn13N9ZazL23nAHGkXsa1p/C8yeq79WRfLBag6ZZ0FQG2aRoc9yfo59JT9EYCQonOkHKkQ==}
     engines: {node: '>=20.0.0'}
-
-  jsesc@3.0.2:
-    resolution: {integrity: sha512-xKqzzWXDttJuOcawBt4KnKHHIf5oQ/Cxax+0PWFG+DFDgHNAdi+TXECADI+RYiFUMmx8792xsMbbgXj4CwnP4g==}
-    engines: {node: '>=6'}
-    hasBin: true
 
   json-buffer@3.0.1:
     resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==}
@@ -3091,8 +3039,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier-plugin-curly@0.3.1:
-    resolution: {integrity: sha512-GU3JJ4DB+j2gNA+8SxiyuAOuqalFu+JrX9JMNChTEwvgLCs+XXu2WJ1NbP1uK57Cbz04E2OhrkDpQFLMH5MsXg==}
+  prettier-plugin-curly@0.4.0:
+    resolution: {integrity: sha512-URhXSCdeYs+hWFyFS5NDrRBarFU5RV7X9C00LuUKmjFDqD2wxJJWZU+wmkgN50jyn97TWgqI2XrE6rX2AdGgZg==}
     engines: {node: '>=18'}
     peerDependencies:
       prettier: ^2 || ^3
@@ -3464,10 +3412,6 @@ packages:
     resolution: {integrity: sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==}
     engines: {node: '>=0.6.0'}
 
-  to-fast-properties@2.0.0:
-    resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
-    engines: {node: '>=4'}
-
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
@@ -3728,15 +3672,6 @@ snapshots:
       '@babel/highlight': 7.25.7
       picocolors: 1.1.1
 
-  '@babel/generator@7.25.7':
-    dependencies:
-      '@babel/types': 7.25.8
-      '@jridgewell/gen-mapping': 0.3.5
-      '@jridgewell/trace-mapping': 0.3.25
-      jsesc: 3.0.2
-
-  '@babel/helper-string-parser@7.25.7': {}
-
   '@babel/helper-validator-identifier@7.25.7': {}
 
   '@babel/highlight@7.25.7':
@@ -3745,34 +3680,6 @@ snapshots:
       chalk: 2.4.2
       js-tokens: 4.0.0
       picocolors: 1.1.1
-
-  '@babel/parser@7.25.8':
-    dependencies:
-      '@babel/types': 7.25.8
-
-  '@babel/template@7.25.7':
-    dependencies:
-      '@babel/code-frame': 7.25.7
-      '@babel/parser': 7.25.8
-      '@babel/types': 7.25.8
-
-  '@babel/traverse@7.25.7':
-    dependencies:
-      '@babel/code-frame': 7.25.7
-      '@babel/generator': 7.25.7
-      '@babel/parser': 7.25.8
-      '@babel/template': 7.25.7
-      '@babel/types': 7.25.8
-      debug: 4.4.3
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@babel/types@7.25.8':
-    dependencies:
-      '@babel/helper-string-parser': 7.25.7
-      '@babel/helper-validator-identifier': 7.25.7
-      to-fast-properties: 2.0.0
 
   '@clack/core@0.4.1':
     dependencies:
@@ -4386,23 +4293,6 @@ snapshots:
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
-
-  '@jridgewell/gen-mapping@0.3.5':
-    dependencies:
-      '@jridgewell/set-array': 1.2.1
-      '@jridgewell/sourcemap-codec': 1.5.0
-      '@jridgewell/trace-mapping': 0.3.25
-
-  '@jridgewell/resolve-uri@3.1.2': {}
-
-  '@jridgewell/set-array@1.2.1': {}
-
-  '@jridgewell/sourcemap-codec@1.5.0': {}
-
-  '@jridgewell/trace-mapping@0.3.25':
-    dependencies:
-      '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.0
 
   '@napi-rs/wasm-runtime@1.0.5':
     dependencies:
@@ -6044,8 +5934,6 @@ snapshots:
     dependencies:
       ini: 4.1.1
 
-  globals@11.12.0: {}
-
   globals@14.0.0: {}
 
   globals@15.15.0: {}
@@ -6306,8 +6194,6 @@ snapshots:
   jsdoc-type-pratt-parser@4.8.0: {}
 
   jsdoc-type-pratt-parser@6.10.0: {}
-
-  jsesc@3.0.2: {}
 
   json-buffer@3.0.1: {}
 
@@ -7069,14 +6955,9 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-curly@0.3.1(prettier@3.6.0):
+  prettier-plugin-curly@0.4.0(prettier@3.6.0):
     dependencies:
-      '@babel/generator': 7.25.7
-      '@babel/parser': 7.25.8
-      '@babel/traverse': 7.25.7
       prettier: 3.6.0
-    transitivePeerDependencies:
-      - supports-color
 
   prettier-plugin-packagejson@2.5.10(prettier@3.6.0):
     dependencies:
@@ -7452,8 +7333,6 @@ snapshots:
   tmp@0.0.33:
     dependencies:
       os-tmpdir: 1.0.2
-
-  to-fast-properties@2.0.0: {}
 
   to-regex-range@5.0.1:
     dependencies:
