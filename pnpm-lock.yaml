@@ -118,8 +118,8 @@ importers:
         specifier: 8.41.0
         version: 8.41.0(eslint@9.39.1(jiti@2.7.0))(typescript@5.9.2)
       yaml:
-        specifier: 2.8.0
-        version: 2.8.0
+        specifier: 2.9.0
+        version: 2.9.0
 
 packages:
 
@@ -3646,13 +3646,8 @@ packages:
     resolution: {integrity: sha512-h0uDm97wvT2bokfwwTmY6kJ1hp6YDFL0nRHwNKz8s/VD1FH/vvZjAKoMUE+un0eaYBSG7/c6h+lJTP+31tjgTw==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  yaml@2.8.0:
-    resolution: {integrity: sha512-4lLa/EcQCB0cJkyts+FpIRx5G/llPxfP6VQU5KByHEhLxY3IJCH0f0Hy1MHI8sClTvsIb8qwRJ6R/ZdlDJ/leQ==}
-    engines: {node: '>= 14.6'}
-    hasBin: true
-
-  yaml@2.8.4:
-    resolution: {integrity: sha512-ml/JPOj9fOQK8RNnWojA67GbZ0ApXAUlN2UQclwv2eVgTgn7O9gg9o7paZWKMp4g0H3nTLtS9LVzhkpOFIKzog==}
+  yaml@2.9.0:
+    resolution: {integrity: sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==}
     engines: {node: '>= 14.6'}
     hasBin: true
 
@@ -5264,14 +5259,14 @@ snapshots:
       '@cspell/cspell-types': 10.0.0
       comment-json: 4.6.2
       smol-toml: 1.6.1
-      yaml: 2.8.4
+      yaml: 2.9.0
 
   cspell-config-lib@9.8.0:
     dependencies:
       '@cspell/cspell-types': 9.8.0
       comment-json: 4.6.2
       smol-toml: 1.6.1
-      yaml: 2.8.4
+      yaml: 2.9.0
 
   cspell-dictionary@10.0.0:
     dependencies:
@@ -6268,7 +6263,7 @@ snapshots:
       strip-json-comments: 5.0.3
       tinyglobby: 0.2.16
       unbash: 3.0.0
-      yaml: 2.8.4
+      yaml: 2.9.0
       zod: 4.4.3
     transitivePeerDependencies:
       - '@emnapi/core'
@@ -6296,7 +6291,7 @@ snapshots:
       string-argv: 0.3.2
       tinyexec: 1.1.2
     optionalDependencies:
-      yaml: 2.8.4
+      yaml: 2.9.0
 
   listr2@10.2.1:
     dependencies:
@@ -7489,11 +7484,9 @@ snapshots:
   yaml-eslint-parser@2.0.0:
     dependencies:
       eslint-visitor-keys: 5.0.1
-      yaml: 2.8.0
+      yaml: 2.9.0
 
-  yaml@2.8.0: {}
-
-  yaml@2.8.4: {}
+  yaml@2.9.0: {}
 
   yargs-parser@22.0.0: {}
 
