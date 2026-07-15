@@ -2229,7 +2229,7 @@ packages:
     resolution: {integrity: sha512-PjDse7RzhcPkIJwy5t7KPWQSZ9cAbzQXcafsetQoD7sOJRQlGikNbx7yZp2OotDnJyrDcbyRq3Ttb18iYOqkxA==}
 
   fluemoji@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4:
-    resolution: {tarball: https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4}
     version: 0.0.0
 
   formatly@0.3.0:
