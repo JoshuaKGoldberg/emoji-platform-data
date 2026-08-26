@@ -68,7 +68,7 @@ importers:
         version: 3.3.3
       fluemoji:
         specifier: git+https://github.com/microsoft/fluentui-emoji.git
-        version: https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4
+        version: https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc
       gemoji:
         specifier: 8.1.0
         version: 8.1.0
@@ -103,8 +103,8 @@ importers:
         specifier: 20.2.1
         version: 20.2.1(@types/node@24.13.3)
       sentences-per-line:
-        specifier: 0.3.0
-        version: 0.3.0
+        specifier: 0.5.3
+        version: 0.5.3
       title-case:
         specifier: 4.3.2
         version: 4.3.2
@@ -2103,6 +2103,7 @@ packages:
   eslint@9.39.1:
     resolution: {integrity: sha512-BhHmn2yNOFA9H9JmmIVKJmd288g9hrVRDkdoIgRCRuSySRUHH7r/DI6aAXW9T1WwUuY3DFgrcaqB+deURBLR5g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -2228,8 +2229,8 @@ packages:
   flatted@3.4.2:
     resolution: {integrity: sha512-PjDse7RzhcPkIJwy5t7KPWQSZ9cAbzQXcafsetQoD7sOJRQlGikNbx7yZp2OotDnJyrDcbyRq3Ttb18iYOqkxA==}
 
-  fluemoji@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4}
+  fluemoji@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc:
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc}
     version: 0.0.0
 
   formatly@0.3.0:
@@ -2696,10 +2697,6 @@ packages:
     resolution: {integrity: sha512-vS5tWq5W91Gg33LD4pyAaXPclnz/sRvo6/RGOyDQjQ3eds2DkK6H4szUuE0M9TiRB/u/VBx1gtd9Ktrtx5WlSA==}
     engines: {node: '>=22'}
     hasBin: true
-
-  markdownlint-rule-helpers@0.28.0:
-    resolution: {integrity: sha512-qBOQWESmc/yTNe6nVu3D7AU7pFg2e7T5svbQI+S7rocw4g4xZ3GHerKPl0Rw0cx4fnAViEdzoAcbrxeuXUCEAA==}
-    engines: {node: '>=18'}
 
   markdownlint@0.41.0:
     resolution: {integrity: sha512-xMUI3ChBuRuxuLF4ENvCZyS8z/+Jly1coUcZwErKLIB3sDj7ojpaTBa1e9YVPhSN4jGEIjYGQCldbTJS/hqS+A==}
@@ -3299,9 +3296,9 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  sentences-per-line@0.3.0:
-    resolution: {integrity: sha512-/cSQgaLDEmed+AIC2KAd1A5k4sy8bbWy3ObBDUE2+JmiwolTBuc87TlwlTSnBJVPa7+zfGv28J63xzznFRv5tQ==}
-    engines: {node: '>=18'}
+  sentences-per-line@0.5.3:
+    resolution: {integrity: sha512-pXuRJ4bKjxEaRVi7ZbwJBF2THPShuLHvWjw9yCtyn5qNqgAfZ/sqPHJu9HS72TffLQwIFX+aSP61HuGGz+7Aww==}
+    engines: {node: '>=22.14.0'}
 
   set-github-repository-labels@0.2.2:
     resolution: {integrity: sha512-/CTFBP0vyT9TDK4zxOmy1xdBKJKfbJGob60O5fw39Sk9cjwJcJNX1Bqz7INQ75gaPa/K7r1q2dz9iF8TY+d4Fw==}
@@ -5959,7 +5956,7 @@ snapshots:
 
   flatted@3.4.2: {}
 
-  fluemoji@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/62ecdc0d7ca5c6df32148c169556bc8d3782fca4: {}
+  fluemoji@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc: {}
 
   formatly@0.3.0:
     dependencies:
@@ -6411,8 +6408,6 @@ snapshots:
       tinyglobby: 0.2.17
     transitivePeerDependencies:
       - supports-color
-
-  markdownlint-rule-helpers@0.28.0: {}
 
   markdownlint@0.41.0:
     dependencies:
@@ -7188,9 +7183,7 @@ snapshots:
 
   semver@7.8.5: {}
 
-  sentences-per-line@0.3.0:
-    dependencies:
-      markdownlint-rule-helpers: 0.28.0
+  sentences-per-line@0.5.3: {}
 
   set-github-repository-labels@0.2.2:
     dependencies:
