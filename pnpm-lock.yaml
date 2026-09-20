@@ -13,8 +13,8 @@ importers:
         version: 0.4.0(graphql@16.14.0)
     devDependencies:
       '@eslint-community/eslint-plugin-eslint-comments':
-        specifier: 4.7.0
-        version: 4.7.0(eslint@9.39.1(jiti@2.7.0))
+        specifier: 4.8.1
+        version: 4.8.1(eslint@9.39.1(jiti@2.7.0))
       '@eslint/js':
         specifier: 9.39.1
         version: 9.39.1
@@ -617,8 +617,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@eslint-community/eslint-plugin-eslint-comments@4.7.0':
-    resolution: {integrity: sha512-wxyEBQOUAXp4HjnYWucQy7iq58RR1WXJhm6bjw+sGlMDEKJmzJVe2MLnd6iazmQFYGOxoUrw27EsJfpoqiI7tQ==}
+  '@eslint-community/eslint-plugin-eslint-comments@4.8.1':
+    resolution: {integrity: sha512-vafrdi15JHBFh1qWOAucyJwlEEuhdoMof28jOdKdgnwZ7bXwd6v4wzHYSmAVLwnx0yc7bqAtfJ0EZQV1WAzV/Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -2230,7 +2230,7 @@ packages:
     resolution: {integrity: sha512-PjDse7RzhcPkIJwy5t7KPWQSZ9cAbzQXcafsetQoD7sOJRQlGikNbx7yZp2OotDnJyrDcbyRq3Ttb18iYOqkxA==}
 
   fluemoji@https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc:
-    resolution: {gitHosted: true, integrity: sha512-8irZQdXG9+o8n0lrTqaTr6HOsPQN9Zj9i7ZVg7jUuLfAOptZG7WCmowUkXD/STsk6LjYTNwSzZO1P1xlFvWg/A==, tarball: https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/microsoft/fluentui-emoji/tar.gz/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc}
     version: 0.0.0
 
   formatly@0.3.0:
@@ -4165,7 +4165,7 @@ snapshots:
   '@esbuild/win32-x64@0.28.0':
     optional: true
 
-  '@eslint-community/eslint-plugin-eslint-comments@4.7.0(eslint@9.39.1(jiti@2.7.0))':
+  '@eslint-community/eslint-plugin-eslint-comments@4.8.1(eslint@9.39.1(jiti@2.7.0))':
     dependencies:
       escape-string-regexp: 4.0.0
       eslint: 9.39.1(jiti@2.7.0)
