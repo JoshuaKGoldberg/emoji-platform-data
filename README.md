@@ -40,6 +40,20 @@ console.log(byTitle["Sparkling Heart"]);
 */
 ```
 
+Emojis can be looked up by their Emojipedia title with `byTitle` or by their glyph with `byEmoji`:
+
+```ts
+import { byEmoji } from "emoji-platform-data";
+
+console.log(byEmoji["💖"]);
+/*
+{
+	emoji: "💖",
+	...
+}
+*/
+```
+
 `emoji-platform-data` combines emoji data from the following projects:
 
 - [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia)
