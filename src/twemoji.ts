@@ -4,7 +4,7 @@ import { parse } from "yaml";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllTwemojiData, TwemojiItem, TwemojiItemIncluded } from "./types.js";
-import { getEntryCldr } from "./utils.js";
+import { getEntryCldr, recordByCldr } from "./utils.js";
 
 interface TwemojiGroupRaw {
 	id: string;
@@ -22,7 +22,8 @@ export async function generateTwemoji(
 	).toString();
 	const parsed = (await parse(rawTwemoji)) as TwemojiGroupRaw[];
 
-	return Object.fromEntries(
+	return recordByCldr(
+		"twemoji",
 		parsed
 			.flatMap((group) =>
 				group.items

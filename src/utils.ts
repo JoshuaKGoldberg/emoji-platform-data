@@ -45,3 +45,26 @@ export function getEntryCldr(
 export function normalizeTitle(text: string) {
 	return text.replaceAll(/\W/g, "").toLowerCase();
 }
+
+/**
+ * Equivalent to Object.fromEntries, but warns when multiple entries resolve
+ * to the same CLDR title, since the later entry would silently overwrite the earlier.
+ */
+export function recordByCldr<T>(
+	platform: string,
+	entries: [string, T][],
+): Partial<Record<string, T>> {
+	const record: Partial<Record<string, T>> = {};
+
+	for (const [cldr, entry] of entries) {
+		if (cldr in record) {
+			console.warn(
+				`Multiple ${platform} entries resolve to '${cldr}'; keeping only the last.`,
+			);
+		}
+
+		record[cldr] = entry;
+	}
+
+	return record;
+}
