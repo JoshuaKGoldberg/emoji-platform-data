@@ -18,6 +18,7 @@ export async function rebuildDirectory({ directory }: RebuildSettings) {
 	await fs.writeFile(
 		`${indexFile}.d.mts`,
 		[
+			`export const byEmoji: AllEmojiPlatformData;`,
 			`export const byTitle: AllEmojiPlatformData;`,
 			"",
 			(await fs.readFile("src/types.ts")).toString(),
@@ -26,7 +27,19 @@ export async function rebuildDirectory({ directory }: RebuildSettings) {
 	);
 	await fs.writeFile(
 		`${indexFile}.mjs`,
-		`export * as byTitle from "./byTitle.mjs";\n`,
+		[
+			`import * as byTitle from "./byTitle.mjs";`,
+			"",
+			`export { byTitle };`,
+			"",
+			`export const byEmoji = Object.fromEntries(`,
+			`\tObject.values(byTitle).map((platformData) => [`,
+			`\t\tplatformData.emoji,`,
+			`\t\tplatformData,`,
+			`\t]),`,
+			`);`,
+			"",
+		].join("\n"),
 	);
 
 	const byTitle = await generateAll();
