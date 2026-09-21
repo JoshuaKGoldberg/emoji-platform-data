@@ -1,3 +1,9 @@
+# [0.2.0](https://github.com/JoshuaKGoldberg/emoji-platform-data/compare/0.1.0...0.2.0) (2024-10-15)
+
+### Features
+
+- emojipedia@0.4.0 with import attributes (also ncu -u) ([ea47179](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/ea47179882406c196bdad6bad9011683d7db9058))
+
 # 0.1.0 (2024-03-20)
 
 ### Features
