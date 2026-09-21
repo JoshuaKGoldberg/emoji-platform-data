@@ -1,3 +1,16 @@
+# Changelog
+
+# [0.3.0](https://github.com/JoshuaKGoldberg/emoji-platform-data/compare/0.2.0...0.3.0) (2026-09-21)
+
+### Bug Fixes
+
+- repair fluemoji glyphs that don't match their unicode ([#983](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/983)) ([fca181d](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/fca181d8bfd3c3e8af369ebf086db052e57bfff1)), closes [#690](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/690)
+
+### Features
+
+- also export a byEmoji object ([#982](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/982)) ([b28c0be](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/b28c0be4d343048e00b3582360e3c0e3f5772129)), closes [#20](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/20)
+- use 'with' keyword instead of 'assert' ([#366](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/366)) ([7ac2e8f](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/7ac2e8f83f50f73bfbecb97ed42fb04065aec164)), closes [#000](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/000)
+
 # [0.2.0](https://github.com/JoshuaKGoldberg/emoji-platform-data/compare/0.1.0...0.2.0) (2024-10-15)
 
 ### Features
