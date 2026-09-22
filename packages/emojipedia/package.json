@@ -1,6 +1,6 @@
 {
 	"name": "@emoji-platform-data/emojipedia",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Static export of Emojipedia metadata for unicode emojis. 📙",
 	"repository": {
 		"type": "git",
