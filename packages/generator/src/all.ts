@@ -16,12 +16,12 @@ export async function generateAll({
 	fluemojiDirectory,
 }: GenerateAllSettings = {}): Promise<AllEmojiPlatformData> {
 	const allEmojipedia = generateEmojipedia();
-	const allPlatforms = await Promise.all([
+	const allGemoji = generateGemoji(allEmojipedia);
+	const [allFluemoji, allTwemoji] = await Promise.all([
 		generateFluemoji(allEmojipedia, fluemojiDirectory),
-		generateGemoji(allEmojipedia),
 		generateTwemoji(allEmojipedia),
 	]);
-	const [allFluemoji, allGemoji, allTwemoji] = allPlatforms;
+	const allPlatforms = [allFluemoji, allGemoji, allTwemoji];
 
 	const allKeys = new Set(
 		[allEmojipedia.byCldr, ...allPlatforms].flatMap((platform) =>
