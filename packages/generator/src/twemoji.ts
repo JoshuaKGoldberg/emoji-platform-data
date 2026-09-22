@@ -17,9 +17,10 @@ type TwemojiItemRaw = Omit<TwemojiItem, "keywords"> & { keywords?: string };
 export async function generateTwemoji(
 	emojipedia: GeneratedEmojipediaData,
 ): Promise<Partial<AllTwemojiData>> {
-	const rawTwemoji = (
-		await fs.readFile(path.join(import.meta.dirname, "emoji.yml"))
-	).toString();
+	const rawTwemoji = await fs.readFile(
+		path.join(import.meta.dirname, "../emoji.yml"),
+		"utf8",
+	);
 	const parsed = (await parse(rawTwemoji)) as TwemojiGroupRaw[];
 
 	return recordByCldr(

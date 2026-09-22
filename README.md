@@ -25,9 +25,10 @@ npm i emoji-platform-data
 ```
 
 ```ts
-import { byTitle } from "emoji-platform-data";
+import { byEmoji, byTitle } from "emoji-platform-data";
 
-console.log(byTitle["Sparkling Heart"]);
+console.log(byEmoji["💖"]);
+console.log(byTitle.SparklingHeart);
 /*
 {
 	emoji: "💖",
@@ -40,27 +41,23 @@ console.log(byTitle["Sparkling Heart"]);
 */
 ```
 
-Emojis can be looked up by their Emojipedia title with `byTitle` or by their glyph with `byEmoji`:
+Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
 
-```ts
-import { byEmoji } from "emoji-platform-data";
+### Packages
 
-console.log(byEmoji["💖"]);
-/*
-{
-	emoji: "💖",
-	...
-}
-*/
-```
+`emoji-platform-data` combines emoji data from several projects.
+Each project's data is also published as its own package, for consumers who only need one source:
 
-`emoji-platform-data` combines emoji data from the following projects:
+| Package                                                    | Source                                                              | Exports                                                 |
+| ---------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------- |
+| [`emoji-platform-data`](./packages/emoji-platform-data)    | All of the below                                                    | `byEmoji` and `byTitle` of combined `EmojiPlatformData` |
+| [`@emoji-platform-data/emojipedia`](./packages/emojipedia) | [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia)         | `byEmoji` and `byTitle` of `EmojipediaItem`             |
+| [`@emoji-platform-data/fluemoji`](./packages/fluemoji)     | [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji)  | `byEmoji` and `byTitle` of `FluemojiItem`               |
+| [`@emoji-platform-data/gemoji`](./packages/gemoji)         | [Gemoji](https://github.com/wooorm/gemoji)                          | `byEmoji` and `byTitle` of `GemojiItem`                 |
+| [`@emoji-platform-data/twemoji`](./packages/twemoji)       | [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser) | `byEmoji` and `byTitle` of `TwemojiItem`                |
+| [`@emoji-platform-data/generator`](./packages/generator)   | -                                                                   | APIs that generate the data packages above              |
 
-- [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia)
-- [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji) ("fluemoji")
-- [Gemoji](https://github.com/wooorm/gemoji)
-- [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser)
-
+The data packages have no runtime dependencies: they only contain static JSON and type declarations.
 Each emoji supported in at least one of those projects is stored by its emoji glyph and Emojipedia title.
 
 ## Explainer
@@ -139,5 +136,3 @@ Thanks! 🗝
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 <!-- spellchecker: enable -->
-
-> 💝 This package was templated with [`create-typescript-app`](https://github.com/JoshuaKGoldberg/create-typescript-app) using the [Bingo engine](https://create.bingo).

@@ -11,7 +11,14 @@ import yml from "eslint-plugin-yml";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-	{ ignores: ["lib", "node_modules", "pnpm-lock.yaml"] },
+	{
+		ignores: [
+			"node_modules",
+			"packages/*/lib",
+			"pnpm-lock.yaml",
+			"pnpm-workspace.yaml",
+		],
+	},
 	{ linterOptions: { reportUnusedDisableDirectives: "error" } },
 	eslint.configs.recommended,
 	comments.recommended,

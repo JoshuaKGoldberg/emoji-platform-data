@@ -1,0 +1,50 @@
+{
+	"name": "@emoji-platform-data/generator",
+	"version": "0.1.0",
+	"description": "Generates platform-specific metadata for unicode emojis. 🏭",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JoshuaKGoldberg/emoji-platform-data.git",
+		"directory": "packages/generator"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Josh Goldberg",
+		"email": "npm@joshuakgoldberg.com"
+	},
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./lib/index.d.ts",
+			"import": "./lib/index.js"
+		}
+	},
+	"files": [
+		"emoji.yml",
+		"README.md",
+		"lib/**/*.d.ts",
+		"lib/**/*.js",
+		"package.json"
+	],
+	"scripts": {
+		"build": "tsc -b"
+	},
+	"dependencies": {
+		"change-case": "^5.4.4",
+		"emojipedia": "^0.4.0",
+		"fast-glob": "^3.3.3",
+		"gemoji": "^8.1.0",
+		"title-case": "^4.3.2",
+		"yaml": "^2.9.0"
+	},
+	"devDependencies": {
+		"fluemoji": "git+https://github.com/microsoft/fluentui-emoji.git"
+	},
+	"engines": {
+		"node": ">=24"
+	},
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
+	}
+}

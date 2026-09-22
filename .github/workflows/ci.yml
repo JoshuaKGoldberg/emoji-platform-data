@@ -1,10 +1,18 @@
 jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: ./.github/actions/prepare
+      - run: pnpm build
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/prepare
+      - run: pnpm build
       - run: pnpm lint
   lint_knip:
     name: Lint Knip
@@ -47,6 +55,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/prepare
+      - run: pnpm build
       - run: pnpm tsc
 
 name: CI

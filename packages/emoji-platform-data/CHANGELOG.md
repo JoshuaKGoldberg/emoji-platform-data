@@ -1,6 +1,6 @@
 # Changelog
 
-# [0.3.0](https://github.com/JoshuaKGoldberg/emoji-platform-data/compare/0.2.0...0.3.0) (2026-09-21)
+## 0.3.0 (2026-09-21)
 
 ### Bug Fixes
 
@@ -11,13 +11,13 @@
 - also export a byEmoji object ([#982](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/982)) ([b28c0be](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/b28c0be4d343048e00b3582360e3c0e3f5772129)), closes [#20](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/20)
 - use 'with' keyword instead of 'assert' ([#366](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/366)) ([7ac2e8f](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/7ac2e8f83f50f73bfbecb97ed42fb04065aec164)), closes [#000](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/000)
 
-# [0.2.0](https://github.com/JoshuaKGoldberg/emoji-platform-data/compare/0.1.0...0.2.0) (2024-10-15)
+## 0.2.0 (2024-10-15)
 
 ### Features
 
 - emojipedia@0.4.0 with import attributes (also ncu -u) ([ea47179](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/ea47179882406c196bdad6bad9011683d7db9058))
 
-# 0.1.0 (2024-03-20)
+## 0.1.0 (2024-03-20)
 
 ### Features
 
