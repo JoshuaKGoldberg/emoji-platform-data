@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+### Minor Changes
+
+- [#994](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/994) [`2993170`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/29931704f6c668b962f30825223f1414be197815) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Removed the runtime dependency on `emojipedia`: the package's types are now self-contained, so installing it no longer pulls in `emojipedia`'s GraphQL dependencies.
+  Also removed the `./by-emoji.json` and `./by-title.json` `exports` entries, which never pointed to emitted files.
+
 ## 0.3.0 (2026-09-21)
 
 ### Bug Fixes
