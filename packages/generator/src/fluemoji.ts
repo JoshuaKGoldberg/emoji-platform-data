@@ -6,20 +6,31 @@ import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllFluemojiData, FluemojiItem } from "./types.js";
 import { getEntryCldr, recordByCldr } from "./utils.js";
 
+export const defaultFluemojiDirectory = path.join(
+	import.meta.dirname,
+	"../node_modules/fluemoji",
+);
+
 export async function generateFluemoji(
 	emojipedia: GeneratedEmojipediaData,
+	directory: string = defaultFluemojiDirectory,
 ): Promise<Partial<AllFluemojiData>> {
-	// fluemoji is a devDependency of this package, so it's resolved relative to
-	// here rather than the cwd of whichever data package is being built.
 	const files = await fg("assets/*/metadata.json", {
 		absolute: true,
-		cwd: path.join(import.meta.dirname, "../node_modules/fluemoji"),
+		cwd: directory,
 	});
 
+	if (!files.length) {
+		throw new Error(
+			`No fluemoji assets found in ${directory}. Those assets come from https://github.com/microsoft/fluentui-emoji: clone it, then pass the directory containing its assets/ folder.`,
+		);
+	}
+
+	// Sorting keeps which entry wins a CLDR collision independent of glob order.
+	files.sort();
+
 	const pending = files.map(async (file) =>
-		repairGlyph(
-			JSON.parse((await fs.readFile(file)).toString()) as FluemojiItem,
-		),
+		repairGlyph(JSON.parse(await fs.readFile(file, "utf8")) as FluemojiItem),
 	);
 
 	return recordByCldr(

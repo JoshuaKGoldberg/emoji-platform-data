@@ -28,7 +28,7 @@
 		"@emoji-platform-data/generator": "workspace:*"
 	},
 	"engines": {
-		"node": ">=18"
+		"node": ">=24"
 	},
 	"publishConfig": {
 		"access": "public",

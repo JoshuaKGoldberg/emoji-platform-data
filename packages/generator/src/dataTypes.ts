@@ -1,9 +1,3 @@
-// These types describe the JSON data emitted into the data packages.
-// They are copied verbatim into each package's index.d.mts, so they must be
-// self-contained: no imports from emojipedia, gemoji, or any other package.
-// Upstream compatibility is checked where upstream data is assigned to them:
-// emojipedia.ts (EmojipediaItem) and gemoji.ts (GemojiItem).
-
 export type AllEmojipediaData = Record<string, EmojipediaItem>;
 
 export type AllEmojiPlatformData = Record<string, EmojiPlatformData>;
@@ -89,11 +83,13 @@ export interface EmojiPlatformData {
 
 export interface FluemojiItem {
 	cldr: string;
+	comments?: string[];
 	fromVersion: string;
 	glyph: string;
+	glyphAsUtfInEmoticons?: string[];
 	group: string;
 	keywords: string[];
-	mappedToEmoticons: string[];
+	mappedToEmoticons?: string[];
 	tts: string;
 	unicode: string;
 	unicodeSkintones?: string[];

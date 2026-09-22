@@ -4,10 +4,20 @@ import { generateGemoji } from "./gemoji.js";
 import { generateTwemoji } from "./twemoji.js";
 import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
 
-export async function generateAll(): Promise<AllEmojiPlatformData> {
+export interface GenerateAllSettings {
+	/**
+	 * Directory containing microsoft/fluentui-emoji's assets/ folder.
+	 * @default the fluemoji dependency installed alongside this package
+	 */
+	fluemojiDirectory?: string;
+}
+
+export async function generateAll({
+	fluemojiDirectory,
+}: GenerateAllSettings = {}): Promise<AllEmojiPlatformData> {
 	const allEmojipedia = generateEmojipedia();
 	const allPlatforms = await Promise.all([
-		generateFluemoji(allEmojipedia),
+		generateFluemoji(allEmojipedia, fluemojiDirectory),
 		generateGemoji(allEmojipedia),
 		generateTwemoji(allEmojipedia),
 	]);

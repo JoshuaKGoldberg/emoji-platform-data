@@ -1,14 +1,14 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
-import { generateAll } from "./all.js";
+import { generateAll, GenerateAllSettings } from "./all.js";
 import { formatExportLine } from "./formatExportLine.js";
 import { EmojiPlatformData } from "./types.js";
 
 export type EmojiPlatformDataSource =
 	"emojipedia" | "fluemoji" | "gemoji" | "twemoji";
 
-export interface RebuildSettings {
+export interface RebuildSettings extends GenerateAllSettings {
 	directory: string;
 }
 
@@ -37,8 +37,11 @@ const sourceTypeNames: Record<EmojiPlatformDataSource, string> = {
 /**
  * Regenerates a directory exporting the combined data of all platforms.
  */
-export async function rebuildDirectory({ directory }: RebuildSettings) {
-	const byTitle = await generateAll();
+export async function rebuildDirectory({
+	directory,
+	...settings
+}: RebuildSettings) {
+	const byTitle = await generateAll(settings);
 
 	await writeDataDirectory({
 		directory,
@@ -56,8 +59,9 @@ export async function rebuildDirectory({ directory }: RebuildSettings) {
 export async function rebuildSourceDirectory({
 	directory,
 	source,
+	...settings
 }: RebuildSourceSettings) {
-	const byTitle = await generateAll();
+	const byTitle = await generateAll(settings);
 
 	await writeDataDirectory({
 		directory,

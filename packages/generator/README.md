@@ -35,4 +35,11 @@ console.log(byTitle["Sparkling Heart"]);
 - `rebuildDirectory({ directory })`: writes a directory exporting the combined data, in the shape published as `emoji-platform-data`
 - `rebuildSourceDirectory({ directory, source })`: writes a directory exporting a single platform's data, in the shape published as `@emoji-platform-data/*`
 
-> Note: `generateFluemoji` reads assets from [`microsoft/fluentui-emoji`](https://github.com/microsoft/fluentui-emoji), which this package expects to be installed as `fluemoji`.
+> Note: `generateFluemoji` reads image metadata from [`microsoft/fluentui-emoji`](https://github.com/microsoft/fluentui-emoji), which isn't published to npm.
+> Clone that repository, then point the generator at it:
+>
+> ```ts
+> await generateAll({ fluemojiDirectory: "path/to/fluentui-emoji" });
+> ```
+>
+> Within this repository it's installed as a `fluemoji` dev dependency, so the default works and no option is needed.

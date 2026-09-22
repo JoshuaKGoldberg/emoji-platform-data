@@ -8,7 +8,7 @@
 		"node_modules",
 		"packages/*/CHANGELOG.md",
 		"packages/*/lib",
-		"packages/generator/src/emoji.yml",
+		"packages/generator/emoji.yml",
 		"pnpm-lock.yaml"
 	],
 	"words": [

@@ -20,12 +20,14 @@
 		}
 	},
 	"files": [
+		"emoji.yml",
 		"README.md",
-		"lib/",
+		"lib/**/*.d.ts",
+		"lib/**/*.js",
 		"package.json"
 	],
 	"scripts": {
-		"build": "tsc -b && cp src/emoji.yml lib/"
+		"build": "tsc -b"
 	},
 	"dependencies": {
 		"change-case": "^5.4.4",
@@ -39,7 +41,7 @@
 		"fluemoji": "git+https://github.com/microsoft/fluentui-emoji.git"
 	},
 	"engines": {
-		"node": ">=20.11.0"
+		"node": ">=24"
 	},
 	"publishConfig": {
 		"access": "public",
