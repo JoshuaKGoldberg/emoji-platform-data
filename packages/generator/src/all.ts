@@ -1,6 +1,7 @@
 import { generateEmojipedia } from "./emojipedia.js";
 import { generateFluemoji } from "./fluemoji.js";
 import { generateGemoji } from "./gemoji.js";
+import { generateMacOS } from "./macos.js";
 import { generateTwemoji } from "./twemoji.js";
 import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
 
@@ -17,11 +18,12 @@ export async function generateAll({
 }: GenerateAllSettings = {}): Promise<AllEmojiPlatformData> {
 	const allEmojipedia = generateEmojipedia();
 	const allGemoji = generateGemoji(allEmojipedia);
-	const [allFluemoji, allTwemoji] = await Promise.all([
+	const [allFluemoji, allMacOS, allTwemoji] = await Promise.all([
 		generateFluemoji(allEmojipedia, fluemojiDirectory),
+		generateMacOS(allEmojipedia),
 		generateTwemoji(allEmojipedia),
 	]);
-	const allPlatforms = [allFluemoji, allGemoji, allTwemoji];
+	const allPlatforms = [allFluemoji, allGemoji, allMacOS, allTwemoji];
 
 	const allKeys = new Set(
 		[allEmojipedia.byCldr, ...allPlatforms].flatMap((platform) =>
@@ -35,19 +37,22 @@ export async function generateAll({
 				const emojipedia = allEmojipedia.byCldr[title];
 				const fluemoji = allFluemoji[title];
 				const gemoji = allGemoji[title];
+				const macos = allMacOS[title];
 				const twemoji = allTwemoji[title];
 
 				const platformData = {
 					emoji:
-						// One of these four must have been defined.
+						// One of these five must have been defined.
 						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 						(emojipedia?.code ??
 							fluemoji?.glyph ??
 							gemoji?.emoji ??
+							macos?.emoji ??
 							twemoji?.unicode)!,
 					emojipedia,
 					fluemoji,
 					gemoji,
+					macos,
 					slug:
 						emojipedia?.slug ??
 						(twemoji?.description ?? title).replaceAll(" ", "-").toLowerCase(),

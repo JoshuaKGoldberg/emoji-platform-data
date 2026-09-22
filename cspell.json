@@ -1,31 +1,43 @@
 {
 	"dictionaries": ["npm", "node", "typescript"],
 	"ignorePaths": [
+		"*.tsbuildinfo",
 		".all-contributorsrc",
 		".github",
-		"*.tsbuildinfo",
 		"CHANGELOG.md",
 		"node_modules",
 		"packages/*/CHANGELOG.md",
 		"packages/*/lib",
 		"packages/generator/emoji.yml",
+		"packages/generator/macos.json",
 		"pnpm-lock.yaml"
 	],
 	"words": [
 		"apexskier",
 		"automerge",
+		"autoreleasepool",
 		"Bluesky",
 		"changesets",
 		"cldr",
+		"dlerror",
+		"dlfcn",
 		"emojipedia",
 		"fluemoji",
 		"fluentui",
+		"fobjc",
+		"fwrite",
 		"gemoji",
 		"joshuakgoldberg",
 		"knip",
+		"lproj",
 		"markdownlintignore",
+		"NSJSON",
+		"objc",
 		"packagejson",
+		"plutil",
+		"Recents",
 		"skintones",
-		"tseslint"
+		"tseslint",
+		"voiceover"
 	]
 }

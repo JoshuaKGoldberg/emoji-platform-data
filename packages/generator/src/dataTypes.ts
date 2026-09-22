@@ -6,6 +6,8 @@ export type AllFluemojiData = Record<string, FluemojiItem>;
 
 export type AllGemojiData = Record<string, GemojiItem>;
 
+export type AllMacOSData = Record<string, MacOSItem>;
+
 export type AllTwemojiData = Record<string, TwemojiItem>;
 
 export interface EmojipediaComponent {
@@ -76,6 +78,7 @@ export interface EmojiPlatformData {
 	emojipedia?: EmojipediaItem;
 	fluemoji?: FluemojiItem;
 	gemoji?: GemojiItem;
+	macos?: MacOSItem;
 	slug: string;
 	title: string;
 	twemoji?: TwemojiItem;
@@ -101,6 +104,37 @@ export interface GemojiItem {
 	emoji: string;
 	names: string[];
 	tags: string[];
+}
+
+/**
+ * One emoji as macOS's own emoji picker knows it.
+ */
+export interface MacOSItem {
+	/** How macOS names the emoji, such as "octopus". */
+	appleName: string;
+
+	/** Picker category listing the emoji, such as "Nature". A few emoji, such as ⏩ and ✊🏽, are in none. */
+	category?: string;
+
+	emoji: string;
+
+	/** Whether macOS seeds its "Frequently Used" category with the emoji. */
+	isCommon: boolean;
+
+	/** Terms the picker matches searches against, most relevant first. */
+	keywords: string[];
+
+	/** Where the emoji falls in the picker's overall order, across all categories. */
+	order?: number;
+
+	/** How macOS speaks the emoji aloud, such as "an octopus emoji". */
+	speechName: string;
+
+	/** The emoji's Unicode name, such as "OCTOPUS". */
+	unicodeName: string;
+
+	/** How VoiceOver describes the emoji, such as "an octopus". */
+	voiceOverName: string;
 }
 
 export type TwemojiItem = TwemojiItemExcluded | TwemojiItemIncluded;

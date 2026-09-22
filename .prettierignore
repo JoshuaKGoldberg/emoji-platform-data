@@ -1,4 +1,5 @@
 /.all-contributorsrc
 /.husky
 /packages/*/lib
+/packages/generator/macos.json
 /pnpm-lock.yaml

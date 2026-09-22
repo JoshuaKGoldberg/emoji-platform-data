@@ -17,7 +17,7 @@ This repository is a [pnpm workspace](https://pnpm.io/workspaces) containing sev
 
 - `generator` (`@emoji-platform-data/generator`): the TypeScript source code that reads each upstream emoji source and generates data
 - `emoji-platform-data`: the combined data package, with every emoji's data across all sources
-- `emojipedia`, `fluemoji`, `gemoji`, `twemoji` (`@emoji-platform-data/*`): one data package per upstream source
+- `emojipedia`, `fluemoji`, `gemoji`, `macos`, `twemoji` (`@emoji-platform-data/*`): one data package per upstream source
 
 The data packages contain no source code of their own.
 Each has a small `build.ts` that calls the generator to regenerate its `lib/` directory, which is gitignored.
@@ -37,6 +37,33 @@ To rebuild only the generator after editing its `src/`, run:
 ```shell
 pnpm --filter @emoji-platform-data/generator build
 ```
+
+## Refreshing macOS Data
+
+Every other source is an npm or Git dependency that `pnpm build` can read on any machine.
+macOS is not: its emoji keywords live in a search index inside `CoreEmoji.framework`, a private system framework.
+Reading it needs a Mac.
+
+So `@emoji-platform-data/macos` is built from a snapshot, `packages/generator/macos.json`, that is committed to this repository.
+Building the packages reads that file and never touches the system frameworks, which is why contributors on Linux and Windows can build everything.
+
+To refresh the snapshot on a Mac with the [Xcode Command Line Tools](https://developer.apple.com/xcode/resources) installed:
+
+```shell
+pnpm --filter @emoji-platform-data/generator refresh:macos
+```
+
+That compiles and runs `packages/generator/scripts/extractMacOS.m`, which loads `EmojiFoundation.framework` -the framework macOS's own emoji picker uses- through the Objective-C runtime.
+Each `EMFEmojiToken` knows its emoji and the document ID for that emoji in the search index, and `EMFInvertedIndex` turns that ID into the emoji's keywords and their search weights.
+`packages/generator/scripts/refreshMacOS.ts` then keeps the emoji that have keywords, sorts each emoji's keywords by weight, drops the weights themselves, and records the macOS and CoreEmoji versions it read.
+
+The snapshot is byte-for-byte reproducible: refreshing twice on one Mac, or on two Macs running the same macOS version, produces the same file.
+Apple changes these keywords between macOS releases, so a refresh belongs in its own pull request, with a changeset, describing which macOS version it came from.
+A `Refresh macOS Data` workflow does exactly that automatically each month, on a `macos-latest` runner.
+It skips opening a pull request when that runner is on an older macOS than the committed snapshot, so a lagging runner image can't roll the data back.
+
+Both files are unusually low-level for this repository, and they depend on private frameworks that Apple can rename or restructure in any release.
+If a future macOS breaks the extraction, the failure will be a missing Objective-C class, and `extractMacOS.m` says which classes it expects.
 
 ## Formatting
 

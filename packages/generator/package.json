@@ -22,11 +22,13 @@
 	},
 	"files": [
 		"emoji.yml",
+		"macos.json",
 		"lib/**/*.d.ts",
 		"lib/**/*.js"
 	],
 	"scripts": {
-		"build": "tsc -b"
+		"build": "tsc -b",
+		"refresh:macos": "tsx scripts/refreshMacOS.ts"
 	},
 	"dependencies": {
 		"change-case": "^5.4.4",

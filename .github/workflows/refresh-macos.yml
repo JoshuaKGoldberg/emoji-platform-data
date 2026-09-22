@@ -1,0 +1,71 @@
+jobs:
+  refresh_macos:
+    name: Refresh macOS Data
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare
+      - name: Read macOS emoji data out of the system frameworks
+        run: pnpm --filter @emoji-platform-data/generator refresh:macos
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        name: Open a pull request if the data changed
+        run: |
+          if git diff --quiet -- packages/generator/macos.json; then
+            echo "macOS emoji data is unchanged."
+            exit 0
+          fi
+
+          macos_version=$(jq -r '.macosVersion' packages/generator/macos.json)
+          previous_version=$(git show HEAD:packages/generator/macos.json | jq -r '.macosVersion')
+          oldest_version=$(printf '%s\n%s\n' "$macos_version" "$previous_version" | sort -V | head -1)
+
+          # Runner images can lag behind the macOS whoever last refreshed the
+          # snapshot was on, and that data shouldn't be rolled back to an older
+          # release's.
+          if [ "$macos_version" != "$previous_version" ] && [ "$oldest_version" = "$macos_version" ]; then
+            echo "This runner is on macOS $macos_version, older than the committed snapshot's macOS $previous_version."
+            exit 0
+          fi
+
+          branch=refresh-macos-data
+
+          cat > .changeset/refresh-macos-data.md <<EOF
+          ---
+          "@emoji-platform-data/macos": minor
+          "emoji-platform-data": minor
+          ---
+
+          Updated macOS emoji data to macOS $macos_version.
+          EOF
+
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git checkout -b "$branch"
+          git add .changeset/refresh-macos-data.md packages/generator/macos.json
+          git commit -m "feat: update macOS emoji data to macOS $macos_version"
+          git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
+
+          if [ "$(gh pr list --head "$branch" --state open --json number | jq length)" != "0" ]; then
+            echo "Updated the existing pull request."
+            exit 0
+          fi
+
+          gh pr create \
+            --base main \
+            --body "macOS $macos_version changed the emoji data in \`CoreEmoji.framework\`. This refreshes \`packages/generator/macos.json\` from a \`macos-latest\` runner. See \`.github/DEVELOPMENT.md\` for how the extraction works." \
+            --head "$branch" \
+            --title "feat: update macOS emoji data to macOS $macos_version"
+
+name: Refresh macOS Data
+
+on:
+  schedule:
+    - cron: "0 14 1 * *"
+  workflow_dispatch: ~
