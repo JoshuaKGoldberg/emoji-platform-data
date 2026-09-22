@@ -1,6 +1,6 @@
 {
 	"name": "@emoji-platform-data/twemoji",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Static export of Twemoji metadata for unicode emojis. 🐦",
 	"repository": {
 		"type": "git",
