@@ -12,14 +12,13 @@
 		"name": "Josh Goldberg",
 		"email": "npm@joshuakgoldberg.com"
 	},
+	"sideEffects": false,
 	"type": "module",
 	"exports": {
 		".": "./lib/index.mjs"
 	},
 	"files": [
-		"README.md",
-		"lib/",
-		"package.json"
+		"lib/"
 	],
 	"scripts": {
 		"build": "tsx build.ts"
@@ -31,7 +30,6 @@
 		"node": ">=24"
 	},
 	"publishConfig": {
-		"access": "public",
 		"provenance": true
 	}
 }

@@ -1,45 +1,40 @@
 import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
 import eslint from "@eslint/js";
+import markdown from "@eslint/markdown";
 import jsdoc from "eslint-plugin-jsdoc";
 import jsonc from "eslint-plugin-jsonc";
-import markdown from "eslint-plugin-markdown";
+import markdownLinks from "eslint-plugin-markdown-links";
 import n from "eslint-plugin-n";
 import packageJson from "eslint-plugin-package-json";
 import perfectionist from "eslint-plugin-perfectionist";
 import * as regexp from "eslint-plugin-regexp";
 import yml from "eslint-plugin-yml";
+import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
-export default tseslint.config(
-	{
-		ignores: [
-			"node_modules",
-			"packages/*/lib",
-			"pnpm-lock.yaml",
-			"pnpm-workspace.yaml",
-		],
-	},
+export default defineConfig(
+	globalIgnores(
+		["node_modules", "packages/*/lib", "pnpm-lock.yaml", "pnpm-workspace.yaml"],
+		"Global Ignores",
+	),
 	{ linterOptions: { reportUnusedDisableDirectives: "error" } },
-	eslint.configs.recommended,
-	comments.recommended,
-	jsdoc.configs["flat/contents-typescript-error"],
-	jsdoc.configs["flat/logical-typescript-error"],
-	jsdoc.configs["flat/stylistic-typescript-error"],
-	jsonc.configs["flat/recommended-with-json"],
-	markdown.configs.recommended,
-	n.configs["flat/recommended"],
-	packageJson.configs.recommended,
-	perfectionist.configs["recommended-natural"],
-	regexp.configs["flat/recommended"],
 	{
 		extends: [
+			comments.recommended,
+			eslint.configs.recommended,
+			jsdoc.configs["flat/contents-typescript-error"],
+			jsdoc.configs["flat/logical-typescript-error"],
+			jsdoc.configs["flat/stylistic-typescript-error"],
+			n.configs["flat/recommended"],
+			perfectionist.configs["recommended-natural"],
+			regexp.configs["flat/recommended"],
 			tseslint.configs.strictTypeChecked,
 			tseslint.configs.stylisticTypeChecked,
 		],
-		files: ["**/*.js", "**/*.ts"],
+		files: ["**/*.{js,ts}"],
 		languageOptions: {
 			parserOptions: {
-				projectService: { allowDefaultProject: ["*.config.*s"] },
+				projectService: true,
 				tsconfigRootDir: import.meta.dirname,
 			},
 		},
@@ -55,6 +50,18 @@ export default tseslint.config(
 			"operator-assignment": "error",
 		},
 		settings: { perfectionist: { partitionByComment: true, type: "natural" } },
+	},
+	{
+		extends: [jsonc.configs["flat/recommended-with-json"]],
+		files: ["**/*.json"],
+	},
+	{
+		extends: [markdown.configs.recommended, markdownLinks.configs.recommended],
+		files: ["**/*.md"],
+		rules: {
+			// https://github.com/eslint/markdown/issues/294
+			"markdown/no-missing-label-refs": "off",
+		},
 	},
 	{
 		extends: [tseslint.configs.disableTypeChecked],
@@ -75,5 +82,9 @@ export default tseslint.config(
 				{ order: { type: "asc" }, pathPattern: "^.*$" },
 			],
 		},
+	},
+	{
+		extends: [packageJson.configs.recommended, packageJson.configs.stylistic],
+		files: ["package.json"],
 	},
 );
