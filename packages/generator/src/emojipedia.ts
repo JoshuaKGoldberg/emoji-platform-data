@@ -11,10 +11,10 @@ export interface GeneratedEmojipediaData {
 }
 
 export function generateEmojipedia(): GeneratedEmojipediaData {
-	const byCode = Object.fromEntries(
+	const byCode: AllEmojipediaData = Object.fromEntries(
 		Object.values(emojipedia).map((item) => [item.code, item]),
 	);
-	const items = Object.values(byCode) as EmojipediaItem[];
+	const items = Object.values(byCode);
 	const aliases = new Map<string, string>();
 
 	for (const item of items) {

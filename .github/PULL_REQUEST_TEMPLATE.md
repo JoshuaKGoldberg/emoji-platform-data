@@ -7,6 +7,7 @@ Otherwise we may not be able to review your PR. -->
 - [ ] Addresses an existing open issue: fixes #000
 - [ ] That issue was marked as [`status: accepting prs`](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues?q=is%3Aopen+is%3Aissue+label%3A%22status%3A+accepting+prs%22)
 - [ ] Steps in [CONTRIBUTING.md](https://github.com/JoshuaKGoldberg/emoji-platform-data/blob/main/.github/CONTRIBUTING.md) were taken
+- [ ] If this changes what a package publishes, a changeset was added with `pnpm changeset` (see [DEVELOPMENT.md](https://github.com/JoshuaKGoldberg/emoji-platform-data/blob/main/.github/DEVELOPMENT.md#releasing))
 
 ## Overview
 

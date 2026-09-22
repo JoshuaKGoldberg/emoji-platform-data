@@ -1,5 +1,6 @@
 import fg from "fast-glob";
 import fs from "node:fs/promises";
+import path from "node:path";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllFluemojiData, FluemojiItem } from "./types.js";
@@ -8,7 +9,12 @@ import { getEntryCldr, recordByCldr } from "./utils.js";
 export async function generateFluemoji(
 	emojipedia: GeneratedEmojipediaData,
 ): Promise<Partial<AllFluemojiData>> {
-	const files = await fg(`./node_modules/fluemoji/assets/*/metadata.json`);
+	// fluemoji is a devDependency of this package, so it's resolved relative to
+	// here rather than the cwd of whichever data package is being built.
+	const files = await fg("assets/*/metadata.json", {
+		absolute: true,
+		cwd: path.join(import.meta.dirname, "../node_modules/fluemoji"),
+	});
 
 	const pending = files.map(async (file) =>
 		repairGlyph(

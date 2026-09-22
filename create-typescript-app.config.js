@@ -9,9 +9,8 @@ import {
 	blockCodecov,
 	blockCSpell,
 	blockCTATransitions,
-	blockKnip,
 	blockMain,
-	blockPackageJson,
+	blockReleaseIt,
 	blockTSup,
 	blockVitest,
 	createConfig,
@@ -26,24 +25,12 @@ export default createConfig({
 				},
 			}),
 			blockCSpell({
-				ignores: ["src/emoji.yml"],
-			}),
-			blockKnip({
-				ignoreDependencies: ["fluemoji"],
-			}),
-			blockPackageJson({
-				properties: {
-					exports: {
-						".": "./lib/index.mjs",
-						"./by-emoji.json": "./lib/by-emoji.json",
-						"./by-title.json": "./lib/by-title.json",
-					},
-				},
+				ignores: ["packages/generator/src/emoji.yml"],
 			}),
 		],
 		blocks: {
 			add: [blockCTATransitions],
-			exclude: [blockMain, blockTSup, blockVitest],
+			exclude: [blockMain, blockReleaseIt, blockTSup, blockVitest],
 		},
 	},
 });

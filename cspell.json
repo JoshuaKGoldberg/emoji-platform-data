@@ -3,19 +3,23 @@
 	"ignorePaths": [
 		".all-contributorsrc",
 		".github",
+		"*.tsbuildinfo",
 		"CHANGELOG.md",
-		"lib",
 		"node_modules",
-		"pnpm-lock.yaml",
-		"src/emoji.yml"
+		"packages/*/CHANGELOG.md",
+		"packages/*/lib",
+		"packages/generator/src/emoji.yml",
+		"pnpm-lock.yaml"
 	],
 	"words": [
-		"Bluesky",
 		"apexskier",
 		"automerge",
+		"Bluesky",
+		"changesets",
 		"cldr",
 		"emojipedia",
 		"fluemoji",
+		"fluentui",
 		"gemoji",
 		"joshuakgoldberg",
 		"knip",
