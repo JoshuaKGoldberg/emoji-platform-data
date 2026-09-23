@@ -52,6 +52,22 @@ export default defineConfig(
 		settings: { perfectionist: { partitionByComment: true, type: "natural" } },
 	},
 	{
+		// This one runs under osascript's JavaScript for Automation rather than
+		// Node: `$` and `ObjC` are its Objective-C bridge, `run` is the entry
+		// point osascript calls, and every bridged value is untyped.
+		extends: [tseslint.configs.disableTypeChecked],
+		files: ["packages/generator/scripts/extractMacOS.js"],
+		languageOptions: {
+			globals: { $: "readonly", console: "readonly", ObjC: "readonly" },
+		},
+		rules: {
+			"@typescript-eslint/no-unused-vars": [
+				"error",
+				{ varsIgnorePattern: "^run$" },
+			],
+		},
+	},
+	{
 		extends: [jsonc.configs["flat/recommended-with-json"]],
 		files: ["**/*.json"],
 	},

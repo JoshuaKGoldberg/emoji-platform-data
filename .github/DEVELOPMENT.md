@@ -47,15 +47,19 @@ Reading it needs a Mac.
 So `@emoji-platform-data/macos` is built from a snapshot, `packages/generator/macos.json`, that is committed to this repository.
 Building the packages reads that file and never touches the system frameworks, which is why contributors on Linux and Windows can build everything.
 
-To refresh the snapshot on a Mac with the [Xcode Command Line Tools](https://developer.apple.com/xcode/resources) installed:
+To refresh the snapshot on any Mac:
 
 ```shell
 pnpm --filter @emoji-platform-data/generator refresh:macos
 ```
 
-That compiles and runs `packages/generator/scripts/extractMacOS.m`, which loads `EmojiFoundation.framework` -the framework macOS's own emoji picker uses- through the Objective-C runtime.
-Each `EMFEmojiToken` knows its emoji and the document ID for that emoji in the search index, and `EMFInvertedIndex` turns that ID into the emoji's keywords and their search weights.
+That runs `packages/generator/scripts/extractMacOS.js` under `osascript`, as [JavaScript for Automation](https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/Introduction.html), whose Objective-C bridge can call private frameworks.
+It loads `EmojiFoundation.framework` -the framework macOS's own emoji picker uses- where each `EMFEmojiToken` knows its emoji and the document ID for that emoji in the search index, and `EMFInvertedIndex` turns that ID into the emoji's keywords and their search weights.
 `packages/generator/scripts/refreshMacOS.ts` then keeps the emoji that have keywords, sorts each emoji's keywords by weight, drops the weights themselves, and records the macOS and CoreEmoji versions it read.
+
+Every class and selector the extraction uses is private API, so it checks all of them up front and names any that a macOS update has moved.
+The refresh then validates what came back before writing anything: how many emoji have keywords, that each picker category is well represented, that a few known emoji still have known keywords, and that the count hasn't fallen sharply since the last snapshot.
+Those checks exist because these frameworks can keep their method names and quietly start returning nothing, which would otherwise overwrite the snapshot with a smaller, wrong one.
 
 The snapshot is byte-for-byte reproducible: refreshing twice on one Mac, or on two Macs running the same macOS version, produces the same file.
 Apple changes these keywords between macOS releases, so a refresh belongs in its own pull request, with a changeset, describing which macOS version it came from.
@@ -63,7 +67,7 @@ A `Refresh macOS Data` workflow does exactly that automatically each month, on a
 It skips opening a pull request when that runner is on an older macOS than the committed snapshot, so a lagging runner image can't roll the data back.
 
 Both files are unusually low-level for this repository, and they depend on private frameworks that Apple can rename or restructure in any release.
-If a future macOS breaks the extraction, the failure will be a missing Objective-C class, and `extractMacOS.m` says which classes it expects.
+If a future macOS breaks the extraction, the failure will name the missing class or selector, and the `required` map at the top of `extractMacOS.js` lists every symbol it depends on.
 
 ## Formatting
 

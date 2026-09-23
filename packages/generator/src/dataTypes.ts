@@ -130,8 +130,8 @@ export interface MacOSItem {
 	/** How macOS speaks the emoji aloud, such as "an octopus emoji". */
 	speechName: string;
 
-	/** The emoji's Unicode name, such as "OCTOPUS". */
-	unicodeName: string;
+	/** The emoji's Unicode name, such as "OCTOPUS". macOS omits it for newer emoji. */
+	unicodeName?: string;
 
 	/** How VoiceOver describes the emoji, such as "an octopus". */
 	voiceOverName: string;

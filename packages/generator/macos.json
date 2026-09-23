@@ -368,7 +368,6 @@
 			],
 			"order": 5,
 			"speechName": "a teary-eyed emoji",
-			"unicodeName": "",
 			"voiceOverName": "a teary-eyed face"
 		},
 		{
@@ -707,7 +706,6 @@
 			],
 			"order": 9,
 			"speechName": "a smiley with a tear emoji",
-			"unicodeName": "",
 			"voiceOverName": "a teary smiley face"
 		},
 		{
@@ -1274,7 +1272,6 @@
 			],
 			"order": 18,
 			"speechName": "a face with hearts emoji",
-			"unicodeName": "",
 			"voiceOverName": "a face with hearts"
 		},
 		{
@@ -1793,7 +1790,6 @@
 			],
 			"order": 27,
 			"speechName": "a goofy emoji",
-			"unicodeName": "",
 			"voiceOverName": "a goofy face"
 		},
 		{
@@ -1849,7 +1845,6 @@
 			],
 			"order": 28,
 			"speechName": "a raised eyebrow emoji",
-			"unicodeName": "",
 			"voiceOverName": "a raised eyebrow"
 		},
 		{
@@ -1922,7 +1917,6 @@
 			],
 			"order": 29,
 			"speechName": "a face with monocle emoji",
-			"unicodeName": "",
 			"voiceOverName": "a face with monocle"
 		},
 		{
@@ -2029,7 +2023,6 @@
 			],
 			"order": 32,
 			"speechName": "a disguised face emoji ",
-			"unicodeName": "",
 			"voiceOverName": "a disguised face"
 		},
 		{
@@ -2101,7 +2094,6 @@
 			],
 			"order": 33,
 			"speechName": "a star-struck emoji",
-			"unicodeName": "",
 			"voiceOverName": "a star-struck face"
 		},
 		{
@@ -2157,7 +2149,6 @@
 			],
 			"order": 34,
 			"speechName": "a party face emoji",
-			"unicodeName": "",
 			"voiceOverName": "a party face"
 		},
 		{
@@ -2177,7 +2168,6 @@
 			],
 			"order": 35,
 			"speechName": "a head shaking vertically emoji",
-			"unicodeName": "",
 			"voiceOverName": "a head shaking vertically"
 		},
 		{
@@ -2306,7 +2296,6 @@
 			],
 			"order": 38,
 			"speechName": "a head shaking horizontally emoji",
-			"unicodeName": "",
 			"voiceOverName": "a head shaking horizontally"
 		},
 		{
@@ -3286,7 +3275,6 @@
 			],
 			"order": 49,
 			"speechName": "a face with pleading eyes emoji",
-			"unicodeName": "",
 			"voiceOverName": "a face with pleading eyes"
 		},
 		{
@@ -3766,7 +3754,6 @@
 			],
 			"order": 55,
 			"speechName": "a swearing emoji",
-			"unicodeName": "",
 			"voiceOverName": "a swearing face"
 		},
 		{
@@ -3827,7 +3814,6 @@
 			],
 			"order": 56,
 			"speechName": "an exploding head emoji",
-			"unicodeName": "",
 			"voiceOverName": "an exploding head"
 		},
 		{
@@ -3979,7 +3965,6 @@
 			],
 			"order": 58,
 			"speechName": "a sweaty face emoji",
-			"unicodeName": "",
 			"voiceOverName": "a sweaty face"
 		},
 		{
@@ -4020,7 +4005,6 @@
 			],
 			"order": 59,
 			"speechName": "a freezing face emoji",
-			"unicodeName": "",
 			"voiceOverName": "a freezing face"
 		},
 		{
@@ -4047,7 +4031,6 @@
 			],
 			"order": 60,
 			"speechName": "a face-in-clouds emoji",
-			"unicodeName": "",
 			"voiceOverName": "a face in clouds"
 		},
 		{
@@ -4672,7 +4655,6 @@
 			],
 			"order": 68,
 			"speechName": "a peeking emoji",
-			"unicodeName": "",
 			"voiceOverName": "a peeking face"
 		},
 		{
@@ -4735,7 +4717,6 @@
 			],
 			"order": 69,
 			"speechName": "a giggling emoji",
-			"unicodeName": "",
 			"voiceOverName": "a giggling face"
 		},
 		{
@@ -4775,7 +4756,6 @@
 			],
 			"order": 70,
 			"speechName": "a gasping emoji",
-			"unicodeName": "",
 			"voiceOverName": "a gasping face"
 		},
 		{
@@ -4809,7 +4789,6 @@
 			],
 			"order": 71,
 			"speechName": "a saluting emoji",
-			"unicodeName": "",
 			"voiceOverName": "a saluting face"
 		},
 		{
@@ -4849,7 +4828,6 @@
 			],
 			"order": 72,
 			"speechName": "a shushing emoji",
-			"unicodeName": "",
 			"voiceOverName": "a shushing face"
 		},
 		{
@@ -4874,7 +4852,6 @@
 			],
 			"order": 73,
 			"speechName": "a melting face emoji",
-			"unicodeName": "",
 			"voiceOverName": "a melting face"
 		},
 		{
@@ -4992,7 +4969,6 @@
 			],
 			"order": 76,
 			"speechName": "an invisible face emoji",
-			"unicodeName": "",
 			"voiceOverName": "an invisible face"
 		},
 		{
@@ -5090,7 +5066,6 @@
 			],
 			"order": 78,
 			"speechName": "a sad emoji",
-			"unicodeName": "",
 			"voiceOverName": "a sad face"
 		},
 		{
@@ -5203,7 +5178,6 @@
 			],
 			"order": 80,
 			"speechName": "a shaking face emoji",
-			"unicodeName": "",
 			"voiceOverName": "a shaking face"
 		},
 		{
@@ -5727,7 +5701,6 @@
 			],
 			"order": 88,
 			"speechName": "a yawning emoji",
-			"unicodeName": "",
 			"voiceOverName": "a yawning face"
 		},
 		{
@@ -5751,7 +5724,6 @@
 			],
 			"order": 89,
 			"speechName": "an exhausted emoji",
-			"unicodeName": "",
 			"voiceOverName": "an exhausted face"
 		},
 		{
@@ -5771,7 +5743,6 @@
 			],
 			"order": 90,
 			"speechName": "a distorted face emoji",
-			"unicodeName": "",
 			"voiceOverName": "a distorted face"
 		},
 		{
@@ -5992,7 +5963,6 @@
 			],
 			"order": 94,
 			"speechName": "an exhaling emoji",
-			"unicodeName": "",
 			"voiceOverName": "an exhaling face"
 		},
 		{
@@ -6059,7 +6029,6 @@
 			],
 			"order": 96,
 			"speechName": "a hypnotized face emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hypnotized face"
 		},
 		{
@@ -6133,7 +6102,6 @@
 			],
 			"order": 98,
 			"speechName": "a woozy face emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woozy face"
 		},
 		{
@@ -6246,7 +6214,6 @@
 			],
 			"order": 100,
 			"speechName": "a vomiting emoji",
-			"unicodeName": "",
 			"voiceOverName": "a vomiting face"
 		},
 		{
@@ -7584,7 +7551,6 @@
 			],
 			"order": 129,
 			"speechName": "a heart hands emoji",
-			"unicodeName": "",
 			"voiceOverName": "heart hands"
 		},
 		{
@@ -7612,7 +7578,6 @@
 			],
 			"order": 130,
 			"speechName": "a palms up emoji",
-			"unicodeName": "",
 			"voiceOverName": "palms up"
 		},
 		{
@@ -7998,7 +7963,6 @@
 			],
 			"order": 141,
 			"speechName": "a leftwards pushing hand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a leftwards pushing hand"
 		},
 		{
@@ -8027,7 +7991,6 @@
 			],
 			"order": 142,
 			"speechName": "a rightwards pushing hand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a rightwards pushing hand"
 		},
 		{
@@ -8117,7 +8080,6 @@
 			],
 			"order": 145,
 			"speechName": "a snapping emoji",
-			"unicodeName": "",
 			"voiceOverName": "a snapping hand"
 		},
 		{
@@ -8139,7 +8101,6 @@
 			],
 			"order": 146,
 			"speechName": "a love-you gesture emoji",
-			"unicodeName": "",
 			"voiceOverName": "a love-you gesture"
 		},
 		{
@@ -8213,7 +8174,6 @@
 			],
 			"order": 149,
 			"speechName": "a hand with pinched fingers emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hand with pinched fingers"
 		},
 		{
@@ -8231,7 +8191,6 @@
 			],
 			"order": 150,
 			"speechName": "a hand pinching emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pinching hand"
 		},
 		{
@@ -8249,7 +8208,6 @@
 			],
 			"order": 151,
 			"speechName": "a hand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hand"
 		},
 		{
@@ -8268,7 +8226,6 @@
 			],
 			"order": 152,
 			"speechName": "a hand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hand"
 		},
 		{
@@ -8595,7 +8552,6 @@
 			],
 			"order": 164,
 			"speechName": "a hand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hand"
 		},
 		{
@@ -8612,7 +8568,6 @@
 			],
 			"order": 165,
 			"speechName": "a hand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hand"
 		},
 		{
@@ -8668,7 +8623,6 @@
 			],
 			"order": 167,
 			"speechName": "a mechanical arm emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mechanical arm"
 		},
 		{
@@ -8791,7 +8745,6 @@
 			],
 			"order": 171,
 			"speechName": "a pointing emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pointing hand"
 		},
 		{
@@ -8810,7 +8763,6 @@
 			],
 			"order": 172,
 			"speechName": "a foot emoji",
-			"unicodeName": "",
 			"voiceOverName": "a foot"
 		},
 		{
@@ -8831,7 +8783,6 @@
 			],
 			"order": 173,
 			"speechName": "a leg emoji",
-			"unicodeName": "",
 			"voiceOverName": "a leg"
 		},
 		{
@@ -8854,7 +8805,6 @@
 			],
 			"order": 174,
 			"speechName": "a mechanical leg emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mechanical leg"
 		},
 		{
@@ -8956,7 +8906,6 @@
 			],
 			"order": 178,
 			"speechName": "a biting lip emoji",
-			"unicodeName": "",
 			"voiceOverName": "a biting lip"
 		},
 		{
@@ -8989,7 +8938,6 @@
 			],
 			"order": 179,
 			"speechName": "a tooth emoji",
-			"unicodeName": "",
 			"voiceOverName": "a tooth"
 		},
 		{
@@ -9055,7 +9003,6 @@
 			],
 			"order": 182,
 			"speechName": "a hearing aid emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hearing aid"
 		},
 		{
@@ -9102,7 +9049,6 @@
 			],
 			"order": 184,
 			"speechName": "a fingerprint emoji",
-			"unicodeName": "",
 			"voiceOverName": "a fingerprint"
 		},
 		{
@@ -9213,7 +9159,6 @@
 			],
 			"order": 188,
 			"speechName": "a human heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "a human heart"
 		},
 		{
@@ -9231,7 +9176,6 @@
 			],
 			"order": 189,
 			"speechName": "a lungs emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pair of lungs"
 		},
 		{
@@ -9254,7 +9198,6 @@
 			],
 			"order": 190,
 			"speechName": "a brain emoji",
-			"unicodeName": "",
 			"voiceOverName": "a brain"
 		},
 		{
@@ -9342,7 +9285,6 @@
 			],
 			"order": 194,
 			"speechName": "a people hugging emoji",
-			"unicodeName": "",
 			"voiceOverName": "people hugging"
 		},
 		{
@@ -9437,7 +9379,6 @@
 			],
 			"order": 197,
 			"speechName": "a child emoji",
-			"unicodeName": "",
 			"voiceOverName": "a child"
 		},
 		{
@@ -9515,7 +9456,6 @@
 			],
 			"order": 200,
 			"speechName": "an adult emoji",
-			"unicodeName": "",
 			"voiceOverName": "an adult"
 		},
 		{
@@ -9561,7 +9501,6 @@
 			],
 			"order": 202,
 			"speechName": "a woman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman"
 		},
 		{
@@ -9581,7 +9520,6 @@
 			],
 			"order": 203,
 			"speechName": "an adult emoji",
-			"unicodeName": "",
 			"voiceOverName": "an adult"
 		},
 		{
@@ -9603,7 +9541,6 @@
 			],
 			"order": 204,
 			"speechName": "a man emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man"
 		},
 		{
@@ -9627,7 +9564,6 @@
 			],
 			"order": 205,
 			"speechName": "a woman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman"
 		},
 		{
@@ -9648,7 +9584,6 @@
 			],
 			"order": 206,
 			"speechName": "an adult emoji",
-			"unicodeName": "",
 			"voiceOverName": "an adult"
 		},
 		{
@@ -9671,7 +9606,6 @@
 			],
 			"order": 207,
 			"speechName": "a man emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man"
 		},
 		{
@@ -9699,7 +9633,6 @@
 			],
 			"order": 208,
 			"speechName": "a blonde-haired woman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a blonde-haired woman"
 		},
 		{
@@ -9754,7 +9687,6 @@
 			],
 			"order": 210,
 			"speechName": "a blond-haired man emoji",
-			"unicodeName": "",
 			"voiceOverName": "a blond-haired man"
 		},
 		{
@@ -9780,7 +9712,6 @@
 			],
 			"order": 211,
 			"speechName": "a woman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman"
 		},
 		{
@@ -9803,7 +9734,6 @@
 			],
 			"order": 212,
 			"speechName": "an adult emoji",
-			"unicodeName": "",
 			"voiceOverName": "an adult"
 		},
 		{
@@ -9828,7 +9758,6 @@
 			],
 			"order": 213,
 			"speechName": "a man emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man"
 		},
 		{
@@ -9853,7 +9782,6 @@
 			],
 			"order": 214,
 			"speechName": "a woman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman"
 		},
 		{
@@ -9876,7 +9804,6 @@
 			],
 			"order": 215,
 			"speechName": "an adult emoji",
-			"unicodeName": "",
 			"voiceOverName": "an adult"
 		},
 		{
@@ -9900,7 +9827,6 @@
 			],
 			"order": 216,
 			"speechName": "a man emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man"
 		},
 		{
@@ -9921,7 +9847,6 @@
 			],
 			"order": 217,
 			"speechName": "a bearded woman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bearded woman"
 		},
 		{
@@ -9941,7 +9866,6 @@
 			],
 			"order": 218,
 			"speechName": "a bearded emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bearded person"
 		},
 		{
@@ -9961,7 +9885,6 @@
 			],
 			"order": 219,
 			"speechName": "a bearded man emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bearded man"
 		},
 		{
@@ -10017,7 +9940,6 @@
 			],
 			"order": 221,
 			"speechName": "an older adult emoji",
-			"unicodeName": "",
 			"voiceOverName": "an older adult"
 		},
 		{
@@ -10099,7 +10021,6 @@
 			],
 			"order": 224,
 			"speechName": "a person with turban emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with turban"
 		},
 		{
@@ -10143,7 +10064,6 @@
 			],
 			"order": 226,
 			"speechName": "a person with turban emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with turban"
 		},
 		{
@@ -10169,7 +10089,6 @@
 			],
 			"order": 227,
 			"speechName": "a woman with headscarf emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman with headscarf"
 		},
 		{
@@ -10214,7 +10133,6 @@
 			],
 			"order": 228,
 			"speechName": "a police officer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a police officer"
 		},
 		{
@@ -10301,7 +10219,6 @@
 			],
 			"order": 230,
 			"speechName": "a police officer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a police officer"
 		},
 		{
@@ -10344,7 +10261,6 @@
 			],
 			"order": 231,
 			"speechName": "a construction worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a construction worker"
 		},
 		{
@@ -10427,7 +10343,6 @@
 			],
 			"order": 233,
 			"speechName": "a construction worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a construction worker"
 		},
 		{
@@ -10467,7 +10382,6 @@
 			],
 			"order": 234,
 			"speechName": "a guardswoman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a guardswoman"
 		},
 		{
@@ -10544,7 +10458,6 @@
 			],
 			"order": 236,
 			"speechName": "a guardsman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a guardsman"
 		},
 		{
@@ -10596,7 +10509,6 @@
 			],
 			"order": 237,
 			"speechName": "a detective emoji",
-			"unicodeName": "",
 			"voiceOverName": "a detective"
 		},
 		{
@@ -10698,7 +10610,6 @@
 			],
 			"order": 239,
 			"speechName": "a detective emoji",
-			"unicodeName": "",
 			"voiceOverName": "a detective"
 		},
 		{
@@ -10741,7 +10652,6 @@
 			],
 			"order": 240,
 			"speechName": "a health worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a health worker"
 		},
 		{
@@ -10783,7 +10693,6 @@
 			],
 			"order": 241,
 			"speechName": "a health worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a health worker"
 		},
 		{
@@ -10825,7 +10734,6 @@
 			],
 			"order": 242,
 			"speechName": "a health worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a health worker"
 		},
 		{
@@ -10868,7 +10776,6 @@
 			],
 			"order": 243,
 			"speechName": "a farmer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a farmer"
 		},
 		{
@@ -10909,7 +10816,6 @@
 			],
 			"order": 244,
 			"speechName": "a farmer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a farmer"
 		},
 		{
@@ -10951,7 +10857,6 @@
 			],
 			"order": 245,
 			"speechName": "a farmer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a farmer"
 		},
 		{
@@ -10992,7 +10897,6 @@
 			],
 			"order": 246,
 			"speechName": "a chef emoji",
-			"unicodeName": "",
 			"voiceOverName": "a chef"
 		},
 		{
@@ -11032,7 +10936,6 @@
 			],
 			"order": 247,
 			"speechName": "a cook emoji",
-			"unicodeName": "",
 			"voiceOverName": "a cook"
 		},
 		{
@@ -11072,7 +10975,6 @@
 			],
 			"order": 248,
 			"speechName": "a chef emoji",
-			"unicodeName": "",
 			"voiceOverName": "a chef"
 		},
 		{
@@ -11117,7 +11019,6 @@
 			],
 			"order": 249,
 			"speechName": "a student emoji",
-			"unicodeName": "",
 			"voiceOverName": "a student"
 		},
 		{
@@ -11159,7 +11060,6 @@
 			],
 			"order": 250,
 			"speechName": "a student emoji",
-			"unicodeName": "",
 			"voiceOverName": "a student"
 		},
 		{
@@ -11201,7 +11101,6 @@
 			],
 			"order": 251,
 			"speechName": "a student emoji",
-			"unicodeName": "",
 			"voiceOverName": "a student"
 		},
 		{
@@ -11240,7 +11139,6 @@
 			],
 			"order": 252,
 			"speechName": "a singer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a singer"
 		},
 		{
@@ -11278,7 +11176,6 @@
 			],
 			"order": 253,
 			"speechName": "a singer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a singer"
 		},
 		{
@@ -11316,7 +11213,6 @@
 			],
 			"order": 254,
 			"speechName": "a singer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a singer"
 		},
 		{
@@ -11370,7 +11266,6 @@
 			],
 			"order": 255,
 			"speechName": "a teacher emoji",
-			"unicodeName": "",
 			"voiceOverName": "a teacher"
 		},
 		{
@@ -11423,7 +11318,6 @@
 			],
 			"order": 256,
 			"speechName": "a teacher emoji",
-			"unicodeName": "",
 			"voiceOverName": "a teacher"
 		},
 		{
@@ -11476,7 +11370,6 @@
 			],
 			"order": 257,
 			"speechName": "a teacher emoji",
-			"unicodeName": "",
 			"voiceOverName": "a teacher"
 		},
 		{
@@ -11508,7 +11401,6 @@
 			],
 			"order": 258,
 			"speechName": "a factory worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a factory worker"
 		},
 		{
@@ -11538,7 +11430,6 @@
 			],
 			"order": 259,
 			"speechName": "a factory worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a factory worker"
 		},
 		{
@@ -11569,7 +11460,6 @@
 			],
 			"order": 260,
 			"speechName": "a factory worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a factory worker"
 		},
 		{
@@ -11646,7 +11536,6 @@
 			],
 			"order": 261,
 			"speechName": "a person with a laptop emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with a laptop"
 		},
 		{
@@ -11721,7 +11610,6 @@
 			],
 			"order": 262,
 			"speechName": "a technologist emoji",
-			"unicodeName": "",
 			"voiceOverName": "a technologist"
 		},
 		{
@@ -11797,7 +11685,6 @@
 			],
 			"order": 263,
 			"speechName": "a person with a laptop emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with a laptop"
 		},
 		{
@@ -11852,7 +11739,6 @@
 			],
 			"order": 264,
 			"speechName": "an office worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "an office worker"
 		},
 		{
@@ -11903,7 +11789,6 @@
 			],
 			"order": 265,
 			"speechName": "an office worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "an office worker"
 		},
 		{
@@ -11957,7 +11842,6 @@
 			],
 			"order": 266,
 			"speechName": "an office worker emoji",
-			"unicodeName": "",
 			"voiceOverName": "an office worker"
 		},
 		{
@@ -11998,7 +11882,6 @@
 			],
 			"order": 267,
 			"speechName": "a mechanic emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mechanic"
 		},
 		{
@@ -12037,7 +11920,6 @@
 			],
 			"order": 268,
 			"speechName": "a mechanic emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mechanic"
 		},
 		{
@@ -12077,7 +11959,6 @@
 			],
 			"order": 269,
 			"speechName": "a mechanic emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mechanic"
 		},
 		{
@@ -12124,7 +12005,6 @@
 			],
 			"order": 270,
 			"speechName": "a scientist emoji",
-			"unicodeName": "",
 			"voiceOverName": "a scientist"
 		},
 		{
@@ -12170,7 +12050,6 @@
 			],
 			"order": 271,
 			"speechName": "a scientist emoji",
-			"unicodeName": "",
 			"voiceOverName": "a scientist"
 		},
 		{
@@ -12216,7 +12095,6 @@
 			],
 			"order": 272,
 			"speechName": "a scientist emoji",
-			"unicodeName": "",
 			"voiceOverName": "a scientist"
 		},
 		{
@@ -12252,7 +12130,6 @@
 			],
 			"order": 273,
 			"speechName": "an artist emoji",
-			"unicodeName": "",
 			"voiceOverName": "an artist"
 		},
 		{
@@ -12287,7 +12164,6 @@
 			],
 			"order": 274,
 			"speechName": "an artist emoji",
-			"unicodeName": "",
 			"voiceOverName": "an artist"
 		},
 		{
@@ -12322,7 +12198,6 @@
 			],
 			"order": 275,
 			"speechName": "an artist emoji",
-			"unicodeName": "",
 			"voiceOverName": "an artist"
 		},
 		{
@@ -12363,7 +12238,6 @@
 			],
 			"order": 276,
 			"speechName": "a firefighter emoji",
-			"unicodeName": "",
 			"voiceOverName": "a firefighter"
 		},
 		{
@@ -12401,7 +12275,6 @@
 			],
 			"order": 277,
 			"speechName": "a firefighter emoji",
-			"unicodeName": "",
 			"voiceOverName": "a firefighter"
 		},
 		{
@@ -12439,7 +12312,6 @@
 			],
 			"order": 278,
 			"speechName": "a firefighter emoji",
-			"unicodeName": "",
 			"voiceOverName": "a firefighter"
 		},
 		{
@@ -12481,7 +12353,6 @@
 			],
 			"order": 279,
 			"speechName": "a pilot emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pilot"
 		},
 		{
@@ -12520,7 +12391,6 @@
 			],
 			"order": 280,
 			"speechName": "a pilot emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pilot"
 		},
 		{
@@ -12560,7 +12430,6 @@
 			],
 			"order": 281,
 			"speechName": "a pilot emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pilot"
 		},
 		{
@@ -12591,7 +12460,6 @@
 			],
 			"order": 282,
 			"speechName": "an astronaut emoji",
-			"unicodeName": "",
 			"voiceOverName": "an astronaut"
 		},
 		{
@@ -12621,7 +12489,6 @@
 			],
 			"order": 283,
 			"speechName": "an astronaut emoji",
-			"unicodeName": "",
 			"voiceOverName": "an astronaut"
 		},
 		{
@@ -12651,7 +12518,6 @@
 			],
 			"order": 284,
 			"speechName": "an astronaut emoji",
-			"unicodeName": "",
 			"voiceOverName": "an astronaut"
 		},
 		{
@@ -12698,7 +12564,6 @@
 			],
 			"order": 285,
 			"speechName": "a judge emoji",
-			"unicodeName": "",
 			"voiceOverName": "a judge"
 		},
 		{
@@ -12744,7 +12609,6 @@
 			],
 			"order": 286,
 			"speechName": "a judge emoji",
-			"unicodeName": "",
 			"voiceOverName": "a judge"
 		},
 		{
@@ -12790,7 +12654,6 @@
 			],
 			"order": 287,
 			"speechName": "a judge emoji",
-			"unicodeName": "",
 			"voiceOverName": "a judge"
 		},
 		{
@@ -12822,7 +12685,6 @@
 			],
 			"order": 288,
 			"speechName": "a woman with veil emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman with veil"
 		},
 		{
@@ -12884,7 +12746,6 @@
 			],
 			"order": 290,
 			"speechName": "a man with veil emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man with veil"
 		},
 		{
@@ -12918,7 +12779,6 @@
 			],
 			"order": 291,
 			"speechName": "a tuxedo emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a tuxedo"
 		},
 		{
@@ -12984,7 +12844,6 @@
 			],
 			"order": 293,
 			"speechName": "a tuxedo emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a tuxedo"
 		},
 		{
@@ -13059,7 +12918,6 @@
 			],
 			"order": 295,
 			"speechName": "a person with a crown emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with a crown"
 		},
 		{
@@ -13114,7 +12972,6 @@
 			],
 			"order": 297,
 			"speechName": "a ninja emoji",
-			"unicodeName": "",
 			"voiceOverName": "a ninja"
 		},
 		{
@@ -13151,7 +13008,6 @@
 			],
 			"order": 298,
 			"speechName": "a superhero emoji",
-			"unicodeName": "",
 			"voiceOverName": "a superhero"
 		},
 		{
@@ -13185,7 +13041,6 @@
 			],
 			"order": 299,
 			"speechName": "a superhero emoji",
-			"unicodeName": "",
 			"voiceOverName": "a superhero"
 		},
 		{
@@ -13219,7 +13074,6 @@
 			],
 			"order": 300,
 			"speechName": "a superhero emoji",
-			"unicodeName": "",
 			"voiceOverName": "a superhero"
 		},
 		{
@@ -13255,7 +13109,6 @@
 			],
 			"order": 301,
 			"speechName": "a supervillain emoji",
-			"unicodeName": "",
 			"voiceOverName": "a supervillain"
 		},
 		{
@@ -13290,7 +13143,6 @@
 			],
 			"order": 302,
 			"speechName": "a supervillain emoji",
-			"unicodeName": "",
 			"voiceOverName": "a supervillain"
 		},
 		{
@@ -13325,7 +13177,6 @@
 			],
 			"order": 303,
 			"speechName": "a supervillain emoji",
-			"unicodeName": "",
 			"voiceOverName": "a supervillain"
 		},
 		{
@@ -13381,7 +13232,6 @@
 			],
 			"order": 305,
 			"speechName": "a santa emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person dressed as santa claus"
 		},
 		{
@@ -13465,7 +13315,6 @@
 			],
 			"order": 307,
 			"speechName": "a mage emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mage"
 		},
 		{
@@ -13512,7 +13361,6 @@
 			],
 			"order": 308,
 			"speechName": "a mage emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mage"
 		},
 		{
@@ -13560,7 +13408,6 @@
 			],
 			"order": 309,
 			"speechName": "a mage emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mage"
 		},
 		{
@@ -13588,7 +13435,6 @@
 			],
 			"order": 310,
 			"speechName": "an elf emoji",
-			"unicodeName": "",
 			"voiceOverName": "an elf"
 		},
 		{
@@ -13615,7 +13461,6 @@
 			],
 			"order": 311,
 			"speechName": "an elf emoji",
-			"unicodeName": "",
 			"voiceOverName": "an elf"
 		},
 		{
@@ -13642,7 +13487,6 @@
 			],
 			"order": 312,
 			"speechName": "an elf emoji",
-			"unicodeName": "",
 			"voiceOverName": "an elf"
 		},
 		{
@@ -13667,7 +13511,6 @@
 			],
 			"order": 313,
 			"speechName": "a troll emoji",
-			"unicodeName": "",
 			"voiceOverName": "a troll"
 		},
 		{
@@ -13698,7 +13541,6 @@
 			],
 			"order": 314,
 			"speechName": "a vampire emoji",
-			"unicodeName": "",
 			"voiceOverName": "a vampire"
 		},
 		{
@@ -13728,7 +13570,6 @@
 			],
 			"order": 315,
 			"speechName": "a vampire emoji",
-			"unicodeName": "",
 			"voiceOverName": "a vampire"
 		},
 		{
@@ -13758,7 +13599,6 @@
 			],
 			"order": 316,
 			"speechName": "a vampire emoji",
-			"unicodeName": "",
 			"voiceOverName": "a vampire"
 		},
 		{
@@ -13793,7 +13633,6 @@
 			],
 			"order": 317,
 			"speechName": "a zombie emoji",
-			"unicodeName": "",
 			"voiceOverName": "a zombie"
 		},
 		{
@@ -13827,7 +13666,6 @@
 			],
 			"order": 318,
 			"speechName": "a zombie emoji",
-			"unicodeName": "",
 			"voiceOverName": "a zombie"
 		},
 		{
@@ -13861,7 +13699,6 @@
 			],
 			"order": 319,
 			"speechName": "a zombie emoji",
-			"unicodeName": "",
 			"voiceOverName": "a zombie"
 		},
 		{
@@ -13891,7 +13728,6 @@
 			],
 			"order": 320,
 			"speechName": "a genie emoji",
-			"unicodeName": "",
 			"voiceOverName": "a genie"
 		},
 		{
@@ -13919,7 +13755,6 @@
 			],
 			"order": 321,
 			"speechName": "a genie emoji",
-			"unicodeName": "",
 			"voiceOverName": "a genie"
 		},
 		{
@@ -13947,7 +13782,6 @@
 			],
 			"order": 322,
 			"speechName": "a genie emoji",
-			"unicodeName": "",
 			"voiceOverName": "a genie"
 		},
 		{
@@ -13978,7 +13812,6 @@
 			],
 			"order": 323,
 			"speechName": "a mermaid emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mermaid"
 		},
 		{
@@ -14009,7 +13842,6 @@
 			],
 			"order": 324,
 			"speechName": "a merperson emoji",
-			"unicodeName": "",
 			"voiceOverName": "a merperson"
 		},
 		{
@@ -14041,7 +13873,6 @@
 			],
 			"order": 325,
 			"speechName": "a merman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a merman"
 		},
 		{
@@ -14072,7 +13903,6 @@
 			],
 			"order": 326,
 			"speechName": "a fairy emoji",
-			"unicodeName": "",
 			"voiceOverName": "a fairy"
 		},
 		{
@@ -14102,7 +13932,6 @@
 			],
 			"order": 327,
 			"speechName": "a fairy emoji",
-			"unicodeName": "",
 			"voiceOverName": "a fairy"
 		},
 		{
@@ -14132,7 +13961,6 @@
 			],
 			"order": 328,
 			"speechName": "a fairy emoji",
-			"unicodeName": "",
 			"voiceOverName": "a fairy"
 		},
 		{
@@ -14219,7 +14047,6 @@
 			],
 			"order": 331,
 			"speechName": "a pregnant emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pregnant person"
 		},
 		{
@@ -14248,7 +14075,6 @@
 			],
 			"order": 332,
 			"speechName": "a pregnant emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pregnant person"
 		},
 		{
@@ -14271,7 +14097,6 @@
 			],
 			"order": 333,
 			"speechName": "a breastfeeding emoji",
-			"unicodeName": "",
 			"voiceOverName": "breastfeeding"
 		},
 		{
@@ -14297,7 +14122,6 @@
 			],
 			"order": 334,
 			"speechName": "a feeding baby emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman feeding a baby"
 		},
 		{
@@ -14322,7 +14146,6 @@
 			],
 			"order": 335,
 			"speechName": "a feeding baby emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person feeding baby"
 		},
 		{
@@ -14347,7 +14170,6 @@
 			],
 			"order": 336,
 			"speechName": "a feeding baby emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man feeding a baby"
 		},
 		{
@@ -14378,7 +14200,6 @@
 			],
 			"order": 337,
 			"speechName": "a head bowing down emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with their head bowed"
 		},
 		{
@@ -14433,7 +14254,6 @@
 			],
 			"order": 339,
 			"speechName": "head bowing down emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with their head bowed"
 		},
 		{
@@ -14464,7 +14284,6 @@
 			],
 			"order": 340,
 			"speechName": "a person tipping their hand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person tipping their hand"
 		},
 		{
@@ -14522,7 +14341,6 @@
 			],
 			"order": 342,
 			"speechName": "a person tipping their hand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person tipping their hand"
 		},
 		{
@@ -14566,7 +14384,6 @@
 			],
 			"order": 343,
 			"speechName": "a gesturing no emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person gesturing no"
 		},
 		{
@@ -14648,7 +14465,6 @@
 			],
 			"order": 345,
 			"speechName": "a gesturing no emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person gesturing no"
 		},
 		{
@@ -14684,7 +14500,6 @@
 			],
 			"order": 346,
 			"speechName": "a gesturing OK emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person gesturing OK"
 		},
 		{
@@ -14750,7 +14565,6 @@
 			],
 			"order": 348,
 			"speechName": "a gesturing OK emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person gesturing OK"
 		},
 		{
@@ -14789,7 +14603,6 @@
 			],
 			"order": 349,
 			"speechName": "a raising hand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person raising their hand"
 		},
 		{
@@ -14860,7 +14673,6 @@
 			],
 			"order": 351,
 			"speechName": "a raising hand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person raising their hand"
 		},
 		{
@@ -14888,7 +14700,6 @@
 			],
 			"order": 352,
 			"speechName": "a deaf woman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a deaf woman"
 		},
 		{
@@ -14913,7 +14724,6 @@
 			],
 			"order": 353,
 			"speechName": "a deaf person emoji",
-			"unicodeName": "",
 			"voiceOverName": "a deaf person"
 		},
 		{
@@ -14938,7 +14748,6 @@
 			],
 			"order": 354,
 			"speechName": "a deaf man emoji",
-			"unicodeName": "",
 			"voiceOverName": "a deaf man"
 		},
 		{
@@ -15223,7 +15032,6 @@
 			],
 			"order": 361,
 			"speechName": "a pouting emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person pouting"
 		},
 		{
@@ -15271,7 +15079,6 @@
 			],
 			"order": 363,
 			"speechName": "a pouting emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person pouting"
 		},
 		{
@@ -15299,7 +15106,6 @@
 			],
 			"order": 364,
 			"speechName": "a frowning emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person frowning"
 		},
 		{
@@ -15349,7 +15155,6 @@
 			],
 			"order": 366,
 			"speechName": "a frowning emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person frowning"
 		},
 		{
@@ -15396,7 +15201,6 @@
 			],
 			"order": 367,
 			"speechName": "a haircut emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person getting a haircut"
 		},
 		{
@@ -15484,7 +15288,6 @@
 			],
 			"order": 369,
 			"speechName": "a haircut emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person getting a haircut"
 		},
 		{
@@ -15523,7 +15326,6 @@
 			],
 			"order": 370,
 			"speechName": "a massage emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person getting a massage"
 		},
 		{
@@ -15595,7 +15397,6 @@
 			],
 			"order": 372,
 			"speechName": "a massage emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person getting a massage"
 		},
 		{
@@ -15629,7 +15430,6 @@
 			],
 			"order": 373,
 			"speechName": "a sauna emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman in a sauna"
 		},
 		{
@@ -15662,7 +15462,6 @@
 			],
 			"order": 374,
 			"speechName": "a sauna emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a sauna"
 		},
 		{
@@ -15695,7 +15494,6 @@
 			],
 			"order": 375,
 			"speechName": "a sauna emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man in a sauna"
 		},
 		{
@@ -15817,7 +15615,6 @@
 			],
 			"order": 380,
 			"speechName": "a ballet dancer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a ballet dancer"
 		},
 		{
@@ -15855,7 +15652,6 @@
 			],
 			"order": 381,
 			"speechName": "a women with bunny ears emoji",
-			"unicodeName": "",
 			"voiceOverName": "women with bunny ears"
 		},
 		{
@@ -15928,7 +15724,6 @@
 			],
 			"order": 383,
 			"speechName": "a men with bunny ears emoji",
-			"unicodeName": "",
 			"voiceOverName": "men with bunny ears"
 		},
 		{
@@ -15981,7 +15776,6 @@
 			],
 			"order": 385,
 			"speechName": "a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman in a wheelchair"
 		},
 		{
@@ -16004,7 +15798,6 @@
 			],
 			"order": 386,
 			"speechName": "a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a wheelchair"
 		},
 		{
@@ -16026,7 +15819,6 @@
 			],
 			"order": 387,
 			"speechName": "a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man in a wheelchair"
 		},
 		{
@@ -16050,7 +15842,6 @@
 			],
 			"order": 388,
 			"speechName": "a person in a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a wheelchair"
 		},
 		{
@@ -16073,7 +15864,6 @@
 			],
 			"order": 389,
 			"speechName": "a person in a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a wheelchair"
 		},
 		{
@@ -16097,7 +15887,6 @@
 			],
 			"order": 390,
 			"speechName": "a person in a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a wheelchair"
 		},
 		{
@@ -16122,7 +15911,6 @@
 			],
 			"order": 391,
 			"speechName": "a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman in a wheelchair"
 		},
 		{
@@ -16145,7 +15933,6 @@
 			],
 			"order": 392,
 			"speechName": "a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a wheelchair"
 		},
 		{
@@ -16167,7 +15954,6 @@
 			],
 			"order": 393,
 			"speechName": "a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man in a wheelchair"
 		},
 		{
@@ -16191,7 +15977,6 @@
 			],
 			"order": 394,
 			"speechName": "a person in a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a wheelchair"
 		},
 		{
@@ -16214,7 +15999,6 @@
 			],
 			"order": 395,
 			"speechName": "a person in a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a wheelchair"
 		},
 		{
@@ -16238,7 +16022,6 @@
 			],
 			"order": 396,
 			"speechName": "a person in a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person in a wheelchair"
 		},
 		{
@@ -16265,7 +16048,6 @@
 			],
 			"order": 397,
 			"speechName": "a walking emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person walking"
 		},
 		{
@@ -16317,7 +16099,6 @@
 			],
 			"order": 399,
 			"speechName": "a walking emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person walking"
 		},
 		{
@@ -16347,7 +16128,6 @@
 			],
 			"order": 400,
 			"speechName": "a person walking emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person walking"
 		},
 		{
@@ -16376,7 +16156,6 @@
 			],
 			"order": 401,
 			"speechName": "a person walking emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person walking"
 		},
 		{
@@ -16406,7 +16185,6 @@
 			],
 			"order": 402,
 			"speechName": "a person walking emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person walking"
 		},
 		{
@@ -16433,7 +16211,6 @@
 			],
 			"order": 403,
 			"speechName": "a white cane emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with a white cane"
 		},
 		{
@@ -16457,7 +16234,6 @@
 			],
 			"order": 404,
 			"speechName": "a white cane emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with a white cane"
 		},
 		{
@@ -16481,7 +16257,6 @@
 			],
 			"order": 405,
 			"speechName": "a white cane emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with a white cane"
 		},
 		{
@@ -16507,7 +16282,6 @@
 			],
 			"order": 406,
 			"speechName": "a person with cane emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with a cane"
 		},
 		{
@@ -16532,7 +16306,6 @@
 			],
 			"order": 407,
 			"speechName": "a person with cane emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with a cane"
 		},
 		{
@@ -16558,7 +16331,6 @@
 			],
 			"order": 408,
 			"speechName": "a person with cane emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person with a cane"
 		},
 		{
@@ -16585,7 +16357,6 @@
 			],
 			"order": 409,
 			"speechName": "a woman kneeling emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman kneeling"
 		},
 		{
@@ -16609,7 +16380,6 @@
 			],
 			"order": 410,
 			"speechName": "a person kneeling emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person kneeling"
 		},
 		{
@@ -16633,7 +16403,6 @@
 			],
 			"order": 411,
 			"speechName": "a man kneeling emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man kneeling"
 		},
 		{
@@ -16663,7 +16432,6 @@
 			],
 			"order": 412,
 			"speechName": "a runner emoji",
-			"unicodeName": "",
 			"voiceOverName": "a runner"
 		},
 		{
@@ -16719,7 +16487,6 @@
 			],
 			"order": 414,
 			"speechName": "a runner emoji",
-			"unicodeName": "",
 			"voiceOverName": "a runner"
 		},
 		{
@@ -16746,7 +16513,6 @@
 			],
 			"order": 415,
 			"speechName": "a runner emoji",
-			"unicodeName": "",
 			"voiceOverName": "a runner"
 		},
 		{
@@ -16772,7 +16538,6 @@
 			],
 			"order": 416,
 			"speechName": "a runner emoji",
-			"unicodeName": "",
 			"voiceOverName": "a runner"
 		},
 		{
@@ -16799,7 +16564,6 @@
 			],
 			"order": 417,
 			"speechName": "a runner emoji",
-			"unicodeName": "",
 			"voiceOverName": "a runner"
 		},
 		{
@@ -16826,7 +16590,6 @@
 			],
 			"order": 418,
 			"speechName": "a person kneeling emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person kneeling"
 		},
 		{
@@ -16852,7 +16615,6 @@
 			],
 			"order": 419,
 			"speechName": "a person kneeling emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person kneeling"
 		},
 		{
@@ -16879,7 +16641,6 @@
 			],
 			"order": 420,
 			"speechName": "a person kneeling emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person kneeling"
 		},
 		{
@@ -16899,7 +16660,6 @@
 			],
 			"order": 421,
 			"speechName": "a woman emoji",
-			"unicodeName": "",
 			"voiceOverName": "a woman"
 		},
 		{
@@ -16918,7 +16678,6 @@
 			],
 			"order": 422,
 			"speechName": "a person emoji",
-			"unicodeName": "",
 			"voiceOverName": "a person"
 		},
 		{
@@ -16937,7 +16696,6 @@
 			],
 			"order": 423,
 			"speechName": "a man emoji",
-			"unicodeName": "",
 			"voiceOverName": "a man"
 		},
 		{
@@ -17028,7 +16786,6 @@
 			],
 			"order": 427,
 			"speechName": "a couple-with-heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "a couple with heart"
 		},
 		{
@@ -17058,7 +16815,6 @@
 			],
 			"order": 428,
 			"speechName": "a couple-with-heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "a couple with heart"
 		},
 		{
@@ -17112,7 +16868,6 @@
 			],
 			"order": 430,
 			"speechName": "a couple-with-heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "a couple with heart"
 		},
 		{
@@ -17146,7 +16901,6 @@
 			],
 			"order": 431,
 			"speechName": "a couple-kissing emoji",
-			"unicodeName": "",
 			"voiceOverName": "a couple kissing"
 		},
 		{
@@ -17179,7 +16933,6 @@
 			],
 			"order": 432,
 			"speechName": "a couple-kissing emoji",
-			"unicodeName": "",
 			"voiceOverName": "a couple kissing"
 		},
 		{
@@ -17239,7 +16992,6 @@
 			],
 			"order": 434,
 			"speechName": "a couple-kissing emoji",
-			"unicodeName": "",
 			"voiceOverName": "a couple kissing"
 		},
 		{
@@ -17260,7 +17012,6 @@
 			],
 			"order": 435,
 			"speechName": "a knot emoji",
-			"unicodeName": "",
 			"voiceOverName": "a knot"
 		},
 		{
@@ -17288,7 +17039,6 @@
 			],
 			"order": 436,
 			"speechName": "a yarn emoji",
-			"unicodeName": "",
 			"voiceOverName": "yarn"
 		},
 		{
@@ -17325,7 +17075,6 @@
 			],
 			"order": 437,
 			"speechName": "a thread emoji",
-			"unicodeName": "",
 			"voiceOverName": "thread"
 		},
 		{
@@ -17347,7 +17096,6 @@
 			],
 			"order": 438,
 			"speechName": "a sewing needle emoji",
-			"unicodeName": "",
 			"voiceOverName": "a sewing needle"
 		},
 		{
@@ -17369,7 +17117,6 @@
 			],
 			"order": 439,
 			"speechName": "a coat emoji",
-			"unicodeName": "",
 			"voiceOverName": "a coat"
 		},
 		{
@@ -17403,7 +17150,6 @@
 			],
 			"order": 440,
 			"speechName": "a lab coat emoji",
-			"unicodeName": "",
 			"voiceOverName": "a lab coat"
 		},
 		{
@@ -17426,7 +17172,6 @@
 			],
 			"order": 441,
 			"speechName": "a safety vest emoji",
-			"unicodeName": "",
 			"voiceOverName": "a safety vest"
 		},
 		{
@@ -17506,7 +17251,6 @@
 			],
 			"order": 445,
 			"speechName": "a pair of briefs emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pair of briefs"
 		},
 		{
@@ -17528,7 +17272,6 @@
 			],
 			"order": 446,
 			"speechName": "a shorts emoji",
-			"unicodeName": "",
 			"voiceOverName": "shorts"
 		},
 		{
@@ -17633,7 +17376,6 @@
 			],
 			"order": 450,
 			"speechName": "a bathing suit emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bathing suit"
 		},
 		{
@@ -17672,7 +17414,6 @@
 			],
 			"order": 452,
 			"speechName": "a sari emoji",
-			"unicodeName": "",
 			"voiceOverName": "a sari"
 		},
 		{
@@ -17698,7 +17439,6 @@
 			],
 			"order": 453,
 			"speechName": "a sandal emoji",
-			"unicodeName": "",
 			"voiceOverName": "a sandal"
 		},
 		{
@@ -17724,7 +17464,6 @@
 			],
 			"order": 454,
 			"speechName": "a shoe emoji",
-			"unicodeName": "",
 			"voiceOverName": "a shoe"
 		},
 		{
@@ -17863,7 +17602,6 @@
 			],
 			"order": 460,
 			"speechName": "a boot emoji",
-			"unicodeName": "",
 			"voiceOverName": "a boot"
 		},
 		{
@@ -17884,7 +17622,6 @@
 			],
 			"order": 461,
 			"speechName": "a socks emoji",
-			"unicodeName": "",
 			"voiceOverName": "socks"
 		},
 		{
@@ -17904,7 +17641,6 @@
 			],
 			"order": 462,
 			"speechName": "a gloves emoji",
-			"unicodeName": "",
 			"voiceOverName": "gloves"
 		},
 		{
@@ -17924,7 +17660,6 @@
 			],
 			"order": 463,
 			"speechName": "a scarf emoji",
-			"unicodeName": "",
 			"voiceOverName": "a scarf"
 		},
 		{
@@ -17974,7 +17709,6 @@
 			],
 			"order": 465,
 			"speechName": "a baseball cap emoji",
-			"unicodeName": "",
 			"voiceOverName": "a baseball cap"
 		},
 		{
@@ -18079,7 +17813,6 @@
 			],
 			"order": 469,
 			"speechName": "a military helmet emoji",
-			"unicodeName": "",
 			"voiceOverName": "a military helmet"
 		},
 		{
@@ -18277,7 +18010,6 @@
 			],
 			"order": 477,
 			"speechName": "a luggage emoji",
-			"unicodeName": "",
 			"voiceOverName": "luggage"
 		},
 		{
@@ -18348,7 +18080,6 @@
 			],
 			"order": 480,
 			"speechName": "a goggles emoji",
-			"unicodeName": "",
 			"voiceOverName": "goggles"
 		},
 		{
@@ -18626,7 +18357,6 @@
 			],
 			"order": 490,
 			"speechName": "a polar bear emoji",
-			"unicodeName": "",
 			"voiceOverName": "a polar bear"
 		},
 		{
@@ -19272,7 +19002,6 @@
 			],
 			"order": 509,
 			"speechName": "a goose emoji",
-			"unicodeName": "",
 			"voiceOverName": "a goose"
 		},
 		{
@@ -19331,7 +19060,6 @@
 			],
 			"order": 511,
 			"speechName": "a black bird emoji",
-			"unicodeName": "",
 			"voiceOverName": "a black bird"
 		},
 		{
@@ -19546,7 +19274,6 @@
 			],
 			"order": 519,
 			"speechName": "a moose emoji",
-			"unicodeName": "",
 			"voiceOverName": "a moose"
 		},
 		{
@@ -19611,7 +19338,6 @@
 			],
 			"order": 521,
 			"speechName": "a worm emoji",
-			"unicodeName": "",
 			"voiceOverName": "a worm"
 		},
 		{
@@ -19753,7 +19479,6 @@
 			],
 			"order": 527,
 			"speechName": "a fly emoji",
-			"unicodeName": "",
 			"voiceOverName": "a fly"
 		},
 		{
@@ -19775,7 +19500,6 @@
 			],
 			"order": 528,
 			"speechName": "a beetle emoji",
-			"unicodeName": "",
 			"voiceOverName": "a beetle"
 		},
 		{
@@ -19798,7 +19522,6 @@
 			],
 			"order": 529,
 			"speechName": "a cockroach emoji",
-			"unicodeName": "",
 			"voiceOverName": "a cockroach"
 		},
 		{
@@ -19821,7 +19544,6 @@
 			],
 			"order": 530,
 			"speechName": "a mosquito emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mosquito"
 		},
 		{
@@ -19842,7 +19564,6 @@
 			],
 			"order": 531,
 			"speechName": "a cricket emoji",
-			"unicodeName": "",
 			"voiceOverName": "a cricket"
 		},
 		{
@@ -20034,7 +19755,6 @@
 			],
 			"order": 538,
 			"speechName": "a T-Rex emoji",
-			"unicodeName": "",
 			"voiceOverName": "a T-Rex"
 		},
 		{
@@ -20061,7 +19781,6 @@
 			],
 			"order": 539,
 			"speechName": "a dinosaur emoji",
-			"unicodeName": "",
 			"voiceOverName": "a dinosaur"
 		},
 		{
@@ -20141,7 +19860,6 @@
 			],
 			"order": 542,
 			"speechName": "a jellyfish emoji",
-			"unicodeName": "",
 			"voiceOverName": "a jellyfish"
 		},
 		{
@@ -20195,7 +19913,6 @@
 			],
 			"order": 544,
 			"speechName": "a lobster emoji",
-			"unicodeName": "",
 			"voiceOverName": "a lobster"
 		},
 		{
@@ -20428,7 +20145,6 @@
 			],
 			"order": 552,
 			"speechName": "an orca emoji",
-			"unicodeName": "",
 			"voiceOverName": "an orca"
 		},
 		{
@@ -20479,7 +20195,6 @@
 			],
 			"order": 554,
 			"speechName": "a seal emoji",
-			"unicodeName": "",
 			"voiceOverName": "a seal"
 		},
 		{
@@ -20600,7 +20315,6 @@
 			],
 			"order": 558,
 			"speechName": "a zebra emoji",
-			"unicodeName": "",
 			"voiceOverName": "a zebra"
 		},
 		{
@@ -20654,7 +20368,6 @@
 			],
 			"order": 560,
 			"speechName": "an orangutan emoji",
-			"unicodeName": "",
 			"voiceOverName": "an orangutan"
 		},
 		{
@@ -20683,7 +20396,6 @@
 			],
 			"order": 561,
 			"speechName": "a hairy creature emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hairy creature"
 		},
 		{
@@ -20705,7 +20417,6 @@
 			],
 			"order": 562,
 			"speechName": "a mammoth emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mammoth"
 		},
 		{
@@ -20758,7 +20469,6 @@
 			],
 			"order": 564,
 			"speechName": "a hippo emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hippo"
 		},
 		{
@@ -20863,7 +20573,6 @@
 			],
 			"order": 568,
 			"speechName": "a giraffe emoji",
-			"unicodeName": "",
 			"voiceOverName": "a giraffe"
 		},
 		{
@@ -20891,7 +20600,6 @@
 			],
 			"order": 569,
 			"speechName": "a kangaroo emoji",
-			"unicodeName": "",
 			"voiceOverName": "a kangaroo"
 		},
 		{
@@ -20917,7 +20625,6 @@
 			],
 			"order": 570,
 			"speechName": "a bison emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bison"
 		},
 		{
@@ -21024,7 +20731,6 @@
 			],
 			"order": 574,
 			"speechName": "a donkey emoji",
-			"unicodeName": "",
 			"voiceOverName": "a donkey"
 		},
 		{
@@ -21172,7 +20878,6 @@
 			],
 			"order": 579,
 			"speechName": "a llama emoji",
-			"unicodeName": "",
 			"voiceOverName": "a llama"
 		},
 		{
@@ -21301,7 +21006,6 @@
 			],
 			"order": 584,
 			"speechName": "a service dog emoji",
-			"unicodeName": "",
 			"voiceOverName": "a service dog"
 		},
 		{
@@ -21322,7 +21026,6 @@
 			],
 			"order": 585,
 			"speechName": "a guide dog emoji",
-			"unicodeName": "",
 			"voiceOverName": "a guide dog"
 		},
 		{
@@ -21390,7 +21093,6 @@
 			],
 			"order": 587,
 			"speechName": "a black cat emoji",
-			"unicodeName": "",
 			"voiceOverName": "a black cat "
 		},
 		{
@@ -21410,7 +21112,6 @@
 			],
 			"order": 588,
 			"speechName": "a feather emoji",
-			"unicodeName": "",
 			"voiceOverName": "a feather"
 		},
 		{
@@ -21433,7 +21134,6 @@
 			],
 			"order": 589,
 			"speechName": "a wing emoji",
-			"unicodeName": "",
 			"voiceOverName": "a wing"
 		},
 		{
@@ -21522,7 +21222,6 @@
 			],
 			"order": 592,
 			"speechName": "a dodo bird emoji",
-			"unicodeName": "",
 			"voiceOverName": "a dodo bird"
 		},
 		{
@@ -21548,7 +21247,6 @@
 			],
 			"order": 593,
 			"speechName": "a peacock emoji",
-			"unicodeName": "",
 			"voiceOverName": "a peacock"
 		},
 		{
@@ -21577,7 +21275,6 @@
 			],
 			"order": 594,
 			"speechName": "a parrot emoji",
-			"unicodeName": "",
 			"voiceOverName": "a parrot"
 		},
 		{
@@ -21607,7 +21304,6 @@
 			],
 			"order": 595,
 			"speechName": "a swan emoji",
-			"unicodeName": "",
 			"voiceOverName": "a swan"
 		},
 		{
@@ -21633,7 +21329,6 @@
 			],
 			"order": 596,
 			"speechName": "a flamingo emoji",
-			"unicodeName": "",
 			"voiceOverName": "a flamingo"
 		},
 		{
@@ -21719,7 +21414,6 @@
 			],
 			"order": 599,
 			"speechName": "a raccoon emoji",
-			"unicodeName": "",
 			"voiceOverName": "a raccoon"
 		},
 		{
@@ -21743,7 +21437,6 @@
 			],
 			"order": 600,
 			"speechName": "a skunk emoji",
-			"unicodeName": "",
 			"voiceOverName": "a skunk"
 		},
 		{
@@ -21766,7 +21459,6 @@
 			],
 			"order": 601,
 			"speechName": "a badger emoji",
-			"unicodeName": "",
 			"voiceOverName": "a badger"
 		},
 		{
@@ -21789,7 +21481,6 @@
 			],
 			"order": 602,
 			"speechName": "a beaver emoji",
-			"unicodeName": "",
 			"voiceOverName": "a beaver"
 		},
 		{
@@ -21814,7 +21505,6 @@
 			],
 			"order": 603,
 			"speechName": "an otter emoji",
-			"unicodeName": "",
 			"voiceOverName": "an otter"
 		},
 		{
@@ -21836,7 +21526,6 @@
 			],
 			"order": 604,
 			"speechName": "a sloth emoji",
-			"unicodeName": "",
 			"voiceOverName": "a sloth"
 		},
 		{
@@ -21937,7 +21626,6 @@
 			],
 			"order": 608,
 			"speechName": "a hedgehog emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hedgehog"
 		},
 		{
@@ -22051,7 +21739,6 @@
 			],
 			"order": 612,
 			"speechName": "a phoenix emoji",
-			"unicodeName": "",
 			"voiceOverName": "a phoenix"
 		},
 		{
@@ -22212,7 +21899,6 @@
 			],
 			"order": 618,
 			"speechName": "a leafless tree emoji",
-			"unicodeName": "",
 			"voiceOverName": "a leafless tree"
 		},
 		{
@@ -22231,7 +21917,6 @@
 			],
 			"order": 619,
 			"speechName": "a wood emoji",
-			"unicodeName": "",
 			"voiceOverName": "wood logs"
 		},
 		{
@@ -22385,7 +22070,6 @@
 			],
 			"order": 625,
 			"speechName": "a potted plant emoji",
-			"unicodeName": "",
 			"voiceOverName": "a potted plant"
 		},
 		{
@@ -22498,7 +22182,6 @@
 			],
 			"order": 630,
 			"speechName": "a nest emoji",
-			"unicodeName": "",
 			"voiceOverName": "a nest"
 		},
 		{
@@ -22517,7 +22200,6 @@
 			],
 			"order": 631,
 			"speechName": "a nest emoji",
-			"unicodeName": "",
 			"voiceOverName": "a nest"
 		},
 		{
@@ -22569,7 +22251,6 @@
 			],
 			"order": 633,
 			"speechName": "a brown mushroom emoji",
-			"unicodeName": "",
 			"voiceOverName": "a brown mushroom"
 		},
 		{
@@ -22621,7 +22302,6 @@
 			],
 			"order": 635,
 			"speechName": "a coral emoji",
-			"unicodeName": "",
 			"voiceOverName": "coral"
 		},
 		{
@@ -22643,7 +22323,6 @@
 			],
 			"order": 636,
 			"speechName": "a rock emoji",
-			"unicodeName": "",
 			"voiceOverName": "a rock"
 		},
 		{
@@ -22663,7 +22342,6 @@
 			],
 			"order": 637,
 			"speechName": "a landslide emoji",
-			"unicodeName": "",
 			"voiceOverName": "a landslide"
 		},
 		{
@@ -22820,7 +22498,6 @@
 			],
 			"order": 643,
 			"speechName": "a hyacinth emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hyacinth"
 		},
 		{
@@ -22840,7 +22517,6 @@
 			],
 			"order": 644,
 			"speechName": "a lotus emoji",
-			"unicodeName": "",
 			"voiceOverName": "a lotus"
 		},
 		{
@@ -23331,7 +23007,6 @@
 			],
 			"order": 666,
 			"speechName": "a planet emoji",
-			"unicodeName": "",
 			"voiceOverName": "a planet"
 		},
 		{
@@ -23589,7 +23264,6 @@
 			],
 			"order": 675,
 			"speechName": "a fight cloud emoji",
-			"unicodeName": "",
 			"voiceOverName": "a fight cloud"
 		},
 		{
@@ -24139,7 +23813,6 @@
 			],
 			"order": 695,
 			"speechName": "a bubbles emoji",
-			"unicodeName": "",
 			"voiceOverName": "bubbles"
 		},
 		{
@@ -24406,7 +24079,6 @@
 			],
 			"order": 705,
 			"speechName": "a lime emoji",
-			"unicodeName": "",
 			"voiceOverName": "a lime"
 		},
 		{
@@ -24540,7 +24212,6 @@
 			],
 			"order": 710,
 			"speechName": "a blueberries emoji",
-			"unicodeName": "",
 			"voiceOverName": "blueberries"
 		},
 		{
@@ -24657,7 +24328,6 @@
 			],
 			"order": 714,
 			"speechName": "a mango emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mango"
 		},
 		{
@@ -24715,7 +24385,6 @@
 			],
 			"order": 716,
 			"speechName": "a coconut emoji",
-			"unicodeName": "",
 			"voiceOverName": "a coconut"
 		},
 		{
@@ -24860,7 +24529,6 @@
 			],
 			"order": 721,
 			"speechName": "a pea pod emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pea pod"
 		},
 		{
@@ -24886,7 +24554,6 @@
 			],
 			"order": 722,
 			"speechName": "a broccoli emoji",
-			"unicodeName": "",
 			"voiceOverName": "a broccoli"
 		},
 		{
@@ -24926,7 +24593,6 @@
 			],
 			"order": 723,
 			"speechName": "a leafy greens emoji",
-			"unicodeName": "",
 			"voiceOverName": "leafy greens"
 		},
 		{
@@ -25014,7 +24680,6 @@
 			],
 			"order": 726,
 			"speechName": "a bell pepper emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bell pepper"
 		},
 		{
@@ -25100,7 +24765,6 @@
 			],
 			"order": 729,
 			"speechName": "an olive emoji",
-			"unicodeName": "",
 			"voiceOverName": "an olive"
 		},
 		{
@@ -25130,7 +24794,6 @@
 			],
 			"order": 730,
 			"speechName": "a garlic emoji",
-			"unicodeName": "",
 			"voiceOverName": "garlic"
 		},
 		{
@@ -25160,7 +24823,6 @@
 			],
 			"order": 731,
 			"speechName": "an onion emoji",
-			"unicodeName": "",
 			"voiceOverName": "an onion"
 		},
 		{
@@ -25221,7 +24883,6 @@
 			],
 			"order": 733,
 			"speechName": "a root vegetable emoji",
-			"unicodeName": "",
 			"voiceOverName": "a root vegetable"
 		},
 		{
@@ -25278,7 +24939,6 @@
 			],
 			"order": 735,
 			"speechName": "a ginger root emoji",
-			"unicodeName": "",
 			"voiceOverName": "a ginger root"
 		},
 		{
@@ -25331,7 +24991,6 @@
 			],
 			"order": 737,
 			"speechName": "a bagel emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bagel"
 		},
 		{
@@ -25402,7 +25061,6 @@
 			],
 			"order": 740,
 			"speechName": "a pretzel emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pretzel"
 		},
 		{
@@ -25504,7 +25162,6 @@
 			],
 			"order": 744,
 			"speechName": "a butter emoji",
-			"unicodeName": "",
 			"voiceOverName": "a stick of butter"
 		},
 		{
@@ -25554,7 +25211,6 @@
 			],
 			"order": 746,
 			"speechName": "a waffle emoji",
-			"unicodeName": "",
 			"voiceOverName": "a waffle"
 		},
 		{
@@ -25601,7 +25257,6 @@
 			],
 			"order": 748,
 			"speechName": "a steak emoji",
-			"unicodeName": "",
 			"voiceOverName": "a steak"
 		},
 		{
@@ -25677,7 +25332,6 @@
 			],
 			"order": 751,
 			"speechName": "a bone emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bone"
 		},
 		{
@@ -25830,7 +25484,6 @@
 			],
 			"order": 756,
 			"speechName": "a flat bread emoji",
-			"unicodeName": "",
 			"voiceOverName": "a flat bread"
 		},
 		{
@@ -25855,7 +25508,6 @@
 			],
 			"order": 757,
 			"speechName": "a sandwich emoji",
-			"unicodeName": "",
 			"voiceOverName": "a sandwich"
 		},
 		{
@@ -25923,7 +25575,6 @@
 			],
 			"order": 759,
 			"speechName": "a falafel emoji",
-			"unicodeName": "",
 			"voiceOverName": "a plate of falafel"
 		},
 		{
@@ -26010,7 +25661,6 @@
 			],
 			"order": 762,
 			"speechName": "a tamale emoji",
-			"unicodeName": "",
 			"voiceOverName": "a tamale"
 		},
 		{
@@ -26090,7 +25740,6 @@
 			],
 			"order": 765,
 			"speechName": "a fondue emoji",
-			"unicodeName": "",
 			"voiceOverName": "a fondue"
 		},
 		{
@@ -26112,7 +25761,6 @@
 			],
 			"order": 766,
 			"speechName": "a canned food emoji",
-			"unicodeName": "",
 			"voiceOverName": "a can of food"
 		},
 		{
@@ -26133,7 +25781,6 @@
 			],
 			"order": 767,
 			"speechName": "a jar emoji",
-			"unicodeName": "",
 			"voiceOverName": "a jar"
 		},
 		{
@@ -26339,7 +25986,6 @@
 			],
 			"order": 774,
 			"speechName": "a dumpling emoji",
-			"unicodeName": "",
 			"voiceOverName": "a dumpling"
 		},
 		{
@@ -26361,7 +26007,6 @@
 			],
 			"order": 775,
 			"speechName": "an oyster emoji",
-			"unicodeName": "",
 			"voiceOverName": "an oyster"
 		},
 		{
@@ -26505,7 +26150,6 @@
 			],
 			"order": 781,
 			"speechName": "a fortune cookie emoji",
-			"unicodeName": "",
 			"voiceOverName": "a fortune cookie"
 		},
 		{
@@ -26537,7 +26181,6 @@
 			],
 			"order": 782,
 			"speechName": "a mooncake emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mooncake"
 		},
 		{
@@ -26697,7 +26340,6 @@
 			],
 			"order": 788,
 			"speechName": "a pie emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pie"
 		},
 		{
@@ -26726,7 +26368,6 @@
 			],
 			"order": 789,
 			"speechName": "a cupcake emoji",
-			"unicodeName": "",
 			"voiceOverName": "a cupcake"
 		},
 		{
@@ -27057,7 +26698,6 @@
 			],
 			"order": 801,
 			"speechName": "a beans emoji",
-			"unicodeName": "",
 			"voiceOverName": "beans"
 		},
 		{
@@ -27119,7 +26759,6 @@
 			],
 			"order": 804,
 			"speechName": "a glass emoji",
-			"unicodeName": "",
 			"voiceOverName": "a glass"
 		},
 		{
@@ -27164,7 +26803,6 @@
 			],
 			"order": 806,
 			"speechName": "a teapot emoji",
-			"unicodeName": "",
 			"voiceOverName": "a teapot"
 		},
 		{
@@ -27265,7 +26903,6 @@
 			],
 			"order": 809,
 			"speechName": "a juice box emoji",
-			"unicodeName": "",
 			"voiceOverName": "a juice box"
 		},
 		{
@@ -27294,7 +26931,6 @@
 			],
 			"order": 810,
 			"speechName": "a cup emoji",
-			"unicodeName": "",
 			"voiceOverName": "a cup"
 		},
 		{
@@ -27322,7 +26958,6 @@
 			],
 			"order": 811,
 			"speechName": "a boba tea emoji",
-			"unicodeName": "",
 			"voiceOverName": "boba tea "
 		},
 		{
@@ -27645,7 +27280,6 @@
 			],
 			"order": 820,
 			"speechName": "a maté emoji",
-			"unicodeName": "",
 			"voiceOverName": "maté"
 		},
 		{
@@ -27708,7 +27342,6 @@
 			],
 			"order": 822,
 			"speechName": "an ice emoji",
-			"unicodeName": "",
 			"voiceOverName": "an ice cube"
 		},
 		{
@@ -27819,7 +27452,6 @@
 			],
 			"order": 826,
 			"speechName": "a bowl emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bowl"
 		},
 		{
@@ -27844,7 +27476,6 @@
 			],
 			"order": 827,
 			"speechName": "a takeout box emoji",
-			"unicodeName": "",
 			"voiceOverName": "a takeout box"
 		},
 		{
@@ -27865,7 +27496,6 @@
 			],
 			"order": 828,
 			"speechName": "a chopsticks emoji",
-			"unicodeName": "",
 			"voiceOverName": "chopsticks"
 		},
 		{
@@ -27890,7 +27520,6 @@
 			],
 			"order": 829,
 			"speechName": "a salt shaker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a salt shaker"
 		},
 		{
@@ -28020,7 +27649,6 @@
 			],
 			"order": 834,
 			"speechName": "a softball emoji",
-			"unicodeName": "",
 			"voiceOverName": "a softball"
 		},
 		{
@@ -28112,7 +27740,6 @@
 			],
 			"order": 838,
 			"speechName": "a flying disc emoji",
-			"unicodeName": "",
 			"voiceOverName": "a flying disc"
 		},
 		{
@@ -28159,7 +27786,6 @@
 			],
 			"order": 840,
 			"speechName": "a yo-yo emoji",
-			"unicodeName": "",
 			"voiceOverName": "a yo-yo"
 		},
 		{
@@ -28277,7 +27903,6 @@
 			],
 			"order": 845,
 			"speechName": "a lacrosse emoji",
-			"unicodeName": "",
 			"voiceOverName": "a lacrosse stick"
 		},
 		{
@@ -28317,7 +27942,6 @@
 			],
 			"order": 847,
 			"speechName": "a boomerang emoji",
-			"unicodeName": "",
 			"voiceOverName": "a boomerang"
 		},
 		{
@@ -28391,7 +28015,6 @@
 			],
 			"order": 850,
 			"speechName": "a kite emoji",
-			"unicodeName": "",
 			"voiceOverName": "a kite"
 		},
 		{
@@ -28411,7 +28034,6 @@
 			],
 			"order": 851,
 			"speechName": "a slide emoji",
-			"unicodeName": "",
 			"voiceOverName": "a slide"
 		},
 		{
@@ -28482,7 +28104,6 @@
 			],
 			"order": 854,
 			"speechName": "a snorkel emoji",
-			"unicodeName": "",
 			"voiceOverName": "a snorkel"
 		},
 		{
@@ -28589,7 +28210,6 @@
 			],
 			"order": 858,
 			"speechName": "a skateboard emoji",
-			"unicodeName": "",
 			"voiceOverName": "a skateboard"
 		},
 		{
@@ -28610,7 +28230,6 @@
 			],
 			"order": 859,
 			"speechName": "a roller skate emoji",
-			"unicodeName": "",
 			"voiceOverName": "a roller skate"
 		},
 		{
@@ -28630,7 +28249,6 @@
 			],
 			"order": 860,
 			"speechName": "a sled emoji",
-			"unicodeName": "",
 			"voiceOverName": "a sled"
 		},
 		{
@@ -28682,7 +28300,6 @@
 			],
 			"order": 862,
 			"speechName": "a curling stone emoji",
-			"unicodeName": "",
 			"voiceOverName": "a curling stone"
 		},
 		{
@@ -28798,7 +28415,6 @@
 			],
 			"order": 866,
 			"speechName": "a parachute emoji",
-			"unicodeName": "",
 			"voiceOverName": "a parachute"
 		},
 		{
@@ -28834,7 +28450,6 @@
 			],
 			"order": 867,
 			"speechName": "a weightlifter emoji",
-			"unicodeName": "",
 			"voiceOverName": "a weightlifter"
 		},
 		{
@@ -28904,7 +28519,6 @@
 			],
 			"order": 869,
 			"speechName": "a weightlifter emoji",
-			"unicodeName": "",
 			"voiceOverName": "a weightlifter"
 		},
 		{
@@ -29085,7 +28699,6 @@
 			],
 			"order": 876,
 			"speechName": "a basketball player emoji",
-			"unicodeName": "",
 			"voiceOverName": "a basketball player"
 		},
 		{
@@ -29147,7 +28760,6 @@
 			],
 			"order": 878,
 			"speechName": "a basketball player emoji",
-			"unicodeName": "",
 			"voiceOverName": "a basketball player"
 		},
 		{
@@ -29270,7 +28882,6 @@
 			],
 			"order": 883,
 			"speechName": "a golfer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a golfer"
 		},
 		{
@@ -29323,7 +28934,6 @@
 			],
 			"order": 885,
 			"speechName": "a golfer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a golfer"
 		},
 		{
@@ -29401,7 +29011,6 @@
 			],
 			"order": 887,
 			"speechName": "a lotus position emoji",
-			"unicodeName": "",
 			"voiceOverName": "a lotus position"
 		},
 		{
@@ -29439,7 +29048,6 @@
 			],
 			"order": 888,
 			"speechName": "a lotus position emoji",
-			"unicodeName": "",
 			"voiceOverName": "a lotus position"
 		},
 		{
@@ -29476,7 +29084,6 @@
 			],
 			"order": 889,
 			"speechName": "a lotus position emoji",
-			"unicodeName": "",
 			"voiceOverName": "a lotus position"
 		},
 		{
@@ -29514,7 +29121,6 @@
 			],
 			"order": 890,
 			"speechName": "a surfer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a surfer"
 		},
 		{
@@ -29587,7 +29193,6 @@
 			],
 			"order": 892,
 			"speechName": "a surfer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a surfer"
 		},
 		{
@@ -29618,7 +29223,6 @@
 			],
 			"order": 893,
 			"speechName": "a swimmer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a swimmer"
 		},
 		{
@@ -29678,7 +29282,6 @@
 			],
 			"order": 895,
 			"speechName": "a swimmer emoji",
-			"unicodeName": "",
 			"voiceOverName": "a swimmer"
 		},
 		{
@@ -29783,7 +29386,6 @@
 			],
 			"order": 899,
 			"speechName": "a rower emoji",
-			"unicodeName": "",
 			"voiceOverName": "a rower"
 		},
 		{
@@ -29846,7 +29448,6 @@
 			],
 			"order": 901,
 			"speechName": "a rower emoji",
-			"unicodeName": "",
 			"voiceOverName": "a rower"
 		},
 		{
@@ -29879,7 +29480,6 @@
 			],
 			"order": 902,
 			"speechName": "a rock climber emoji",
-			"unicodeName": "",
 			"voiceOverName": "a rock climber"
 		},
 		{
@@ -29911,7 +29511,6 @@
 			],
 			"order": 903,
 			"speechName": "a rock climber emoji",
-			"unicodeName": "",
 			"voiceOverName": "a rock climber"
 		},
 		{
@@ -29943,7 +29542,6 @@
 			],
 			"order": 904,
 			"speechName": "a rock climber emoji",
-			"unicodeName": "",
 			"voiceOverName": "a rock climber"
 		},
 		{
@@ -29976,7 +29574,6 @@
 			],
 			"order": 905,
 			"speechName": "a mountain biker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mountain biker"
 		},
 		{
@@ -30040,7 +29637,6 @@
 			],
 			"order": 907,
 			"speechName": "a mountain biker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mountain biker"
 		},
 		{
@@ -30078,7 +29674,6 @@
 			],
 			"order": 908,
 			"speechName": "a cyclist emoji",
-			"unicodeName": "",
 			"voiceOverName": "a cyclist"
 		},
 		{
@@ -30153,7 +29748,6 @@
 			],
 			"order": 910,
 			"speechName": "a cyclist emoji",
-			"unicodeName": "",
 			"voiceOverName": "a cyclist"
 		},
 		{
@@ -30563,7 +30157,6 @@
 			],
 			"order": 926,
 			"speechName": "a ballet shoe emoji",
-			"unicodeName": "",
 			"voiceOverName": "ballet shoes"
 		},
 		{
@@ -30609,7 +30202,6 @@
 			],
 			"order": 928,
 			"speechName": "a splatter emoji",
-			"unicodeName": "",
 			"voiceOverName": "a splatter"
 		},
 		{
@@ -30814,7 +30406,6 @@
 			],
 			"order": 934,
 			"speechName": "a maracas emoji",
-			"unicodeName": "",
 			"voiceOverName": "maracas"
 		},
 		{
@@ -30864,7 +30455,6 @@
 			],
 			"order": 936,
 			"speechName": "a long drum emoji",
-			"unicodeName": "",
 			"voiceOverName": "a long drum"
 		},
 		{
@@ -30933,7 +30523,6 @@
 			],
 			"order": 939,
 			"speechName": "a trombone emoji",
-			"unicodeName": "",
 			"voiceOverName": "a trombone"
 		},
 		{
@@ -30954,7 +30543,6 @@
 			],
 			"order": 940,
 			"speechName": "an accordion emoji",
-			"unicodeName": "",
 			"voiceOverName": "an accordion"
 		},
 		{
@@ -31012,7 +30600,6 @@
 			],
 			"order": 942,
 			"speechName": "a banjo emoji",
-			"unicodeName": "",
 			"voiceOverName": "a banjo"
 		},
 		{
@@ -31034,7 +30621,6 @@
 			],
 			"order": 943,
 			"speechName": "a harp emoji",
-			"unicodeName": "",
 			"voiceOverName": "a harp"
 		},
 		{
@@ -31086,7 +30672,6 @@
 			],
 			"order": 945,
 			"speechName": "a flute emoji",
-			"unicodeName": "",
 			"voiceOverName": "a flute"
 		},
 		{
@@ -31131,7 +30716,6 @@
 			],
 			"order": 947,
 			"speechName": "a chess pawn emoji",
-			"unicodeName": "",
 			"voiceOverName": "a chess pawn"
 		},
 		{
@@ -31248,7 +30832,6 @@
 			],
 			"order": 952,
 			"speechName": "a puzzle piece emoji",
-			"unicodeName": "",
 			"voiceOverName": "a puzzle piece"
 		},
 		{
@@ -31581,7 +31164,6 @@
 			],
 			"order": 963,
 			"speechName": "a pickup truck emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pickup truck"
 		},
 		{
@@ -31687,7 +31269,6 @@
 			],
 			"order": 967,
 			"speechName": "a white cane emoji",
-			"unicodeName": "",
 			"voiceOverName": "a white cane"
 		},
 		{
@@ -31704,7 +31285,6 @@
 			],
 			"order": 968,
 			"speechName": "a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a wheelchair"
 		},
 		{
@@ -31721,7 +31301,6 @@
 			],
 			"order": 969,
 			"speechName": "a wheelchair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a wheelchair"
 		},
 		{
@@ -31743,7 +31322,6 @@
 			],
 			"order": 970,
 			"speechName": "a crutch emoji",
-			"unicodeName": "",
 			"voiceOverName": "a crutch"
 		},
 		{
@@ -31863,7 +31441,6 @@
 			],
 			"order": 975,
 			"speechName": "a rickshaw emoji",
-			"unicodeName": "",
 			"voiceOverName": "a rickshaw"
 		},
 		{
@@ -31886,7 +31463,6 @@
 			],
 			"order": 976,
 			"speechName": "a wheel emoji",
-			"unicodeName": "",
 			"voiceOverName": "a wheel"
 		},
 		{
@@ -32712,7 +32288,6 @@
 			],
 			"order": 1004,
 			"speechName": "a UFO emoji",
-			"unicodeName": "",
 			"voiceOverName": "a UFO"
 		},
 		{
@@ -32986,7 +32561,6 @@
 			],
 			"order": 1013,
 			"speechName": "a life preserver emoji",
-			"unicodeName": "",
 			"voiceOverName": "a life preserver"
 		},
 		{
@@ -33021,7 +32595,6 @@
 			],
 			"order": 1015,
 			"speechName": "a hook emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hook"
 		},
 		{
@@ -33705,7 +33278,6 @@
 			],
 			"order": 1042,
 			"speechName": "a hut emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hut"
 		},
 		{
@@ -34206,7 +33778,6 @@
 			],
 			"order": 1064,
 			"speechName": "a temple emoji",
-			"unicodeName": "",
 			"voiceOverName": "a temple"
 		},
 		{
@@ -35572,7 +35143,6 @@
 			],
 			"order": 1115,
 			"speechName": "a compass emoji",
-			"unicodeName": "",
 			"voiceOverName": "a compass"
 		},
 		{
@@ -35772,7 +35342,6 @@
 			],
 			"order": 1124,
 			"speechName": "a low battery emoji",
-			"unicodeName": "",
 			"voiceOverName": "a low battery"
 		},
 		{
@@ -35886,7 +35455,6 @@
 			],
 			"order": 1129,
 			"speechName": "a diya lamp emoji",
-			"unicodeName": "",
 			"voiceOverName": "a diya lamp"
 		},
 		{
@@ -35917,7 +35485,6 @@
 			],
 			"order": 1130,
 			"speechName": "a fire extinguisher emoji",
-			"unicodeName": "",
 			"voiceOverName": "a fire extinguisher"
 		},
 		{
@@ -36110,7 +35677,6 @@
 			],
 			"order": 1137,
 			"speechName": "a coin emoji",
-			"unicodeName": "",
 			"voiceOverName": "a coin"
 		},
 		{
@@ -36185,7 +35751,6 @@
 			],
 			"order": 1140,
 			"speechName": "an ID card emoji",
-			"unicodeName": "",
 			"voiceOverName": "an ID card"
 		},
 		{
@@ -36230,7 +35795,6 @@
 			],
 			"order": 1142,
 			"speechName": "a treasure chest emoji",
-			"unicodeName": "",
 			"voiceOverName": "a treasure chest"
 		},
 		{
@@ -36273,7 +35837,6 @@
 			],
 			"order": 1144,
 			"speechName": "a ladder emoji",
-			"unicodeName": "",
 			"voiceOverName": "a ladder"
 		},
 		{
@@ -36295,7 +35858,6 @@
 			],
 			"order": 1145,
 			"speechName": "a toolbox emoji",
-			"unicodeName": "",
 			"voiceOverName": "a toolbox"
 		},
 		{
@@ -36313,7 +35875,6 @@
 			],
 			"order": 1146,
 			"speechName": "a screwdriver emoji",
-			"unicodeName": "",
 			"voiceOverName": "a screwdriver"
 		},
 		{
@@ -36452,7 +36013,6 @@
 			],
 			"order": 1152,
 			"speechName": "a shovel emoji",
-			"unicodeName": "",
 			"voiceOverName": "a shovel"
 		},
 		{
@@ -36471,7 +36031,6 @@
 			],
 			"order": 1153,
 			"speechName": "a hand saw emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hand saw"
 		},
 		{
@@ -36539,7 +36098,6 @@
 			],
 			"order": 1156,
 			"speechName": "a mouse trap emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mouse trap"
 		},
 		{
@@ -36566,7 +36124,6 @@
 			],
 			"order": 1157,
 			"speechName": "a bricks emoji",
-			"unicodeName": "",
 			"voiceOverName": "bricks"
 		},
 		{
@@ -36605,7 +36162,6 @@
 			],
 			"order": 1159,
 			"speechName": "a broken chain emoji",
-			"unicodeName": "",
 			"voiceOverName": "a broken chain"
 		},
 		{
@@ -36623,7 +36179,6 @@
 			],
 			"order": 1160,
 			"speechName": "a magnet emoji",
-			"unicodeName": "",
 			"voiceOverName": "a magnet"
 		},
 		{
@@ -36691,7 +36246,6 @@
 			],
 			"order": 1163,
 			"speechName": "a firecracker emoji",
-			"unicodeName": "",
 			"voiceOverName": "a firecracker"
 		},
 		{
@@ -36712,7 +36266,6 @@
 			],
 			"order": 1164,
 			"speechName": "an axe emoji",
-			"unicodeName": "",
 			"voiceOverName": "an axe"
 		},
 		{
@@ -36858,7 +36411,6 @@
 			],
 			"order": 1171,
 			"speechName": "a tombstone emoji",
-			"unicodeName": "",
 			"voiceOverName": "a tombstone"
 		},
 		{
@@ -36987,7 +36539,6 @@
 			],
 			"order": 1176,
 			"speechName": "a nazar amulet emoji",
-			"unicodeName": "",
 			"voiceOverName": "a nazar amulet"
 		},
 		{
@@ -37014,7 +36565,6 @@
 			],
 			"order": 1177,
 			"speechName": "a hamsa emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hamsa"
 		},
 		{
@@ -37160,7 +36710,6 @@
 			],
 			"order": 1183,
 			"speechName": "an x-ray emoji",
-			"unicodeName": "",
 			"voiceOverName": "an x-ray"
 		},
 		{
@@ -37182,7 +36731,6 @@
 			],
 			"order": 1184,
 			"speechName": "a bandage emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bandage"
 		},
 		{
@@ -37202,7 +36750,6 @@
 			],
 			"order": 1185,
 			"speechName": "a stethoscope emoji",
-			"unicodeName": "",
 			"voiceOverName": "a stethoscope"
 		},
 		{
@@ -37288,7 +36835,6 @@
 			],
 			"order": 1188,
 			"speechName": "a drop of blood emoji",
-			"unicodeName": "",
 			"voiceOverName": "a drop of blood"
 		},
 		{
@@ -37319,7 +36865,6 @@
 			],
 			"order": 1189,
 			"speechName": "a DNA emoji",
-			"unicodeName": "",
 			"voiceOverName": "DNA"
 		},
 		{
@@ -37354,7 +36899,6 @@
 			],
 			"order": 1190,
 			"speechName": "a microbe emoji",
-			"unicodeName": "",
 			"voiceOverName": "a microbe"
 		},
 		{
@@ -37398,7 +36942,6 @@
 			],
 			"order": 1191,
 			"speechName": "a petri dish emoji",
-			"unicodeName": "",
 			"voiceOverName": "a petri dish"
 		},
 		{
@@ -37432,7 +36975,6 @@
 			],
 			"order": 1192,
 			"speechName": "a test tube emoji",
-			"unicodeName": "",
 			"voiceOverName": "a test tube"
 		},
 		{
@@ -37482,7 +37024,6 @@
 			],
 			"order": 1194,
 			"speechName": "a broom emoji",
-			"unicodeName": "",
 			"voiceOverName": "a broom"
 		},
 		{
@@ -37500,7 +37041,6 @@
 			],
 			"order": 1195,
 			"speechName": "a plunger emoji",
-			"unicodeName": "",
 			"voiceOverName": "a plunger"
 		},
 		{
@@ -37521,7 +37061,6 @@
 			],
 			"order": 1196,
 			"speechName": "a basket emoji",
-			"unicodeName": "",
 			"voiceOverName": "a basket"
 		},
 		{
@@ -37546,7 +37085,6 @@
 			],
 			"order": 1197,
 			"speechName": "a toilet paper emoji",
-			"unicodeName": "",
 			"voiceOverName": "toilet paper"
 		},
 		{
@@ -37747,7 +37285,6 @@
 			],
 			"order": 1203,
 			"speechName": "a soap emoji",
-			"unicodeName": "",
 			"voiceOverName": "soap"
 		},
 		{
@@ -37771,7 +37308,6 @@
 			],
 			"order": 1204,
 			"speechName": "a toothbrush emoji",
-			"unicodeName": "",
 			"voiceOverName": "a toothbrush"
 		},
 		{
@@ -37790,7 +37326,6 @@
 			],
 			"order": 1205,
 			"speechName": "a razor emoji",
-			"unicodeName": "",
 			"voiceOverName": "a razor"
 		},
 		{
@@ -37810,7 +37345,6 @@
 			],
 			"order": 1206,
 			"speechName": "a hair pick emoji",
-			"unicodeName": "",
 			"voiceOverName": "a hair pick"
 		},
 		{
@@ -37858,7 +37392,6 @@
 			],
 			"order": 1207,
 			"speechName": "a sponge emoji",
-			"unicodeName": "",
 			"voiceOverName": "a sponge"
 		},
 		{
@@ -37876,7 +37409,6 @@
 			],
 			"order": 1208,
 			"speechName": "a bucket emoji",
-			"unicodeName": "",
 			"voiceOverName": "a bucket"
 		},
 		{
@@ -37926,7 +37458,6 @@
 			],
 			"order": 1209,
 			"speechName": "a lotion bottle emoji",
-			"unicodeName": "",
 			"voiceOverName": "a lotion bottle"
 		},
 		{
@@ -38018,7 +37549,6 @@
 			],
 			"order": 1214,
 			"speechName": "a chair emoji",
-			"unicodeName": "",
 			"voiceOverName": "a chair"
 		},
 		{
@@ -38131,7 +37661,6 @@
 			],
 			"order": 1218,
 			"speechName": "a teddy bear emoji",
-			"unicodeName": "",
 			"voiceOverName": "a teddy bear"
 		},
 		{
@@ -38152,7 +37681,6 @@
 			],
 			"order": 1219,
 			"speechName": "a nesting doll emoji",
-			"unicodeName": "",
 			"voiceOverName": "a nesting doll"
 		},
 		{
@@ -38196,7 +37724,6 @@
 			],
 			"order": 1221,
 			"speechName": "a mirror emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mirror"
 		},
 		{
@@ -38213,7 +37740,6 @@
 			],
 			"order": 1222,
 			"speechName": "a window emoji",
-			"unicodeName": "",
 			"voiceOverName": "a window"
 		},
 		{
@@ -38363,7 +37889,6 @@
 			],
 			"order": 1229,
 			"speechName": "a magic wand emoji",
-			"unicodeName": "",
 			"voiceOverName": "a magic wand"
 		},
 		{
@@ -38391,7 +37916,6 @@
 			],
 			"order": 1230,
 			"speechName": "a piñata emoji",
-			"unicodeName": "",
 			"voiceOverName": "a piñata"
 		},
 		{
@@ -38511,7 +38035,6 @@
 			],
 			"order": 1234,
 			"speechName": "a folding hand fan emoji",
-			"unicodeName": "",
 			"voiceOverName": "a folding hand fan"
 		},
 		{
@@ -38570,7 +38093,6 @@
 			],
 			"order": 1237,
 			"speechName": "a disco ball emoji",
-			"unicodeName": "",
 			"voiceOverName": "a disco ball"
 		},
 		{
@@ -38603,7 +38125,6 @@
 			],
 			"order": 1238,
 			"speechName": "a red gift envelope emoji",
-			"unicodeName": "",
 			"voiceOverName": "a red gift envelope"
 		},
 		{
@@ -38819,7 +38340,6 @@
 			],
 			"order": 1248,
 			"speechName": "a sign on a stick emoji",
-			"unicodeName": "",
 			"voiceOverName": "a sign on a stick"
 		},
 		{
@@ -39091,7 +38611,6 @@
 			],
 			"order": 1259,
 			"speechName": "a receipt emoji",
-			"unicodeName": "",
 			"voiceOverName": "a receipt"
 		},
 		{
@@ -39835,7 +39354,6 @@
 			],
 			"order": 1288,
 			"speechName": "a safety pin emoji",
-			"unicodeName": "",
 			"voiceOverName": "a safety pin"
 		},
 		{
@@ -39969,7 +39487,6 @@
 			],
 			"order": 1294,
 			"speechName": "an abacus emoji",
-			"unicodeName": "",
 			"voiceOverName": "an abacus"
 		},
 		{
@@ -40385,7 +39902,6 @@
 			],
 			"order": 1311,
 			"speechName": "a pink heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "a pink heart"
 		},
 		{
@@ -40429,7 +39945,6 @@
 			],
 			"order": 1313,
 			"speechName": "an orange heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "an orange heart"
 		},
 		{
@@ -40493,7 +40008,6 @@
 			],
 			"order": 1316,
 			"speechName": "a light blue heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "a light blue heart"
 		},
 		{
@@ -40583,7 +40097,6 @@
 			],
 			"order": 1320,
 			"speechName": "a grey heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "a grey heart"
 		},
 		{
@@ -40603,7 +40116,6 @@
 			],
 			"order": 1321,
 			"speechName": "a white heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "a white heart"
 		},
 		{
@@ -40623,7 +40135,6 @@
 			],
 			"order": 1322,
 			"speechName": "a brown heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "a brown heart"
 		},
 		{
@@ -40685,7 +40196,6 @@
 			],
 			"order": 1324,
 			"speechName": "a heart on fire emoji",
-			"unicodeName": "",
 			"voiceOverName": "a heart on fire"
 		},
 		{
@@ -40731,7 +40241,6 @@
 			],
 			"order": 1325,
 			"speechName": "a mending heart emoji",
-			"unicodeName": "",
 			"voiceOverName": "a mending heart"
 		},
 		{
@@ -41127,7 +40636,6 @@
 			],
 			"order": 1340,
 			"speechName": "a khanda symbol emoji",
-			"unicodeName": "",
 			"voiceOverName": "a khanda symbol"
 		},
 		{
@@ -43313,7 +42821,6 @@
 			],
 			"order": 1434,
 			"speechName": "an elevator emoji",
-			"unicodeName": "",
 			"voiceOverName": "an elevator"
 		},
 		{
@@ -43465,7 +42972,6 @@
 			],
 			"order": 1441,
 			"speechName": "a wireless symbol emoji",
-			"unicodeName": "",
 			"voiceOverName": "a wireless symbol"
 		},
 		{
@@ -43551,7 +43057,6 @@
 			],
 			"order": 1445,
 			"speechName": "a family emoji",
-			"unicodeName": "",
 			"voiceOverName": "a family"
 		},
 		{
@@ -43576,7 +43081,6 @@
 			],
 			"order": 1446,
 			"speechName": "a family emoji",
-			"unicodeName": "",
 			"voiceOverName": "a family"
 		},
 		{
@@ -43597,7 +43101,6 @@
 			],
 			"order": 1447,
 			"speechName": "a family emoji",
-			"unicodeName": "",
 			"voiceOverName": "a family"
 		},
 		{
@@ -43623,7 +43126,6 @@
 			],
 			"order": 1448,
 			"speechName": "a family emoji",
-			"unicodeName": "",
 			"voiceOverName": "a family"
 		},
 		{
@@ -43642,7 +43144,6 @@
 			],
 			"order": 1449,
 			"speechName": "a transgender symbol emoji",
-			"unicodeName": "",
 			"voiceOverName": "a transgender symbol"
 		},
 		{
@@ -44034,7 +43535,6 @@
 			],
 			"order": 1466,
 			"speechName": "a keycap zero emoji",
-			"unicodeName": "",
 			"voiceOverName": "keycap zero"
 		},
 		{
@@ -44058,7 +43558,6 @@
 			],
 			"order": 1467,
 			"speechName": "a keycap one emoji",
-			"unicodeName": "",
 			"voiceOverName": "keycap one"
 		},
 		{
@@ -44082,7 +43581,6 @@
 			],
 			"order": 1468,
 			"speechName": "a keycap two emoji",
-			"unicodeName": "",
 			"voiceOverName": "keycap two"
 		},
 		{
@@ -44106,7 +43604,6 @@
 			],
 			"order": 1469,
 			"speechName": "a keycap three emoji",
-			"unicodeName": "",
 			"voiceOverName": "keycap three"
 		},
 		{
@@ -44130,7 +43627,6 @@
 			],
 			"order": 1470,
 			"speechName": "a keycap four emoji",
-			"unicodeName": "",
 			"voiceOverName": "keycap four"
 		},
 		{
@@ -44154,7 +43650,6 @@
 			],
 			"order": 1471,
 			"speechName": "a keycap five emoji",
-			"unicodeName": "",
 			"voiceOverName": "keycap five"
 		},
 		{
@@ -44178,7 +43673,6 @@
 			],
 			"order": 1472,
 			"speechName": "a keycap six emoji",
-			"unicodeName": "",
 			"voiceOverName": "keycap six"
 		},
 		{
@@ -44202,7 +43696,6 @@
 			],
 			"order": 1473,
 			"speechName": "a keycap seven emoji",
-			"unicodeName": "",
 			"voiceOverName": "keycap seven"
 		},
 		{
@@ -44226,7 +43719,6 @@
 			],
 			"order": 1474,
 			"speechName": "a keycap eight emoji",
-			"unicodeName": "",
 			"voiceOverName": "keycap eight"
 		},
 		{
@@ -44250,7 +43742,6 @@
 			],
 			"order": 1475,
 			"speechName": "a keycap nine emoji",
-			"unicodeName": "",
 			"voiceOverName": "keycap nine"
 		},
 		{
@@ -44326,7 +43817,6 @@
 			],
 			"order": 1478,
 			"speechName": "a number sign emoji",
-			"unicodeName": "",
 			"voiceOverName": "a number sign"
 		},
 		{
@@ -44349,7 +43839,6 @@
 			],
 			"order": 1479,
 			"speechName": "an asterisk emoji",
-			"unicodeName": "",
 			"voiceOverName": "an asterisk"
 		},
 		{
@@ -44365,7 +43854,6 @@
 			],
 			"order": 1480,
 			"speechName": "an eject button emoji",
-			"unicodeName": "",
 			"voiceOverName": "an eject button"
 		},
 		{
@@ -45233,7 +44721,6 @@
 			],
 			"order": 1520,
 			"speechName": "an equals sign emoji",
-			"unicodeName": "",
 			"voiceOverName": "an equals sign"
 		},
 		{
@@ -45255,7 +44742,6 @@
 			],
 			"order": 1521,
 			"speechName": "an infinity emoji",
-			"unicodeName": "",
 			"voiceOverName": "an infinity symbol"
 		},
 		{
@@ -45370,7 +44856,6 @@
 			],
 			"order": 1527,
 			"speechName": "an “I am a witness” emoji",
-			"unicodeName": "",
 			"voiceOverName": "“I am a witness”"
 		},
 		{
@@ -45651,7 +45136,6 @@
 			],
 			"order": 1540,
 			"speechName": "an orange circle emoji",
-			"unicodeName": "",
 			"voiceOverName": "an orange circle"
 		},
 		{
@@ -45668,7 +45152,6 @@
 			],
 			"order": 1541,
 			"speechName": "a yellow circle emoji",
-			"unicodeName": "",
 			"voiceOverName": "a yellow circle"
 		},
 		{
@@ -45685,7 +45168,6 @@
 			],
 			"order": 1542,
 			"speechName": "a green circle emoji",
-			"unicodeName": "",
 			"voiceOverName": "a green circle"
 		},
 		{
@@ -45720,7 +45202,6 @@
 			],
 			"order": 1544,
 			"speechName": "a purple circle emoji",
-			"unicodeName": "",
 			"voiceOverName": "a purple circle"
 		},
 		{
@@ -45773,7 +45254,6 @@
 			],
 			"order": 1547,
 			"speechName": "a brown circle emoji",
-			"unicodeName": "",
 			"voiceOverName": "a brown circle"
 		},
 		{
@@ -46033,7 +45513,6 @@
 			],
 			"order": 1562,
 			"speechName": "a red square emoji",
-			"unicodeName": "",
 			"voiceOverName": "a red square"
 		},
 		{
@@ -46050,7 +45529,6 @@
 			],
 			"order": 1563,
 			"speechName": "an orange square emoji",
-			"unicodeName": "",
 			"voiceOverName": "an orange square"
 		},
 		{
@@ -46067,7 +45545,6 @@
 			],
 			"order": 1564,
 			"speechName": "a yellow square emoji",
-			"unicodeName": "",
 			"voiceOverName": "a yellow square"
 		},
 		{
@@ -46084,7 +45561,6 @@
 			],
 			"order": 1565,
 			"speechName": "a green square emoji",
-			"unicodeName": "",
 			"voiceOverName": "a green square"
 		},
 		{
@@ -46101,7 +45577,6 @@
 			],
 			"order": 1566,
 			"speechName": "a blue square emoji",
-			"unicodeName": "",
 			"voiceOverName": "a blue square"
 		},
 		{
@@ -46118,7 +45593,6 @@
 			],
 			"order": 1567,
 			"speechName": "a purple square emoji",
-			"unicodeName": "",
 			"voiceOverName": "a purple square"
 		},
 		{
@@ -46168,7 +45642,6 @@
 			],
 			"order": 1570,
 			"speechName": "a brown square emoji",
-			"unicodeName": "",
 			"voiceOverName": "a brown square"
 		},
 		{
@@ -47255,7 +46728,6 @@
 			],
 			"order": 1615,
 			"speechName": "a pirate flag",
-			"unicodeName": "",
 			"voiceOverName": "a pirate flag"
 		},
 		{
@@ -47318,7 +46790,6 @@
 			],
 			"order": 1618,
 			"speechName": "a rainbow flag emoji",
-			"unicodeName": "",
 			"voiceOverName": "a rainbow flag"
 		},
 		{
@@ -47347,7 +46818,6 @@
 			],
 			"order": 1619,
 			"speechName": "a transgender flag emoji",
-			"unicodeName": "",
 			"voiceOverName": "a transgender flag"
 		},
 		{
@@ -47367,7 +46837,6 @@
 			],
 			"order": 1620,
 			"speechName": "a United Nations flag emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the United Nations"
 		},
 		{
@@ -47387,7 +46856,6 @@
 			],
 			"order": 1621,
 			"speechName": "a flag of Afghanistan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Afghanistan"
 		},
 		{
@@ -47409,7 +46877,6 @@
 			],
 			"order": 1622,
 			"speechName": "a flag of the Åland Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Åland Islands"
 		},
 		{
@@ -47429,7 +46896,6 @@
 			],
 			"order": 1623,
 			"speechName": "a flag of Albania emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Albania"
 		},
 		{
@@ -47449,7 +46915,6 @@
 			],
 			"order": 1624,
 			"speechName": "a flag of Algeria emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Algeria"
 		},
 		{
@@ -47470,7 +46935,6 @@
 			],
 			"order": 1625,
 			"speechName": "a flag of American Samoa emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of American Samoa"
 		},
 		{
@@ -47490,7 +46954,6 @@
 			],
 			"order": 1626,
 			"speechName": "a flag of Andorra emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Andorra"
 		},
 		{
@@ -47510,7 +46973,6 @@
 			],
 			"order": 1627,
 			"speechName": "a flag of Angola emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Angola"
 		},
 		{
@@ -47530,7 +46992,6 @@
 			],
 			"order": 1628,
 			"speechName": "a flag of Anguilla emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Anguilla"
 		},
 		{
@@ -47550,7 +47011,6 @@
 			],
 			"order": 1629,
 			"speechName": "a flag of Antarctica emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Antarctica"
 		},
 		{
@@ -47574,7 +47034,6 @@
 			],
 			"order": 1630,
 			"speechName": "a flag of Antigua and Barbuda emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Antigua and Barbuda"
 		},
 		{
@@ -47594,7 +47053,6 @@
 			],
 			"order": 1631,
 			"speechName": "a flag of Argentina emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Argentina"
 		},
 		{
@@ -47614,7 +47072,6 @@
 			],
 			"order": 1632,
 			"speechName": "a flag of Armenia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Armenia"
 		},
 		{
@@ -47634,7 +47091,6 @@
 			],
 			"order": 1633,
 			"speechName": "a flag of Aruba emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Aruba"
 		},
 		{
@@ -47654,7 +47110,6 @@
 			],
 			"order": 1634,
 			"speechName": "a flag of Australia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Australia"
 		},
 		{
@@ -47674,7 +47129,6 @@
 			],
 			"order": 1635,
 			"speechName": "a flag of Austria emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Austria"
 		},
 		{
@@ -47694,7 +47148,6 @@
 			],
 			"order": 1636,
 			"speechName": "a flag of Azerbaijan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Azerbaijan"
 		},
 		{
@@ -47714,7 +47167,6 @@
 			],
 			"order": 1637,
 			"speechName": "a flag of Bahamas emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Bahamas"
 		},
 		{
@@ -47734,7 +47186,6 @@
 			],
 			"order": 1638,
 			"speechName": "a flag of Bahrain emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Bahrain"
 		},
 		{
@@ -47754,7 +47205,6 @@
 			],
 			"order": 1639,
 			"speechName": "a flag of Bangladesh emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Bangladesh"
 		},
 		{
@@ -47774,7 +47224,6 @@
 			],
 			"order": 1640,
 			"speechName": "a flag of Barbados emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Barbados"
 		},
 		{
@@ -47794,7 +47243,6 @@
 			],
 			"order": 1641,
 			"speechName": "a flag of Belarus emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Belarus"
 		},
 		{
@@ -47814,7 +47262,6 @@
 			],
 			"order": 1642,
 			"speechName": "a flag of Belgium emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Belgium"
 		},
 		{
@@ -47834,7 +47281,6 @@
 			],
 			"order": 1643,
 			"speechName": "a flag of Belize emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Belize"
 		},
 		{
@@ -47854,7 +47300,6 @@
 			],
 			"order": 1644,
 			"speechName": "a flag of Benin emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Benin"
 		},
 		{
@@ -47874,7 +47319,6 @@
 			],
 			"order": 1645,
 			"speechName": "a flag of Bermuda emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Bermuda"
 		},
 		{
@@ -47894,7 +47338,6 @@
 			],
 			"order": 1646,
 			"speechName": "a flag of Bhutan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Bhutan"
 		},
 		{
@@ -47914,7 +47357,6 @@
 			],
 			"order": 1647,
 			"speechName": "a flag of Bolivia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Bolivia"
 		},
 		{
@@ -47938,7 +47380,6 @@
 			],
 			"order": 1648,
 			"speechName": "a flag of Bosnia and Herzegovina emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Bosnia and Herzegovina"
 		},
 		{
@@ -47958,7 +47399,6 @@
 			],
 			"order": 1649,
 			"speechName": "a flag of Botswana emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Botswana"
 		},
 		{
@@ -47978,7 +47418,6 @@
 			],
 			"order": 1650,
 			"speechName": "a flag of Brazil emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Brazil"
 		},
 		{
@@ -47999,7 +47438,6 @@
 			],
 			"order": 1651,
 			"speechName": "a flag of the British Virgin Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the British Virgin Islands"
 		},
 		{
@@ -48019,7 +47457,6 @@
 			],
 			"order": 1652,
 			"speechName": "a flag of Brunei emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Brunei"
 		},
 		{
@@ -48039,7 +47476,6 @@
 			],
 			"order": 1653,
 			"speechName": "a flag of Bulgaria emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Bulgaria"
 		},
 		{
@@ -48060,7 +47496,6 @@
 			],
 			"order": 1654,
 			"speechName": "a flag of Burkina Faso emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Burkina Faso"
 		},
 		{
@@ -48080,7 +47515,6 @@
 			],
 			"order": 1655,
 			"speechName": "a flag of Burundi emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Burundi"
 		},
 		{
@@ -48100,7 +47534,6 @@
 			],
 			"order": 1656,
 			"speechName": "a flag of Cambodia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Cambodia"
 		},
 		{
@@ -48120,7 +47553,6 @@
 			],
 			"order": 1657,
 			"speechName": "a flag of Cameroon emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Cameroon"
 		},
 		{
@@ -48140,7 +47572,6 @@
 			],
 			"order": 1658,
 			"speechName": "a flag of Canada emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Canada"
 		},
 		{
@@ -48161,7 +47592,6 @@
 			],
 			"order": 1659,
 			"speechName": "a flag of the Canary Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Canary Islands"
 		},
 		{
@@ -48182,7 +47612,6 @@
 			],
 			"order": 1660,
 			"speechName": "a flag of Cape Verde emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Cape Verde"
 		},
 		{
@@ -48202,7 +47631,6 @@
 			],
 			"order": 1661,
 			"speechName": "a flag of Bonaire emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Bonaire"
 		},
 		{
@@ -48223,7 +47651,6 @@
 			],
 			"order": 1662,
 			"speechName": "a flag of the Cayman Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Cayman Islands"
 		},
 		{
@@ -48245,7 +47672,6 @@
 			],
 			"order": 1663,
 			"speechName": "a flag of the Central African Republic emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Central African Republic"
 		},
 		{
@@ -48265,7 +47691,6 @@
 			],
 			"order": 1664,
 			"speechName": "a flag of Chad emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Chad"
 		},
 		{
@@ -48289,7 +47714,6 @@
 			],
 			"order": 1665,
 			"speechName": "a flag of the British Indian Ocean Territory emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the British Indian Ocean Territory"
 		},
 		{
@@ -48309,7 +47733,6 @@
 			],
 			"order": 1666,
 			"speechName": "a flag of Chile emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Chile"
 		},
 		{
@@ -48333,7 +47756,6 @@
 			],
 			"order": 1667,
 			"speechName": "a flag of China emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of China"
 		},
 		{
@@ -48353,7 +47775,6 @@
 			],
 			"order": 1668,
 			"speechName": "a flag of Christmas Island emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Christmas Island"
 		},
 		{
@@ -48376,7 +47797,6 @@
 			],
 			"order": 1669,
 			"speechName": "a flag of the Cocos (Keeling) Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Cocos (Keeling) Islands"
 		},
 		{
@@ -48396,7 +47816,6 @@
 			],
 			"order": 1670,
 			"speechName": "a flag of Colombia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Colombia"
 		},
 		{
@@ -48416,7 +47835,6 @@
 			],
 			"order": 1671,
 			"speechName": "a flag of Comoros emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Comoros"
 		},
 		{
@@ -48440,7 +47858,6 @@
 			],
 			"order": 1672,
 			"speechName": "a flag of the Republic of the Congo emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Republic of the Congo"
 		},
 		{
@@ -48465,7 +47882,6 @@
 			],
 			"order": 1673,
 			"speechName": "a flag of the Democratic Republic of the Congo emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Democratic Republic of the Congo"
 		},
 		{
@@ -48486,7 +47902,6 @@
 			],
 			"order": 1674,
 			"speechName": "a flag of the Cook Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Cook Islands"
 		},
 		{
@@ -48507,7 +47922,6 @@
 			],
 			"order": 1675,
 			"speechName": "a flag of Costa Rica emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Costa Rica"
 		},
 		{
@@ -48531,7 +47945,6 @@
 			],
 			"order": 1676,
 			"speechName": "a flag of Côte d’Ivoire emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Côte d’Ivoire"
 		},
 		{
@@ -48551,7 +47964,6 @@
 			],
 			"order": 1677,
 			"speechName": "a flag of Croatia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Croatia"
 		},
 		{
@@ -48571,7 +47983,6 @@
 			],
 			"order": 1678,
 			"speechName": "a flag of Cuba emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Cuba"
 		},
 		{
@@ -48593,7 +48004,6 @@
 			],
 			"order": 1679,
 			"speechName": "a flag of Curaçao emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Curaçao"
 		},
 		{
@@ -48613,7 +48023,6 @@
 			],
 			"order": 1680,
 			"speechName": "a flag of Cyprus emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Cyprus"
 		},
 		{
@@ -48635,7 +48044,6 @@
 			],
 			"order": 1681,
 			"speechName": "a flag of Czechia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Czechia"
 		},
 		{
@@ -48655,7 +48063,6 @@
 			],
 			"order": 1682,
 			"speechName": "a flag of Denmark emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Denmark"
 		},
 		{
@@ -48675,7 +48082,6 @@
 			],
 			"order": 1683,
 			"speechName": "a flag of Djibouti emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Djibouti"
 		},
 		{
@@ -48695,7 +48101,6 @@
 			],
 			"order": 1684,
 			"speechName": "a flag of Dominica emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Dominica"
 		},
 		{
@@ -48716,7 +48121,6 @@
 			],
 			"order": 1685,
 			"speechName": "a flag of the Dominican Republic emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Dominican Republic"
 		},
 		{
@@ -48736,7 +48140,6 @@
 			],
 			"order": 1686,
 			"speechName": "a flag of Ecuador emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Ecuador"
 		},
 		{
@@ -48756,7 +48159,6 @@
 			],
 			"order": 1687,
 			"speechName": "a flag of Egypt emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Egypt"
 		},
 		{
@@ -48777,7 +48179,6 @@
 			],
 			"order": 1688,
 			"speechName": "a flag of El Salvador emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of El Salvador"
 		},
 		{
@@ -48799,7 +48200,6 @@
 			],
 			"order": 1689,
 			"speechName": "a flag of Equatorial Guinea emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Equatorial Guinea"
 		},
 		{
@@ -48819,7 +48219,6 @@
 			],
 			"order": 1690,
 			"speechName": "a flag of Eritrea emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Eritrea"
 		},
 		{
@@ -48839,7 +48238,6 @@
 			],
 			"order": 1691,
 			"speechName": "a flag of Estonia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Estonia"
 		},
 		{
@@ -48860,7 +48258,6 @@
 			],
 			"order": 1692,
 			"speechName": "a flag of Eswatini emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Eswatini"
 		},
 		{
@@ -48880,7 +48277,6 @@
 			],
 			"order": 1693,
 			"speechName": "a flag of Ethiopia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Ethiopia"
 		},
 		{
@@ -48900,7 +48296,6 @@
 			],
 			"order": 1694,
 			"speechName": "a flag of European Union emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the European Union"
 		},
 		{
@@ -48921,7 +48316,6 @@
 			],
 			"order": 1695,
 			"speechName": "a flag of the Falkland Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Falkland Islands"
 		},
 		{
@@ -48942,7 +48336,6 @@
 			],
 			"order": 1696,
 			"speechName": "a flag of the Faroe Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Faroe Islands"
 		},
 		{
@@ -48962,7 +48355,6 @@
 			],
 			"order": 1697,
 			"speechName": "a flag of Fiji emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Fiji"
 		},
 		{
@@ -48982,7 +48374,6 @@
 			],
 			"order": 1698,
 			"speechName": "a flag of Finland emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Finland"
 		},
 		{
@@ -49002,7 +48393,6 @@
 			],
 			"order": 1699,
 			"speechName": "a flag of France emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of France"
 		},
 		{
@@ -49023,7 +48413,6 @@
 			],
 			"order": 1700,
 			"speechName": "a flag of French Guiana emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of French Guiana"
 		},
 		{
@@ -49044,7 +48433,6 @@
 			],
 			"order": 1701,
 			"speechName": "a flag of French Polynesia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of French Polynesia"
 		},
 		{
@@ -49065,7 +48453,6 @@
 			],
 			"order": 1702,
 			"speechName": "a flag of French Southern Territories emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the French Southern Territories"
 		},
 		{
@@ -49085,7 +48472,6 @@
 			],
 			"order": 1703,
 			"speechName": "a flag of Gabon emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Gabon"
 		},
 		{
@@ -49105,7 +48491,6 @@
 			],
 			"order": 1704,
 			"speechName": "a flag of Gambia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Gambia"
 		},
 		{
@@ -49125,7 +48510,6 @@
 			],
 			"order": 1705,
 			"speechName": "a flag of Georgia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Georgia"
 		},
 		{
@@ -49145,7 +48529,6 @@
 			],
 			"order": 1706,
 			"speechName": "a flag of Germany emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Germany"
 		},
 		{
@@ -49165,7 +48548,6 @@
 			],
 			"order": 1707,
 			"speechName": "a flag of Ghana emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Ghana"
 		},
 		{
@@ -49184,7 +48566,6 @@
 			],
 			"order": 1708,
 			"speechName": "a flag of Gibraltar emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Gibraltar"
 		},
 		{
@@ -49204,7 +48585,6 @@
 			],
 			"order": 1709,
 			"speechName": "a flag of Greece emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Greece"
 		},
 		{
@@ -49224,7 +48604,6 @@
 			],
 			"order": 1710,
 			"speechName": "a flag of Greenland emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Greenland"
 		},
 		{
@@ -49244,7 +48623,6 @@
 			],
 			"order": 1711,
 			"speechName": "a flag of Grenada emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Grenada"
 		},
 		{
@@ -49263,7 +48641,6 @@
 			],
 			"order": 1712,
 			"speechName": "a flag of Guadeloupe emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Guadeloupe"
 		},
 		{
@@ -49283,7 +48660,6 @@
 			],
 			"order": 1713,
 			"speechName": "a flag of Guam emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Guam"
 		},
 		{
@@ -49303,7 +48679,6 @@
 			],
 			"order": 1714,
 			"speechName": "a flag of Guatemala emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Guatemala"
 		},
 		{
@@ -49324,7 +48699,6 @@
 			],
 			"order": 1715,
 			"speechName": "a flag of Guernsey emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Guernsey"
 		},
 		{
@@ -49344,7 +48718,6 @@
 			],
 			"order": 1716,
 			"speechName": "a flag of Guinea emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Guinea"
 		},
 		{
@@ -49364,7 +48737,6 @@
 			],
 			"order": 1717,
 			"speechName": "a flag of Guinea-Bissau emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Guinea-Bissau"
 		},
 		{
@@ -49384,7 +48756,6 @@
 			],
 			"order": 1718,
 			"speechName": "a flag of Guyana emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Guyana"
 		},
 		{
@@ -49404,7 +48775,6 @@
 			],
 			"order": 1719,
 			"speechName": "a flag of Haiti emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Haiti"
 		},
 		{
@@ -49424,7 +48794,6 @@
 			],
 			"order": 1720,
 			"speechName": "a flag of Honduras emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Honduras"
 		},
 		{
@@ -49444,7 +48813,6 @@
 			],
 			"order": 1721,
 			"speechName": "a flag of Hong Kong emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Hong Kong"
 		},
 		{
@@ -49464,7 +48832,6 @@
 			],
 			"order": 1722,
 			"speechName": "a flag of Hungary emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Hungary"
 		},
 		{
@@ -49484,7 +48851,6 @@
 			],
 			"order": 1723,
 			"speechName": "a flag of Iceland emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Iceland"
 		},
 		{
@@ -49504,7 +48870,6 @@
 			],
 			"order": 1724,
 			"speechName": "a flag of India emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of India"
 		},
 		{
@@ -49524,7 +48889,6 @@
 			],
 			"order": 1725,
 			"speechName": "a flag of Indonesia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Indonesia"
 		},
 		{
@@ -49544,7 +48908,6 @@
 			],
 			"order": 1726,
 			"speechName": "a flag of Iran emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Iran"
 		},
 		{
@@ -49564,7 +48927,6 @@
 			],
 			"order": 1727,
 			"speechName": "a flag of Iraq emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Iraq"
 		},
 		{
@@ -49586,7 +48948,6 @@
 			],
 			"order": 1728,
 			"speechName": "a flag of Ireland emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Ireland"
 		},
 		{
@@ -49608,7 +48969,6 @@
 			],
 			"order": 1729,
 			"speechName": "a flag of the Isle of Man emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Isle of Man"
 		},
 		{
@@ -49628,7 +48988,6 @@
 			],
 			"order": 1730,
 			"speechName": "a flag of Israel emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Israel"
 		},
 		{
@@ -49648,7 +49007,6 @@
 			],
 			"order": 1731,
 			"speechName": "a flag of Italy emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Italy"
 		},
 		{
@@ -49668,7 +49026,6 @@
 			],
 			"order": 1732,
 			"speechName": "a flag of Jamaica emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Jamaica"
 		},
 		{
@@ -49688,7 +49045,6 @@
 			],
 			"order": 1733,
 			"speechName": "a flag of Japan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Japan"
 		},
 		{
@@ -49727,7 +49083,6 @@
 			],
 			"order": 1735,
 			"speechName": "a flag of Jersey emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Jersey"
 		},
 		{
@@ -49747,7 +49102,6 @@
 			],
 			"order": 1736,
 			"speechName": "a flag of Jordan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Jordan"
 		},
 		{
@@ -49767,7 +49121,6 @@
 			],
 			"order": 1737,
 			"speechName": "a flag of Kazakhstan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Kazakhstan"
 		},
 		{
@@ -49787,7 +49140,6 @@
 			],
 			"order": 1738,
 			"speechName": "a flag of Kenya emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Kenya"
 		},
 		{
@@ -49806,7 +49158,6 @@
 			],
 			"order": 1739,
 			"speechName": "a flag of Kiribati emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Kiribati"
 		},
 		{
@@ -49825,7 +49176,6 @@
 			],
 			"order": 1740,
 			"speechName": "a flag of Kosovo emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Kosovo"
 		},
 		{
@@ -49845,7 +49195,6 @@
 			],
 			"order": 1741,
 			"speechName": "a flag of Kuwait emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Kuwait"
 		},
 		{
@@ -49866,7 +49215,6 @@
 			],
 			"order": 1742,
 			"speechName": "a flag of Kyrgyzstan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Kyrgyzstan"
 		},
 		{
@@ -49886,7 +49234,6 @@
 			],
 			"order": 1743,
 			"speechName": "a flag of Laos emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Laos"
 		},
 		{
@@ -49906,7 +49253,6 @@
 			],
 			"order": 1744,
 			"speechName": "a flag of Latvia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Latvia"
 		},
 		{
@@ -49926,7 +49272,6 @@
 			],
 			"order": 1745,
 			"speechName": "a flag of Lebanon emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Lebanon"
 		},
 		{
@@ -49946,7 +49291,6 @@
 			],
 			"order": 1746,
 			"speechName": "a flag of Lesotho emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Lesotho"
 		},
 		{
@@ -49966,7 +49310,6 @@
 			],
 			"order": 1747,
 			"speechName": "a flag of Liberia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Liberia"
 		},
 		{
@@ -49986,7 +49329,6 @@
 			],
 			"order": 1748,
 			"speechName": "a flag of Libya emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Libya"
 		},
 		{
@@ -50005,7 +49347,6 @@
 			],
 			"order": 1749,
 			"speechName": "a flag of Liechtenstein emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Liechtenstein"
 		},
 		{
@@ -50025,7 +49366,6 @@
 			],
 			"order": 1750,
 			"speechName": "a flag of Lithuania emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Lithuania"
 		},
 		{
@@ -50045,7 +49385,6 @@
 			],
 			"order": 1751,
 			"speechName": "a flag of Luxembourg emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Luxembourg"
 		},
 		{
@@ -50066,7 +49405,6 @@
 			],
 			"order": 1752,
 			"speechName": "a flag of Macao emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Macao"
 		},
 		{
@@ -50086,7 +49424,6 @@
 			],
 			"order": 1753,
 			"speechName": "a flag of Madagascar emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Madagascar"
 		},
 		{
@@ -50106,7 +49443,6 @@
 			],
 			"order": 1754,
 			"speechName": "a flag of Malawi emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Malawi"
 		},
 		{
@@ -50126,7 +49462,6 @@
 			],
 			"order": 1755,
 			"speechName": "a flag of Malaysia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Malaysia"
 		},
 		{
@@ -50146,7 +49481,6 @@
 			],
 			"order": 1756,
 			"speechName": "a flag of Maldives emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Maldives"
 		},
 		{
@@ -50166,7 +49500,6 @@
 			],
 			"order": 1757,
 			"speechName": "a flag of Mali emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Mali"
 		},
 		{
@@ -50186,7 +49519,6 @@
 			],
 			"order": 1758,
 			"speechName": "a flag of Malta emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Malta"
 		},
 		{
@@ -50207,7 +49539,6 @@
 			],
 			"order": 1759,
 			"speechName": "a flag of the Marshall Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Marshall Islands"
 		},
 		{
@@ -50227,7 +49558,6 @@
 			],
 			"order": 1760,
 			"speechName": "a flag of Martinique emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Martinique"
 		},
 		{
@@ -50247,7 +49577,6 @@
 			],
 			"order": 1761,
 			"speechName": "a flag of Mauritania emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Mauritania"
 		},
 		{
@@ -50267,7 +49596,6 @@
 			],
 			"order": 1762,
 			"speechName": "a flag of Mauritius emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Mauritius"
 		},
 		{
@@ -50286,7 +49614,6 @@
 			],
 			"order": 1763,
 			"speechName": "a flag of Mayotte emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Mayotte"
 		},
 		{
@@ -50307,7 +49634,6 @@
 			],
 			"order": 1764,
 			"speechName": "a flag of Mexico emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Mexico"
 		},
 		{
@@ -50327,7 +49653,6 @@
 			],
 			"order": 1765,
 			"speechName": "a flag of Micronesia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Micronesia"
 		},
 		{
@@ -50347,7 +49672,6 @@
 			],
 			"order": 1766,
 			"speechName": "a flag of Moldova emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Moldova"
 		},
 		{
@@ -50369,7 +49693,6 @@
 			],
 			"order": 1767,
 			"speechName": "a flag of Monaco emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Monaco"
 		},
 		{
@@ -50389,7 +49712,6 @@
 			],
 			"order": 1768,
 			"speechName": "a flag of Mongolia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Mongolia"
 		},
 		{
@@ -50409,7 +49731,6 @@
 			],
 			"order": 1769,
 			"speechName": "a flag of Montenegro emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Montenegro"
 		},
 		{
@@ -50429,7 +49750,6 @@
 			],
 			"order": 1770,
 			"speechName": "a flag of Montserrat emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Montserrat"
 		},
 		{
@@ -50449,7 +49769,6 @@
 			],
 			"order": 1771,
 			"speechName": "a flag of Morocco emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Morocco"
 		},
 		{
@@ -50469,7 +49788,6 @@
 			],
 			"order": 1772,
 			"speechName": "a flag of Mozambique emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Mozambique"
 		},
 		{
@@ -50491,7 +49809,6 @@
 			],
 			"order": 1773,
 			"speechName": "a flag of Myanmar (Burma) emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Myanmar (Burma)"
 		},
 		{
@@ -50511,7 +49828,6 @@
 			],
 			"order": 1774,
 			"speechName": "a flag of Namibia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Namibia"
 		},
 		{
@@ -50531,7 +49847,6 @@
 			],
 			"order": 1775,
 			"speechName": "a flag of Nauru emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Nauru"
 		},
 		{
@@ -50551,7 +49866,6 @@
 			],
 			"order": 1776,
 			"speechName": "a flag of Nepal emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Nepal"
 		},
 		{
@@ -50572,7 +49886,6 @@
 			],
 			"order": 1777,
 			"speechName": "a flag of Netherlands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Netherlands"
 		},
 		{
@@ -50593,7 +49906,6 @@
 			],
 			"order": 1778,
 			"speechName": "a flag of New Caledonia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of New Caledonia"
 		},
 		{
@@ -50614,7 +49926,6 @@
 			],
 			"order": 1779,
 			"speechName": "a flag of New Zealand emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of New Zealand"
 		},
 		{
@@ -50634,7 +49945,6 @@
 			],
 			"order": 1780,
 			"speechName": "a flag of Nicaragua emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Nicaragua"
 		},
 		{
@@ -50654,7 +49964,6 @@
 			],
 			"order": 1781,
 			"speechName": "a flag of Niger emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Niger"
 		},
 		{
@@ -50674,7 +49983,6 @@
 			],
 			"order": 1782,
 			"speechName": "a flag of Nigeria emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Nigeria"
 		},
 		{
@@ -50694,7 +50002,6 @@
 			],
 			"order": 1783,
 			"speechName": "a flag of Niue emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Niue"
 		},
 		{
@@ -50714,7 +50021,6 @@
 			],
 			"order": 1784,
 			"speechName": "a flag of Norfolk Island emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Norfolk Island"
 		},
 		{
@@ -50736,7 +50042,6 @@
 			],
 			"order": 1785,
 			"speechName": "a flag of North Korea emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of North Korea"
 		},
 		{
@@ -50757,7 +50062,6 @@
 			],
 			"order": 1786,
 			"speechName": "a flag of North Macedonia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of North Macedonia"
 		},
 		{
@@ -50780,7 +50084,6 @@
 			],
 			"order": 1787,
 			"speechName": "a flag of the Northern Mariana Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Northern Mariana Islands"
 		},
 		{
@@ -50800,7 +50103,6 @@
 			],
 			"order": 1788,
 			"speechName": "a flag of Norway emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Norway"
 		},
 		{
@@ -50820,7 +50122,6 @@
 			],
 			"order": 1789,
 			"speechName": "a flag of Oman emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Oman"
 		},
 		{
@@ -50840,7 +50141,6 @@
 			],
 			"order": 1790,
 			"speechName": "a flag of Pakistan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Pakistan"
 		},
 		{
@@ -50860,7 +50160,6 @@
 			],
 			"order": 1791,
 			"speechName": "a flag of Palau emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Palau"
 		},
 		{
@@ -50883,7 +50182,6 @@
 			],
 			"order": 1792,
 			"speechName": "a flag of the Palestinian Territories emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Palestinian Territories"
 		},
 		{
@@ -50903,7 +50201,6 @@
 			],
 			"order": 1793,
 			"speechName": "a flag of Panama emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Panama"
 		},
 		{
@@ -50926,7 +50223,6 @@
 			],
 			"order": 1794,
 			"speechName": "a flag of Papua New Guinea emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Papua New Guinea"
 		},
 		{
@@ -50946,7 +50242,6 @@
 			],
 			"order": 1795,
 			"speechName": "a flag of Paraguay emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Paraguay"
 		},
 		{
@@ -50966,7 +50261,6 @@
 			],
 			"order": 1796,
 			"speechName": "a flag of Peru emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Peru"
 		},
 		{
@@ -50987,7 +50281,6 @@
 			],
 			"order": 1797,
 			"speechName": "a flag of Philippines emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Philippines"
 		},
 		{
@@ -51006,7 +50299,6 @@
 			],
 			"order": 1798,
 			"speechName": "a flag of Pitcairn emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Pitcairn"
 		},
 		{
@@ -51026,7 +50318,6 @@
 			],
 			"order": 1799,
 			"speechName": "a flag of Poland emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Poland"
 		},
 		{
@@ -51046,7 +50337,6 @@
 			],
 			"order": 1800,
 			"speechName": "a flag of Portugal emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Portugal"
 		},
 		{
@@ -51067,7 +50357,6 @@
 			],
 			"order": 1801,
 			"speechName": "a flag of Puerto Rico emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Puerto Rico"
 		},
 		{
@@ -51087,7 +50376,6 @@
 			],
 			"order": 1802,
 			"speechName": "a flag of Qatar emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Qatar"
 		},
 		{
@@ -51111,7 +50399,6 @@
 			],
 			"order": 1803,
 			"speechName": "a flag of Réunion emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Réunion"
 		},
 		{
@@ -51131,7 +50418,6 @@
 			],
 			"order": 1804,
 			"speechName": "a flag of Romania emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Romania"
 		},
 		{
@@ -51151,7 +50437,6 @@
 			],
 			"order": 1805,
 			"speechName": "a flag of Russia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Russia"
 		},
 		{
@@ -51171,7 +50456,6 @@
 			],
 			"order": 1806,
 			"speechName": "a flag of Rwanda emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Rwanda"
 		},
 		{
@@ -51190,7 +50474,6 @@
 			],
 			"order": 1807,
 			"speechName": "a flag of Samoa emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Samoa"
 		},
 		{
@@ -51211,7 +50494,6 @@
 			],
 			"order": 1808,
 			"speechName": "a flag of San Marino emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of San Marino"
 		},
 		{
@@ -51239,7 +50521,6 @@
 			],
 			"order": 1809,
 			"speechName": "a flag of São Tomé and Príncipe emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of São Tomé and Príncipe"
 		},
 		{
@@ -51258,7 +50539,6 @@
 			],
 			"order": 1810,
 			"speechName": "a flag of Sark emoji",
-			"unicodeName": "",
 			"voiceOverName": "a flag of Sark"
 		},
 		{
@@ -51279,7 +50559,6 @@
 			],
 			"order": 1811,
 			"speechName": "a flag of Saudi Arabia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Saudi Arabia"
 		},
 		{
@@ -51299,7 +50578,6 @@
 			],
 			"order": 1812,
 			"speechName": "a flag of Senegal emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Senegal"
 		},
 		{
@@ -51319,7 +50597,6 @@
 			],
 			"order": 1813,
 			"speechName": "a flag of Serbia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Serbia"
 		},
 		{
@@ -51339,7 +50616,6 @@
 			],
 			"order": 1814,
 			"speechName": "a flag of Seychelles emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Seychelles"
 		},
 		{
@@ -51360,7 +50636,6 @@
 			],
 			"order": 1815,
 			"speechName": "a flag of Sierra Leone emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Sierra Leone"
 		},
 		{
@@ -51380,7 +50655,6 @@
 			],
 			"order": 1816,
 			"speechName": "a flag of Singapore emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Singapore"
 		},
 		{
@@ -51400,7 +50674,6 @@
 			],
 			"order": 1817,
 			"speechName": "a flag of Sint Maarten emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Sint Maarten"
 		},
 		{
@@ -51420,7 +50693,6 @@
 			],
 			"order": 1818,
 			"speechName": "a flag of Slovakia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Slovakia"
 		},
 		{
@@ -51441,7 +50713,6 @@
 			],
 			"order": 1819,
 			"speechName": "a flag of Slovenia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Slovenia"
 		},
 		{
@@ -51466,7 +50737,6 @@
 			],
 			"order": 1820,
 			"speechName": "a flag of South Georgia and the South Sandwich Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of South Georgia and the South Sandwich Islands"
 		},
 		{
@@ -51487,7 +50757,6 @@
 			],
 			"order": 1821,
 			"speechName": "a flag of the Solomon Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Solomon Islands"
 		},
 		{
@@ -51507,7 +50776,6 @@
 			],
 			"order": 1822,
 			"speechName": "a flag of Somalia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Somalia"
 		},
 		{
@@ -51527,7 +50795,6 @@
 			],
 			"order": 1823,
 			"speechName": "a flag of South Africa emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of South Africa"
 		},
 		{
@@ -51549,7 +50816,6 @@
 			],
 			"order": 1824,
 			"speechName": "a flag of South Korea emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of South Korea"
 		},
 		{
@@ -51570,7 +50836,6 @@
 			],
 			"order": 1825,
 			"speechName": "a flag of South Sudan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of South Sudan"
 		},
 		{
@@ -51591,7 +50856,6 @@
 			],
 			"order": 1826,
 			"speechName": "a flag of Spain emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Spain"
 		},
 		{
@@ -51612,7 +50876,6 @@
 			],
 			"order": 1827,
 			"speechName": "a flag of Sri Lanka emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Sri Lanka"
 		},
 		{
@@ -51635,7 +50898,6 @@
 			],
 			"order": 1828,
 			"speechName": "a flag of Saint Barthélemy emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Saint Barthélemy"
 		},
 		{
@@ -51656,7 +50918,6 @@
 			],
 			"order": 1829,
 			"speechName": "a flag of Saint Helena emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Saint Helena"
 		},
 		{
@@ -51679,7 +50940,6 @@
 			],
 			"order": 1830,
 			"speechName": "a flag of Saint Kitts and Nevis emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Saint Kitts and Nevis"
 		},
 		{
@@ -51700,7 +50960,6 @@
 			],
 			"order": 1831,
 			"speechName": "a flag of Saint Lucia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Saint Lucia"
 		},
 		{
@@ -51725,7 +50984,6 @@
 			],
 			"order": 1832,
 			"speechName": "a flag of Saint Pierre and Miquelon emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Saint Pierre and Miquelon"
 		},
 		{
@@ -51750,7 +51008,6 @@
 			],
 			"order": 1833,
 			"speechName": "a flag of Saint Vincent and Grenadines emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Saint Vincent and Grenadines"
 		},
 		{
@@ -51770,7 +51027,6 @@
 			],
 			"order": 1834,
 			"speechName": "a flag of Sudan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Sudan"
 		},
 		{
@@ -51790,7 +51046,6 @@
 			],
 			"order": 1835,
 			"speechName": "a flag of Suriname emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Suriname"
 		},
 		{
@@ -51810,7 +51065,6 @@
 			],
 			"order": 1836,
 			"speechName": "a flag of Sweden emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Sweden"
 		},
 		{
@@ -51830,7 +51084,6 @@
 			],
 			"order": 1837,
 			"speechName": "a flag of Switzerland emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Switzerland"
 		},
 		{
@@ -51850,7 +51103,6 @@
 			],
 			"order": 1838,
 			"speechName": "a flag of Syria emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Syria"
 		},
 		{
@@ -51870,7 +51122,6 @@
 			],
 			"order": 1839,
 			"speechName": "a flag of Taiwan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Taiwan"
 		},
 		{
@@ -51891,7 +51142,6 @@
 			],
 			"order": 1840,
 			"speechName": "a flag of Tajikistan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Tajikistan"
 		},
 		{
@@ -51911,7 +51161,6 @@
 			],
 			"order": 1841,
 			"speechName": "a flag of Tanzania emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Tanzania"
 		},
 		{
@@ -51931,7 +51180,6 @@
 			],
 			"order": 1842,
 			"speechName": "a flag of Thailand emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Thailand"
 		},
 		{
@@ -51951,7 +51199,6 @@
 			],
 			"order": 1843,
 			"speechName": "a flag of Timor-Leste emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Timor-Leste"
 		},
 		{
@@ -51971,7 +51218,6 @@
 			],
 			"order": 1844,
 			"speechName": "a flag of Togo emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Togo"
 		},
 		{
@@ -51991,7 +51237,6 @@
 			],
 			"order": 1845,
 			"speechName": "a flag of Tokelau emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Tokelau"
 		},
 		{
@@ -52011,7 +51256,6 @@
 			],
 			"order": 1846,
 			"speechName": "a flag of Tonga emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Tonga"
 		},
 		{
@@ -52035,7 +51279,6 @@
 			],
 			"order": 1847,
 			"speechName": "a flag of Trinidad and Tobago emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Trinidad and Tobago"
 		},
 		{
@@ -52055,7 +51298,6 @@
 			],
 			"order": 1848,
 			"speechName": "a flag of Tunisia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Tunisia"
 		},
 		{
@@ -52077,7 +51319,6 @@
 			],
 			"order": 1849,
 			"speechName": "a flag of Türkiye emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Türkiye"
 		},
 		{
@@ -52098,7 +51339,6 @@
 			],
 			"order": 1850,
 			"speechName": "a flag of Turkmenistan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Turkmenistan"
 		},
 		{
@@ -52122,7 +51362,6 @@
 			],
 			"order": 1851,
 			"speechName": "a flag of the Turks and Caicos Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the Turks and Caicos Islands"
 		},
 		{
@@ -52142,7 +51381,6 @@
 			],
 			"order": 1852,
 			"speechName": "a flag of Tuvalu emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Tuvalu"
 		},
 		{
@@ -52163,7 +51401,6 @@
 			],
 			"order": 1853,
 			"speechName": "a flag of the U.S. Virgin Islands emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the U.S. Virgin Islands"
 		},
 		{
@@ -52183,7 +51420,6 @@
 			],
 			"order": 1854,
 			"speechName": "a flag of Uganda emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Uganda"
 		},
 		{
@@ -52203,7 +51439,6 @@
 			],
 			"order": 1855,
 			"speechName": "a flag of Ukraine emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Ukraine"
 		},
 		{
@@ -52227,7 +51462,6 @@
 			],
 			"order": 1856,
 			"speechName": "a flag of the United Arab Emirates emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the United Arab Emirates"
 		},
 		{
@@ -52255,7 +51489,6 @@
 			],
 			"order": 1857,
 			"speechName": "a flag of the United Kingdom emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the United Kingdom"
 		},
 		{
@@ -52272,7 +51505,6 @@
 			],
 			"order": 1858,
 			"speechName": "a flag of England emoji",
-			"unicodeName": "",
 			"voiceOverName": "a flag of England"
 		},
 		{
@@ -52289,7 +51521,6 @@
 			],
 			"order": 1859,
 			"speechName": "a flag of Scotland emoji",
-			"unicodeName": "",
 			"voiceOverName": "a flag of Scotland"
 		},
 		{
@@ -52306,7 +51537,6 @@
 			],
 			"order": 1860,
 			"speechName": "a flag of Wales emoji",
-			"unicodeName": "",
 			"voiceOverName": "a flag of Wales"
 		},
 		{
@@ -52342,7 +51572,6 @@
 			],
 			"order": 1861,
 			"speechName": "a flag of the United States emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of the United States"
 		},
 		{
@@ -52362,7 +51591,6 @@
 			],
 			"order": 1862,
 			"speechName": "a flag of Uruguay emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Uruguay"
 		},
 		{
@@ -52382,7 +51610,6 @@
 			],
 			"order": 1863,
 			"speechName": "a flag of Uzbekistan emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Uzbekistan"
 		},
 		{
@@ -52401,7 +51628,6 @@
 			],
 			"order": 1864,
 			"speechName": "a flag of Vanuatu emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Vanuatu"
 		},
 		{
@@ -52426,7 +51652,6 @@
 			],
 			"order": 1865,
 			"speechName": "a flag of Vatican City emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Vatican City"
 		},
 		{
@@ -52445,7 +51670,6 @@
 			],
 			"order": 1866,
 			"speechName": "a flag of Venezuela emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Venezuela"
 		},
 		{
@@ -52464,7 +51688,6 @@
 			],
 			"order": 1867,
 			"speechName": "a flag of Vietnam emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Vietnam"
 		},
 		{
@@ -52485,7 +51708,6 @@
 			],
 			"order": 1868,
 			"speechName": "a flag of Wallis and Futuna emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Wallis and Futuna"
 		},
 		{
@@ -52506,7 +51728,6 @@
 			],
 			"order": 1869,
 			"speechName": "a flag of Western Sahara emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Western Sahara"
 		},
 		{
@@ -52525,7 +51746,6 @@
 			],
 			"order": 1870,
 			"speechName": "a flag of Yemen emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Yemen"
 		},
 		{
@@ -52544,7 +51764,6 @@
 			],
 			"order": 1871,
 			"speechName": "a flag of Zambia emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Zambia"
 		},
 		{
@@ -52563,7 +51782,6 @@
 			],
 			"order": 1872,
 			"speechName": "a flag of Zimbabwe emoji",
-			"unicodeName": "",
 			"voiceOverName": "the flag of Zimbabwe"
 		},
 		{
@@ -52677,7 +51895,6 @@
 				"of"
 			],
 			"speechName": "a medical symbol emoji",
-			"unicodeName": "",
 			"voiceOverName": "a medical symbol"
 		},
 		{
@@ -52689,7 +51906,6 @@
 				"blm"
 			],
 			"speechName": "a raised fist emoji",
-			"unicodeName": "",
 			"voiceOverName": "a raised fist"
 		},
 		{
@@ -52701,7 +51917,6 @@
 				"blm"
 			],
 			"speechName": "a raised fist emoji",
-			"unicodeName": "",
 			"voiceOverName": "a raised fist"
 		},
 		{
@@ -52713,7 +51928,6 @@
 				"blm"
 			],
 			"speechName": "a raised fist emoji",
-			"unicodeName": "",
 			"voiceOverName": "a raised fist"
 		},
 		{
@@ -52731,7 +51945,6 @@
 				"people"
 			],
 			"speechName": "a people holding hands emoji",
-			"unicodeName": "",
 			"voiceOverName": "two people holding hands"
 		}
 	],
