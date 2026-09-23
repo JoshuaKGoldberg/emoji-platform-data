@@ -42,7 +42,7 @@ export async function generateAll({
 
 				const platformData = {
 					emoji:
-						// One of these five must have been defined.
+						// One of these must have been defined.
 						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 						(emojipedia?.code ??
 							fluemoji?.glyph ??

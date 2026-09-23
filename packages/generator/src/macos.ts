@@ -11,10 +11,6 @@ interface MacOSSnapshot {
 
 /**
  * Reads the macOS data snapshot committed alongside this package.
- *
- * Unlike the other sources, macOS's emoji data can only be read on a Mac, out
- * of private system frameworks. It's extracted separately by
- * scripts/refreshMacOS.ts so that building this repository doesn't need one.
  */
 export async function generateMacOS(
 	emojipedia: GeneratedEmojipediaData,

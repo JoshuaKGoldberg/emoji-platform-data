@@ -58,10 +58,7 @@ const run = promisify(execFile);
 
 if (process.platform !== "darwin") {
 	throw new Error(
-		[
-			`This script reads macOS's own emoji picker data, so it only runs on macOS (this is ${process.platform}).`,
-			`Its output is committed as packages/generator/macos.json, so building the packages doesn't need a Mac.`,
-		].join("\n"),
+		`This script reads macOS's own emoji picker data, so it only runs on macOS. This is ${process.platform}.`,
 	);
 }
 
