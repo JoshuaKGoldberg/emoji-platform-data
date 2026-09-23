@@ -53,7 +53,7 @@ To refresh the snapshot on any Mac:
 pnpm --filter @emoji-platform-data/generator refresh:macos
 ```
 
-That runs `packages/generator/scripts/extractMacOS.js` under `osascript`, as [JavaScript for Automation](https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/Introduction.html), whose Objective-C bridge can call private frameworks.
+That compiles `packages/generator/scripts/extractMacOS.ts` and runs it under `osascript`, as [JavaScript for Automation](https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/Introduction.html), whose Objective-C bridge can call private frameworks.
 It loads `EmojiFoundation.framework` -the framework macOS's own emoji picker uses- where each `EMFEmojiToken` knows its emoji and the document ID for that emoji in the search index, and `EMFInvertedIndex` turns that ID into the emoji's keywords and their search weights.
 `packages/generator/scripts/refreshMacOS.ts` then keeps the emoji that have keywords, sorts each emoji's keywords by weight, drops the weights themselves, and records the macOS and CoreEmoji versions it read.
 
@@ -67,7 +67,8 @@ A `Refresh macOS Data` workflow does exactly that automatically each month, on a
 It skips opening a pull request when that runner is on an older macOS than the committed snapshot, so a lagging runner image can't roll the data back.
 
 Both files are unusually low-level for this repository, and they depend on private frameworks that Apple can rename or restructure in any release.
-If a future macOS breaks the extraction, the failure will name the missing class or selector, and the `required` map at the top of `extractMacOS.js` lists every symbol it depends on.
+If a future macOS breaks the extraction, the failure will name the missing class or selector, and the `required` map at the top of `extractMacOS.ts` lists every symbol it depends on.
+Its type declarations for the bridge describe the same API surface, but only the `required` map is checked at runtime, so the two are meant to be kept in step.
 
 ## Formatting
 

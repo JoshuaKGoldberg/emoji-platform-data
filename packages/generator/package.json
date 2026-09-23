@@ -39,7 +39,8 @@
 		"yaml": "^2.9.1"
 	},
 	"devDependencies": {
-		"fluemoji": "git+https://github.com/microsoft/fluentui-emoji.git"
+		"fluemoji": "git+https://github.com/microsoft/fluentui-emoji.git",
+		"typescript": "6.0.3"
 	},
 	"engines": {
 		"node": ">=24"

@@ -1,7 +1,9 @@
 import { execFile } from "node:child_process";
 import * as fs from "node:fs/promises";
+import * as os from "node:os";
 import * as path from "node:path";
 import { promisify } from "node:util";
+import * as ts from "typescript";
 
 import { MacOSItem } from "../src/dataTypes.js";
 
@@ -51,7 +53,7 @@ const minimumEntriesPerCategory = 50;
 
 const minimumEntries = 1500;
 
-const extractorPath = path.join(import.meta.dirname, "extractMacOS.js");
+const extractorPath = path.join(import.meta.dirname, "extractMacOS.ts");
 const snapshotPath = path.join(import.meta.dirname, "../macos.json");
 
 const run = promisify(execFile);
@@ -150,12 +152,40 @@ async function readPreviousSnapshot() {
 	}
 }
 
+/**
+ * Compiles the extractor and runs it under osascript.
+ *
+ * osascript only runs JavaScript, so the extractor is transpiled to a
+ * temporary file first. It's written as a script rather than a module, which
+ * is what JavaScript for Automation expects, and takes its locale from the
+ * environment since osascript's own arguments aren't worth threading through.
+ */
 async function runExtractor() {
+	const directory = await fs.mkdtemp(
+		path.join(os.tmpdir(), "emoji-platform-data-"),
+	);
+
 	try {
+		const compiledPath = path.join(directory, "extractMacOS.js");
+		const { outputText } = ts.transpileModule(
+			await fs.readFile(extractorPath, "utf8"),
+			{
+				compilerOptions: {
+					module: ts.ModuleKind.ESNext,
+					target: ts.ScriptTarget.ES2022,
+				},
+			},
+		);
+
+		await fs.writeFile(compiledPath, outputText);
+
 		const { stdout } = await run(
 			"osascript",
-			["-l", "JavaScript", extractorPath, localeIdentifier],
-			{ maxBuffer: 128 * 1024 * 1024 },
+			["-l", "JavaScript", compiledPath],
+			{
+				env: { ...process.env, EMOJI_PLATFORM_DATA_LOCALE: localeIdentifier },
+				maxBuffer: 128 * 1024 * 1024,
+			},
 		);
 
 		return JSON.parse(stdout) as RawEntry[];
@@ -166,6 +196,8 @@ async function runExtractor() {
 			[`Could not read macOS emoji data.`, details].filter(Boolean).join("\n"),
 			{ cause: error },
 		);
+	} finally {
+		await fs.rm(directory, { force: true, recursive: true });
 	}
 }
 

@@ -10,7 +10,7 @@
 		},
 		"packages/generator": {
 			"ignoreDependencies": ["fluemoji"],
-			"ignore": ["scripts/extractMacOS.js"]
+			"ignore": ["scripts/extractMacOS.ts"]
 		}
 	}
 }
