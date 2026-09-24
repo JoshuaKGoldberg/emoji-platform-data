@@ -1,6 +1,6 @@
-# @emoji-platform-data/generator
+# @emoji-platform-data/emoji-mart
 
-## 0.3.0
+## 0.1.0
 
 ### Minor Changes
 
@@ -12,18 +12,3 @@
 
   emoji-mart last published in April 2024, so its data stops at Unicode 15.
   It adds keywords rather than emoji: every emoji it knows was already known to another source, and it doesn't cover the 45 newest.
-
-## 0.2.0
-
-### Minor Changes
-
-- [#1001](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1001) [`8ec2228`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/8ec22285b75b68f0452a1bf3550c1a7e2ec01805) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Added macOS emoji data, as a new `@emoji-platform-data/macos` package and a `macos` property on `EmojiPlatformData`.
-
-  Each `MacOSItem` holds the keywords macOS's emoji picker searches, along with the emoji's Apple name, VoiceOver and speech names, picker category, and picker order.
-  This also adds 20 emoji that none of the other sources know yet, such as 🫩, 🫆, 🪉, and 🫜.
-
-## 0.1.1
-
-### Patch Changes
-
-- [#999](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/999) [`d63f46e`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/d63f46e78026e7d6d737bb1ac2f7ec190a3bd499) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Declared `sideEffects: false` so bundlers can tree-shake, and updated dependencies
