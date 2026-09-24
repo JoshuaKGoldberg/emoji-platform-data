@@ -7,5 +7,9 @@
 		"noEmit": true
 	},
 	"extends": "./tsconfig.base.json",
-	"include": ["eslint.config.js", "packages/*/build.ts"]
+	"include": [
+		"eslint.config.js",
+		"packages/*/build.ts",
+		"packages/generator/scripts/*.ts"
+	]
 }

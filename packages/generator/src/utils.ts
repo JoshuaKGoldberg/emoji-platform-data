@@ -8,7 +8,7 @@ export function getEntryCldr(
 	unicode: string | undefined,
 	entries: string[],
 ) {
-	const byGlyphAlias = glyph && emojipedia.aliases.get(glyph);
+	const byGlyphAlias = glyph && getGlyphAlias(emojipedia, glyph);
 	if (byGlyphAlias) {
 		return byGlyphAlias;
 	}
@@ -44,6 +44,18 @@ export function getEntryCldr(
 
 export function normalizeTitle(text: string) {
 	return text.replaceAll(/\W/g, "").toLowerCase();
+}
+
+/**
+ * Looks up a glyph, then retries without any variation selectors.
+ * Sources disagree on whether to include them: macOS lists ⭐️ as U+2B50 U+FE0F,
+ * while Emojipedia knows it as U+2B50.
+ */
+function getGlyphAlias(emojipedia: GeneratedEmojipediaData, glyph: string) {
+	return (
+		emojipedia.aliases.get(glyph) ??
+		emojipedia.aliases.get(glyph.replaceAll("\uFE0F", ""))
+	);
 }
 
 /**

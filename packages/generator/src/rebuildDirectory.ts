@@ -6,7 +6,7 @@ import { formatExportLine } from "./formatExportLine.js";
 import { EmojiPlatformData } from "./types.js";
 
 export type EmojiPlatformDataSource =
-	"emojipedia" | "fluemoji" | "gemoji" | "twemoji";
+	"emojipedia" | "fluemoji" | "gemoji" | "macos" | "twemoji";
 
 export interface RebuildSettings extends GenerateAllSettings {
 	directory: string;
@@ -31,6 +31,7 @@ const sourceTypeNames: Record<EmojiPlatformDataSource, string> = {
 	emojipedia: "EmojipediaItem",
 	fluemoji: "FluemojiItem",
 	gemoji: "GemojiItem",
+	macos: "MacOSItem",
 	twemoji: "TwemojiItem",
 };
 
@@ -89,6 +90,15 @@ async function writeDataDirectory({
 
 	for (const { data, platformData } of entries) {
 		const { slug } = platformData;
+
+		// Slugs become file names, so a stray `:` or `/` would break the build on
+		// Windows or every platform respectively, and only for whoever runs it.
+		if (!/^[a-z0-9-]+$/.test(slug)) {
+			throw new Error(
+				`Slug '${slug}' for '${platformData.title}' isn't file name safe.`,
+			);
+		}
+
 		const { exportLine, exportName } = formatExportLine(
 			platformData.emojipedia?.currentCldrName,
 			slug,

@@ -9,7 +9,8 @@
 			"ignoreDependencies": ["@changesets/cli"]
 		},
 		"packages/generator": {
-			"ignoreDependencies": ["fluemoji"]
+			"ignoreDependencies": ["fluemoji"],
+			"ignore": ["scripts/extractMacOS.ts"]
 		}
 	}
 }
