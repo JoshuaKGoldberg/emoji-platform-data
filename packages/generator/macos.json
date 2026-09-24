@@ -51898,39 +51898,6 @@
 			"voiceOverName": "a medical symbol"
 		},
 		{
-			"appleName": "raised fist with medium skin tone",
-			"emoji": "✊🏽",
-			"isCommon": false,
-			"keywords": [
-				"black lives matter",
-				"blm"
-			],
-			"speechName": "a raised fist emoji",
-			"voiceOverName": "a raised fist"
-		},
-		{
-			"appleName": "raised fist with medium-dark skin tone",
-			"emoji": "✊🏾",
-			"isCommon": false,
-			"keywords": [
-				"black lives matter",
-				"blm"
-			],
-			"speechName": "a raised fist emoji",
-			"voiceOverName": "a raised fist"
-		},
-		{
-			"appleName": "raised fist with dark skin tone",
-			"emoji": "✊🏿",
-			"isCommon": false,
-			"keywords": [
-				"black lives matter",
-				"blm"
-			],
-			"speechName": "a raised fist emoji",
-			"voiceOverName": "a raised fist"
-		},
-		{
 			"appleName": "two people holding hands",
 			"emoji": "🧑‍🤝‍🧑",
 			"isCommon": false,

@@ -48,10 +48,29 @@ const coreEmojiInfoPlist =
  */
 const localeIdentifier = "en_US";
 
+/**
+ * The categories the extractor asks for by name, kept in step with the
+ * EMFEmojiCategory selectors in extractMacOS.ts. Iterating this rather than the
+ * categories present in the data is what catches one coming back empty: a
+ * missing key can't be under-count-checked.
+ */
+const expectedCategories = [
+	"Activity",
+	"Flags",
+	"FoodAndDrink",
+	"Nature",
+	"Objects",
+	"People",
+	"Symbols",
+	"TravelAndPlaces",
+];
+
 /** The smallest category holds a few hundred emoji, so this is a wide margin. */
 const minimumEntriesPerCategory = 50;
 
 const minimumEntries = 1500;
+
+const skinToneModifiers = /[\u{1F3FB}-\u{1F3FF}]/gu;
 
 const extractorPath = path.join(import.meta.dirname, "extractMacOS.ts");
 const snapshotPath = path.join(import.meta.dirname, "../macos.json");
@@ -65,8 +84,13 @@ if (process.platform !== "darwin") {
 }
 
 const previous = await readPreviousSnapshot();
-const entries = (await runExtractor())
-	.filter((entry) => Object.keys(entry.keywordWeights).length > 0)
+const kept = (await runExtractor()).filter(
+	(entry) => Object.keys(entry.keywordWeights).length > 0,
+);
+const present = new Set(kept.map((entry) => entry.emoji));
+
+const entries = kept
+	.filter((entry) => !isRedundantSkinToneVariant(entry, present))
 	.map(toItem)
 	.sort(compareItems);
 
@@ -123,6 +147,18 @@ function countByCategory(entries: MacOSItem[]) {
 	}
 
 	return counts;
+}
+
+/**
+ * Detects skin-tone variants that macOS's search index carries but the picker
+ * doesn't list — they have no category or order, and exist only to route search
+ * terms to an emoji already in the data. Keeping them would give one emoji a
+ * partial tone axis that nothing else in the data set has.
+ */
+function isRedundantSkinToneVariant({ emoji }: RawEntry, present: Set<string>) {
+	const toneless = emoji.replaceAll(skinToneModifiers, "");
+
+	return toneless !== emoji && present.has(toneless);
 }
 
 async function readCoreEmojiVersion() {
@@ -258,10 +294,20 @@ function validate(entries: MacOSItem[], previous: Snapshot | undefined) {
 
 	const counts = countByCategory(entries);
 
-	for (const [category, count] of counts) {
+	for (const category of expectedCategories) {
+		const count = counts.get(category) ?? 0;
+
 		if (count < minimumEntriesPerCategory) {
 			problems.push(
 				`The ${category} category only has ${count.toString()} emoji, out of at least ${minimumEntriesPerCategory.toString()} expected.`,
+			);
+		}
+	}
+
+	for (const category of counts.keys()) {
+		if (!expectedCategories.includes(category)) {
+			problems.push(
+				`Unrecognized category ${category}; add it to expectedCategories.`,
 			);
 		}
 	}

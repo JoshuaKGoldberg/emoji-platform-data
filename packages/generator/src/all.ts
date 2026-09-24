@@ -53,9 +53,7 @@ export async function generateAll({
 					fluemoji,
 					gemoji,
 					macos,
-					slug:
-						emojipedia?.slug ??
-						(twemoji?.description ?? title).replaceAll(" ", "-").toLowerCase(),
+					slug: emojipedia?.slug ?? slugify(twemoji?.description ?? title),
 					title,
 					twemoji,
 				};
@@ -64,4 +62,16 @@ export async function generateAll({
 			})
 			.sort(([, a], [, b]) => a.slug.localeCompare(b.slug)),
 	);
+}
+
+/**
+ * Mirrors Emojipedia's slug shape for titles that don't have one. Slugs become
+ * file names, so anything Windows reserves (`:`) or that `fs` reads as a path
+ * separator (`/`) has to go — macOS supplies both.
+ */
+function slugify(text: string) {
+	return text
+		.toLowerCase()
+		.replaceAll(/[^a-z0-9]+/g, "-")
+		.replaceAll(/^-+|-+$/g, "");
 }
