@@ -57,20 +57,24 @@ pnpm --filter @emoji-platform-data/generator refresh:discord https://canary.disc
 
 `packages/generator/scripts/refreshDiscord.ts` fetches <https://discord.com/app> and collects the `/assets/*.js` it lists.
 Two of those matter, and each JSON blob it wants sits inside a single-quoted JavaScript string literal, so the script scans to that literal's first unescaped quote and converts the two escapes the bundler emits that JSON doesn't share.
+It finds a blob by parsing every literal in a script and asking what each one holds, rather than by where it sits or what its first key is, since neither is Discord's to keep stable.
 
-The emoji themselves are in a chunk Discord names `vnd-emoji.*`, which the script tries first; the name is Discord's to change, so a miss falls back to reading every script instead.
+The emoji themselves are in a chunk Discord names `vnd-emoji.*`, which the script tries first, falling back to reading every script.
 That gives each emoji's shortcodes, and the `emojisByCategory` ranges that say which category and picker position it has.
 
 The keywords the picker actually searches on are not in there.
-They're a separate set per locale, in a chunk loaded on demand, so finding the `en-US` one means reading the client's own minified code in three hops:
+They're a separate set per locale, in a chunk loaded on demand, so finding the `en-US` one means reading the client's own minified code.
+The client chunk is identified by carrying both halves of what that takes -a locale-to-chunk-id map, and the bundler's chunk-to-file map- rather than by its `web.*` name or by any function in it.
+From there the script prefers a shortcut: the emoji store's search method, `nameMatchesChain`, sits in the module that references the locale map, which names the chunk id directly.
 
-1. The emoji store's search method, `nameMatchesChain`, matches a query against each emoji's names and against a lookup keyed by its first name.
-   That method is what identifies the client chunk, `web.*`, and the module within it.
-2. That module references the module mapping each locale to a chunk id, as `n(<id>).S[e]`.
-3. The bundler's own chunk-to-file map turns that id into a file name, which is a bare hash -no chunk id, unlike the named chunks.
-
-Each of those three lookups insists on matching exactly once.
+Every one of those lookups is a guess about minified code, so each insists on matching exactly once.
 A pattern that starts matching twice is as much a sign of the code having moved on as one that stops matching, and quietly taking the first of two would be a coin flip.
+When the shortcut doesn't match, the script says so and falls back to trying every locale chunk the client loads, keeping whichever turns out to hold term lists for emoji that exist.
+That fallback is what makes renaming `nameMatchesChain`, or moving the module it lives in, a non-event.
+
+Turning a chunk id into a file name has the same shape.
+The bundler writes some chunks with their id in the file name and the rest as a bare hash, in the same build, and which of the two a given chunk gets isn't stable across builds.
+Rather than reimplement that choice, the script offers every form the client spells out for the id and lets the fetch decide.
 
 The data lists every skin tone variant of the emoji that have them, but only so that shortcodes like `wave_tone3` resolve.
 Their names are mechanical suffixes on the base emoji's, unlike the macOS variants that carry real search terms, so they're dropped rather than folded in.
