@@ -54,7 +54,6 @@ export async function generateEmojiMart(
 
 			const cldr = getEntryCldr(emojipedia, skin.native, skin.unified, [
 				entry.name,
-				entry.id,
 			]);
 
 			const item: EmojiMartItem = {
@@ -102,23 +101,26 @@ function hasCodepoints(codepointsHex: string[], unified: string) {
 }
 
 /**
- * Several emoji-mart entries can resolve to one Emojipedia title: emoji-mart
- * keeps both 🤵 `person_in_tuxedo` and 🤵‍♂️ `man_in_tuxedo`, while Emojipedia
- * knows only one "Man in Tuxedo". Preferring the entry whose codepoints are the
- * ones Emojipedia lists stops an entry that matched on name alone from winning.
+ * Two emoji-mart entries can resolve to one title, because this repository keys
+ * emoji by Emojipedia title and Emojipedia gives two of its items the same
+ * title: 🤵 `person-in-tuxedo` and 🤵‍♂️ `man-in-tuxedo` are both "Man in
+ * Tuxedo". Keeping whichever entry has the codepoints of the item that survived
+ * that collapse lands on the same emoji the rest of the data did.
  */
 function pickEntry(cldr: string, group: ResolvedEntry[]) {
-	const exact = group.filter((entry) => entry.exact);
-
-	if (exact.length > 1) {
-		console.warn(
-			`Multiple emoji-mart entries have the codepoints of '${cldr}'; keeping '${exact[0].item.id}'.`,
-		);
+	// Emojipedia doesn't list every base glyph separately, such as 🧕 apart from
+	// 🧕‍♀️, so a lone inexact entry is still the best data for its title.
+	if (group.length === 1) {
+		return group[0];
 	}
 
-	// Emojipedia doesn't list every base glyph separately, such as 🧕 apart from
-	// 🧕‍♀️, so an inexact entry is still the best data available for its title.
-	return exact[0] ?? group[0];
+	const kept = group.find((entry) => entry.exact) ?? group[0];
+
+	console.warn(
+		`Multiple emojiMart entries resolve to '${cldr}'; keeping '${kept.item.id}'.`,
+	);
+
+	return kept;
 }
 
 function withoutVariationSelectors(unified: string) {

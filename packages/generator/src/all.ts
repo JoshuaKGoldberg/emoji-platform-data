@@ -54,7 +54,7 @@ export async function generateAll({
 						// One of these must have been defined.
 						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 						(emojipedia?.code ??
-							emojiMart?.skins[0].native ??
+							emojiMart?.skins[0]?.native ??
 							fluemoji?.glyph ??
 							gemoji?.emoji ??
 							macos?.emoji ??
