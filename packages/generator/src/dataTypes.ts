@@ -1,3 +1,5 @@
+export type AllEmojiMartData = Record<string, EmojiMartItem>;
+
 export type AllEmojipediaData = Record<string, EmojipediaItem>;
 
 export type AllEmojiPlatformData = Record<string, EmojiPlatformData>;
@@ -9,6 +11,43 @@ export type AllGemojiData = Record<string, GemojiItem>;
 export type AllMacOSData = Record<string, MacOSItem>;
 
 export type AllTwemojiData = Record<string, TwemojiItem>;
+
+export interface EmojiMartItem {
+	/** Other shortcodes emoji-mart accepts for the emoji, such as "thumbsup" for 👍. */
+	aliases?: string[];
+
+	/** Picker category listing the emoji, such as "nature". */
+	category: string;
+
+	/** Text emoticons the emoji stands in for, such as ":)" for 😃. */
+	emoticons?: string[];
+
+	/** emoji-mart's shortcode for the emoji, such as "octopus". */
+	id: string;
+
+	/** Terms the picker matches searches against. */
+	keywords: string[];
+
+	/** How emoji-mart names the emoji, such as "Octopus". */
+	name: string;
+
+	/** Where the emoji falls in the picker's overall order, across all categories. */
+	order: number;
+
+	/** The emoji, then each of its skin tone variants. */
+	skins: EmojiMartSkin[];
+
+	/** Emoji version that introduced the emoji, such as 1. */
+	version: number;
+}
+
+export interface EmojiMartSkin {
+	/** The variant's glyph, such as "👋🏽". */
+	native: string;
+
+	/** The variant's codepoints, such as "1f44b-1f3fd". */
+	unified: string;
+}
 
 export interface EmojipediaComponent {
 	alsoKnownAs?: string[];
@@ -75,6 +114,7 @@ export interface EmojipediaVendor {
 
 export interface EmojiPlatformData {
 	emoji: string;
+	emojiMart?: EmojiMartItem;
 	emojipedia?: EmojipediaItem;
 	fluemoji?: FluemojiItem;
 	gemoji?: GemojiItem;

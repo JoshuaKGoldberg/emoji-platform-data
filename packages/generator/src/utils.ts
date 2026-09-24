@@ -23,9 +23,7 @@ export function getEntryCldr(
 	const byUnicode =
 		unicode &&
 		emojipedia.items.find((emojipediaItem) => {
-			const normalizedHexes = emojipediaItem.codepointsHex.map((hex) =>
-				hex.replace("U+", "").toLowerCase(),
-			);
+			const normalizedHexes = normalizeCodepoints(emojipediaItem.codepointsHex);
 			return (
 				normalizedHexes.join("-") === unicode ||
 				normalizedHexes.filter((hex) => hex !== "fe0f").join("-") === unicode
@@ -40,6 +38,17 @@ export function getEntryCldr(
 		.replaceAll("#", "Hash")
 		.replaceAll("*", "Asterisk")
 		.replaceAll("’s Symbol", "’s Room");
+}
+
+/**
+ * Emojipedia's `["U+1F44B", "U+1F3FD"]` as the `["1f44b", "1f3fd"]` form other
+ * platforms write their codepoints in. Emojipedia writes the shortest hex that
+ * fits, such as `U+A9`, while platforms pad to at least four digits (`00a9`).
+ */
+export function normalizeCodepoints(codepointsHex: string[]) {
+	return codepointsHex.map((hex) =>
+		hex.replace("U+", "").toLowerCase().padStart(4, "0"),
+	);
 }
 
 export function normalizeTitle(text: string) {

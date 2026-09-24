@@ -17,7 +17,7 @@ This repository is a [pnpm workspace](https://pnpm.io/workspaces) containing sev
 
 - `generator` (`@emoji-platform-data/generator`): the TypeScript source code that reads each upstream emoji source and generates data
 - `emoji-platform-data`: the combined data package, with every emoji's data across all sources
-- `emojipedia`, `fluemoji`, `gemoji`, `macos`, `twemoji` (`@emoji-platform-data/*`): one data package per upstream source
+- `emoji-mart`, `emojipedia`, `fluemoji`, `gemoji`, `macos`, `twemoji` (`@emoji-platform-data/*`): one data package per upstream source
 
 The data packages contain no source code of their own.
 Each has a small `build.ts` that calls the generator to regenerate its `lib/` directory, which is gitignored.
