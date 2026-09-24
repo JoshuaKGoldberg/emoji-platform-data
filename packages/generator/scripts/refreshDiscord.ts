@@ -22,28 +22,35 @@ interface RawEmoji {
 	unicodeVersion: number;
 }
 
+/** Search keywords, keyed by the emoji's first name. */
+type RawKeywords = Record<string, string[]>;
+
 interface Snapshot {
-	chunk: string;
+	dataChunk: string;
 	entries: DiscordItem[];
+	keywordChunk: string;
+	locale: string;
 	source: string;
 }
 
 /**
- * Emoji that should always come back, with a shortcode they should always have.
+ * Emoji that should always come back, with a shortcode and a keyword they
+ * should always have.
+ *
+ * The keywords live in a different script than the emoji, and are matched up by
+ * name, so these catch the two coming apart as well as either going missing.
  */
-const canaryNames = {
-	"❤️": "heart",
-	"🎉": "tada",
-	"👍": "thumbsup",
-	"😀": "grinning",
+const canaryTerms = {
+	"❤️": { keyword: "love", name: "heart" },
+	"🎉": { keyword: "celebrate", name: "tada" },
+	"🐙": { keyword: "creature", name: "octopus" },
+	"👍": { keyword: "like", name: "thumbsup" },
 };
 
 /**
- * The page whose scripts include the emoji data, and where they're served from.
+ * The page listing the scripts the web client loads.
  */
 const defaultSource = "https://discord.com/app";
-
-const assetOrigin = "https://discord.com";
 
 /**
  * The categories the picker lists, kept as a list rather than read from the
@@ -60,49 +67,91 @@ const expectedCategories = [
 	"travel",
 ];
 
+/**
+ * The locale whose keywords this package uses.
+ * Discord ships a set per locale; this package is English-only, as macOS is.
+ */
+const locale = "en-US";
+
 /** The smallest category holds over a hundred emoji, so this is a wide margin. */
 const minimumEntriesPerCategory = 50;
 
 const minimumEntries = 1500;
 
-/** Where the data blob starts inside whichever script carries it. */
+/**
+ * Flags and a few sequences have no keywords at all, so this is well under the
+ * number that do.
+ */
+const minimumEntriesWithKeywords = 1200;
+
+/** Where the emoji data starts inside whichever script carries it. */
 const dataPrefix = `JSON.parse('{"emojis":[`;
 
+/** Where the keywords start inside the script for a locale. */
+const keywordsPrefix = `JSON.parse('{"`;
+
 /** The chunk Discord splits its emoji data into, when it still names it that. */
-const namedChunkPrefix = "vnd-emoji.";
+const dataChunkPrefix = "vnd-emoji.";
+
+/** The chunk holding the client itself, when it still names it that. */
+const clientChunkPrefix = "web.";
+
+/**
+ * The method the emoji store searches with, used to find the client script and,
+ * within it, the module that loads the keywords.
+ */
+const searchMethod = "nameMatchesChain";
 
 const snapshotPath = path.join(import.meta.dirname, "../discord.json");
 
 const source = process.argv[2] ?? defaultSource;
+const origin = new URL(source).origin;
 
 const previous = await readPreviousSnapshot();
-const { chunk, data } = await readData();
 
-const entries = toEntries(data);
+const page = await fetchText(source);
+const scripts = listScripts(page);
+
+const { chunk: dataChunk, data } = await readEmojiData();
+const { chunk: keywordChunk, keywords } = await readKeywords();
+
+const entries = toEntries(data, keywords);
 
 validate(entries, previous);
 
-const snapshot: Snapshot = { chunk, entries, source };
+const snapshot: Snapshot = {
+	dataChunk,
+	entries,
+	keywordChunk,
+	locale,
+	source,
+};
 
-// Discord redeploys constantly, and every deploy renames the chunk. Rewriting
+// Discord redeploys constantly, and every deploy renames the chunks. Rewriting
 // the file for a rename alone would churn it -and open empty refresh pull
 // requests- for data that hasn't changed.
 if (previous && isSameData(previous.entries, entries)) {
 	console.log(
-		`Read ${entries.length.toString()} emoji from ${chunk}, unchanged from the snapshot.`,
+		`Read ${entries.length.toString()} emoji from ${dataChunk}, unchanged from the snapshot.`,
 	);
 } else {
 	await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, "\t") + "\n");
-	console.log(`Wrote ${entries.length.toString()} emoji from ${chunk}.`);
+	console.log(
+		`Wrote ${entries.length.toString()} emoji from ${dataChunk}, with keywords for ${countWithKeywords(entries).toString()} of them from ${keywordChunk}.`,
+	);
+}
+
+function countWithKeywords(entries: DiscordItem[]) {
+	return entries.filter((entry) => entry.keywords.length).length;
 }
 
 /**
- * Pulls the data blob out of a script, as the JavaScript string literal it's
+ * Pulls a JSON blob out of a script, as the JavaScript string literal it's
  * embedded in rather than by matching its shape, so that a new field or a
  * reordering of the existing ones doesn't need this to change.
  */
-function extractData(script: string) {
-	const start = script.indexOf(dataPrefix);
+function extractJson(script: string, prefix: string) {
+	const start = script.indexOf(prefix);
 	if (start === -1) {
 		return undefined;
 	}
@@ -116,7 +165,9 @@ function extractData(script: string) {
 	}
 
 	if (end >= script.length) {
-		throw new Error("Found the emoji data, but it was never closed.");
+		throw new Error(
+			`Found a blob starting with ${prefix}, but it never ended.`,
+		);
 	}
 
 	const literal = script
@@ -125,7 +176,11 @@ function extractData(script: string) {
 		.replaceAll("\\'", "'")
 		.replaceAll(/\\x([0-9a-fA-F]{2})/g, "\\u00$1");
 
-	return JSON.parse(literal) as RawData;
+	return JSON.parse(literal) as unknown;
+}
+
+async function fetchScript(chunk: string) {
+	return await fetchText(`${origin}/assets/${chunk}`);
 }
 
 async function fetchText(url: string) {
@@ -139,14 +194,138 @@ async function fetchText(url: string) {
 	return await response.text();
 }
 
+/**
+ * Finds a value in the script, insisting it appears exactly once.
+ *
+ * These all read minified code that nothing promises to keep stable. A pattern
+ * that starts matching twice is as much a sign of that code having moved on as
+ * one that stops matching, and quietly taking the first of two would be a
+ * coin flip.
+ */
+function findOnly(script: string, pattern: RegExp, description: string) {
+	const matches = [...script.matchAll(pattern)].map((match) => match[1]);
+
+	if (matches.length !== 1) {
+		throw new Error(
+			`Expected exactly one ${description} in the client script, but found ${matches.length.toString()}.`,
+		);
+	}
+
+	return matches[0];
+}
+
 function isSameData(left: DiscordItem[], right: DiscordItem[]) {
 	return JSON.stringify(left) === JSON.stringify(right);
 }
 
-function isUrl(text: string) {
-	const parsed = URL.parse(text);
+/**
+ * The scripts a page loads, in the order it lists them.
+ */
+function listScripts(page: string) {
+	const scripts = [
+		...new Set(
+			[...page.matchAll(/\/assets\/([\w.-]+\.js)/g)].map((match) => match[1]),
+		),
+	];
 
-	return parsed?.protocol === "http:" || parsed?.protocol === "https:";
+	if (!scripts.length) {
+		throw new Error(`No scripts were listed by ${source}.`);
+	}
+
+	return scripts;
+}
+
+/**
+ * Reads the scripts a page lists, starting with the ones named as expected.
+ *
+ * Discord splits the client and the emoji data into chunks it names, which is
+ * what this looks for first. Those names are Discord's to change, so a miss
+ * falls back to reading every script, which is slower but doesn't depend on
+ * the names at all.
+ */
+async function readChunk<Data>(
+	prefix: string,
+	description: string,
+	read: (script: string) => Data | undefined,
+): Promise<{ chunk: string; data: Data }> {
+	const named = scripts.filter((script) => script.startsWith(prefix));
+	const ordered = [
+		...named,
+		...scripts.filter((script) => !named.includes(script)),
+	];
+
+	for (const chunk of ordered) {
+		const data = read(await fetchScript(chunk));
+
+		if (data !== undefined) {
+			return { chunk, data };
+		}
+	}
+
+	throw new Error(
+		`None of the ${scripts.length.toString()} scripts listed by ${source} contained ${description}.`,
+	);
+}
+
+async function readEmojiData() {
+	return await readChunk(
+		dataChunkPrefix,
+		"emoji data",
+		(script) => extractJson(script, dataPrefix) as RawData | undefined,
+	);
+}
+
+/**
+ * Reads the keywords the picker searches on, which take three hops to reach.
+ *
+ * The emoji data itself holds only shortcodes. The keywords are a separate set
+ * per locale, in a chunk loaded on demand, so the client script has to be read
+ * to find out which chunk that is: the emoji store's search method matches
+ * against a lookup whose module maps each locale to a chunk id, and the
+ * bundler's own chunk-to-file map turns that id into a file name.
+ */
+async function readKeywords() {
+	const { chunk, data: client } = await readChunk(
+		clientChunkPrefix,
+		"the emoji store",
+		(script) => (script.includes(searchMethod) ? script : undefined),
+	);
+
+	const module = findOnly(
+		searchModule(client),
+		/n\((\d+)\)\.\w+\[e\]/g,
+		"reference to the keyword modules",
+	);
+
+	const chunkId = findOnly(
+		client,
+		RegExp(
+			`\\b${module}\\(e,t,n\\)\\{.*?"${locale}":\\(\\)=>n\\.e\\("(\\d+)"\\)`,
+			"gs",
+		),
+		`chunk id for the ${locale} keywords`,
+	);
+
+	const fileName = findOnly(
+		client,
+		RegExp(`[,{]${chunkId}:"([0-9a-f]+)"`, "g"),
+		`file name for chunk ${chunkId}`,
+	);
+
+	const keywords = extractJson(
+		await fetchScript(`${fileName}.js`),
+		keywordsPrefix,
+	) as RawKeywords | undefined;
+
+	if (!keywords) {
+		throw new Error(
+			`The ${locale} keyword chunk, ${fileName}.js, didn't contain keywords.`,
+		);
+	}
+
+	console.log(`Found the emoji store in ${chunk}.`);
+
+	return { chunk: `${fileName}.js`, keywords };
 }
 
 async function readPreviousSnapshot() {
@@ -158,67 +337,18 @@ async function readPreviousSnapshot() {
 }
 
 /**
- * Finds the emoji data, either in a script given on the command line or among
- * the scripts the web client loads.
- *
- * Discord splits that data into its own named chunk, which is what this looks
- * for first. The name is Discord's to change, so a miss falls back to reading
- * every script, which is slower but doesn't depend on the name at all.
+ * Narrows the client script to the module its emoji search lives in, so that
+ * the reference being looked for there can't be some other module's.
  */
-async function readData() {
-	const page = await readSource();
-
-	// A script given on the command line carries the data itself, rather than
-	// listing the scripts that might.
-	const direct = extractData(page);
-
-	if (direct) {
-		return { chunk: path.basename(source), data: direct };
-	}
-
-	const chunks = [
-		...new Set(
-			[...page.matchAll(/\/assets\/([\w.-]+\.js)/g)].map((match) => match[1]),
-		),
-	];
-
-	if (!chunks.length) {
-		throw new Error(`No scripts were listed by ${source}.`);
-	}
-
-	const named = chunks.filter((chunk) => chunk.startsWith(namedChunkPrefix));
-
-	for (const chunk of [...named, ...chunks.filter((c) => !named.includes(c))]) {
-		const data = extractData(await fetchText(`${assetOrigin}/assets/${chunk}`));
-
-		if (data) {
-			return { chunk, data };
-		}
-	}
-
-	throw new Error(
-		`None of the ${chunks.length.toString()} scripts listed by ${source} contained emoji data.`,
+function searchModule(client: string) {
+	const index = client.indexOf(searchMethod);
+	const headers = [...client.matchAll(/\b\d{4,7}\(e,t,n\)\{"use strict"/g)].map(
+		(header) => header.index,
 	);
-}
+	const start = headers.filter((header) => header < index).at(-1) ?? 0;
+	const end = headers.find((header) => header > index);
 
-/**
- * Reads whatever the source is, which is the web client's page by default and
- * otherwise any path or URL given on the command line, such as a script saved
- * from a browser when the page stops listing the one with the data in it.
- */
-async function readSource() {
-	if (isUrl(source)) {
-		return await fetchText(source);
-	}
-
-	try {
-		return await fs.readFile(source, "utf8");
-	} catch (error) {
-		throw new Error(
-			`Could not read ${source}. Pass the path to a saved Discord script to read that instead.`,
-			{ cause: error },
-		);
-	}
+	return client.slice(start, end);
 }
 
 /**
@@ -229,7 +359,10 @@ async function readSource() {
  * the base emoji's, so there's nothing in them to fold back in, and keeping
  * them would give one emoji a tone axis nothing else in the data set has.
  */
-function toEntries({ emojis, emojisByCategory }: RawData) {
+function toEntries(
+	{ emojis, emojisByCategory }: RawData,
+	keywords: RawKeywords,
+) {
 	const entries: DiscordItem[] = [];
 
 	for (const [category, [start, end]] of Object.entries(emojisByCategory)) {
@@ -252,6 +385,7 @@ function toEntries({ emojis, emojisByCategory }: RawData) {
 				aliases,
 				category,
 				emoji: emoji.surrogates,
+				keywords: keywords[name] ?? [],
 				name,
 				order,
 				unicodeVersion: emoji.unicodeVersion,
@@ -265,9 +399,10 @@ function toEntries({ emojis, emojisByCategory }: RawData) {
 /**
  * Refuses to write data that doesn't look like Discord's emoji list.
  *
- * Nothing here is a supported API: it's a blob inside a bundle that Discord
- * rebuilds many times a day. A refresh that reads a stale chunk, or only part
- * of the list, shouldn't overwrite the snapshot with it.
+ * Nothing here is a supported API: it's two blobs inside a bundle that Discord
+ * rebuilds many times a day, reached by reading its minified code. A refresh
+ * that followed that trail to the wrong place, or only part of the way,
+ * shouldn't overwrite the snapshot with what it found.
  */
 function validate(entries: DiscordItem[], previous: Snapshot | undefined) {
 	const problems: string[] = [];
@@ -278,10 +413,28 @@ function validate(entries: DiscordItem[], previous: Snapshot | undefined) {
 		);
 	}
 
-	if (previous && entries.length < previous.entries.length * 0.95) {
+	const withKeywords = countWithKeywords(entries);
+
+	if (withKeywords < minimumEntriesWithKeywords) {
 		problems.push(
-			`Emoji count fell from ${previous.entries.length.toString()} to ${entries.length.toString()}, more than refreshing should change it.`,
+			`Only ${withKeywords.toString()} emoji have keywords, out of at least ${minimumEntriesWithKeywords.toString()} expected.`,
 		);
+	}
+
+	if (previous) {
+		if (entries.length < previous.entries.length * 0.95) {
+			problems.push(
+				`Emoji count fell from ${previous.entries.length.toString()} to ${entries.length.toString()}, more than refreshing should change it.`,
+			);
+		}
+
+		const before = countWithKeywords(previous.entries);
+
+		if (withKeywords < before * 0.95) {
+			problems.push(
+				`Emoji with keywords fell from ${before.toString()} to ${withKeywords.toString()}, more than refreshing should change it.`,
+			);
+		}
 	}
 
 	for (const category of expectedCategories) {
@@ -294,13 +447,20 @@ function validate(entries: DiscordItem[], previous: Snapshot | undefined) {
 		}
 	}
 
-	for (const [emoji, name] of Object.entries(canaryNames)) {
+	for (const [emoji, { keyword, name }] of Object.entries(canaryTerms)) {
 		const entry = entries.find((candidate) => candidate.emoji === emoji);
 
 		if (!entry) {
 			problems.push(`${emoji} is missing entirely.`);
-		} else if (![entry.name, ...entry.aliases].includes(name)) {
+			continue;
+		}
+
+		if (![entry.name, ...entry.aliases].includes(name)) {
 			problems.push(`${emoji} no longer lists the shortcode '${name}'.`);
+		}
+
+		if (!entry.keywords.includes(keyword)) {
+			problems.push(`${emoji} no longer lists the keyword '${keyword}'.`);
 		}
 	}
 

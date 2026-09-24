@@ -41,7 +41,7 @@ pnpm --filter @emoji-platform-data/generator build
 ## Refreshing Discord Data
 
 Discord doesn't publish its emoji list anywhere.
-It's a JSON blob inside the web client's JavaScript bundle, which the desktop app loads too -the app itself is an Electron shell that ships no emoji data of its own.
+It's inside the web client's JavaScript bundle, which the desktop app loads too -the app itself is an Electron shell that ships no emoji data of its own.
 
 Reading it needs nothing but a network connection, so, unlike macOS, any machine can refresh it:
 
@@ -49,23 +49,36 @@ Reading it needs nothing but a network connection, so, unlike macOS, any machine
 pnpm --filter @emoji-platform-data/generator refresh:discord
 ```
 
-`packages/generator/scripts/refreshDiscord.ts` fetches <https://discord.com/app>, collects the `/assets/*.js` it lists, and looks for the data in them.
-Discord splits it into its own `vnd-emoji.*` chunk, which the script tries first; the name is Discord's to change, so a miss falls back to reading every script instead.
-The blob sits inside a single-quoted JavaScript string literal, so the script scans to that literal's first unescaped quote and converts the two escapes the bundler emits that JSON doesn't share.
-
-The script can also be pointed at a path or URL, for a script saved from a browser when the page stops listing the one with the data in it:
+The script can also be pointed at another page listing the client's scripts, such as a canary build's:
 
 ```shell
-pnpm --filter @emoji-platform-data/generator refresh:discord ~/Downloads/vnd-emoji.js
+pnpm --filter @emoji-platform-data/generator refresh:discord https://canary.discord.com/app
 ```
+
+`packages/generator/scripts/refreshDiscord.ts` fetches <https://discord.com/app> and collects the `/assets/*.js` it lists.
+Two of those matter, and each JSON blob it wants sits inside a single-quoted JavaScript string literal, so the script scans to that literal's first unescaped quote and converts the two escapes the bundler emits that JSON doesn't share.
+
+The emoji themselves are in a chunk Discord names `vnd-emoji.*`, which the script tries first; the name is Discord's to change, so a miss falls back to reading every script instead.
+That gives each emoji's shortcodes, and the `emojisByCategory` ranges that say which category and picker position it has.
+
+The keywords the picker actually searches on are not in there.
+They're a separate set per locale, in a chunk loaded on demand, so finding the `en-US` one means reading the client's own minified code in three hops:
+
+1. The emoji store's search method, `nameMatchesChain`, matches a query against each emoji's names and against a lookup keyed by its first name.
+   That method is what identifies the client chunk, `web.*`, and the module within it.
+2. That module references the module mapping each locale to a chunk id, as `n(<id>).S[e]`.
+3. The bundler's own chunk-to-file map turns that id into a file name, which is a bare hash -no chunk id, unlike the named chunks.
+
+Each of those three lookups insists on matching exactly once.
+A pattern that starts matching twice is as much a sign of the code having moved on as one that stops matching, and quietly taking the first of two would be a coin flip.
 
 The data lists every skin tone variant of the emoji that have them, but only so that shortcodes like `wave_tone3` resolve.
 Their names are mechanical suffixes on the base emoji's, unlike the macOS variants that carry real search terms, so they're dropped rather than folded in.
-What's left is the 1,932 emoji the picker lists, each with the category and picker position its `emojisByCategory` ranges give it.
+What's left is the 1,932 emoji the picker lists, 1,557 of which have keywords; the rest are almost all country flags, which the picker finds by name alone.
 
 The result is committed as a snapshot, `packages/generator/discord.json`, the same way macOS is, so that building the packages never depends on a network fetch.
-Discord rebuilds its bundle many times a day and every deploy renames the chunk, so the script rewrites the snapshot only when the emoji themselves changed, and validates what it read before writing anything: how many emoji came back, that every picker category is well represented, that a few known emoji still have known shortcodes, and that the count hasn't fallen sharply since the last snapshot.
-Those checks exist because nothing here is a supported API, and a refresh that read the wrong chunk shouldn't overwrite the snapshot with whatever it found.
+Discord rebuilds its bundle many times a day and every deploy renames the chunks, so the script rewrites the snapshot only when the emoji themselves changed, and validates what it read before writing anything: how many emoji came back, how many of them have keywords, that every picker category is well represented, that a few known emoji still have known shortcodes _and_ known keywords, and that neither count has fallen sharply since the last snapshot.
+The keywords come from a different script than the emoji and are matched up by name, so those canaries are what catch the two coming apart as well as either going missing.
 
 A `Refresh Discord Data` workflow runs the same thing monthly and opens a pull request when the data changed.
 

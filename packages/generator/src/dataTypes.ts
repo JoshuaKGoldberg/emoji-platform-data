@@ -26,6 +26,9 @@ export interface DiscordItem {
 
 	emoji: string;
 
+	/** Terms the picker matches searches against, beyond the shortcodes. Flags and a few sequences have none. */
+	keywords: string[];
+
 	/** Discord's shortcode for the emoji, such as "octopus". */
 	name: string;
 
