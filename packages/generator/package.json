@@ -1,6 +1,6 @@
 {
 	"name": "@emoji-platform-data/generator",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "Generates platform-specific metadata for unicode emojis. 🏭",
 	"repository": {
 		"type": "git",
