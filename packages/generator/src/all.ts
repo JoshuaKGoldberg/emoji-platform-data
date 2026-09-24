@@ -1,3 +1,4 @@
+import { generateDiscord } from "./discord.js";
 import { generateEmojiMart } from "./emojiMart.js";
 import { generateEmojipedia } from "./emojipedia.js";
 import { generateFluemoji } from "./fluemoji.js";
@@ -19,13 +20,16 @@ export async function generateAll({
 }: GenerateAllSettings = {}): Promise<AllEmojiPlatformData> {
 	const allEmojipedia = generateEmojipedia();
 	const allGemoji = generateGemoji(allEmojipedia);
-	const [allEmojiMart, allFluemoji, allMacOS, allTwemoji] = await Promise.all([
-		generateEmojiMart(allEmojipedia),
-		generateFluemoji(allEmojipedia, fluemojiDirectory),
-		generateMacOS(allEmojipedia),
-		generateTwemoji(allEmojipedia),
-	]);
+	const [allDiscord, allEmojiMart, allFluemoji, allMacOS, allTwemoji] =
+		await Promise.all([
+			generateDiscord(allEmojipedia),
+			generateEmojiMart(allEmojipedia),
+			generateFluemoji(allEmojipedia, fluemojiDirectory),
+			generateMacOS(allEmojipedia),
+			generateTwemoji(allEmojipedia),
+		]);
 	const allPlatforms = [
+		allDiscord,
 		allEmojiMart,
 		allFluemoji,
 		allGemoji,
@@ -42,6 +46,7 @@ export async function generateAll({
 	return Object.fromEntries(
 		Array.from(allKeys)
 			.map((title): [string, EmojiPlatformData] => {
+				const discord = allDiscord[title];
 				const emojiMart = allEmojiMart[title];
 				const emojipedia = allEmojipedia.byCldr[title];
 				const fluemoji = allFluemoji[title];
@@ -50,10 +55,12 @@ export async function generateAll({
 				const twemoji = allTwemoji[title];
 
 				const platformData = {
+					discord,
 					emoji:
 						// One of these must have been defined.
 						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 						(emojipedia?.code ??
+							discord?.emoji ??
 							emojiMart?.skins[0]?.native ??
 							fluemoji?.glyph ??
 							gemoji?.emoji ??

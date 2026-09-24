@@ -1,4 +1,5 @@
 export * from "./all.js";
+export * from "./discord.js";
 export * from "./emojiMart.js";
 export * from "./emojipedia.js";
 export * from "./fluemoji.js";

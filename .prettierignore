@@ -1,5 +1,6 @@
 /.all-contributorsrc
 /.husky
 /packages/*/lib
+/packages/generator/discord.json
 /packages/generator/macos.json
 /pnpm-lock.yaml

@@ -17,7 +17,7 @@ This repository is a [pnpm workspace](https://pnpm.io/workspaces) containing sev
 
 - `generator` (`@emoji-platform-data/generator`): the TypeScript source code that reads each upstream emoji source and generates data
 - `emoji-platform-data`: the combined data package, with every emoji's data across all sources
-- `emoji-mart`, `emojipedia`, `fluemoji`, `gemoji`, `macos`, `twemoji` (`@emoji-platform-data/*`): one data package per upstream source
+- `discord`, `emoji-mart`, `emojipedia`, `fluemoji`, `gemoji`, `macos`, `twemoji` (`@emoji-platform-data/*`): one data package per upstream source
 
 The data packages contain no source code of their own.
 Each has a small `build.ts` that calls the generator to regenerate its `lib/` directory, which is gitignored.
@@ -38,9 +38,40 @@ To rebuild only the generator after editing its `src/`, run:
 pnpm --filter @emoji-platform-data/generator build
 ```
 
+## Refreshing Discord Data
+
+Discord doesn't publish its emoji list anywhere.
+It's a JSON blob inside the web client's JavaScript bundle, which the desktop app loads too -the app itself is an Electron shell that ships no emoji data of its own.
+
+Reading it needs nothing but a network connection, so, unlike macOS, any machine can refresh it:
+
+```shell
+pnpm --filter @emoji-platform-data/generator refresh:discord
+```
+
+`packages/generator/scripts/refreshDiscord.ts` fetches <https://discord.com/app>, collects the `/assets/*.js` it lists, and looks for the data in them.
+Discord splits it into its own `vnd-emoji.*` chunk, which the script tries first; the name is Discord's to change, so a miss falls back to reading every script instead.
+The blob sits inside a single-quoted JavaScript string literal, so the script scans to that literal's first unescaped quote and converts the two escapes the bundler emits that JSON doesn't share.
+
+The script can also be pointed at a path or URL, for a script saved from a browser when the page stops listing the one with the data in it:
+
+```shell
+pnpm --filter @emoji-platform-data/generator refresh:discord ~/Downloads/vnd-emoji.js
+```
+
+The data lists every skin tone variant of the emoji that have them, but only so that shortcodes like `wave_tone3` resolve.
+Their names are mechanical suffixes on the base emoji's, unlike the macOS variants that carry real search terms, so they're dropped rather than folded in.
+What's left is the 1,932 emoji the picker lists, each with the category and picker position its `emojisByCategory` ranges give it.
+
+The result is committed as a snapshot, `packages/generator/discord.json`, the same way macOS is, so that building the packages never depends on a network fetch.
+Discord rebuilds its bundle many times a day and every deploy renames the chunk, so the script rewrites the snapshot only when the emoji themselves changed, and validates what it read before writing anything: how many emoji came back, that every picker category is well represented, that a few known emoji still have known shortcodes, and that the count hasn't fallen sharply since the last snapshot.
+Those checks exist because nothing here is a supported API, and a refresh that read the wrong chunk shouldn't overwrite the snapshot with whatever it found.
+
+A `Refresh Discord Data` workflow runs the same thing monthly and opens a pull request when the data changed.
+
 ## Refreshing macOS Data
 
-Every other source is an npm or Git dependency that `pnpm build` can read on any machine.
+Most other sources are an npm or Git dependency that `pnpm build` can read on any machine.
 macOS is not: its emoji keywords live in a search index inside `CoreEmoji.framework`, a private system framework.
 Reading it needs a Mac.
 

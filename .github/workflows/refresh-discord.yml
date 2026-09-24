@@ -1,0 +1,60 @@
+jobs:
+  refresh_discord:
+    name: Refresh Discord Data
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare
+      - name: Read Discord emoji data out of the web client bundle
+        run: pnpm --filter @emoji-platform-data/generator refresh:discord
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        name: Open a pull request if the data changed
+        run: |
+          if git diff --quiet -- packages/generator/discord.json; then
+            echo "Discord emoji data is unchanged."
+            exit 0
+          fi
+
+          count=$(jq '.entries | length' packages/generator/discord.json)
+          branch=refresh-discord-data
+
+          cat > .changeset/refresh-discord-data.md <<'CHANGESET'
+          ---
+          "@emoji-platform-data/discord": minor
+          "emoji-platform-data": minor
+          ---
+
+          Updated Discord emoji data from the web client bundle.
+          CHANGESET
+
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git checkout -b "$branch"
+          git add .changeset/refresh-discord-data.md packages/generator/discord.json
+          git commit -m "feat: update Discord emoji data"
+          git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
+
+          if [ "$(gh pr list --head "$branch" --state open --json number | jq length)" != "0" ]; then
+            echo "Updated the existing pull request."
+            exit 0
+          fi
+
+          gh pr create \
+            --base main \
+            --body "Discord's emoji list changed in the web client bundle. This refreshes \`packages/generator/discord.json\` to the $count emoji it lists now. See \`.github/DEVELOPMENT.md\` for how the extraction works." \
+            --head "$branch" \
+            --title "feat: update Discord emoji data"
+
+name: Refresh Discord Data
+
+on:
+  schedule:
+    - cron: "0 14 1 * *"
+  workflow_dispatch: ~
