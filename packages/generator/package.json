@@ -31,6 +31,7 @@
 		"refresh:macos": "tsx scripts/refreshMacOS.ts"
 	},
 	"dependencies": {
+		"@emoji-mart/data": "^1.2.1",
 		"change-case": "^5.4.4",
 		"emojipedia": "^0.4.0",
 		"fast-glob": "^3.3.3",

@@ -1,3 +1,4 @@
+import { generateEmojiMart } from "./emojiMart.js";
 import { generateEmojipedia } from "./emojipedia.js";
 import { generateFluemoji } from "./fluemoji.js";
 import { generateGemoji } from "./gemoji.js";
@@ -18,12 +19,19 @@ export async function generateAll({
 }: GenerateAllSettings = {}): Promise<AllEmojiPlatformData> {
 	const allEmojipedia = generateEmojipedia();
 	const allGemoji = generateGemoji(allEmojipedia);
-	const [allFluemoji, allMacOS, allTwemoji] = await Promise.all([
+	const [allEmojiMart, allFluemoji, allMacOS, allTwemoji] = await Promise.all([
+		generateEmojiMart(allEmojipedia),
 		generateFluemoji(allEmojipedia, fluemojiDirectory),
 		generateMacOS(allEmojipedia),
 		generateTwemoji(allEmojipedia),
 	]);
-	const allPlatforms = [allFluemoji, allGemoji, allMacOS, allTwemoji];
+	const allPlatforms = [
+		allEmojiMart,
+		allFluemoji,
+		allGemoji,
+		allMacOS,
+		allTwemoji,
+	];
 
 	const allKeys = new Set(
 		[allEmojipedia.byCldr, ...allPlatforms].flatMap((platform) =>
@@ -34,6 +42,7 @@ export async function generateAll({
 	return Object.fromEntries(
 		Array.from(allKeys)
 			.map((title): [string, EmojiPlatformData] => {
+				const emojiMart = allEmojiMart[title];
 				const emojipedia = allEmojipedia.byCldr[title];
 				const fluemoji = allFluemoji[title];
 				const gemoji = allGemoji[title];
@@ -45,10 +54,12 @@ export async function generateAll({
 						// One of these must have been defined.
 						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 						(emojipedia?.code ??
+							emojiMart?.skins[0].native ??
 							fluemoji?.glyph ??
 							gemoji?.emoji ??
 							macos?.emoji ??
 							twemoji?.unicode)!,
+					emojiMart,
 					emojipedia,
 					fluemoji,
 					gemoji,
