@@ -37,9 +37,11 @@ console.log(byTitle.SparklingHeart);
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
 Each entry is an `EmojiPlatformData` combining data from:
 
+- [emoji-mart](https://github.com/missive/emoji-mart) (`emojiMart`)
 - [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia) (`emojipedia`)
 - [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji) (`fluemoji`)
 - [Gemoji](https://github.com/wooorm/gemoji) (`gemoji`)
+- [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) (`macos`)
 - [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser) (`twemoji`)
 
 Each of those sources is also available as its own `@emoji-platform-data/*` package.
