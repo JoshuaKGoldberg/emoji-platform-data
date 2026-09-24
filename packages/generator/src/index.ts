@@ -7,3 +7,4 @@ export * from "./macos.js";
 export * from "./rebuildDirectory.js";
 export * from "./twemoji.js";
 export type * from "./types.js";
+export * from "./wechat.js";

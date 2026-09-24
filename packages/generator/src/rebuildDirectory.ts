@@ -6,7 +6,13 @@ import { formatExportLine } from "./formatExportLine.js";
 import { EmojiPlatformData } from "./types.js";
 
 export type EmojiPlatformDataSource =
-	"emojiMart" | "emojipedia" | "fluemoji" | "gemoji" | "macos" | "twemoji";
+	| "emojiMart"
+	| "emojipedia"
+	| "fluemoji"
+	| "gemoji"
+	| "macos"
+	| "twemoji"
+	| "wechat";
 
 export interface RebuildSettings extends GenerateAllSettings {
 	directory: string;
@@ -34,6 +40,7 @@ const sourceTypeNames: Record<EmojiPlatformDataSource, string> = {
 	gemoji: "GemojiItem",
 	macos: "MacOSItem",
 	twemoji: "TwemojiItem",
+	wechat: "WeChatItem",
 };
 
 /**

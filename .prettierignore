@@ -2,4 +2,5 @@
 /.husky
 /packages/*/lib
 /packages/generator/macos.json
+/packages/generator/wechat.json
 /pnpm-lock.yaml

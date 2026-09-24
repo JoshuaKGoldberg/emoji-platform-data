@@ -23,12 +23,14 @@
 	"files": [
 		"emoji.yml",
 		"macos.json",
+		"wechat.json",
 		"lib/**/*.d.ts",
 		"lib/**/*.js"
 	],
 	"scripts": {
 		"build": "tsc -b",
-		"refresh:macos": "tsx scripts/refreshMacOS.ts"
+		"refresh:macos": "tsx scripts/refreshMacOS.ts",
+		"refresh:wechat": "tsx scripts/refreshWeChat.ts"
 	},
 	"dependencies": {
 		"@emoji-mart/data": "^1.2.1",

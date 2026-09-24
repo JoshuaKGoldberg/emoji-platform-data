@@ -10,6 +10,7 @@
 		"packages/*/lib",
 		"packages/generator/emoji.yml",
 		"packages/generator/macos.json",
+		"packages/generator/wechat.json",
 		"pnpm-lock.yaml"
 	],
 	"words": [
@@ -26,8 +27,10 @@
 		"knip",
 		"lproj",
 		"markdownlintignore",
+		"NgEmojiMap",
 		"NSUTF",
 		"objc",
+		"octocat",
 		"osascript",
 		"packagejson",
 		"plutil",
@@ -35,6 +38,7 @@
 		"skintones",
 		"thumbsup",
 		"tseslint",
-		"voiceover"
+		"voiceover",
+		"wechat"
 	]
 }

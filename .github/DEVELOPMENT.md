@@ -17,7 +17,7 @@ This repository is a [pnpm workspace](https://pnpm.io/workspaces) containing sev
 
 - `generator` (`@emoji-platform-data/generator`): the TypeScript source code that reads each upstream emoji source and generates data
 - `emoji-platform-data`: the combined data package, with every emoji's data across all sources
-- `emoji-mart`, `emojipedia`, `fluemoji`, `gemoji`, `macos`, `twemoji` (`@emoji-platform-data/*`): one data package per upstream source
+- `emoji-mart`, `emojipedia`, `fluemoji`, `gemoji`, `macos`, `twemoji`, `wechat` (`@emoji-platform-data/*`): one data package per upstream source
 
 The data packages contain no source code of their own.
 Each has a small `build.ts` that calls the generator to regenerate its `lib/` directory, which is gitignored.
@@ -69,6 +69,29 @@ It skips opening a pull request when that runner is on an older macOS than the c
 Both files are unusually low-level for this repository, and they depend on private frameworks that Apple can rename or restructure in any release.
 If a future macOS breaks the extraction, the failure will name the missing class or selector, and the `required` map at the top of `extractMacOS.ts` lists every symbol it depends on.
 Its type declarations for the bridge describe the same API surface, but only the `required` map is checked at runtime, so the two are meant to be kept in step.
+
+## Refreshing WeChat Data
+
+WeChat is the other source that isn't a dependency: its emoji search data lives in a JSON file inside the installed app, at `WeChat.app/Contents/Resources/NgEmojiMap.bundle/gemoji.json`.
+Reading it needs a machine with WeChat installed, so `@emoji-platform-data/wechat` is built from a committed snapshot, `packages/generator/wechat.json`, the same way macOS is.
+
+To refresh that snapshot from a local install:
+
+```shell
+pnpm --filter @emoji-platform-data/generator refresh:wechat
+```
+
+The script can also be pointed at a path or URL, for a copy of that file taken from another machine:
+
+```shell
+pnpm --filter @emoji-platform-data/generator refresh:wechat https://example.com/gemoji.json
+```
+
+It drops the handful of shortcodes that have no emoji -GitHub's own images, such as `:octocat:`- validates what's left, and records where it read the data from, along with the WeChat version when it read an installed app.
+The file is an implementation detail of an app that can rename or restructure it in any update, so the validation exists to stop a refresh that read something else from overwriting the snapshot.
+
+The committed snapshot came from the file attached to [#145](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/145), read out of WeChat for macOS in May 2024.
+There's no scheduled workflow refreshing it, since no CI runner has WeChat installed.
 
 ## Formatting
 

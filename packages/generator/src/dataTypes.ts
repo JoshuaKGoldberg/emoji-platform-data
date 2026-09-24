@@ -12,6 +12,8 @@ export type AllMacOSData = Record<string, MacOSItem>;
 
 export type AllTwemojiData = Record<string, TwemojiItem>;
 
+export type AllWeChatData = Record<string, WeChatItem>;
+
 export interface EmojiMartItem {
 	/** Other shortcodes emoji-mart accepts for the emoji, such as "thumbsup" for 👍. */
 	aliases?: string[];
@@ -122,6 +124,7 @@ export interface EmojiPlatformData {
 	slug: string;
 	title: string;
 	twemoji?: TwemojiItem;
+	wechat?: WeChatItem;
 }
 
 export interface FluemojiItem {
@@ -191,4 +194,20 @@ export interface TwemojiItemExcluded extends TwemojiItemBase {
 
 export interface TwemojiItemIncluded extends TwemojiItemBase {
 	keywords: string[];
+}
+
+/**
+ * One emoji as WeChat's emoji search knows it.
+ */
+export interface WeChatItem {
+	/** Shortcodes WeChat accepts for the emoji, such as "+1" and "thumbsup" for 👍. */
+	aliases: string[];
+
+	/** How WeChat names the emoji, such as "octopus". */
+	description: string;
+
+	emoji: string;
+
+	/** Terms WeChat matches searches against, beyond its name. Many emoji have none. */
+	tags: string[];
 }
