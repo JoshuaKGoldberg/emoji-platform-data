@@ -87,12 +87,8 @@ const previous = await readPreviousSnapshot();
 const kept = (await runExtractor()).filter(
 	(entry) => Object.keys(entry.keywordWeights).length > 0,
 );
-const present = new Set(kept.map((entry) => entry.emoji));
 
-const entries = kept
-	.filter((entry) => !isRedundantSkinToneVariant(entry, present))
-	.map(toItem)
-	.sort(compareItems);
+const entries = foldSkinToneVariants(kept).map(toItem).sort(compareItems);
 
 validate(entries, previous);
 
@@ -150,15 +146,36 @@ function countByCategory(entries: MacOSItem[]) {
 }
 
 /**
- * Detects skin-tone variants that macOS's search index carries but the picker
- * doesn't list — they have no category or order, and exist only to route search
- * terms to an emoji already in the data. Keeping them would give one emoji a
- * partial tone axis that nothing else in the data set has.
+ * Folds the skin-tone variants macOS's search index carries, but its picker
+ * doesn't list, into the tone-less emoji they belong to.
+ *
+ * These have no category or order: they exist only to route terms like `blm`
+ * to an emoji already in the data. Keeping them would give one emoji a partial
+ * tone axis that nothing else in the data set has, and dropping them outright
+ * would lose search terms the picker really does match. Each term keeps the
+ * strongest weight any variant gave it, so it sorts against the base emoji's
+ * own terms on the same scale.
  */
-function isRedundantSkinToneVariant({ emoji }: RawEntry, present: Set<string>) {
-	const toneless = emoji.replaceAll(skinToneModifiers, "");
+function foldSkinToneVariants(entries: RawEntry[]) {
+	const byEmoji = new Map(entries.map((entry) => [entry.emoji, entry]));
 
-	return toneless !== emoji && present.has(toneless);
+	return entries.filter((entry) => {
+		const toneless = entry.emoji.replaceAll(skinToneModifiers, "");
+		const base = toneless === entry.emoji ? undefined : byEmoji.get(toneless);
+
+		if (!base) {
+			return true;
+		}
+
+		for (const [term, weight] of Object.entries(entry.keywordWeights)) {
+			base.keywordWeights[term] = Math.max(
+				base.keywordWeights[term] ?? 0,
+				weight,
+			);
+		}
+
+		return false;
+	});
 }
 
 async function readCoreEmojiVersion() {
