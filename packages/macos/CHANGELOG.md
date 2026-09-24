@@ -1,6 +1,6 @@
-# @emoji-platform-data/generator
+# @emoji-platform-data/macos
 
-## 0.2.0
+## 0.1.0
 
 ### Minor Changes
 
@@ -8,9 +8,3 @@
 
   Each `MacOSItem` holds the keywords macOS's emoji picker searches, along with the emoji's Apple name, VoiceOver and speech names, picker category, and picker order.
   This also adds 20 emoji that none of the other sources know yet, such as 🫩, 🫆, 🪉, and 🫜.
-
-## 0.1.1
-
-### Patch Changes
-
-- [#999](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/999) [`d63f46e`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/d63f46e78026e7d6d737bb1ac2f7ec190a3bd499) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Declared `sideEffects: false` so bundlers can tree-shake, and updated dependencies
