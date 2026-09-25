@@ -24,11 +24,15 @@ console.log(byEmoji["💖"]);
 console.log(byTitle.SparklingHeart);
 /*
 {
+	discord: { "name": "sparkling_heart", ... },
 	emoji: "💖",
+	emojiMart: { "id": "sparkling_heart", ... },
 	emojipedia: { "currentCldrName": "Sparkling Heart", ... },
 	fluemoji: { "cldr": "sparkling heart", ... },
 	gemoji: { "description": "sparkling heart", ... },
+	macos: { "appleName": "heart with stars", ... },
 	twemoji: { "description": "Sparkling heart", ... },
+	wechat: { "keywords": ["twinkle", "twinkling", "闪亮的心", ...], ... },
 	...
 }
 */
