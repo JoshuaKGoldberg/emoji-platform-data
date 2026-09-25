@@ -11,6 +11,7 @@
 		"packages/generator/discord.json",
 		"packages/generator/emoji.yml",
 		"packages/generator/macos.json",
+		"packages/generator/wechat.json",
 		"pnpm-lock.yaml"
 	],
 	"words": [
@@ -27,6 +28,7 @@
 		"knip",
 		"lproj",
 		"markdownlintignore",
+		"mmui",
 		"NSUTF",
 		"objc",
 		"osascript",
@@ -37,6 +39,8 @@
 		"thumbsup",
 		"thumbup",
 		"tseslint",
-		"voiceover"
+		"voiceover",
+		"wechat",
+		"weixin"
 	]
 }

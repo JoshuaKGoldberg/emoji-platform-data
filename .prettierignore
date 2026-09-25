@@ -3,4 +3,5 @@
 /packages/*/lib
 /packages/generator/discord.json
 /packages/generator/macos.json
+/packages/generator/wechat.json
 /pnpm-lock.yaml

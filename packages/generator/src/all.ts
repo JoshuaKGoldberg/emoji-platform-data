@@ -6,6 +6,7 @@ import { generateGemoji } from "./gemoji.js";
 import { generateMacOS } from "./macos.js";
 import { generateTwemoji } from "./twemoji.js";
 import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
+import { generateWeChat } from "./wechat.js";
 
 export interface GenerateAllSettings {
 	/**
@@ -20,14 +21,21 @@ export async function generateAll({
 }: GenerateAllSettings = {}): Promise<AllEmojiPlatformData> {
 	const allEmojipedia = generateEmojipedia();
 	const allGemoji = generateGemoji(allEmojipedia);
-	const [allDiscord, allEmojiMart, allFluemoji, allMacOS, allTwemoji] =
-		await Promise.all([
-			generateDiscord(allEmojipedia),
-			generateEmojiMart(allEmojipedia),
-			generateFluemoji(allEmojipedia, fluemojiDirectory),
-			generateMacOS(allEmojipedia),
-			generateTwemoji(allEmojipedia),
-		]);
+	const [
+		allDiscord,
+		allEmojiMart,
+		allFluemoji,
+		allMacOS,
+		allTwemoji,
+		allWeChat,
+	] = await Promise.all([
+		generateDiscord(allEmojipedia),
+		generateEmojiMart(allEmojipedia),
+		generateFluemoji(allEmojipedia, fluemojiDirectory),
+		generateMacOS(allEmojipedia),
+		generateTwemoji(allEmojipedia),
+		generateWeChat(allEmojipedia),
+	]);
 	const allPlatforms = [
 		allDiscord,
 		allEmojiMart,
@@ -35,6 +43,7 @@ export async function generateAll({
 		allGemoji,
 		allMacOS,
 		allTwemoji,
+		allWeChat,
 	];
 
 	const allKeys = new Set(
@@ -53,6 +62,7 @@ export async function generateAll({
 				const gemoji = allGemoji[title];
 				const macos = allMacOS[title];
 				const twemoji = allTwemoji[title];
+				const wechat = allWeChat[title];
 
 				const platformData = {
 					discord,
@@ -65,7 +75,8 @@ export async function generateAll({
 							fluemoji?.glyph ??
 							gemoji?.emoji ??
 							macos?.emoji ??
-							twemoji?.unicode)!,
+							twemoji?.unicode ??
+							wechat?.emoji)!,
 					emojiMart,
 					emojipedia,
 					fluemoji,
@@ -74,6 +85,7 @@ export async function generateAll({
 					slug: emojipedia?.slug ?? slugify(twemoji?.description ?? title),
 					title,
 					twemoji,
+					wechat,
 				};
 
 				return [title, platformData];

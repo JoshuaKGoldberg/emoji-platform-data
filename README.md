@@ -39,6 +39,7 @@ console.log(byTitle.SparklingHeart);
 	gemoji: { "description": "sparkling heart", ... },
 	macos: { "appleName": "heart with stars", ... },
 	twemoji: { "description": "Sparkling heart", ... },
+	wechat: { "keywords": ["twinkle", "twinkling", "闪亮的心", ...], ... },
 	...
 }
 */
@@ -61,6 +62,7 @@ Each project's data is also published as its own package, for consumers who only
 | [`@emoji-platform-data/gemoji`](./packages/gemoji)         | [Gemoji](https://github.com/wooorm/gemoji)                                                   | `byEmoji` and `byTitle` of `GemojiItem`                 |
 | [`@emoji-platform-data/macos`](./packages/macos)           | [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) | `byEmoji` and `byTitle` of `MacOSItem`                  |
 | [`@emoji-platform-data/twemoji`](./packages/twemoji)       | [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser)                          | `byEmoji` and `byTitle` of `TwemojiItem`                |
+| [`@emoji-platform-data/wechat`](./packages/wechat)         | [WeChat](https://weixin.qq.com)                                                              | `byEmoji` and `byTitle` of `WeChatItem`                 |
 | [`@emoji-platform-data/generator`](./packages/generator)   | -                                                                                            | APIs that generate the data packages above              |
 
 The data packages have no runtime dependencies: they only contain static JSON and type declarations.

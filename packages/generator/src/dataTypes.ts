@@ -14,6 +14,8 @@ export type AllMacOSData = Record<string, MacOSItem>;
 
 export type AllTwemojiData = Record<string, TwemojiItem>;
 
+export type AllWeChatData = Record<string, WeChatItem>;
+
 /**
  * One emoji as Discord's emoji picker knows it.
  */
@@ -150,6 +152,7 @@ export interface EmojiPlatformData {
 	slug: string;
 	title: string;
 	twemoji?: TwemojiItem;
+	wechat?: WeChatItem;
 }
 
 export interface FluemojiItem {
@@ -219,4 +222,20 @@ export interface TwemojiItemExcluded extends TwemojiItemBase {
 
 export interface TwemojiItemIncluded extends TwemojiItemBase {
 	keywords: string[];
+}
+
+/**
+ * One emoji as WeChat's emoji picker knows it.
+ */
+export interface WeChatItem {
+	/** Picker category listing the emoji, such as "动物". Emoji the picker doesn't list have none. */
+	category?: string;
+
+	emoji: string;
+
+	/** Terms the picker matches searches against, in Simplified Chinese, Traditional Chinese, and English. */
+	keywords: string[];
+
+	/** Where the emoji falls in the picker's overall order, across all categories. */
+	order?: number;
 }

@@ -12,7 +12,8 @@ export type EmojiPlatformDataSource =
 	| "fluemoji"
 	| "gemoji"
 	| "macos"
-	| "twemoji";
+	| "twemoji"
+	| "wechat";
 
 export interface RebuildSettings extends GenerateAllSettings {
 	directory: string;
@@ -41,6 +42,7 @@ const sourceTypeNames: Record<EmojiPlatformDataSource, string> = {
 	gemoji: "GemojiItem",
 	macos: "MacOSItem",
 	twemoji: "TwemojiItem",
+	wechat: "WeChatItem",
 };
 
 /**
