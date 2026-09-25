@@ -1,0 +1,61 @@
+jobs:
+  refresh_wechat:
+    name: Refresh WeChat Data
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare
+      - name: Read WeChat emoji data out of the Android app
+        run: pnpm --filter @emoji-platform-data/generator refresh:wechat
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        name: Open a pull request if the data changed
+        run: |
+          if git diff --quiet -- packages/generator/wechat.json; then
+            echo "WeChat emoji data is unchanged."
+            exit 0
+          fi
+
+          count=$(jq '.entries | length' packages/generator/wechat.json)
+          keyworded=$(jq '[.entries[] | select(.keywords | length > 0)] | length' packages/generator/wechat.json)
+          branch=refresh-wechat-data
+
+          cat > .changeset/refresh-wechat-data.md <<'CHANGESET'
+          ---
+          "@emoji-platform-data/wechat": minor
+          "emoji-platform-data": minor
+          ---
+
+          Updated WeChat emoji data from the Android app.
+          CHANGESET
+
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git checkout -b "$branch"
+          git add .changeset/refresh-wechat-data.md packages/generator/wechat.json
+          git commit -m "feat: update WeChat emoji data"
+          git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
+
+          if [ "$(gh pr list --head "$branch" --state open --json number | jq length)" != "0" ]; then
+            echo "Updated the existing pull request."
+            exit 0
+          fi
+
+          gh pr create \
+            --base main \
+            --body "WeChat's emoji list changed in the Android app. This refreshes \`packages/generator/wechat.json\` to the $count emoji it lists now, $keyworded of them with search keywords. See \`.github/DEVELOPMENT.md\` for how the extraction works." \
+            --head "$branch" \
+            --title "feat: update WeChat emoji data"
+
+name: Refresh WeChat Data
+
+on:
+  schedule:
+    - cron: "0 14 2 * *"
+  workflow_dispatch: ~

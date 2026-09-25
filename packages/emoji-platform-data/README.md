@@ -44,6 +44,7 @@ Each entry is an `EmojiPlatformData` combining data from:
 - [Gemoji](https://github.com/wooorm/gemoji) (`gemoji`)
 - [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) (`macos`)
 - [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser) (`twemoji`)
+- [WeChat](https://weixin.qq.com) (`wechat`)
 
 Each of those sources is also available as its own `@emoji-platform-data/*` package.
 See the [repository README](https://github.com/JoshuaKGoldberg/emoji-platform-data#packages) for the full list.
