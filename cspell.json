@@ -8,6 +8,7 @@
 		"node_modules",
 		"packages/*/CHANGELOG.md",
 		"packages/*/lib",
+		"packages/generator/discord.json",
 		"packages/generator/emoji.yml",
 		"packages/generator/macos.json",
 		"pnpm-lock.yaml"
@@ -34,6 +35,7 @@
 		"Recents",
 		"skintones",
 		"thumbsup",
+		"thumbup",
 		"tseslint",
 		"voiceover"
 	]

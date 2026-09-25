@@ -1,3 +1,5 @@
+export type AllDiscordData = Record<string, DiscordItem>;
+
 export type AllEmojiMartData = Record<string, EmojiMartItem>;
 
 export type AllEmojipediaData = Record<string, EmojipediaItem>;
@@ -11,6 +13,31 @@ export type AllGemojiData = Record<string, GemojiItem>;
 export type AllMacOSData = Record<string, MacOSItem>;
 
 export type AllTwemojiData = Record<string, TwemojiItem>;
+
+/**
+ * One emoji as Discord's emoji picker knows it.
+ */
+export interface DiscordItem {
+	/** Other shortcodes Discord accepts for the emoji, such as "+1" for 👍. */
+	aliases: string[];
+
+	/** Picker category listing the emoji, such as "nature". */
+	category: string;
+
+	emoji: string;
+
+	/** Terms the picker matches searches against, beyond the shortcodes. Flags and a few sequences have none. */
+	keywords: string[];
+
+	/** Discord's shortcode for the emoji, such as "octopus". */
+	name: string;
+
+	/** Where the emoji falls in the picker's overall order, across all categories. */
+	order: number;
+
+	/** Emoji version that introduced the emoji, such as 6.1. */
+	unicodeVersion: number;
+}
 
 export interface EmojiMartItem {
 	/** Other shortcodes emoji-mart accepts for the emoji, such as "thumbsup" for 👍. */
@@ -113,6 +140,7 @@ export interface EmojipediaVendor {
 }
 
 export interface EmojiPlatformData {
+	discord?: DiscordItem;
 	emoji: string;
 	emojiMart?: EmojiMartItem;
 	emojipedia?: EmojipediaItem;

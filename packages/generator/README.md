@@ -31,7 +31,7 @@ console.log(byTitle["Sparkling Heart"]);
 ### APIs
 
 - `generateAll()`: generates the combined `EmojiPlatformData` for every emoji, keyed by Emojipedia title
-- `generateEmojiMart()`, `generateEmojipedia()`, `generateFluemoji()`, `generateGemoji()`, `generateMacOS()`, `generateTwemoji()`: generate data for a single platform
+- `generateDiscord()`, `generateEmojiMart()`, `generateEmojipedia()`, `generateFluemoji()`, `generateGemoji()`, `generateMacOS()`, `generateTwemoji()`: generate data for a single platform
 - `rebuildDirectory({ directory })`: writes a directory exporting the combined data, in the shape published as `emoji-platform-data`
 - `rebuildSourceDirectory({ directory, source })`: writes a directory exporting a single platform's data, in the shape published as `@emoji-platform-data/*`
 

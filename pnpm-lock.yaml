@@ -251,6 +251,12 @@ importers:
         specifier: 8.70.0
         version: 8.70.0(eslint@10.11.0(jiti@2.7.0))(typescript@6.0.3)
 
+  packages/discord:
+    devDependencies:
+      '@emoji-platform-data/generator':
+        specifier: workspace:*
+        version: link:../generator
+
   packages/emoji-mart:
     devDependencies:
       '@emoji-platform-data/generator':
