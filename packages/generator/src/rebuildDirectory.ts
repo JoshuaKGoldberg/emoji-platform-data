@@ -95,6 +95,7 @@ async function writeDataDirectory({
 	await fs.mkdir(path.join(directory, "data"), { recursive: true });
 
 	const byTitleFile = path.join(directory, "byTitle");
+	const exportNames = new Set<string>();
 	const exportLines: string[] = [];
 	const byEmojiLines: string[] = [];
 
@@ -115,6 +116,23 @@ async function writeDataDirectory({
 			platformData.title,
 		);
 
+		// Export names become identifiers in the generated modules, which build
+		// fine either way but throw a SyntaxError on import if one isn't valid.
+		if (
+			!/^[\p{ID_Start}$_][\p{ID_Continue}$\u200C\u200D]*$/u.test(exportName)
+		) {
+			throw new Error(
+				`Export name '${exportName}' for '${platformData.title}' isn't a valid identifier.`,
+			);
+		}
+
+		if (exportNames.has(exportName)) {
+			throw new Error(
+				`Export name '${exportName}' for '${platformData.title}' is used more than once.`,
+			);
+		}
+
+		exportNames.add(exportName);
 		exportLines.push(exportLine);
 		byEmojiLines.push(
 			`\t${JSON.stringify(platformData.emoji)}: byTitle.${exportName},`,
