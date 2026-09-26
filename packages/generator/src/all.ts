@@ -169,8 +169,6 @@ function mergeEntries(existing: EmojiPlatformData, entry: EmojiPlatformData) {
 		}
 	}
 
-	// Entries list every platform, most as undefined, so spreading one over
-	// the other would drop the data of whichever went first.
 	return {
 		...kept,
 		...Object.fromEntries(

@@ -80,10 +80,13 @@ function toSourceKey(name: string) {
 
 const dataPackages = await listDataPackages();
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const combinedPackage = dataPackages.find(
 	(dataPackage) => dataPackage.name === combinedName,
-)!;
+);
+
+if (!combinedPackage) {
+	throw new Error(`Could not find the ${combinedName} package.`);
+}
 
 describe.each(dataPackages)("$name", (dataPackage) => {
 	it("exports byEmoji and byTitle when imported by Node", async () => {
