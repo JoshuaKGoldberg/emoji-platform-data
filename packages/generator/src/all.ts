@@ -101,23 +101,25 @@ export async function generateAll({
 	);
 
 	return Object.fromEntries(
-		mergeSameEmoji(Object.values(byTitle)).map((platformData) => [
-			platformData.title,
-			platformData,
-		]),
+		mergeSameEmoji(Object.values(byTitle))
+			.sort((a, b) => a.slug.localeCompare(b.slug))
+			.map((platformData) => [platformData.title, platformData]),
 	);
 }
 
 /**
  * Platforms that aren't matched to an Emojipedia title fall back to titles of
  * their own, which can name one emoji two ways, such as Discord's "Broken_chain"
- * and macOS's "Broken Chain" for ⛓️‍💥. Those come out as the same slug, and so
- * would write the same file and export name twice.
+ * and macOS's "Broken Chain" for ⛓️‍💥. Those would write the same file and export
+ * name twice when they come out as the same slug, and would leave one of them
+ * unreachable from `byEmoji` when they don't.
  *
- * Titles that share a slug and a glyph are one emoji, so they're merged, under
- * the title of whichever came from the platform earliest in this list. That's
- * the order platforms were added in, so adding one never renames an emoji
- * that another platform already titled.
+ * Titles that share a slug and a glyph, or that are the same glyph, are one
+ * emoji, so they're merged, under the title of whichever came from the platform
+ * earliest in this list. That's the order platforms were added in, so adding
+ * one never renames an emoji that another platform already titled, except that
+ * WeChat goes last: it has no names of its own, so it only titles the emoji
+ * nothing else names, and those by their code points.
  */
 const titlePriority = [
 	"emojipedia",
@@ -127,6 +129,7 @@ const titlePriority = [
 	"emojiMart",
 	"macos",
 	"discord",
+	"slack",
 	"wechat",
 ] as const satisfies (keyof EmojiPlatformData)[];
 
@@ -139,11 +142,12 @@ function getGlyphs(platformData: EmojiPlatformData) {
 			platformData.fluemoji?.glyph,
 			platformData.gemoji?.emoji,
 			platformData.macos?.emoji,
+			platformData.slack?.emoji,
 			platformData.twemoji?.unicode,
 			platformData.wechat?.emoji,
 		]
 			.filter((glyph) => glyph !== undefined)
-			.map((glyph) => glyph.replaceAll("\uFE0F", "")),
+			.map(withoutVariationSelectors),
 	);
 }
 
@@ -151,51 +155,66 @@ function getTitlePriority(platformData: EmojiPlatformData) {
 	return titlePriority.findIndex((platform) => platformData[platform]);
 }
 
-function mergeSameEmoji(entries: EmojiPlatformData[]) {
-	const bySlug = new Map<string, EmojiPlatformData>();
+function mergeEntries(existing: EmojiPlatformData, entry: EmojiPlatformData) {
+	const [kept, merged] =
+		getTitlePriority(existing) <= getTitlePriority(entry)
+			? [existing, entry]
+			: [entry, existing];
 
-	for (const entry of entries) {
-		const existing = bySlug.get(entry.slug);
-
-		if (!existing) {
-			bySlug.set(entry.slug, entry);
-			continue;
-		}
-
-		const glyphs = getGlyphs(existing);
-
-		if (![...getGlyphs(entry)].some((glyph) => glyphs.has(glyph))) {
+	for (const platform of titlePriority) {
+		if (kept[platform] && merged[platform]) {
 			throw new Error(
-				`'${existing.title}' and '${entry.title}' are different emoji with the same slug, '${entry.slug}'.`,
+				`'${kept.title}' and '${merged.title}' are the same emoji, but both have ${platform} data.`,
 			);
 		}
-
-		const [kept, merged] =
-			getTitlePriority(existing) <= getTitlePriority(entry)
-				? [existing, entry]
-				: [entry, existing];
-
-		for (const platform of titlePriority) {
-			if (kept[platform] && merged[platform]) {
-				throw new Error(
-					`'${kept.title}' and '${merged.title}' are the same emoji, but both have ${platform} data.`,
-				);
-			}
-		}
-
-		// Entries list every platform, most as undefined, so spreading one over
-		// the other would drop the data of whichever went first.
-		bySlug.set(entry.slug, {
-			...kept,
-			...Object.fromEntries(
-				titlePriority
-					.filter((platform) => merged[platform])
-					.map((platform) => [platform, merged[platform]]),
-			),
-		});
 	}
 
-	return [...bySlug.values()];
+	return {
+		...kept,
+		...Object.fromEntries(
+			titlePriority
+				.filter((platform) => merged[platform])
+				.map((platform) => [platform, merged[platform]]),
+		),
+	};
+}
+
+function mergeSameEmoji(entries: EmojiPlatformData[]) {
+	const merged: EmojiPlatformData[] = [];
+	const bySlug = new Map<string, number>();
+	const byGlyph = new Map<string, number>();
+
+	for (const entry of entries) {
+		const glyph = withoutVariationSelectors(entry.emoji);
+		const sameSlug = bySlug.get(entry.slug);
+		const index = sameSlug ?? byGlyph.get(glyph) ?? merged.length;
+
+		if (index === merged.length) {
+			merged.push(entry);
+		} else {
+			const existing = merged[index];
+
+			if (
+				index === sameSlug &&
+				![...getGlyphs(entry)].some((other) => getGlyphs(existing).has(other))
+			) {
+				throw new Error(
+					`'${existing.title}' and '${entry.title}' are different emoji with the same slug, '${entry.slug}'.`,
+				);
+			}
+
+			merged[index] = mergeEntries(existing, entry);
+		}
+
+		bySlug.set(entry.slug, index);
+		byGlyph.set(glyph, index);
+	}
+
+	return merged;
+}
+
+function withoutVariationSelectors(glyph: string) {
+	return glyph.replaceAll("\uFE0F", "");
 }
 
 /**
