@@ -441,11 +441,14 @@ function toKeywords(csv: string) {
 				continue;
 			}
 
-			const key = withoutVariationSelectors(emoji);
+			// A joiner only means something between two emoji, and the index has
+			// at least one stray one in front of an emoji it belongs to, ‍🦱.
+			const glyph = emoji.replaceAll(/^\u200D+|\u200D+$/g, "");
+			const key = withoutVariationSelectors(glyph);
 			const existing = keywords.get(key);
 
 			if (!existing) {
-				keywords.set(key, { emoji, terms: [term] });
+				keywords.set(key, { emoji: glyph, terms: [term] });
 			} else if (!existing.terms.includes(term)) {
 				existing.terms.push(term);
 			}

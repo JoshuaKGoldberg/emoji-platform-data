@@ -25,12 +25,28 @@ export async function generateWeChat(
 		"wechat",
 		entries.map((entry) => {
 			// WeChat names its emoji in Chinese, so unlike every other platform
-			// here there's no name to fall back to matching a title by.
+			// here there's no name to fall back to matching a title by. Emoji
+			// nothing else names are titled by their code points instead.
 			const unicode = toUnicode(entry.emoji);
 
-			return [getEntryCldr(emojipedia, entry.emoji, unicode, [unicode]), entry];
+			return [
+				getEntryCldr(emojipedia, entry.emoji, unicode, [
+					toCodePointNotation(unicode),
+				]),
+				entry,
+			];
 		}),
 	);
+}
+
+/**
+ * Code points as Unicode writes them, such as "U+1F9D1 U+200D U+1F9B0".
+ */
+function toCodePointNotation(unicode: string) {
+	return unicode
+		.split("-")
+		.map((hex) => `U+${hex.toUpperCase()}`)
+		.join(" ");
 }
 
 function toUnicode(emoji: string) {
