@@ -236,6 +236,19 @@ For example, ESLint can be run with `--fix` to auto-fix some lint rule complaint
 pnpm run lint --fix
 ```
 
+## Testing
+
+[Vitest](https://vitest.dev) runs end-to-end tests against the built data packages, so build them first:
+
+```shell
+pnpm build
+pnpm test
+```
+
+`test/packages.test.ts` imports each data package through its `package.json` export, the way a consumer would, and has Node itself load it rather than Vite.
+It checks that `byEmoji` and `byTitle` agree, that every `byTitle` entry has a data file of its own, and that each single-platform package matches that platform's data in `emoji-platform-data`.
+Data packages are found by reading `packages/*`, so a new platform is tested as soon as it has a package.
+
 ## Type Checking
 
 You should be able to see suggestions from [TypeScript](https://typescriptlang.org) in your editor for all open files.
