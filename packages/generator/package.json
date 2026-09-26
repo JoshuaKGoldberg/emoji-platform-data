@@ -47,7 +47,7 @@
 	},
 	"devDependencies": {
 		"fluemoji": "git+https://github.com/microsoft/fluentui-emoji.git",
-		"typescript": "6.0.3"
+		"typescript": "7.0.2"
 	},
 	"engines": {
 		"node": ">=24"
