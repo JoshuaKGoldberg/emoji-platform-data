@@ -37,6 +37,7 @@ console.log(byTitle.SparklingHeart);
 	emojipedia: { "currentCldrName": "Sparkling Heart", ... },
 	fluemoji: { "cldr": "sparkling heart", ... },
 	gemoji: { "description": "sparkling heart", ... },
+	joypixels: { "name": "sparkling_heart", ... },
 	macos: { "appleName": "heart with stars", ... },
 	slack: { "name": "sparkling_heart", ... },
 	twemoji: { "description": "Sparkling heart", ... },
@@ -61,6 +62,7 @@ Each project's data is also published as its own package, for consumers who only
 | [`@emoji-platform-data/emojipedia`](./packages/emojipedia) | [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia)                                  | `byEmoji` and `byTitle` of `EmojipediaItem`             |
 | [`@emoji-platform-data/fluemoji`](./packages/fluemoji)     | [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji)                           | `byEmoji` and `byTitle` of `FluemojiItem`               |
 | [`@emoji-platform-data/gemoji`](./packages/gemoji)         | [Gemoji](https://github.com/wooorm/gemoji)                                                   | `byEmoji` and `byTitle` of `GemojiItem`                 |
+| [`@emoji-platform-data/joypixels`](./packages/joypixels)   | [JoyPixels / Zoom](https://github.com/joypixels/emoji-toolkit)                               | `byEmoji` and `byTitle` of `JoyPixelsItem`              |
 | [`@emoji-platform-data/macos`](./packages/macos)           | [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) | `byEmoji` and `byTitle` of `MacOSItem`                  |
 | [`@emoji-platform-data/slack`](./packages/slack)           | [Slack](https://slack.com)                                                                   | `byEmoji` and `byTitle` of `SlackItem`                  |
 | [`@emoji-platform-data/twemoji`](./packages/twemoji)       | [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser)                          | `byEmoji` and `byTitle` of `TwemojiItem`                |

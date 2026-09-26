@@ -298,6 +298,9 @@ importers:
       change-case:
         specifier: ^5.4.4
         version: 5.4.4
+      emoji-toolkit:
+        specifier: ^11.0.0
+        version: 11.0.0
       emojipedia:
         specifier: ^0.4.0
         version: 0.4.0(graphql@16.14.2)
@@ -320,6 +323,12 @@ importers:
       typescript:
         specifier: 6.0.3
         version: 6.0.3
+
+  packages/joypixels:
+    devDependencies:
+      '@emoji-platform-data/generator':
+        specifier: workspace:*
+        version: link:../generator
 
   packages/macos:
     devDependencies:
@@ -1646,6 +1655,9 @@ packages:
   diff-sequences@29.6.3:
     resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  emoji-toolkit@11.0.0:
+    resolution: {integrity: sha512-YO5DSxA601c4NhC09AG3Sr5KM4IB7cyyvumTUMJ2cM6NhQOmgIAp1vGNR9hnInGdtPojXD4deTNDZ5vxrH1AKg==}
 
   emojipedia@0.4.0:
     resolution: {integrity: sha512-s8bo94m029HU9nLpupGa+sZeViYzN71QlrVmFUk1fwsUwYVhitaDdS6nzYUXGFVm5oVNL/UKqhRr8jXL7w6oKQ==}
@@ -3986,6 +3998,8 @@ snapshots:
       dequal: 2.0.3
 
   diff-sequences@29.6.3: {}
+
+  emoji-toolkit@11.0.0: {}
 
   emojipedia@0.4.0(graphql@16.14.2):
     dependencies:
