@@ -15,7 +15,8 @@
         "maintenance",
         "projectManagement",
         "tool",
-        "bug"
+        "bug",
+        "test"
       ]
     },
     {
