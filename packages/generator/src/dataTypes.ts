@@ -12,6 +12,8 @@ export type AllGemojiData = Record<string, GemojiItem>;
 
 export type AllMacOSData = Record<string, MacOSItem>;
 
+export type AllSlackData = Record<string, SlackItem>;
+
 export type AllTwemojiData = Record<string, TwemojiItem>;
 
 export type AllWeChatData = Record<string, WeChatItem>;
@@ -149,6 +151,7 @@ export interface EmojiPlatformData {
 	fluemoji?: FluemojiItem;
 	gemoji?: GemojiItem;
 	macos?: MacOSItem;
+	slack?: SlackItem;
 	slug: string;
 	title: string;
 	twemoji?: TwemojiItem;
@@ -206,6 +209,34 @@ export interface MacOSItem {
 
 	/** How VoiceOver describes the emoji, such as "an octopus". */
 	voiceOverName: string;
+}
+
+/**
+ * One emoji as Slack's emoji picker knows it.
+ */
+export interface SlackItem {
+	/** Other shortcodes Slack accepts for the emoji, such as "thumbsup" for 👍. */
+	aliases: string[];
+
+	/** Picker category listing the emoji, such as "Animals & Nature". Emoji the picker doesn't list have none. */
+	category?: string;
+
+	emoji: string;
+
+	/** Terms the picker matches searches against in English, beyond the shortcodes. A few dozen emoji, mostly newer people variants and less common flags, have none. */
+	keywords: string[];
+
+	/** The same terms as the picker searches them in each of Slack's other locales, keyed by locale, such as "de-DE". Terms a locale has no translation for stay in English, as they do in the picker. */
+	keywordsByLocale: Record<string, string[]>;
+
+	/** Slack's shortcode for the emoji, such as "octopus". */
+	name: string;
+
+	/** How Slack names the emoji in each of its other locales, keyed by locale, such as "oktopus" for "de-DE". */
+	namesByLocale: Record<string, string>;
+
+	/** Where the emoji falls in the picker's overall order, across all categories. */
+	order?: number;
 }
 
 export type TwemojiItem = TwemojiItemExcluded | TwemojiItemIncluded;

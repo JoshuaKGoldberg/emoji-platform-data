@@ -1,0 +1,36 @@
+{
+	"name": "@emoji-platform-data/slack",
+	"version": "0.1.0",
+	"description": "Static export of Slack emoji picker metadata for unicode emojis. 🧵",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JoshuaKGoldberg/emoji-platform-data.git",
+		"directory": "packages/slack"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Josh Goldberg",
+		"email": "npm@joshuakgoldberg.com"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": "./lib/index.mjs"
+	},
+	"files": [
+		"lib/"
+	],
+	"scripts": {
+		"build": "tsx build.ts"
+	},
+	"devDependencies": {
+		"@emoji-platform-data/generator": "workspace:*"
+	},
+	"engines": {
+		"node": ">=24"
+	},
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
+	}
+}

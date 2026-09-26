@@ -12,6 +12,7 @@ export type EmojiPlatformDataSource =
 	| "fluemoji"
 	| "gemoji"
 	| "macos"
+	| "slack"
 	| "twemoji"
 	| "wechat";
 
@@ -41,6 +42,7 @@ const sourceTypeNames: Record<EmojiPlatformDataSource, string> = {
 	fluemoji: "FluemojiItem",
 	gemoji: "GemojiItem",
 	macos: "MacOSItem",
+	slack: "SlackItem",
 	twemoji: "TwemojiItem",
 	wechat: "WeChatItem",
 };

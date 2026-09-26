@@ -38,6 +38,7 @@ console.log(byTitle.SparklingHeart);
 	fluemoji: { "cldr": "sparkling heart", ... },
 	gemoji: { "description": "sparkling heart", ... },
 	macos: { "appleName": "heart with stars", ... },
+	slack: { "name": "sparkling_heart", ... },
 	twemoji: { "description": "Sparkling heart", ... },
 	wechat: { "keywords": ["twinkle", "twinkling", "闪亮的心", ...], ... },
 	...
@@ -61,6 +62,7 @@ Each project's data is also published as its own package, for consumers who only
 | [`@emoji-platform-data/fluemoji`](./packages/fluemoji)     | [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji)                           | `byEmoji` and `byTitle` of `FluemojiItem`               |
 | [`@emoji-platform-data/gemoji`](./packages/gemoji)         | [Gemoji](https://github.com/wooorm/gemoji)                                                   | `byEmoji` and `byTitle` of `GemojiItem`                 |
 | [`@emoji-platform-data/macos`](./packages/macos)           | [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) | `byEmoji` and `byTitle` of `MacOSItem`                  |
+| [`@emoji-platform-data/slack`](./packages/slack)           | [Slack](https://slack.com)                                                                   | `byEmoji` and `byTitle` of `SlackItem`                  |
 | [`@emoji-platform-data/twemoji`](./packages/twemoji)       | [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser)                          | `byEmoji` and `byTitle` of `TwemojiItem`                |
 | [`@emoji-platform-data/wechat`](./packages/wechat)         | [WeChat](https://weixin.qq.com)                                                              | `byEmoji` and `byTitle` of `WeChatItem`                 |
 | [`@emoji-platform-data/generator`](./packages/generator)   | -                                                                                            | APIs that generate the data packages above              |
