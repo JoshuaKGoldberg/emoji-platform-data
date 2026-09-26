@@ -4,6 +4,7 @@ import { generateEmojipedia } from "./emojipedia.js";
 import { generateFluemoji } from "./fluemoji.js";
 import { generateGemoji } from "./gemoji.js";
 import { generateMacOS } from "./macos.js";
+import { generateSlack } from "./slack.js";
 import { generateTwemoji } from "./twemoji.js";
 import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
 import { generateWeChat } from "./wechat.js";
@@ -26,6 +27,7 @@ export async function generateAll({
 		allEmojiMart,
 		allFluemoji,
 		allMacOS,
+		allSlack,
 		allTwemoji,
 		allWeChat,
 	] = await Promise.all([
@@ -33,6 +35,7 @@ export async function generateAll({
 		generateEmojiMart(allEmojipedia),
 		generateFluemoji(allEmojipedia, fluemojiDirectory),
 		generateMacOS(allEmojipedia),
+		generateSlack(allEmojipedia),
 		generateTwemoji(allEmojipedia),
 		generateWeChat(allEmojipedia),
 	]);
@@ -42,6 +45,7 @@ export async function generateAll({
 		allFluemoji,
 		allGemoji,
 		allMacOS,
+		allSlack,
 		allTwemoji,
 		allWeChat,
 	];
@@ -61,6 +65,7 @@ export async function generateAll({
 				const fluemoji = allFluemoji[title];
 				const gemoji = allGemoji[title];
 				const macos = allMacOS[title];
+				const slack = allSlack[title];
 				const twemoji = allTwemoji[title];
 				const wechat = allWeChat[title];
 
@@ -75,6 +80,7 @@ export async function generateAll({
 							fluemoji?.glyph ??
 							gemoji?.emoji ??
 							macos?.emoji ??
+							slack?.emoji ??
 							twemoji?.unicode ??
 							wechat?.emoji)!,
 					emojiMart,
@@ -82,6 +88,7 @@ export async function generateAll({
 					fluemoji,
 					gemoji,
 					macos,
+					slack,
 					slug: emojipedia?.slug ?? slugify(twemoji?.description ?? title),
 					title,
 					twemoji,

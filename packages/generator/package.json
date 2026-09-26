@@ -24,6 +24,7 @@
 		"discord.json",
 		"emoji.yml",
 		"macos.json",
+		"slack.json",
 		"wechat.json",
 		"lib/**/*.d.ts",
 		"lib/**/*.js"
@@ -32,6 +33,7 @@
 		"build": "tsc -b",
 		"refresh:discord": "tsx scripts/refreshDiscord.ts",
 		"refresh:macos": "tsx scripts/refreshMacOS.ts",
+		"refresh:slack": "tsx scripts/refreshSlack.ts",
 		"refresh:wechat": "tsx scripts/refreshWeChat.ts"
 	},
 	"dependencies": {

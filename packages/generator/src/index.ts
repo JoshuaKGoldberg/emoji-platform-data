@@ -6,6 +6,7 @@ export * from "./fluemoji.js";
 export * from "./gemoji.js";
 export * from "./macos.js";
 export * from "./rebuildDirectory.js";
+export * from "./slack.js";
 export * from "./twemoji.js";
 export type * from "./types.js";
 export * from "./wechat.js";

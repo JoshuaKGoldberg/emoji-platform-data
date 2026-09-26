@@ -31,6 +31,7 @@ console.log(byTitle.SparklingHeart);
 	fluemoji: { "cldr": "sparkling heart", ... },
 	gemoji: { "description": "sparkling heart", ... },
 	macos: { "appleName": "heart with stars", ... },
+	slack: { "name": "sparkling_heart", ... },
 	twemoji: { "description": "Sparkling heart", ... },
 	wechat: { "keywords": ["twinkle", "twinkling", "闪亮的心", ...], ... },
 	...
@@ -47,6 +48,7 @@ Each entry is an `EmojiPlatformData` combining data from:
 - [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji) (`fluemoji`)
 - [Gemoji](https://github.com/wooorm/gemoji) (`gemoji`)
 - [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) (`macos`)
+- [Slack](https://slack.com) (`slack`)
 - [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser) (`twemoji`)
 - [WeChat](https://weixin.qq.com) (`wechat`)
 

@@ -11,6 +11,7 @@
 		"packages/generator/discord.json",
 		"packages/generator/emoji.yml",
 		"packages/generator/macos.json",
+		"packages/generator/slack.json",
 		"packages/generator/wechat.json",
 		"pnpm-lock.yaml"
 	],
@@ -21,17 +22,22 @@
 		"changesets",
 		"cldr",
 		"emojipedia",
+		"Fisch",
 		"fluemoji",
 		"fluentui",
 		"gemoji",
 		"joshuakgoldberg",
+		"KHTML",
 		"knip",
+		"kreatur",
 		"lproj",
 		"markdownlintignore",
 		"mmui",
 		"NSUTF",
 		"objc",
+		"oktopus",
 		"osascript",
+		"ozean",
 		"packagejson",
 		"plutil",
 		"Recents",
@@ -41,6 +47,7 @@
 		"tseslint",
 		"voiceover",
 		"wechat",
-		"weixin"
+		"weixin",
+		"xoxo"
 	]
 }
