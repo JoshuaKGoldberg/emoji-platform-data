@@ -194,14 +194,7 @@ function countWithKeywords(entries: SlackItem[]) {
  * the escapes JavaScript has and JSON doesn't into JSON's.
  */
 function decodeString(literal: string) {
-	return JSON.parse(
-		literal
-			.replaceAll("\\'", "'")
-			.replaceAll(/\\x([0-9a-fA-F]{2})/g, "\\u00$1")
-			.replaceAll(/\\u\{([0-9a-fA-F]+)\}/g, (_, hex: string) =>
-				JSON.stringify(String.fromCodePoint(parseInt(hex, 16))).slice(1, -1),
-			),
-	) as string;
+	return JSON.parse(toJsonEscapes(literal)) as string;
 }
 
 /**
@@ -223,11 +216,7 @@ function* extractJsonBlobs(script: string) {
 			end += script[end] === "\\" ? 2 : 1;
 		}
 
-		const literal = script
-			.slice(open, end)
-			// The only escapes the bundler emits that JSON doesn't share.
-			.replaceAll("\\'", "'")
-			.replaceAll(/\\x([0-9a-fA-F]{2})/g, "\\u00$1");
+		const literal = toJsonEscapes(script.slice(open, end));
 
 		try {
 			yield JSON.parse(literal) as unknown;
@@ -805,4 +794,28 @@ function validate(entries: SlackItem[], previous: Snapshot | undefined) {
 			].join("\n"),
 		);
 	}
+}
+
+/**
+ * Rewrites the escapes JavaScript string literals have that JSON doesn't, such
+ * as `\'`, `\x41`, and `\u{1F600}`, into JSON's. Each escape is read whole, so
+ * that an escaped backslash followed by "x41" stays an escaped backslash.
+ */
+function toJsonEscapes(literal: string) {
+	return literal.replaceAll(
+		/\\(?:x([0-9a-fA-F]{2})|u\{([0-9a-fA-F]+)\}|[\s\S])/g,
+		(escape, hex: string | undefined, codePoint: string | undefined) => {
+			if (hex) {
+				return `\\u00${hex}`;
+			}
+
+			if (codePoint) {
+				return JSON.stringify(
+					String.fromCodePoint(parseInt(codePoint, 16)),
+				).slice(1, -1);
+			}
+
+			return escape === "\\'" ? "'" : escape;
+		},
+	);
 }
