@@ -27,7 +27,7 @@ Those checks exist because these frameworks can keep their method names and quie
 
 The snapshot is byte-for-byte reproducible: refreshing twice on one Mac, or on two Macs running the same macOS version, produces the same file.
 Apple changes these keywords between macOS releases, so a refresh belongs in its own pull request, with a changeset, describing which macOS version it came from.
-A `Refresh macOS Data` workflow does exactly that automatically each month, on a `macos-latest` runner.
+The daily `Refresh Data` workflow does exactly that automatically, on a `macos-latest` runner.
 It skips opening a pull request when that runner is on an older macOS than the committed snapshot, so a lagging runner image can't roll the data back.
 
 Both files are unusually low-level for this repository, and they depend on private frameworks that Apple can rename or restructure in any release.

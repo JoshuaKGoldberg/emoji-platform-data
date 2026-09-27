@@ -60,7 +60,8 @@ Each data package's own `DEVELOPMENT.md` explains where its data comes from, and
 - [`wechat`](../packages/wechat/DEVELOPMENT.md): snapshot read out of WeChat's Android app
 - [`windows`](../packages/windows/DEVELOPMENT.md): snapshot read out of Windows' language features
 
-Each snapshot also has a monthly `Refresh <platform> Data` workflow, which runs its script and opens a pull request when the data changed.
+A daily `Refresh Data` workflow runs every snapshot's script, each platform in its own job, and opens a pull request for each platform whose data changed.
+When a platform's job fails, it opens a `🛠 Tooling: Refresh <platform> Data is failing` issue with the end of the script's output, or comments on that issue if it's already open, and closes the issue once that platform refreshes cleanly again.
 
 ## Formatting
 

@@ -47,5 +47,5 @@ The result is committed as a snapshot, [`packages/generator/android.json`](../ge
 Google rebuilds the system images every few months, but the emoji data bundled in Gboard changes less often, so the script rewrites the snapshot only when the emoji themselves changed.
 It validates what it read before writing anything: how many emoji and keywords came back, that every emoji has keywords, that a few known emoji still carry known keywords that CLDR doesn't have, and that neither count has fallen sharply since the last snapshot.
 
-A `Refresh Android Data` workflow runs the same thing monthly and opens a pull request when the data changed.
+The daily `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.
 Ubuntu 24.04's own erofs-utils is 1.7, so it installs a newer one with the Homebrew that GitHub's Ubuntu runners come with.

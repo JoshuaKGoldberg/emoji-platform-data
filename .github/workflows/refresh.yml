@@ -1,0 +1,200 @@
+jobs:
+  refresh:
+    name: Refresh ${{ matrix.name }} Data
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare
+      # Ubuntu's own erofs-utils is too old to have dump.erofs --cat, but the
+      # runner comes with Homebrew, just not on its PATH.
+      - if: matrix.platform == 'android'
+        name: Install erofs-utils
+        run: |
+          echo "/home/linuxbrew/.linuxbrew/bin" >> "$GITHUB_PATH"
+          /home/linuxbrew/.linuxbrew/bin/brew install erofs-utils
+      - env:
+          PLATFORM: ${{ matrix.platform }}
+        name: Read ${{ matrix.name }} emoji data
+        # The output is kept so that a failure can be reported with it.
+        run: |
+          set -o pipefail
+          pnpm --filter @emoji-platform-data/generator "refresh:$PLATFORM" 2>&1 | tee "$RUNNER_TEMP/refresh.log"
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          NAME: ${{ matrix.name }}
+          PLATFORM: ${{ matrix.platform }}
+        name: Open a pull request if the data changed
+        run: |
+          snapshot="packages/generator/$PLATFORM.json"
+
+          if git diff --quiet -- "$snapshot"; then
+            echo "$NAME emoji data is unchanged."
+            exit 0
+          fi
+
+          # What the new data came from: a version when the source has one,
+          # which goes in the title too, or else where it was read from.
+          version=""
+          source=""
+
+          case "$PLATFORM" in
+            android)
+              version="Gboard's $(jq -r '.pack' "$snapshot")"
+              ;;
+            discord | slack)
+              source="the web client bundle"
+              ;;
+            gnome)
+              version="GTK $(jq -r '.gtk' "$snapshot")"
+              ;;
+            macos)
+              macos_version=$(jq -r '.macosVersion' "$snapshot")
+              previous_version=$(git show "HEAD:$snapshot" | jq -r '.macosVersion')
+              oldest_version=$(printf '%s\n%s\n' "$macos_version" "$previous_version" | sort -V | head -1)
+
+              # Runner images can lag behind the macOS whoever last refreshed
+              # the snapshot was on, and that data shouldn't be rolled back to
+              # an older release's.
+              if [ "$macos_version" != "$previous_version" ] && [ "$oldest_version" = "$macos_version" ]; then
+                echo "This runner is on macOS $macos_version, older than the committed snapshot's macOS $previous_version."
+                exit 0
+              fi
+
+              version="macOS $macos_version"
+              ;;
+            wechat)
+              source="the Android app"
+              ;;
+            windows)
+              version="Windows 11 $(jq -r '.release' "$snapshot")"
+              ;;
+            *)
+              echo "No description for how $PLATFORM's data changes."
+              exit 1
+              ;;
+          esac
+
+          count=$(jq '.entries | length' "$snapshot")
+          keyworded=$(jq '[.entries[] | select(.keywords | length > 0)] | length' "$snapshot")
+          branch="refresh-$PLATFORM-data"
+          changeset=".changeset/refresh-$PLATFORM-data.md"
+
+          if [ -n "$version" ]; then
+            summary="Updated $NAME emoji data to $version."
+            title="feat: update $NAME emoji data to $version"
+          else
+            summary="Updated $NAME emoji data from $source."
+            title="feat: update $NAME emoji data"
+          fi
+
+          cat > "$changeset" <<CHANGESET
+          ---
+          "@emoji-platform-data/$PLATFORM": minor
+          "emoji-platform-data": minor
+          ---
+
+          $summary
+          CHANGESET
+
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git checkout -b "$branch"
+          git add "$changeset" "$snapshot"
+          git commit -m "$title"
+          git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
+
+          if [ "$(gh pr list --head "$branch" --state open --json number | jq length)" != "0" ]; then
+            echo "Updated the existing pull request."
+            exit 0
+          fi
+
+          gh pr create \
+            --base main \
+            --body "$summary This refreshes \`$snapshot\` to the $count emoji it has now, $keyworded of them with search keywords. See \`packages/$PLATFORM/DEVELOPMENT.md\` for how the extraction works." \
+            --head "$branch" \
+            --title "$title"
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          NAME: ${{ matrix.name }}
+          PLATFORM: ${{ matrix.platform }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        if: failure()
+        name: Report the failure in an issue
+        run: |
+          title="🛠 Tooling: Refresh $NAME Data is failing"
+          existing=$(gh issue list --state open --json number,title --limit 100 | jq -r --arg title "$title" '.[] | select(.title == $title) | .number' | head -1)
+
+          # The refresh scripts' errors say what looked wrong, such as a known
+          # keyword going missing, so the end of their output goes in the issue.
+          # A failure in any other step has no output here, and links the run.
+          if [ -s "$RUNNER_TEMP/refresh.log" ]; then
+            output=$(tail -n 40 "$RUNNER_TEMP/refresh.log" | perl -pe 's/\e\[[0-9;]*m//g')
+            details=$(printf 'The end of its output:\n\n~~~\n%s\n~~~' "$output")
+          else
+            details="It failed before reading any data, so see the run for what went wrong."
+          fi
+
+          body=$(printf '[Refreshing %s data](%s) failed on %s.\n\n%s\n\nSee `packages/%s/DEVELOPMENT.md` for how the extraction works.' "$NAME" "$RUN_URL" "$(date -u +%Y-%m-%d)" "$details" "$PLATFORM")
+
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --body "$body" --label "area: tooling" --label "type: bug" --title "$title"
+          fi
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          NAME: ${{ matrix.name }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        if: success()
+        name: Close the failure issue, if there is one
+        run: |
+          title="🛠 Tooling: Refresh $NAME Data is failing"
+          existing=$(gh issue list --state open --json number,title --limit 100 | jq -r --arg title "$title" '.[] | select(.title == $title) | .number' | head -1)
+
+          if [ -n "$existing" ]; then
+            gh issue close "$existing" --comment "[Refreshing $NAME data]($RUN_URL) succeeded again."
+          fi
+    strategy:
+      # Each platform's source can break on its own, so one failing
+      # shouldn't stop the others from refreshing.
+      fail-fast: false
+      matrix:
+        include:
+          - name: Android
+            platform: android
+            runner: ubuntu-latest
+          - name: Discord
+            platform: discord
+            runner: ubuntu-latest
+          - name: GNOME
+            platform: gnome
+            runner: ubuntu-latest
+          # macOS's emoji data is only readable from its system frameworks.
+          - name: macOS
+            platform: macos
+            runner: macos-latest
+          - name: Slack
+            platform: slack
+            runner: ubuntu-latest
+          - name: WeChat
+            platform: wechat
+            runner: ubuntu-latest
+          - name: Windows
+            platform: windows
+            runner: ubuntu-latest
+
+name: Refresh Data
+
+on:
+  schedule:
+    - cron: "0 14 * * *"
+  workflow_dispatch: ~
