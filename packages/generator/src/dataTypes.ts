@@ -10,6 +10,8 @@ export type AllFluemojiData = Record<string, FluemojiItem>;
 
 export type AllGemojiData = Record<string, GemojiItem>;
 
+export type AllGnomeData = Record<string, GnomeItem>;
+
 export type AllJoyPixelsData = Record<string, JoyPixelsItem>;
 
 export type AllMacOSData = Record<string, MacOSItem>;
@@ -154,6 +156,7 @@ export interface EmojiPlatformData {
 	emojipedia?: EmojipediaItem;
 	fluemoji?: FluemojiItem;
 	gemoji?: GemojiItem;
+	gnome?: GnomeItem;
 	joypixels?: JoyPixelsItem;
 	macos?: MacOSItem;
 	slack?: SlackItem;
@@ -184,6 +187,31 @@ export interface GemojiItem {
 	emoji: string;
 	names: string[];
 	tags: string[];
+}
+
+/**
+ * One emoji as GNOME's emoji picker, GTK's emoji chooser, knows it.
+ */
+export interface GnomeItem {
+	/** Picker section listing the emoji, such as "Animals & Nature". The hair components, which the picker doesn't show, have none. */
+	category?: string;
+
+	emoji: string;
+
+	/** Terms the picker matches searches against in English, beyond the name. */
+	keywords: string[];
+
+	/** The terms the picker matches searches against in each of GTK's other locales, keyed by locale, such as "de". */
+	keywordsByLocale: Record<string, string[]>;
+
+	/** How GNOME names the emoji in English, such as "octopus". */
+	name: string;
+
+	/** How GNOME names the emoji in each of GTK's other locales, keyed by locale, such as "Oktopus" for "de". */
+	namesByLocale: Record<string, string>;
+
+	/** Where the emoji falls in the English picker's overall order, across all categories. Emoji only GTK's other locales know yet have none. */
+	order?: number;
 }
 
 /**

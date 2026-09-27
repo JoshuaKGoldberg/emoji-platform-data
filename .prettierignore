@@ -2,6 +2,7 @@
 /.husky
 /packages/*/lib
 /packages/generator/discord.json
+/packages/generator/gnome.json
 /packages/generator/macos.json
 /packages/generator/slack.json
 /packages/generator/wechat.json

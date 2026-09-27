@@ -30,6 +30,7 @@ console.log(byTitle.SparklingHeart);
 	emojipedia: { "currentCldrName": "Sparkling Heart", ... },
 	fluemoji: { "cldr": "sparkling heart", ... },
 	gemoji: { "description": "sparkling heart", ... },
+	gnome: { "name": "sparkling heart", ... },
 	joypixels: { "name": "sparkling_heart", ... },
 	macos: { "appleName": "heart with stars", ... },
 	slack: { "name": "sparkling_heart", ... },
@@ -49,6 +50,7 @@ Each entry is an `EmojiPlatformData` combining data from:
 - [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia) (`emojipedia`)
 - [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji) (`fluemoji`)
 - [Gemoji](https://github.com/wooorm/gemoji) (`gemoji`)
+- [GNOME](https://gitlab.gnome.org/GNOME/gtk/-/tree/main/gtk/emoji) (`gnome`)
 - [JoyPixels / Zoom](https://github.com/joypixels/emoji-toolkit) (`joypixels`)
 - [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) (`macos`)
 - [Slack](https://slack.com) (`slack`)

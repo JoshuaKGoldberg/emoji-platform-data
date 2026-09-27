@@ -23,6 +23,7 @@
 	"files": [
 		"discord.json",
 		"emoji.yml",
+		"gnome.json",
 		"macos.json",
 		"slack.json",
 		"wechat.json",
@@ -33,6 +34,7 @@
 	"scripts": {
 		"build": "tsc -b",
 		"refresh:discord": "tsx scripts/refreshDiscord.ts",
+		"refresh:gnome": "tsx scripts/refreshGnome.ts",
 		"refresh:macos": "tsx scripts/refreshMacOS.ts",
 		"refresh:slack": "tsx scripts/refreshSlack.ts",
 		"refresh:wechat": "tsx scripts/refreshWeChat.ts",
