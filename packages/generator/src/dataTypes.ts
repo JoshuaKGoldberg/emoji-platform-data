@@ -10,6 +10,8 @@ export type AllFluemojiData = Record<string, FluemojiItem>;
 
 export type AllGemojiData = Record<string, GemojiItem>;
 
+export type AllJoyPixelsData = Record<string, JoyPixelsItem>;
+
 export type AllMacOSData = Record<string, MacOSItem>;
 
 export type AllSlackData = Record<string, SlackItem>;
@@ -150,6 +152,7 @@ export interface EmojiPlatformData {
 	emojipedia?: EmojipediaItem;
 	fluemoji?: FluemojiItem;
 	gemoji?: GemojiItem;
+	joypixels?: JoyPixelsItem;
 	macos?: MacOSItem;
 	slack?: SlackItem;
 	slug: string;
@@ -178,6 +181,37 @@ export interface GemojiItem {
 	emoji: string;
 	names: string[];
 	tags: string[];
+}
+
+/**
+ * One emoji as JoyPixels' emoji-toolkit knows it, which is also how Zoom's Team Chat emoji picker knows it.
+ */
+export interface JoyPixelsItem {
+	/** Other shortcodes JoyPixels accepts for the emoji, such as "thumbsup" for 👍. */
+	aliases: string[];
+
+	/** Picker category listing the emoji, such as "nature". Emoji the picker doesn't show, such as most families, have none. */
+	category?: string;
+
+	/** How JoyPixels names the emoji, such as "octopus". */
+	description: string;
+
+	emoji: string;
+
+	/** Text emoticons the emoji stands in for, such as "&lt;3" for ❤️. Only a few dozen emoji have them. */
+	emoticons?: string[];
+
+	/** Terms a picker matches searches against, beyond the shortcodes. */
+	keywords: string[];
+
+	/** JoyPixels' shortcode for the emoji, such as "octopus". */
+	name: string;
+
+	/** Where the emoji falls in the picker's overall order, across all categories. */
+	order?: number;
+
+	/** Unicode version that introduced the emoji, such as 6. */
+	unicodeVersion: number;
 }
 
 /**
