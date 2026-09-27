@@ -136,3 +136,19 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		});
 	}
 });
+
+describe(combinedName, () => {
+	it("keys emoji by the glyph platforms know them by, rather than Emojipedia's", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		expect(byEmoji["🧕‍♀️"]).toBeUndefined();
+		expect(byEmoji["🧕"]).toMatchObject({
+			android: { emoji: "🧕" },
+			emoji: "🧕",
+			emojipedia: { code: "🧕‍♀️" },
+			macos: { emoji: "🧕" },
+			slack: { emoji: "🧕" },
+			wechat: { emoji: "🧕" },
+		});
+	});
+});
