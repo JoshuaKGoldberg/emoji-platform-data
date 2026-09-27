@@ -37,4 +37,4 @@ The result is committed as a snapshot, [`packages/generator/windows.json`](../ge
 Windows ships a cumulative update every month, but this feature on demand only changes with a new release -26H2 still ships the same one as 24H2- so the script rewrites the snapshot only when the emoji themselves changed.
 It validates what it read before writing anything: how many emoji came back, how many of them have keywords, that each has a name, that a few known emoji still carry known keywords that CLDR doesn't have, and that neither count has fallen sharply since the last snapshot.
 
-A `Refresh Windows Data` workflow runs the same thing monthly and opens a pull request when the data changed.
+The monthly `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.

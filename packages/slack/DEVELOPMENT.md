@@ -42,4 +42,4 @@ The keyword map has a stray `undefined` key, which is dropped with a warning.
 The result is committed as a snapshot, [`packages/generator/slack.json`](../generator/slack.json), the same way Discord's is.
 The script rewrites the snapshot only when the emoji or the locales changed, and validates what it read before writing anything: how many emoji came back, how many of them have keywords, that every picker category is well represented, that every expected locale is there with its terms found, that a few known emoji still have known shortcodes and keywords in English _and_ in another locale, and that neither count has fallen sharply since the last snapshot.
 
-A `Refresh Slack Data` workflow runs the same thing monthly and opens a pull request when the data changed.
+The monthly `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.

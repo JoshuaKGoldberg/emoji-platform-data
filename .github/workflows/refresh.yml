@@ -1,0 +1,153 @@
+jobs:
+  refresh:
+    name: Refresh ${{ matrix.name }} Data
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare
+      # Ubuntu's own erofs-utils is too old to have dump.erofs --cat, but the
+      # runner comes with Homebrew, just not on its PATH.
+      - if: matrix.platform == 'android'
+        name: Install erofs-utils
+        run: |
+          echo "/home/linuxbrew/.linuxbrew/bin" >> "$GITHUB_PATH"
+          /home/linuxbrew/.linuxbrew/bin/brew install erofs-utils
+      - env:
+          PLATFORM: ${{ matrix.platform }}
+        name: Read ${{ matrix.name }} emoji data
+        run: pnpm --filter @emoji-platform-data/generator "refresh:$PLATFORM"
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          NAME: ${{ matrix.name }}
+          PLATFORM: ${{ matrix.platform }}
+        name: Open a pull request if the data changed
+        run: |
+          snapshot="packages/generator/$PLATFORM.json"
+
+          if git diff --quiet -- "$snapshot"; then
+            echo "$NAME emoji data is unchanged."
+            exit 0
+          fi
+
+          # What the new data came from: a version when the source has one,
+          # which goes in the title too, or else where it was read from.
+          version=""
+          source=""
+
+          case "$PLATFORM" in
+            android)
+              version="Gboard's $(jq -r '.pack' "$snapshot")"
+              ;;
+            discord | slack)
+              source="the web client bundle"
+              ;;
+            gnome)
+              version="GTK $(jq -r '.gtk' "$snapshot")"
+              ;;
+            macos)
+              macos_version=$(jq -r '.macosVersion' "$snapshot")
+              previous_version=$(git show "HEAD:$snapshot" | jq -r '.macosVersion')
+              oldest_version=$(printf '%s\n%s\n' "$macos_version" "$previous_version" | sort -V | head -1)
+
+              # Runner images can lag behind the macOS whoever last refreshed
+              # the snapshot was on, and that data shouldn't be rolled back to
+              # an older release's.
+              if [ "$macos_version" != "$previous_version" ] && [ "$oldest_version" = "$macos_version" ]; then
+                echo "This runner is on macOS $macos_version, older than the committed snapshot's macOS $previous_version."
+                exit 0
+              fi
+
+              version="macOS $macos_version"
+              ;;
+            wechat)
+              source="the Android app"
+              ;;
+            windows)
+              version="Windows 11 $(jq -r '.release' "$snapshot")"
+              ;;
+            *)
+              echo "No description for how $PLATFORM's data changes."
+              exit 1
+              ;;
+          esac
+
+          count=$(jq '.entries | length' "$snapshot")
+          keyworded=$(jq '[.entries[] | select(.keywords | length > 0)] | length' "$snapshot")
+          branch="refresh-$PLATFORM-data"
+          changeset=".changeset/refresh-$PLATFORM-data.md"
+
+          if [ -n "$version" ]; then
+            summary="Updated $NAME emoji data to $version."
+            title="feat: update $NAME emoji data to $version"
+          else
+            summary="Updated $NAME emoji data from $source."
+            title="feat: update $NAME emoji data"
+          fi
+
+          cat > "$changeset" <<CHANGESET
+          ---
+          "@emoji-platform-data/$PLATFORM": minor
+          "emoji-platform-data": minor
+          ---
+
+          $summary
+          CHANGESET
+
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git checkout -b "$branch"
+          git add "$changeset" "$snapshot"
+          git commit -m "$title"
+          git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
+
+          if [ "$(gh pr list --head "$branch" --state open --json number | jq length)" != "0" ]; then
+            echo "Updated the existing pull request."
+            exit 0
+          fi
+
+          gh pr create \
+            --base main \
+            --body "$summary This refreshes \`$snapshot\` to the $count emoji it has now, $keyworded of them with search keywords. See \`packages/$PLATFORM/DEVELOPMENT.md\` for how the extraction works." \
+            --head "$branch" \
+            --title "$title"
+    strategy:
+      # Each platform's source can break on its own, so one failing
+      # shouldn't stop the others from refreshing.
+      fail-fast: false
+      matrix:
+        include:
+          - name: Android
+            platform: android
+            runner: ubuntu-latest
+          - name: Discord
+            platform: discord
+            runner: ubuntu-latest
+          - name: GNOME
+            platform: gnome
+            runner: ubuntu-latest
+          # macOS's emoji data is only readable from its system frameworks.
+          - name: macOS
+            platform: macos
+            runner: macos-latest
+          - name: Slack
+            platform: slack
+            runner: ubuntu-latest
+          - name: WeChat
+            platform: wechat
+            runner: ubuntu-latest
+          - name: Windows
+            platform: windows
+            runner: ubuntu-latest
+
+name: Refresh Data
+
+on:
+  schedule:
+    - cron: "0 14 1 * *"
+  workflow_dispatch: ~

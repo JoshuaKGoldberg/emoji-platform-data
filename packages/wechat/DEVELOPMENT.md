@@ -47,4 +47,4 @@ The result is committed as a snapshot, [`packages/generator/wechat.json`](../gen
 Tencent ships a new build every few weeks and the file name carries its version, so the script rewrites the snapshot only when the emoji themselves changed, and validates what it read before writing anything: how many emoji came back, how many of them have keywords, that every picker category is well represented, that a few known emoji still carry a known term in _both_ scripts, and that neither count has fallen sharply since the last snapshot.
 The categories and the keywords come from different files, so those bilingual canaries are what catch the two coming apart as well as either going missing.
 
-A `Refresh WeChat Data` workflow runs the same thing monthly and opens a pull request when the data changed.
+The monthly `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.
