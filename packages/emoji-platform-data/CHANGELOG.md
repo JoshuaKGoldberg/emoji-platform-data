@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.8.0
+
+### Minor Changes
+
+- [#1021](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1021) [`dbabe9d`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/dbabe9d6d2c381f00ae1ce34ac8342abb822d41b) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Added `@emoji-platform-data/android`, with the search keywords of Gboard, Android's keyboard.
+
+- [#1020](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1020) [`880874a`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/880874ac15e1bb096d1e1ecf045c0fbb795afbe6) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Added `@emoji-platform-data/gnome`, with the names, search keywords, categories, and picker order of GTK's emoji chooser, in English and 24 other locales.
+
+- [#1019](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1019) [`ee04dc5`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/ee04dc547bda6555f0e7751ab0c1bcf82d63faf8) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Added `@emoji-platform-data/windows`, with the names and search keywords of the Windows emoji panel.
+
 ## 0.7.0
 
 ### Minor Changes
