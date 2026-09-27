@@ -128,3 +128,15 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		});
 	}
 });
+
+describe(combinedName, () => {
+	it("titles emoji without the underscores of platforms' shortcodes", async () => {
+		const { byTitle } = await importPackage(combinedPackage);
+
+		expect(
+			Object.values(byTitle)
+				.map((entry) => (entry as { title: string }).title)
+				.filter((title) => title.includes("_")),
+		).toEqual([]);
+	});
+});

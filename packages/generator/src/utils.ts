@@ -34,7 +34,9 @@ export function getEntryCldr(
 		return byUnicode;
 	}
 
-	return titleCase(entries[0])
+	// Shortcodes, such as Slack's "person_with_headscarf", separate words with
+	// underscores, which titleCase leaves in place.
+	return titleCase(entries[0].replaceAll("_", " "))
 		.replaceAll("#", "Hash")
 		.replaceAll("*", "Asterisk")
 		.replaceAll("’s Symbol", "’s Room");
