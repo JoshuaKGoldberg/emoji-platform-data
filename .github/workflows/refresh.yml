@@ -3,6 +3,7 @@ jobs:
     name: Refresh ${{ matrix.name }} Data
     permissions:
       contents: write
+      issues: write
       pull-requests: write
     runs-on: ${{ matrix.runner }}
     steps:
@@ -20,7 +21,10 @@ jobs:
       - env:
           PLATFORM: ${{ matrix.platform }}
         name: Read ${{ matrix.name }} emoji data
-        run: pnpm --filter @emoji-platform-data/generator "refresh:$PLATFORM"
+        # The output is kept so that a failure can be reported with it.
+        run: |
+          set -o pipefail
+          pnpm --filter @emoji-platform-data/generator "refresh:$PLATFORM" 2>&1 | tee "$RUNNER_TEMP/refresh.log"
       - env:
           GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -116,6 +120,49 @@ jobs:
             --body "$summary This refreshes \`$snapshot\` to the $count emoji it has now, $keyworded of them with search keywords. See \`packages/$PLATFORM/DEVELOPMENT.md\` for how the extraction works." \
             --head "$branch" \
             --title "$title"
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          NAME: ${{ matrix.name }}
+          PLATFORM: ${{ matrix.platform }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        if: failure()
+        name: Report the failure in an issue
+        run: |
+          title="🛠 Tooling: Refresh $NAME Data is failing"
+          existing=$(gh issue list --state open --json number,title --limit 100 | jq -r --arg title "$title" '.[] | select(.title == $title) | .number' | head -1)
+
+          # The refresh scripts' errors say what looked wrong, such as a known
+          # keyword going missing, so the end of their output goes in the issue.
+          # A failure in any other step has no output here, and links the run.
+          if [ -s "$RUNNER_TEMP/refresh.log" ]; then
+            output=$(tail -n 40 "$RUNNER_TEMP/refresh.log" | perl -pe 's/\e\[[0-9;]*m//g')
+            details=$(printf 'The end of its output:\n\n~~~\n%s\n~~~' "$output")
+          else
+            details="It failed before reading any data, so see the run for what went wrong."
+          fi
+
+          body=$(printf '[Refreshing %s data](%s) failed on %s.\n\n%s\n\nSee `packages/%s/DEVELOPMENT.md` for how the extraction works.' "$NAME" "$RUN_URL" "$(date -u +%Y-%m-%d)" "$details" "$PLATFORM")
+
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --body "$body" --label "area: tooling" --label "type: bug" --title "$title"
+          fi
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          NAME: ${{ matrix.name }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        if: success()
+        name: Close the failure issue, if there is one
+        run: |
+          title="🛠 Tooling: Refresh $NAME Data is failing"
+          existing=$(gh issue list --state open --json number,title --limit 100 | jq -r --arg title "$title" '.[] | select(.title == $title) | .number' | head -1)
+
+          if [ -n "$existing" ]; then
+            gh issue close "$existing" --comment "[Refreshing $NAME data]($RUN_URL) succeeded again."
+          fi
     strategy:
       # Each platform's source can break on its own, so one failing
       # shouldn't stop the others from refreshing.
