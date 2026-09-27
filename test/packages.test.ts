@@ -128,3 +128,13 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		});
 	}
 });
+
+describe(combinedName, () => {
+	it("keeps each emoji that Emojipedia titles the same as another", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		for (const emoji of ["🤵", "🤵‍♂️", "👯", "👯‍♀️"]) {
+			expect(byEmoji[emoji]).toMatchObject({ emoji, macos: { emoji } });
+		}
+	});
+});
