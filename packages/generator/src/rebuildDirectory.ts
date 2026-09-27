@@ -6,6 +6,7 @@ import { formatExportLine } from "./formatExportLine.js";
 import { EmojiPlatformData } from "./types.js";
 
 export type EmojiPlatformDataSource =
+	| "android"
 	| "discord"
 	| "emojiMart"
 	| "emojipedia"
@@ -37,6 +38,7 @@ interface WriteDataDirectorySettings {
 }
 
 const sourceTypeNames: Record<EmojiPlatformDataSource, string> = {
+	android: "AndroidItem",
 	discord: "DiscordItem",
 	emojiMart: "EmojiMartItem",
 	emojipedia: "EmojipediaItem",

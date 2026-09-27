@@ -21,6 +21,7 @@
 		}
 	},
 	"files": [
+		"android.json",
 		"discord.json",
 		"emoji.yml",
 		"macos.json",
@@ -31,6 +32,7 @@
 	],
 	"scripts": {
 		"build": "tsc -b",
+		"refresh:android": "tsx scripts/refreshAndroid.ts",
 		"refresh:discord": "tsx scripts/refreshDiscord.ts",
 		"refresh:macos": "tsx scripts/refreshMacOS.ts",
 		"refresh:slack": "tsx scripts/refreshSlack.ts",

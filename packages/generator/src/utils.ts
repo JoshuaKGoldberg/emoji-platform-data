@@ -89,3 +89,23 @@ export function recordByCldr<T>(
 
 	return record;
 }
+
+/**
+ * Code points as Unicode writes them, such as "U+1F9D1 U+200D U+1F9B0".
+ */
+export function toCodePointNotation(unicode: string) {
+	return unicode
+		.split("-")
+		.map((hex) => `U+${hex.toUpperCase()}`)
+		.join(" ");
+}
+
+export function toUnicode(emoji: string) {
+	// Code points are the unit Emojipedia writes its codepoint lists in.
+	// eslint-disable-next-line @typescript-eslint/no-misused-spread
+	return [...emoji]
+		.map((character) =>
+			(character.codePointAt(0) ?? 0).toString(16).padStart(4, "0"),
+		)
+		.join("-");
+}
