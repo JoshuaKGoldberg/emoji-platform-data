@@ -31,11 +31,13 @@ console.log(byTitle.SparklingHeart);
 	emojipedia: { "currentCldrName": "Sparkling Heart", ... },
 	fluemoji: { "cldr": "sparkling heart", ... },
 	gemoji: { "description": "sparkling heart", ... },
+	gnome: { "name": "sparkling heart", ... },
 	joypixels: { "name": "sparkling_heart", ... },
 	macos: { "appleName": "heart with stars", ... },
 	slack: { "name": "sparkling_heart", ... },
 	twemoji: { "description": "Sparkling heart", ... },
 	wechat: { "keywords": ["twinkle", "twinkling", "闪亮的心", ...], ... },
+	windows: { "name": "sparkling heart", ... },
 	...
 }
 */
@@ -50,11 +52,13 @@ Each entry is an `EmojiPlatformData` combining data from:
 - [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia) (`emojipedia`)
 - [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji) (`fluemoji`)
 - [Gemoji](https://github.com/wooorm/gemoji) (`gemoji`)
+- [GNOME](https://gitlab.gnome.org/GNOME/gtk/-/tree/main/gtk/emoji) (`gnome`)
 - [JoyPixels / Zoom](https://github.com/joypixels/emoji-toolkit) (`joypixels`)
 - [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) (`macos`)
 - [Slack](https://slack.com) (`slack`)
 - [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser) (`twemoji`)
 - [WeChat](https://weixin.qq.com) (`wechat`)
+- [Windows](https://support.microsoft.com/windows/windows-keyboard-tips-and-tricks-588e0b72-0fff-6d3f-aeee-6e5116097942) (`windows`)
 
 Each of those sources is also available as its own `@emoji-platform-data/*` package.
 See the [repository README](https://github.com/JoshuaKGoldberg/emoji-platform-data#packages) for the full list.

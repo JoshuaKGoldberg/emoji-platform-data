@@ -1,11 +1,11 @@
 {
-	"name": "@emoji-platform-data/discord",
-	"version": "0.2.0",
-	"description": "Static export of Discord emoji picker metadata for unicode emojis. 💬",
+	"name": "@emoji-platform-data/windows",
+	"version": "0.1.0",
+	"description": "Static export of Windows emoji panel metadata for unicode emojis. ⌨️",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/JoshuaKGoldberg/emoji-platform-data.git",
-		"directory": "packages/discord"
+		"directory": "packages/windows"
 	},
 	"license": "MIT",
 	"author": {

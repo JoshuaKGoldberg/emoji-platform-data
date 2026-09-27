@@ -4,12 +4,14 @@ import { generateEmojiMart } from "./emojiMart.js";
 import { generateEmojipedia } from "./emojipedia.js";
 import { generateFluemoji } from "./fluemoji.js";
 import { generateGemoji } from "./gemoji.js";
+import { generateGnome } from "./gnome.js";
 import { generateJoyPixels } from "./joypixels.js";
 import { generateMacOS } from "./macos.js";
 import { generateSlack } from "./slack.js";
 import { generateTwemoji } from "./twemoji.js";
 import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
 import { generateWeChat } from "./wechat.js";
+import { generateWindows } from "./windows.js";
 
 export interface GenerateAllSettings {
 	/**
@@ -29,21 +31,25 @@ export async function generateAll({
 		allDiscord,
 		allEmojiMart,
 		allFluemoji,
+		allGnome,
 		allJoyPixels,
 		allMacOS,
 		allSlack,
 		allTwemoji,
 		allWeChat,
+		allWindows,
 	] = await Promise.all([
 		generateAndroid(allEmojipedia),
 		generateDiscord(allEmojipedia),
 		generateEmojiMart(allEmojipedia),
 		generateFluemoji(allEmojipedia, fluemojiDirectory),
+		generateGnome(allEmojipedia),
 		generateJoyPixels(allEmojipedia),
 		generateMacOS(allEmojipedia),
 		generateSlack(allEmojipedia),
 		generateTwemoji(allEmojipedia),
 		generateWeChat(allEmojipedia),
+		generateWindows(allEmojipedia),
 	]);
 	const allPlatforms = [
 		allAndroid,
@@ -51,11 +57,13 @@ export async function generateAll({
 		allEmojiMart,
 		allFluemoji,
 		allGemoji,
+		allGnome,
 		allJoyPixels,
 		allMacOS,
 		allSlack,
 		allTwemoji,
 		allWeChat,
+		allWindows,
 	];
 
 	const allKeys = new Set(
@@ -73,11 +81,13 @@ export async function generateAll({
 				const emojipedia = allEmojipedia.byCldr[title];
 				const fluemoji = allFluemoji[title];
 				const gemoji = allGemoji[title];
+				const gnome = allGnome[title];
 				const joypixels = allJoyPixels[title];
 				const macos = allMacOS[title];
 				const slack = allSlack[title];
 				const twemoji = allTwemoji[title];
 				const wechat = allWeChat[title];
+				const windows = allWindows[title];
 
 				const platformData = {
 					android,
@@ -90,16 +100,19 @@ export async function generateAll({
 							emojiMart?.skins[0]?.native ??
 							fluemoji?.glyph ??
 							gemoji?.emoji ??
+							gnome?.emoji ??
 							joypixels?.emoji ??
 							macos?.emoji ??
 							slack?.emoji ??
 							twemoji?.unicode ??
 							wechat?.emoji ??
+							windows?.emoji ??
 							android?.emoji)!,
 					emojiMart,
 					emojipedia,
 					fluemoji,
 					gemoji,
+					gnome,
 					joypixels,
 					macos,
 					slack,
@@ -107,6 +120,7 @@ export async function generateAll({
 					title,
 					twemoji,
 					wechat,
+					windows,
 				};
 
 				return [title, platformData];
@@ -145,6 +159,8 @@ const titlePriority = [
 	"discord",
 	"slack",
 	"joypixels",
+	"windows",
+	"gnome",
 	"wechat",
 	"android",
 ] as const satisfies (keyof EmojiPlatformData)[];
@@ -158,11 +174,13 @@ function getGlyphs(platformData: EmojiPlatformData) {
 			platformData.emojipedia?.code,
 			platformData.fluemoji?.glyph,
 			platformData.gemoji?.emoji,
+			platformData.gnome?.emoji,
 			platformData.joypixels?.emoji,
 			platformData.macos?.emoji,
 			platformData.slack?.emoji,
 			platformData.twemoji?.unicode,
 			platformData.wechat?.emoji,
+			platformData.windows?.emoji,
 		]
 			.filter((glyph) => glyph !== undefined)
 			.map(withoutVariationSelectors),

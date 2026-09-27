@@ -12,11 +12,13 @@ export type EmojiPlatformDataSource =
 	| "emojipedia"
 	| "fluemoji"
 	| "gemoji"
+	| "gnome"
 	| "joypixels"
 	| "macos"
 	| "slack"
 	| "twemoji"
-	| "wechat";
+	| "wechat"
+	| "windows";
 
 export interface RebuildSettings extends GenerateAllSettings {
 	directory: string;
@@ -44,11 +46,13 @@ const sourceTypeNames: Record<EmojiPlatformDataSource, string> = {
 	emojipedia: "EmojipediaItem",
 	fluemoji: "FluemojiItem",
 	gemoji: "GemojiItem",
+	gnome: "GnomeItem",
 	joypixels: "JoyPixelsItem",
 	macos: "MacOSItem",
 	slack: "SlackItem",
 	twemoji: "TwemojiItem",
 	wechat: "WeChatItem",
+	windows: "WindowsItem",
 };
 
 /**
