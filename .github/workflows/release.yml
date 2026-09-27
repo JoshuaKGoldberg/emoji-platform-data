@@ -28,16 +28,48 @@ jobs:
     permissions:
       contents: write
       id-token: write
+      issues: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
       - uses: ./.github/actions/prepare
-      - uses: changesets/action/publish@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+      - id: publish
+        uses: changesets/action/publish@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           github-token: ${{ secrets.ACCESS_TOKEN }}
           pack-dir-artifact-id: ${{ needs.pack.outputs.pack-dir-artifact-id }}
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          PUBLISHED_PACKAGES: ${{ steps.publish.outputs.published-packages }}
+        if: ${{ !cancelled() && steps.publish.outputs.published == 'true' }}
+        name: Comment on released pull requests
+        run: |
+          # Each package's release notes link the pull requests that went into
+          # it. A pull request can go into many packages' releases at once, so
+          # it gets one comment listing them all, rather than one per release.
+          for tag in $(jq -r '.[] | "\(.name)@\(.version)"' <<< "$PUBLISHED_PACKAGES"); do
+            url=$(gh release view "$tag" --json url --jq .url)
+            gh release view "$tag" --json body --jq .body |
+              grep -oE '/pull/[0-9]+' |
+              cut -d / -f 3 |
+              sort -u |
+              sed "s|\$| [\`$tag\`]($url)|"
+          done | sort -n > "$RUNNER_TEMP/released.txt"
+
+          for pr in $(cut -d ' ' -f 1 "$RUNNER_TEMP/released.txt" | uniq); do
+            releases=$(grep "^$pr " "$RUNNER_TEMP/released.txt" | cut -d ' ' -f 2- | sed 's/^/- /')
+            body=$(printf ':tada: This has been released in:\n\n%s\n\nCheers! 📦🚀' "$releases")
+
+            gh pr comment "$pr" --body "$body"
+
+            for issue in $(gh pr view "$pr" --json closingIssuesReferences --jq '.closingIssuesReferences[].number'); do
+              gh issue comment "$issue" --body "$body"
+            done
+          done
 
   select_mode:
     name: Select Mode
