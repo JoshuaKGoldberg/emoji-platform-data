@@ -3,6 +3,7 @@ import { generateEmojiMart } from "./emojiMart.js";
 import { generateEmojipedia } from "./emojipedia.js";
 import { generateFluemoji } from "./fluemoji.js";
 import { generateGemoji } from "./gemoji.js";
+import { generateGnome } from "./gnome.js";
 import { generateJoyPixels } from "./joypixels.js";
 import { generateMacOS } from "./macos.js";
 import { generateSlack } from "./slack.js";
@@ -27,6 +28,7 @@ export async function generateAll({
 		allDiscord,
 		allEmojiMart,
 		allFluemoji,
+		allGnome,
 		allJoyPixels,
 		allMacOS,
 		allSlack,
@@ -36,6 +38,7 @@ export async function generateAll({
 		generateDiscord(allEmojipedia),
 		generateEmojiMart(allEmojipedia),
 		generateFluemoji(allEmojipedia, fluemojiDirectory),
+		generateGnome(allEmojipedia),
 		generateJoyPixels(allEmojipedia),
 		generateMacOS(allEmojipedia),
 		generateSlack(allEmojipedia),
@@ -47,6 +50,7 @@ export async function generateAll({
 		allEmojiMart,
 		allFluemoji,
 		allGemoji,
+		allGnome,
 		allJoyPixels,
 		allMacOS,
 		allSlack,
@@ -68,6 +72,7 @@ export async function generateAll({
 				const emojipedia = allEmojipedia.byCldr[title];
 				const fluemoji = allFluemoji[title];
 				const gemoji = allGemoji[title];
+				const gnome = allGnome[title];
 				const joypixels = allJoyPixels[title];
 				const macos = allMacOS[title];
 				const slack = allSlack[title];
@@ -84,6 +89,7 @@ export async function generateAll({
 							emojiMart?.skins[0]?.native ??
 							fluemoji?.glyph ??
 							gemoji?.emoji ??
+							gnome?.emoji ??
 							joypixels?.emoji ??
 							macos?.emoji ??
 							slack?.emoji ??
@@ -93,6 +99,7 @@ export async function generateAll({
 					emojipedia,
 					fluemoji,
 					gemoji,
+					gnome,
 					joypixels,
 					macos,
 					slack,
@@ -138,6 +145,7 @@ const titlePriority = [
 	"discord",
 	"slack",
 	"joypixels",
+	"gnome",
 	"wechat",
 ] as const satisfies (keyof EmojiPlatformData)[];
 
@@ -149,6 +157,7 @@ function getGlyphs(platformData: EmojiPlatformData) {
 			platformData.emojipedia?.code,
 			platformData.fluemoji?.glyph,
 			platformData.gemoji?.emoji,
+			platformData.gnome?.emoji,
 			platformData.joypixels?.emoji,
 			platformData.macos?.emoji,
 			platformData.slack?.emoji,

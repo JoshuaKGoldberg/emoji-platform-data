@@ -3,7 +3,12 @@ import * as path from "node:path";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllWeChatData, WeChatItem } from "./types.js";
-import { getEntryCldr, recordByCldr } from "./utils.js";
+import {
+	getEntryCldr,
+	recordByCldr,
+	toCodePointNotation,
+	toUnicode,
+} from "./utils.js";
 
 interface WeChatSnapshot {
 	entries: WeChatItem[];
@@ -37,24 +42,4 @@ export async function generateWeChat(
 			];
 		}),
 	);
-}
-
-/**
- * Code points as Unicode writes them, such as "U+1F9D1 U+200D U+1F9B0".
- */
-function toCodePointNotation(unicode: string) {
-	return unicode
-		.split("-")
-		.map((hex) => `U+${hex.toUpperCase()}`)
-		.join(" ");
-}
-
-function toUnicode(emoji: string) {
-	// Code points are the unit Emojipedia writes its codepoint lists in.
-	// eslint-disable-next-line @typescript-eslint/no-misused-spread
-	return [...emoji]
-		.map((character) =>
-			(character.codePointAt(0) ?? 0).toString(16).padStart(4, "0"),
-		)
-		.join("-");
 }
