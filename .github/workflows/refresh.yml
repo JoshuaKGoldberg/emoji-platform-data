@@ -97,6 +97,7 @@ jobs:
           cat > "$changeset" <<CHANGESET
           ---
           "@emoji-platform-data/$PLATFORM": minor
+          "@emoji-platform-data/generator": minor
           "emoji-platform-data": minor
           ---
 
