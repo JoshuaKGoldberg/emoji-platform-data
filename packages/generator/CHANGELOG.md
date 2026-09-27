@@ -1,5 +1,15 @@
 # @emoji-platform-data/generator
 
+## 0.5.0
+
+### Minor Changes
+
+- [#1021](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1021) [`dbabe9d`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/dbabe9d6d2c381f00ae1ce34ac8342abb822d41b) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Added `generateAndroid`, the `AndroidItem` type, and `android` on `EmojiPlatformData`.
+
+- [#1020](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1020) [`880874a`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/880874ac15e1bb096d1e1ecf045c0fbb795afbe6) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Added `generateGnome`, the `GnomeItem` type, and `gnome` on `EmojiPlatformData`.
+
+- [#1019](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1019) [`ee04dc5`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/ee04dc547bda6555f0e7751ab0c1bcf82d63faf8) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Added `generateWindows`, the `WindowsItem` type, and `windows` on `EmojiPlatformData`.
+
 ## 0.4.0
 
 ### Minor Changes
