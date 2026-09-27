@@ -10,6 +10,7 @@ import { generateMacOS } from "./macos.js";
 import { generateSlack } from "./slack.js";
 import { generateTwemoji } from "./twemoji.js";
 import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
+import { fromUnicode } from "./utils.js";
 import { generateWeChat } from "./wechat.js";
 import { generateWindows } from "./windows.js";
 
@@ -104,7 +105,7 @@ export async function generateAll({
 							joypixels?.emoji ??
 							macos?.emoji ??
 							slack?.emoji ??
-							twemoji?.unicode ??
+							(twemoji && fromUnicode(twemoji.unicode)) ??
 							wechat?.emoji ??
 							windows?.emoji ??
 							android?.emoji)!,
@@ -178,7 +179,7 @@ function getGlyphs(platformData: EmojiPlatformData) {
 			platformData.joypixels?.emoji,
 			platformData.macos?.emoji,
 			platformData.slack?.emoji,
-			platformData.twemoji?.unicode,
+			platformData.twemoji && fromUnicode(platformData.twemoji.unicode),
 			platformData.wechat?.emoji,
 			platformData.windows?.emoji,
 		]

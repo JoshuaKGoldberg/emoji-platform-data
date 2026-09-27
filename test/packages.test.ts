@@ -105,6 +105,14 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(fromEmoji.size).toBe(fromTitle.size);
 	});
 
+	it("keys byEmoji by glyphs rather than code points", async () => {
+		const { byEmoji } = await importPackage(dataPackage);
+
+		expect(
+			Object.keys(byEmoji).filter((emoji) => /^[\da-f-]+$/.test(emoji)),
+		).toEqual([]);
+	});
+
 	it("writes a separate data file for every byTitle entry", async () => {
 		const { byTitle } = await importPackage(dataPackage);
 		const files = await fs.readdir(
