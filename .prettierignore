@@ -5,4 +5,5 @@
 /packages/generator/macos.json
 /packages/generator/slack.json
 /packages/generator/wechat.json
+/packages/generator/windows.json
 /pnpm-lock.yaml

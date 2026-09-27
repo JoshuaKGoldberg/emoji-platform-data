@@ -26,6 +26,7 @@
 		"macos.json",
 		"slack.json",
 		"wechat.json",
+		"windows.json",
 		"lib/**/*.d.ts",
 		"lib/**/*.js"
 	],
@@ -34,7 +35,8 @@
 		"refresh:discord": "tsx scripts/refreshDiscord.ts",
 		"refresh:macos": "tsx scripts/refreshMacOS.ts",
 		"refresh:slack": "tsx scripts/refreshSlack.ts",
-		"refresh:wechat": "tsx scripts/refreshWeChat.ts"
+		"refresh:wechat": "tsx scripts/refreshWeChat.ts",
+		"refresh:windows": "tsx scripts/refreshWindows.ts"
 	},
 	"dependencies": {
 		"@emoji-mart/data": "^1.2.1",

@@ -354,6 +354,12 @@ importers:
         specifier: workspace:*
         version: link:../generator
 
+  packages/windows:
+    devDependencies:
+      '@emoji-platform-data/generator':
+        specifier: workspace:*
+        version: link:../generator
+
 packages:
 
   '@altano/repository-tools@2.1.1':
