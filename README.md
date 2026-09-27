@@ -42,6 +42,7 @@ console.log(byTitle.SparklingHeart);
 	slack: { "name": "sparkling_heart", ... },
 	twemoji: { "description": "Sparkling heart", ... },
 	wechat: { "keywords": ["twinkle", "twinkling", "闪亮的心", ...], ... },
+	windows: { "name": "sparkling heart", ... },
 	...
 }
 */
@@ -54,20 +55,21 @@ Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form 
 `emoji-platform-data` combines emoji data from several projects.
 Each project's data is also published as its own package, for consumers who only need one source:
 
-| Package                                                    | Source                                                                                       | Exports                                                 |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| [`emoji-platform-data`](./packages/emoji-platform-data)    | All of the below                                                                             | `byEmoji` and `byTitle` of combined `EmojiPlatformData` |
-| [`@emoji-platform-data/discord`](./packages/discord)       | [Discord](https://discord.com)                                                               | `byEmoji` and `byTitle` of `DiscordItem`                |
-| [`@emoji-platform-data/emoji-mart`](./packages/emoji-mart) | [emoji-mart](https://github.com/missive/emoji-mart)                                          | `byEmoji` and `byTitle` of `EmojiMartItem`              |
-| [`@emoji-platform-data/emojipedia`](./packages/emojipedia) | [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia)                                  | `byEmoji` and `byTitle` of `EmojipediaItem`             |
-| [`@emoji-platform-data/fluemoji`](./packages/fluemoji)     | [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji)                           | `byEmoji` and `byTitle` of `FluemojiItem`               |
-| [`@emoji-platform-data/gemoji`](./packages/gemoji)         | [Gemoji](https://github.com/wooorm/gemoji)                                                   | `byEmoji` and `byTitle` of `GemojiItem`                 |
-| [`@emoji-platform-data/joypixels`](./packages/joypixels)   | [JoyPixels / Zoom](https://github.com/joypixels/emoji-toolkit)                               | `byEmoji` and `byTitle` of `JoyPixelsItem`              |
-| [`@emoji-platform-data/macos`](./packages/macos)           | [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) | `byEmoji` and `byTitle` of `MacOSItem`                  |
-| [`@emoji-platform-data/slack`](./packages/slack)           | [Slack](https://slack.com)                                                                   | `byEmoji` and `byTitle` of `SlackItem`                  |
-| [`@emoji-platform-data/twemoji`](./packages/twemoji)       | [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser)                          | `byEmoji` and `byTitle` of `TwemojiItem`                |
-| [`@emoji-platform-data/wechat`](./packages/wechat)         | [WeChat](https://weixin.qq.com)                                                              | `byEmoji` and `byTitle` of `WeChatItem`                 |
-| [`@emoji-platform-data/generator`](./packages/generator)   | -                                                                                            | APIs that generate the data packages above              |
+| Package                                                    | Source                                                                                                                 | Exports                                                 |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| [`emoji-platform-data`](./packages/emoji-platform-data)    | All of the below                                                                                                       | `byEmoji` and `byTitle` of combined `EmojiPlatformData` |
+| [`@emoji-platform-data/discord`](./packages/discord)       | [Discord](https://discord.com)                                                                                         | `byEmoji` and `byTitle` of `DiscordItem`                |
+| [`@emoji-platform-data/emoji-mart`](./packages/emoji-mart) | [emoji-mart](https://github.com/missive/emoji-mart)                                                                    | `byEmoji` and `byTitle` of `EmojiMartItem`              |
+| [`@emoji-platform-data/emojipedia`](./packages/emojipedia) | [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia)                                                            | `byEmoji` and `byTitle` of `EmojipediaItem`             |
+| [`@emoji-platform-data/fluemoji`](./packages/fluemoji)     | [Fluent UI / Windows](https://github.com/microsoft/fluentui-emoji)                                                     | `byEmoji` and `byTitle` of `FluemojiItem`               |
+| [`@emoji-platform-data/gemoji`](./packages/gemoji)         | [Gemoji](https://github.com/wooorm/gemoji)                                                                             | `byEmoji` and `byTitle` of `GemojiItem`                 |
+| [`@emoji-platform-data/joypixels`](./packages/joypixels)   | [JoyPixels / Zoom](https://github.com/joypixels/emoji-toolkit)                                                         | `byEmoji` and `byTitle` of `JoyPixelsItem`              |
+| [`@emoji-platform-data/macos`](./packages/macos)           | [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac)                           | `byEmoji` and `byTitle` of `MacOSItem`                  |
+| [`@emoji-platform-data/slack`](./packages/slack)           | [Slack](https://slack.com)                                                                                             | `byEmoji` and `byTitle` of `SlackItem`                  |
+| [`@emoji-platform-data/twemoji`](./packages/twemoji)       | [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser)                                                    | `byEmoji` and `byTitle` of `TwemojiItem`                |
+| [`@emoji-platform-data/wechat`](./packages/wechat)         | [WeChat](https://weixin.qq.com)                                                                                        | `byEmoji` and `byTitle` of `WeChatItem`                 |
+| [`@emoji-platform-data/windows`](./packages/windows)       | [Windows](https://support.microsoft.com/windows/windows-keyboard-tips-and-tricks-588e0b72-0fff-6d3f-aeee-6e5116097942) | `byEmoji` and `byTitle` of `WindowsItem`                |
+| [`@emoji-platform-data/generator`](./packages/generator)   | -                                                                                                                      | APIs that generate the data packages above              |
 
 The data packages have no runtime dependencies: they only contain static JSON and type declarations.
 Each emoji supported in at least one of those projects is stored by its emoji glyph and Emojipedia title.
