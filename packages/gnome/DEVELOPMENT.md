@@ -38,4 +38,4 @@ Emoji 17.0 also named four of its new emoji what older ones are already named, s
 The result is committed as a snapshot, [`packages/generator/gnome.json`](../generator/gnome.json), the same way Discord and Slack are, so that building the packages never depends on a network fetch.
 GTK tags a release every few weeks but regenerates its emoji data about once a year, so the script rewrites the snapshot only when the emoji or the locales changed, and validates what it read before writing anything: how many emoji came back, how many of them have keywords, that every picker section is well represented, that every expected locale is there with names for nearly every emoji, that a few known emoji still have known names and keywords in another locale, and that neither count has fallen sharply since the last snapshot.
 
-The monthly `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.
+The daily `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.

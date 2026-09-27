@@ -48,4 +48,4 @@ The result is committed as a snapshot, [`packages/generator/discord.json`](../ge
 Discord rebuilds its bundle many times a day and every deploy renames the chunks, so the script rewrites the snapshot only when the emoji themselves changed, and validates what it read before writing anything: how many emoji came back, how many of them have keywords, that every picker category is well represented, that a few known emoji still have known shortcodes _and_ known keywords, and that neither count has fallen sharply since the last snapshot.
 The keywords come from a different script than the emoji and are matched up by name, so those canaries are what catch the two coming apart as well as either going missing.
 
-The monthly `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.
+The daily `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.

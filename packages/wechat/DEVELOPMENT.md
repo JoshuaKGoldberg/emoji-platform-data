@@ -27,7 +27,7 @@ pnpm --filter @emoji-platform-data/generator refresh:wechat https://dldir1v6.qq.
 
 [`packages/generator/scripts/refreshWeChat.ts`](../generator/scripts/refreshWeChat.ts) scrapes <https://weixin.qq.com> for the Android builds it offers and takes the newest, since Tencent lists several at once including years-old ones kept for older devices.
 
-That build is a ~280MB file, and downloading it monthly to read 220KB out of it would be silly.
+That build is a ~280MB file, and downloading it daily to read 220KB out of it would be silly.
 It's a zip, though, and the CDN serves ranges, so the script reads it the way a zip is meant to be read: the last few kilobytes hold a record pointing at the central directory, the central directory says where every file inside sits, and only the two files that matter are fetched and inflated.
 That comes to under 2MB.
 Each of the two is looked up by exact name and has to appear exactly once -a name that starts matching twice is as much a sign of the app having moved on as one that stops matching- and a zip that turns out to be Zip64, or whose index runs past its own end, is refused rather than read as garbage.
@@ -47,4 +47,4 @@ The result is committed as a snapshot, [`packages/generator/wechat.json`](../gen
 Tencent ships a new build every few weeks and the file name carries its version, so the script rewrites the snapshot only when the emoji themselves changed, and validates what it read before writing anything: how many emoji came back, how many of them have keywords, that every picker category is well represented, that a few known emoji still carry a known term in _both_ scripts, and that neither count has fallen sharply since the last snapshot.
 The categories and the keywords come from different files, so those bilingual canaries are what catch the two coming apart as well as either going missing.
 
-The monthly `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.
+The daily `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.
