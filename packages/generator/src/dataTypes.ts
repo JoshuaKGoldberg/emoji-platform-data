@@ -1,3 +1,5 @@
+export type AllAndroidData = Record<string, AndroidItem>;
+
 export type AllDiscordData = Record<string, DiscordItem>;
 
 export type AllEmojiMartData = Record<string, EmojiMartItem>;
@@ -23,6 +25,16 @@ export type AllTwemojiData = Record<string, TwemojiItem>;
 export type AllWeChatData = Record<string, WeChatItem>;
 
 export type AllWindowsData = Record<string, WindowsItem>;
+
+/**
+ * One emoji as Gboard, Android's keyboard, knows it.
+ */
+export interface AndroidItem {
+	emoji: string;
+
+	/** Terms Gboard's emoji search finds the emoji by, sorted. */
+	keywords: string[];
+}
 
 /**
  * One emoji as Discord's emoji picker knows it.
@@ -150,6 +162,7 @@ export interface EmojipediaVendor {
 }
 
 export interface EmojiPlatformData {
+	android?: AndroidItem;
 	discord?: DiscordItem;
 	emoji: string;
 	emojiMart?: EmojiMartItem;

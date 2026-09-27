@@ -31,6 +31,7 @@ console.log(byEmoji["💖"]);
 console.log(byTitle.SparklingHeart);
 /*
 {
+	android: { "keywords": ["bday", "birthday", "bling", ...] },
 	discord: { "name": "sparkling_heart", ... },
 	emoji: "💖",
 	emojiMart: { "id": "sparkling_heart", ... },
@@ -59,6 +60,7 @@ Each project's data is also published as its own package, for consumers who only
 | Package                                                    | Source                                                                                                                 | Exports                                                 |
 | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | [`emoji-platform-data`](./packages/emoji-platform-data)    | All of the below                                                                                                       | `byEmoji` and `byTitle` of combined `EmojiPlatformData` |
+| [`@emoji-platform-data/android`](./packages/android)       | [Android (Gboard)](https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin)                 | `byEmoji` and `byTitle` of `AndroidItem`                |
 | [`@emoji-platform-data/discord`](./packages/discord)       | [Discord](https://discord.com)                                                                                         | `byEmoji` and `byTitle` of `DiscordItem`                |
 | [`@emoji-platform-data/emoji-mart`](./packages/emoji-mart) | [emoji-mart](https://github.com/missive/emoji-mart)                                                                    | `byEmoji` and `byTitle` of `EmojiMartItem`              |
 | [`@emoji-platform-data/emojipedia`](./packages/emojipedia) | [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia)                                                            | `byEmoji` and `byTitle` of `EmojipediaItem`             |

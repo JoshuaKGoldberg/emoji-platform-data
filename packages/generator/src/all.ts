@@ -1,3 +1,4 @@
+import { generateAndroid } from "./android.js";
 import { generateDiscord } from "./discord.js";
 import { generateEmojiMart } from "./emojiMart.js";
 import { generateEmojipedia } from "./emojipedia.js";
@@ -26,6 +27,7 @@ export async function generateAll({
 	const allEmojipedia = generateEmojipedia();
 	const allGemoji = generateGemoji(allEmojipedia);
 	const [
+		allAndroid,
 		allDiscord,
 		allEmojiMart,
 		allFluemoji,
@@ -37,6 +39,7 @@ export async function generateAll({
 		allWeChat,
 		allWindows,
 	] = await Promise.all([
+		generateAndroid(allEmojipedia),
 		generateDiscord(allEmojipedia),
 		generateEmojiMart(allEmojipedia),
 		generateFluemoji(allEmojipedia, fluemojiDirectory),
@@ -49,6 +52,7 @@ export async function generateAll({
 		generateWindows(allEmojipedia),
 	]);
 	const allPlatforms = [
+		allAndroid,
 		allDiscord,
 		allEmojiMart,
 		allFluemoji,
@@ -71,6 +75,7 @@ export async function generateAll({
 	const byTitle = Object.fromEntries(
 		Array.from(allKeys)
 			.map((title): [string, EmojiPlatformData] => {
+				const android = allAndroid[title];
 				const discord = allDiscord[title];
 				const emojiMart = allEmojiMart[title];
 				const emojipedia = allEmojipedia.byCldr[title];
@@ -85,6 +90,7 @@ export async function generateAll({
 				const windows = allWindows[title];
 
 				const platformData = {
+					android,
 					discord,
 					emoji:
 						// One of these must have been defined.
@@ -100,7 +106,8 @@ export async function generateAll({
 							slack?.emoji ??
 							twemoji?.unicode ??
 							wechat?.emoji ??
-							windows?.emoji)!,
+							windows?.emoji ??
+							android?.emoji)!,
 					emojiMart,
 					emojipedia,
 					fluemoji,
@@ -139,8 +146,8 @@ export async function generateAll({
  * emoji, so they're merged, under the title of whichever came from the platform
  * earliest in this list. That's the order platforms were added in, so adding
  * one never renames an emoji that another platform already titled, except that
- * WeChat goes last: it has no names of its own, so it only titles the emoji
- * nothing else names, and those by their code points.
+ * WeChat and Android go last: they have no names of their own, so they only
+ * title the emoji nothing else names, and those by their code points.
  */
 const titlePriority = [
 	"emojipedia",
@@ -155,11 +162,13 @@ const titlePriority = [
 	"windows",
 	"gnome",
 	"wechat",
+	"android",
 ] as const satisfies (keyof EmojiPlatformData)[];
 
 function getGlyphs(platformData: EmojiPlatformData) {
 	return new Set(
 		[
+			platformData.android?.emoji,
 			platformData.discord?.emoji,
 			platformData.emojiMart?.skins[0]?.native,
 			platformData.emojipedia?.code,

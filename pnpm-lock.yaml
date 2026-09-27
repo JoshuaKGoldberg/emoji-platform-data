@@ -254,6 +254,12 @@ importers:
         specifier: 5.0.2
         version: 5.0.2(@types/node@26.6.2)(vite@8.3.1(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
 
+  packages/android:
+    devDependencies:
+      '@emoji-platform-data/generator':
+        specifier: workspace:*
+        version: link:../generator
+
   packages/discord:
     devDependencies:
       '@emoji-platform-data/generator':

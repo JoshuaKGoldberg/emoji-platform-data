@@ -24,6 +24,7 @@ console.log(byEmoji["💖"]);
 console.log(byTitle.SparklingHeart);
 /*
 {
+	android: { "keywords": ["bday", "birthday", "bling", ...] },
 	discord: { "name": "sparkling_heart", ... },
 	emoji: "💖",
 	emojiMart: { "id": "sparkling_heart", ... },
@@ -45,6 +46,7 @@ console.log(byTitle.SparklingHeart);
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
 Each entry is an `EmojiPlatformData` combining data from:
 
+- [Android (Gboard)](https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin) (`android`)
 - [Discord](https://discord.com) (`discord`)
 - [emoji-mart](https://github.com/missive/emoji-mart) (`emojiMart`)
 - [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia) (`emojipedia`)

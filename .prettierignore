@@ -1,6 +1,7 @@
 /.all-contributorsrc
 /.husky
 /packages/*/lib
+/packages/generator/android.json
 /packages/generator/discord.json
 /packages/generator/gnome.json
 /packages/generator/macos.json
