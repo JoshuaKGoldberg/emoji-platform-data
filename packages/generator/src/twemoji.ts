@@ -53,7 +53,7 @@ export async function generateTwemoji(
 			glyph,
 		};
 	});
-	const cldrsTaken = countCldrs(resolved);
+	const titlesTaken = countTitles(resolved);
 
 	return recordByCldr(
 		"twemoji",
@@ -62,7 +62,7 @@ export async function generateTwemoji(
 			// such as 🕴️‍♂️ "man in business suit levitating" for 🕴️. That name stays
 			// with the glyph Emojipedia knows, and the other is titled by its code
 			// points, as GNOME's are.
-			(cldrsTaken.get(cldr) ?? 0) > 1 && !isKnownGlyph(emojipedia, glyph)
+			(titlesTaken.get(cldr) ?? 0) > 1 && !isKnownGlyph(emojipedia, glyph)
 				? toCodePointNotation(entry.unicode)
 				: cldr,
 			entry,
@@ -70,7 +70,7 @@ export async function generateTwemoji(
 	);
 }
 
-function countCldrs(resolved: { cldr: string }[]) {
+function countTitles(resolved: { cldr: string }[]) {
 	const counts = new Map<string, number>();
 
 	for (const { cldr } of resolved) {
