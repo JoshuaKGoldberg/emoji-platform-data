@@ -68,6 +68,16 @@ function getGlyphAlias(emojipedia: GeneratedEmojipediaData, glyph: string) {
 }
 
 /**
+ * Whether Emojipedia knows a glyph as its own emoji, rather than only by a name.
+ */
+export function isKnownGlyph(
+	emojipedia: GeneratedEmojipediaData,
+	glyph: string,
+) {
+	return getGlyphAlias(emojipedia, glyph) !== undefined;
+}
+
+/**
  * Equivalent to Object.fromEntries, but warns when multiple entries resolve
  * to the same CLDR title, since the later entry would silently overwrite the earlier.
  */
