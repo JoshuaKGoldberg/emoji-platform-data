@@ -1,6 +1,6 @@
 {
 	"name": "@emoji-platform-data/generator",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"description": "Generates platform-specific metadata for unicode emojis. 🏭",
 	"repository": {
 		"type": "git",
@@ -27,6 +27,7 @@
 		"macos.json",
 		"slack.json",
 		"wechat.json",
+		"windows.json",
 		"lib/**/*.d.ts",
 		"lib/**/*.js"
 	],
@@ -36,7 +37,8 @@
 		"refresh:gnome": "tsx scripts/refreshGnome.ts",
 		"refresh:macos": "tsx scripts/refreshMacOS.ts",
 		"refresh:slack": "tsx scripts/refreshSlack.ts",
-		"refresh:wechat": "tsx scripts/refreshWeChat.ts"
+		"refresh:wechat": "tsx scripts/refreshWeChat.ts",
+		"refresh:windows": "tsx scripts/refreshWindows.ts"
 	},
 	"dependencies": {
 		"@emoji-mart/data": "^1.2.1",

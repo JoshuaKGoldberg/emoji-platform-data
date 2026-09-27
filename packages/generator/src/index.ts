@@ -12,3 +12,4 @@ export * from "./slack.js";
 export * from "./twemoji.js";
 export type * from "./types.js";
 export * from "./wechat.js";
+export * from "./windows.js";

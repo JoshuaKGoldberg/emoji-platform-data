@@ -22,6 +22,8 @@ export type AllTwemojiData = Record<string, TwemojiItem>;
 
 export type AllWeChatData = Record<string, WeChatItem>;
 
+export type AllWindowsData = Record<string, WindowsItem>;
+
 /**
  * One emoji as Discord's emoji picker knows it.
  */
@@ -162,6 +164,7 @@ export interface EmojiPlatformData {
 	title: string;
 	twemoji?: TwemojiItem;
 	wechat?: WeChatItem;
+	windows?: WindowsItem;
 }
 
 export interface FluemojiItem {
@@ -331,4 +334,17 @@ export interface WeChatItem {
 
 	/** Where the emoji falls in the picker's overall order, across all categories. */
 	order?: number;
+}
+
+/**
+ * One emoji as Windows' own emoji panel knows it.
+ */
+export interface WindowsItem {
+	emoji: string;
+
+	/** Terms the panel matches searches against, beyond the name. A handful of emoji, such as ✏️, have none. */
+	keywords: string[];
+
+	/** How Windows names the emoji, such as "octopus". */
+	name: string;
 }

@@ -10,6 +10,7 @@ import { generateSlack } from "./slack.js";
 import { generateTwemoji } from "./twemoji.js";
 import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
 import { generateWeChat } from "./wechat.js";
+import { generateWindows } from "./windows.js";
 
 export interface GenerateAllSettings {
 	/**
@@ -34,6 +35,7 @@ export async function generateAll({
 		allSlack,
 		allTwemoji,
 		allWeChat,
+		allWindows,
 	] = await Promise.all([
 		generateDiscord(allEmojipedia),
 		generateEmojiMart(allEmojipedia),
@@ -44,6 +46,7 @@ export async function generateAll({
 		generateSlack(allEmojipedia),
 		generateTwemoji(allEmojipedia),
 		generateWeChat(allEmojipedia),
+		generateWindows(allEmojipedia),
 	]);
 	const allPlatforms = [
 		allDiscord,
@@ -56,6 +59,7 @@ export async function generateAll({
 		allSlack,
 		allTwemoji,
 		allWeChat,
+		allWindows,
 	];
 
 	const allKeys = new Set(
@@ -78,6 +82,7 @@ export async function generateAll({
 				const slack = allSlack[title];
 				const twemoji = allTwemoji[title];
 				const wechat = allWeChat[title];
+				const windows = allWindows[title];
 
 				const platformData = {
 					discord,
@@ -94,7 +99,8 @@ export async function generateAll({
 							macos?.emoji ??
 							slack?.emoji ??
 							twemoji?.unicode ??
-							wechat?.emoji)!,
+							wechat?.emoji ??
+							windows?.emoji)!,
 					emojiMart,
 					emojipedia,
 					fluemoji,
@@ -107,6 +113,7 @@ export async function generateAll({
 					title,
 					twemoji,
 					wechat,
+					windows,
 				};
 
 				return [title, platformData];
@@ -145,6 +152,7 @@ const titlePriority = [
 	"discord",
 	"slack",
 	"joypixels",
+	"windows",
 	"gnome",
 	"wechat",
 ] as const satisfies (keyof EmojiPlatformData)[];
@@ -163,6 +171,7 @@ function getGlyphs(platformData: EmojiPlatformData) {
 			platformData.slack?.emoji,
 			platformData.twemoji?.unicode,
 			platformData.wechat?.emoji,
+			platformData.windows?.emoji,
 		]
 			.filter((glyph) => glyph !== undefined)
 			.map(withoutVariationSelectors),
