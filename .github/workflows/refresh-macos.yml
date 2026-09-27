@@ -59,7 +59,7 @@ jobs:
 
           gh pr create \
             --base main \
-            --body "macOS $macos_version changed the emoji data in \`CoreEmoji.framework\`. This refreshes \`packages/generator/macos.json\` from a \`macos-latest\` runner. See \`.github/DEVELOPMENT.md\` for how the extraction works." \
+            --body "macOS $macos_version changed the emoji data in \`CoreEmoji.framework\`. This refreshes \`packages/generator/macos.json\` from a \`macos-latest\` runner. See \`packages/macos/DEVELOPMENT.md\` for how the extraction works." \
             --head "$branch" \
             --title "feat: update macOS emoji data to macOS $macos_version"
 

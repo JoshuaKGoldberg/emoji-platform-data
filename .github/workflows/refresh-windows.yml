@@ -50,7 +50,7 @@ jobs:
 
           gh pr create \
             --base main \
-            --body "Windows 11 $release changed the emoji panel's keywords. This refreshes \`packages/generator/windows.json\` to the $count emoji it knows now, $keyworded of them with search keywords. See \`.github/DEVELOPMENT.md\` for how the extraction works." \
+            --body "Windows 11 $release changed the emoji panel's keywords. This refreshes \`packages/generator/windows.json\` to the $count emoji it knows now, $keyworded of them with search keywords. See \`packages/windows/DEVELOPMENT.md\` for how the extraction works." \
             --head "$branch" \
             --title "feat: update Windows emoji data to Windows 11 $release"
 

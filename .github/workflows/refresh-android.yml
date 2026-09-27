@@ -56,7 +56,7 @@ jobs:
 
           gh pr create \
             --base main \
-            --body "Gboard's bundled emoji search data changed, to $pack. This refreshes \`packages/generator/android.json\` to the $count emoji it knows now, with $keywords keywords between them. See \`.github/DEVELOPMENT.md\` for how the extraction works." \
+            --body "Gboard's bundled emoji search data changed, to $pack. This refreshes \`packages/generator/android.json\` to the $count emoji it knows now, with $keywords keywords between them. See \`packages/android/DEVELOPMENT.md\` for how the extraction works." \
             --head "$branch" \
             --title "feat: update Android emoji data"
 
