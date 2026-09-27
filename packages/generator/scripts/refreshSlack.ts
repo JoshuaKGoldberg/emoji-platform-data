@@ -185,6 +185,18 @@ if (
 	);
 }
 
+/**
+ * Compares by code unit rather than with localeCompare, so that refreshing
+ * with two different versions of Node's ICU can't produce two different orderings.
+ */
+function compareStrings(a: string, b: string) {
+	if (a < b) {
+		return -1;
+	}
+
+	return a > b ? 1 : 0;
+}
+
 function countWithKeywords(entries: SlackItem[]) {
 	return entries.filter((entry) => entry.keywords.length).length;
 }
@@ -337,7 +349,7 @@ function listTranslationFiles(page: string) {
 		}
 	}
 
-	return new Map([...files].sort(([a], [b]) => a.localeCompare(b)));
+	return new Map([...files].sort(([a], [b]) => compareStrings(a, b)));
 }
 
 /**
@@ -615,7 +627,7 @@ function toEntries(module: RawModule, translations: Map<string, Translations>) {
 	return entries.sort(
 		(a, b) =>
 			(a.order ?? Infinity) - (b.order ?? Infinity) ||
-			a.name.localeCompare(b.name),
+			compareStrings(a.name, b.name),
 	);
 }
 

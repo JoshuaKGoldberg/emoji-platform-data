@@ -144,6 +144,18 @@ if (previous && isSameData(previous.entries, entries)) {
 	);
 }
 
+/**
+ * Compares by code unit rather than with localeCompare, so that refreshing
+ * with two different versions of Node's ICU can't produce two different orderings.
+ */
+function compareStrings(a: string, b: string) {
+	if (a < b) {
+		return -1;
+	}
+
+	return a > b ? 1 : 0;
+}
+
 function countWithKeywords(entries: WeChatItem[]) {
 	return entries.filter((entry) => entry.keywords.length).length;
 }
@@ -401,7 +413,7 @@ function toEntries(
 
 	const unlisted = [...keywords.values()]
 		.filter((keyword) => !listed.has(withoutVariationSelectors(keyword.emoji)))
-		.sort((a, b) => a.emoji.localeCompare(b.emoji));
+		.sort((a, b) => compareStrings(a.emoji, b.emoji));
 
 	for (const keyword of unlisted) {
 		entries.push({ emoji: keyword.emoji, keywords: keyword.terms });
