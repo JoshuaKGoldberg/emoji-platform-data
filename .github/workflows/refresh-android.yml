@@ -4,14 +4,18 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
       - uses: ./.github/actions/prepare
+      # Ubuntu's own erofs-utils is too old to have dump.erofs --cat, but the
+      # runner comes with Homebrew, just not on its PATH.
       - name: Install erofs-utils
-        run: brew install erofs-utils
+        run: |
+          echo "/home/linuxbrew/.linuxbrew/bin" >> "$GITHUB_PATH"
+          /home/linuxbrew/.linuxbrew/bin/brew install erofs-utils
       - name: Read Android emoji data out of Gboard
         run: pnpm --filter @emoji-platform-data/generator refresh:android
       - env:

@@ -462,7 +462,8 @@ async function pickLatestImage() {
  * Pulls Gboard out of the product partition.
  *
  * The partition is EROFS, which is compressed, so erofs-utils reads it.
- * Homebrew, and apt on newer Ubuntu releases, install a new enough version.
+ * It needs version 1.8.5 or newer, for `dump.erofs --cat`: Homebrew has one, as
+ * does apt on Ubuntu 25.04 and newer.
  */
 async function readApk(productPath: string) {
 	const superblock = Buffer.alloc(4);
@@ -488,7 +489,7 @@ async function readApk(productPath: string) {
 		);
 	} catch (error) {
 		throw new Error(
-			`Could not read ${apkPath} out of the product partition. That needs erofs-utils 1.8 or newer, such as with \`brew install erofs-utils\`.`,
+			`Could not read ${apkPath} out of the product partition. That needs erofs-utils 1.8.5 or newer, such as with \`brew install erofs-utils\`.`,
 			{ cause: error },
 		);
 	}

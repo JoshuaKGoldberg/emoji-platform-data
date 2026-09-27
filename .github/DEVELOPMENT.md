@@ -50,7 +50,7 @@ That zip holds two files:
 - `en_us`: the search index, a [marisa trie](https://github.com/s-yata/marisa-trie) of every term, then which emoji each term finds
 - `en_us.shortcuts`: a protobuf listing a few terms for each emoji, all of which are also in `en_us`
 
-Reading it needs a network connection and [erofs-utils](https://github.com/erofs/erofs-utils) 1.8 or newer, but not Android or its SDK:
+Reading it needs a network connection and [erofs-utils](https://github.com/erofs/erofs-utils) 1.8.5 or newer, for `dump.erofs --cat`, but not Android or its SDK:
 
 ```shell
 brew install erofs-utils
@@ -83,7 +83,8 @@ The result is committed as a snapshot, `packages/generator/android.json`, the sa
 Google rebuilds the system images every few months, but the emoji data bundled in Gboard changes less often, so the script rewrites the snapshot only when the emoji themselves changed.
 It validates what it read before writing anything: how many emoji and keywords came back, that every emoji has keywords, that a few known emoji still carry known keywords that CLDR doesn't have, and that neither count has fallen sharply since the last snapshot.
 
-A `Refresh Android Data` workflow runs the same thing monthly on a `macos-latest` runner, where Homebrew has a new enough erofs-utils, and opens a pull request when the data changed.
+A `Refresh Android Data` workflow runs the same thing monthly and opens a pull request when the data changed.
+Ubuntu 24.04's own erofs-utils is 1.7, so it installs a newer one with the Homebrew that GitHub's Ubuntu runners come with.
 
 ## Refreshing Discord Data
 
