@@ -130,7 +130,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 });
 
 describe(combinedName, () => {
-	it("titles emoji without the underscores of platforms' shortcodes", async () => {
+	it("titles emoji without underscores when a title comes from a platform's shortcode", async () => {
 		const { byTitle } = await importPackage(combinedPackage);
 
 		expect(
