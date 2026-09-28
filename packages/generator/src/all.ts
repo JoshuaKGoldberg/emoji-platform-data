@@ -166,6 +166,22 @@ const titlePriority = [
 	"android",
 ] as const satisfies (keyof EmojiPlatformData)[];
 
+/**
+ * Every glyph an emoji can be looked up by: its `emoji`, each glyph a source
+ * writes it as, and each of those without variation selectors. Sources disagree
+ * on the selectors: macOS writes ⚓️ (U+2693 U+FE0F) where Emojipedia and Twemoji
+ * write ⚓ (U+2693), and whoever pastes an emoji in shouldn't have to know which.
+ */
+export function getEmojiGlyphs(platformData: EmojiPlatformData) {
+	const glyphs = [
+		platformData.emoji,
+		platformData.emojipedia?.code,
+		...getPlatformGlyphs(platformData),
+	].filter((glyph) => glyph !== undefined);
+
+	return new Set([...glyphs, ...glyphs.map(withoutVariationSelectors)]);
+}
+
 function getGlyphs(platformData: EmojiPlatformData) {
 	return new Set(
 		[platformData.emojipedia?.code, ...getPlatformGlyphs(platformData)]
