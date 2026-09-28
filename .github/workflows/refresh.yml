@@ -33,9 +33,17 @@ jobs:
         name: Open a pull request if the data changed
         run: |
           snapshot="packages/generator/$PLATFORM.json"
+          branch="refresh-$PLATFORM-data"
 
           if git diff --quiet -- "$snapshot"; then
             echo "$NAME emoji data is unchanged."
+
+            # A pull request from an earlier refresh is out of date once the
+            # data matches main again, such as when an upstream change is undone.
+            if [ "$(gh pr list --head "$branch" --state open --json number | jq length)" != "0" ]; then
+              gh pr close "$branch" --comment "$NAME emoji data matches \`main\` again, so this is no longer needed." --delete-branch
+            fi
+
             exit 0
           fi
 
@@ -83,7 +91,6 @@ jobs:
 
           count=$(jq '.entries | length' "$snapshot")
           keyworded=$(jq '[.entries[] | select(.keywords | length > 0)] | length' "$snapshot")
-          branch="refresh-$PLATFORM-data"
           changeset=".changeset/refresh-$PLATFORM-data.md"
 
           if [ -n "$version" ]; then
@@ -94,10 +101,35 @@ jobs:
             title="feat: update $NAME emoji data"
           fi
 
+          # New names from one platform can retitle emoji that other platforms
+          # have too, so every package whose built output changes is released,
+          # along with the generator, which publishes the snapshot itself.
+          hash_packages() {
+            for directory in packages/*/; do
+              if [ -d "$directory/lib/data" ]; then
+                printf '%s %s\n' "$(jq -r .name "$directory/package.json")" "$(find "$directory/lib" -type f | sort | xargs shasum | shasum | cut -d ' ' -f 1)"
+              fi
+            done
+          }
+
+          cp "$snapshot" "$RUNNER_TEMP/snapshot.json"
+          git checkout HEAD -- "$snapshot"
+          pnpm build > /dev/null
+          hash_packages > "$RUNNER_TEMP/before.txt"
+          cp "$RUNNER_TEMP/snapshot.json" "$snapshot"
+          pnpm build > /dev/null
+          hash_packages > "$RUNNER_TEMP/after.txt"
+
+          releases=$(
+            {
+              echo "@emoji-platform-data/generator"
+              comm -13 <(sort "$RUNNER_TEMP/before.txt") <(sort "$RUNNER_TEMP/after.txt") | cut -d ' ' -f 1
+            } | sort -u | sed 's/.*/"&": minor/'
+          )
+
           cat > "$changeset" <<CHANGESET
           ---
-          "@emoji-platform-data/$PLATFORM": minor
-          "emoji-platform-data": minor
+          $releases
           ---
 
           $summary

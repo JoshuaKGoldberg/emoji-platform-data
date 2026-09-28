@@ -20,7 +20,7 @@ export function getEntryCldr(
 		}
 	}
 
-	const byUnicode =
+	const byUnicodeItem =
 		unicode &&
 		emojipedia.items.find((emojipediaItem) => {
 			const normalizedHexes = normalizeCodepoints(emojipediaItem.codepointsHex);
@@ -28,13 +28,14 @@ export function getEntryCldr(
 				normalizedHexes.join("-") === unicode ||
 				normalizedHexes.filter((hex) => hex !== "fe0f").join("-") === unicode
 			);
-		})?.title;
+		});
+	const byUnicode = byUnicodeItem && emojipedia.aliases.get(byUnicodeItem.code);
 
 	if (byUnicode) {
 		return byUnicode;
 	}
 
-	return titleCase(entries[0])
+	return titleCase(entries[0].replaceAll("_", " "))
 		.replaceAll("#", "Hash")
 		.replaceAll("*", "Asterisk")
 		.replaceAll("’s Symbol", "’s Room");
@@ -68,6 +69,16 @@ function getGlyphAlias(emojipedia: GeneratedEmojipediaData, glyph: string) {
 }
 
 /**
+ * Whether Emojipedia knows a glyph as its own emoji, rather than only by a name.
+ */
+export function isKnownGlyph(
+	emojipedia: GeneratedEmojipediaData,
+	glyph: string,
+) {
+	return getGlyphAlias(emojipedia, glyph) !== undefined;
+}
+
+/**
  * Equivalent to Object.fromEntries, but warns when multiple entries resolve
  * to the same CLDR title, since the later entry would silently overwrite the earlier.
  */
@@ -88,6 +99,15 @@ export function recordByCldr<T>(
 	}
 
 	return record;
+}
+
+/**
+ * The glyph for code points as platforms write them, such as "1f44b-1f3fd".
+ */
+export function fromUnicode(unicode: string) {
+	return String.fromCodePoint(
+		...unicode.split("-").map((hex) => parseInt(hex, 16)),
+	);
 }
 
 /**

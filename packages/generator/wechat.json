@@ -17168,6 +17168,20 @@
 			]
 		},
 		{
+			"emoji": "™️",
+			"keywords": [
+				"商标",
+				"商標"
+			]
+		},
+		{
+			"emoji": "Ⓜ️",
+			"keywords": [
+				"M",
+				"地鐵"
+			]
+		},
+		{
 			"emoji": "☠️",
 			"keywords": [
 				"死亡",
@@ -17518,6 +17532,220 @@
 				"church",
 				"結婚",
 				"礼拜堂"
+			]
+		},
+		{
+			"emoji": "✂️",
+			"keywords": [
+				"修剪",
+				"剪刀",
+				"剪子",
+				"scissors",
+				"work supplies"
+			]
+		},
+		{
+			"emoji": "✝️",
+			"keywords": [
+				"基督教",
+				"十字架",
+				"Catholicism",
+				"Latin cross"
+			]
+		},
+		{
+			"emoji": "✡️",
+			"keywords": [
+				"Judaism"
+			]
+		},
+		{
+			"emoji": "✳️",
+			"keywords": [
+				"星号",
+				"星星符号",
+				"星號",
+				"星星符號"
+			]
+		},
+		{
+			"emoji": "❇️",
+			"keywords": [
+				"sparkle",
+				"米字符号",
+				"条幅星",
+				"米字符號",
+				"條幅星"
+			]
+		},
+		{
+			"emoji": "❌",
+			"keywords": [
+				"错",
+				"叉",
+				"叉叉",
+				"錯誤",
+				"cross mark"
+			]
+		},
+		{
+			"emoji": "❓",
+			"keywords": [
+				"question",
+				"问号",
+				"question mark",
+				"问题，举手"
+			]
+		},
+		{
+			"emoji": "❔",
+			"keywords": [
+				"question",
+				"question mark",
+				"问题，举手"
+			]
+		},
+		{
+			"emoji": "❕",
+			"keywords": [
+				"惊叹号",
+				"exclamation mark"
+			]
+		},
+		{
+			"emoji": "❗️",
+			"keywords": [
+				"警告",
+				"惊叹",
+				"感叹号",
+				"惊叹号",
+				"驚嘆",
+				"驚嘆號",
+				"exclamation mark"
+			]
+		},
+		{
+			"emoji": "❣️",
+			"keywords": [
+				"love",
+				"heart",
+				"hearts",
+				"heart exclamation mark",
+				"爱"
+			]
+		},
+		{
+			"emoji": "❤️‍🔥",
+			"keywords": [
+				"热情",
+				"激情",
+				"熱情"
+			]
+		},
+		{
+			"emoji": "❤️‍🩹",
+			"keywords": [
+				"伤心",
+				"心伤",
+				"情伤",
+				"傷心"
+			]
+		},
+		{
+			"emoji": "⭕️",
+			"keywords": [
+				"圆形",
+				"圈圈",
+				"圆圈",
+				"circle",
+				"正確"
+			]
+		},
+		{
+			"emoji": "㊙️",
+			"keywords": [
+				"秘",
+				"秘密",
+				"secret"
+			]
+		},
+		{
+			"emoji": "🀄️",
+			"keywords": [
+				"中",
+				"麻将",
+				"红中",
+				"mahjong",
+				"麻將",
+				"紅中"
+			]
+		},
+		{
+			"emoji": "🃏",
+			"keywords": [
+				"小丑",
+				"小王",
+				"王牌",
+				"打牌",
+				"纸牌",
+				"玩牌",
+				"cards",
+				"紙牌",
+				"撲克牌",
+				"joker",
+				"playing cards"
+			]
+		},
+		{
+			"emoji": "🅰️",
+			"keywords": [
+				"blood type a"
+			]
+		},
+		{
+			"emoji": "🅱️",
+			"keywords": [
+				"blood type b"
+			]
+		},
+		{
+			"emoji": "🅾️",
+			"keywords": [
+				"blood type o"
+			]
+		},
+		{
+			"emoji": "🅿️",
+			"keywords": [
+				"停车",
+				"停车场",
+				"泊车",
+				"停車",
+				"停車場"
+			]
+		},
+		{
+			"emoji": "🆎",
+			"keywords": [
+				"ab",
+				"blood type ab"
+			]
+		},
+		{
+			"emoji": "🆑",
+			"keywords": [
+				"CL",
+				"清除",
+				"清零",
+				"清零键",
+				"清零鍵"
+			]
+		},
+		{
+			"emoji": "🆔",
+			"keywords": [
+				"ID",
+				"身份证"
 			]
 		},
 		{
@@ -19751,157 +19979,30 @@
 			]
 		},
 		{
-			"emoji": "✂️",
+			"emoji": "🈂️",
 			"keywords": [
-				"修剪",
-				"剪刀",
-				"剪子",
-				"scissors",
-				"work supplies"
+				"小费"
 			]
 		},
 		{
-			"emoji": "✝️",
+			"emoji": "🈲",
 			"keywords": [
-				"基督教",
-				"十字架",
-				"Catholicism",
-				"Latin cross"
+				"禁",
+				"禁止",
+				"prohibited"
 			]
 		},
 		{
-			"emoji": "✡️",
+			"emoji": "🈳",
 			"keywords": [
-				"Judaism"
+				"空",
+				"空位"
 			]
 		},
 		{
-			"emoji": "✳️",
+			"emoji": "🈹",
 			"keywords": [
-				"星号",
-				"星星符号",
-				"星號",
-				"星星符號"
-			]
-		},
-		{
-			"emoji": "❇️",
-			"keywords": [
-				"sparkle",
-				"米字符号",
-				"条幅星",
-				"米字符號",
-				"條幅星"
-			]
-		},
-		{
-			"emoji": "❌",
-			"keywords": [
-				"错",
-				"叉",
-				"叉叉",
-				"錯誤",
-				"cross mark"
-			]
-		},
-		{
-			"emoji": "❓",
-			"keywords": [
-				"question",
-				"问号",
-				"question mark",
-				"问题，举手"
-			]
-		},
-		{
-			"emoji": "❔",
-			"keywords": [
-				"question",
-				"question mark",
-				"问题，举手"
-			]
-		},
-		{
-			"emoji": "❕",
-			"keywords": [
-				"惊叹号",
-				"exclamation mark"
-			]
-		},
-		{
-			"emoji": "❗️",
-			"keywords": [
-				"警告",
-				"惊叹",
-				"感叹号",
-				"惊叹号",
-				"驚嘆",
-				"驚嘆號",
-				"exclamation mark"
-			]
-		},
-		{
-			"emoji": "❣️",
-			"keywords": [
-				"love",
-				"heart",
-				"hearts",
-				"heart exclamation mark",
-				"爱"
-			]
-		},
-		{
-			"emoji": "❤️‍🔥",
-			"keywords": [
-				"热情",
-				"激情",
-				"熱情"
-			]
-		},
-		{
-			"emoji": "❤️‍🩹",
-			"keywords": [
-				"伤心",
-				"心伤",
-				"情伤",
-				"傷心"
-			]
-		},
-		{
-			"emoji": "⭕️",
-			"keywords": [
-				"圆形",
-				"圈圈",
-				"圆圈",
-				"circle",
-				"正確"
-			]
-		},
-		{
-			"emoji": "🀄️",
-			"keywords": [
-				"中",
-				"麻将",
-				"红中",
-				"mahjong",
-				"麻將",
-				"紅中"
-			]
-		},
-		{
-			"emoji": "🃏",
-			"keywords": [
-				"小丑",
-				"小王",
-				"王牌",
-				"打牌",
-				"纸牌",
-				"玩牌",
-				"cards",
-				"紙牌",
-				"撲克牌",
-				"joker",
-				"playing cards"
+				"割"
 			]
 		},
 		{
@@ -20135,6 +20236,35 @@
 			]
 		},
 		{
+			"emoji": "🏴‍☠️",
+			"keywords": [
+				"海盗",
+				"pirate",
+				"piracy",
+				"海盗旗",
+				"buccaneer",
+				"buccaneers",
+				"scallywag",
+				"scallywags",
+				"walk the plank",
+				"skull & crossbones",
+				"skull and crossbones",
+				"jolly roger",
+				"jolly rogers",
+				"davy jones",
+				"davy jones’ locker",
+				"dead men tell no tales",
+				"black flag",
+				"black flags",
+				"pirate flag",
+				"pirate flags",
+				"pirate’s",
+				"ahoy matey",
+				"yo ho yo ho",
+				"shiver me timbers"
+			]
+		},
+		{
 			"emoji": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
 			"keywords": [
 				"英格兰",
@@ -20162,35 +20292,6 @@
 				"黑旗",
 				"black flag",
 				"black flags"
-			]
-		},
-		{
-			"emoji": "🏴‍☠️",
-			"keywords": [
-				"海盗",
-				"pirate",
-				"piracy",
-				"海盗旗",
-				"buccaneer",
-				"buccaneers",
-				"scallywag",
-				"scallywags",
-				"walk the plank",
-				"skull & crossbones",
-				"skull and crossbones",
-				"jolly roger",
-				"jolly rogers",
-				"davy jones",
-				"davy jones’ locker",
-				"dead men tell no tales",
-				"black flag",
-				"black flags",
-				"pirate flag",
-				"pirate flags",
-				"pirate’s",
-				"ahoy matey",
-				"yo ho yo ho",
-				"shiver me timbers"
 			]
 		},
 		{
@@ -21074,6 +21175,270 @@
 			]
 		},
 		{
+			"emoji": "😇",
+			"keywords": [
+				"angel",
+				"纯洁",
+				"光环",
+				"halo",
+				"純潔",
+				"天使"
+			]
+		},
+		{
+			"emoji": "🙇",
+			"keywords": [
+				"bow",
+				"bowing",
+				"boy bowing"
+			]
+		},
+		{
+			"emoji": "🙇‍♀️",
+			"keywords": [
+				"thinking",
+				"鞠躬",
+				"磕头",
+				"bow",
+				"bowing",
+				"boy bowing",
+				"思考"
+			]
+		},
+		{
+			"emoji": "🙇‍♂️",
+			"keywords": [
+				"thinking",
+				"鞠躬",
+				"磕头",
+				"bow",
+				"bowing",
+				"person bowing",
+				"boy bowing",
+				"思考"
+			]
+		},
+		{
+			"emoji": "🚩",
+			"keywords": [
+				"红旗",
+				"旗帜",
+				"旗杆",
+				"旗桿",
+				"三角旗",
+				"紅旗"
+			]
+		},
+		{
+			"emoji": "🚫",
+			"keywords": [
+				"限制",
+				"禁止",
+				"不得入内",
+				"forbidden",
+				"restricted",
+				"prohibited",
+				"not allowed"
+			]
+		},
+		{
+			"emoji": "🚬",
+			"keywords": [
+				"烟",
+				"吸烟",
+				"抽烟",
+				"smoking",
+				"cigarette",
+				"吸烟区",
+				"吸煙",
+				"吸煙區"
+			]
+		},
+		{
+			"emoji": "🚭",
+			"keywords": [
+				"禁烟",
+				"禁止吸烟",
+				"无烟区",
+				"禁止吸煙",
+				"無煙區",
+				"no smoking"
+			]
+		},
+		{
+			"emoji": "🚯",
+			"keywords": [
+				"forbidden",
+				"请勿乱扔",
+				"禁丢垃圾",
+				"請勿亂扔",
+				"禁丟垃圾",
+				"don’t litter",
+				"no littering",
+				"not allowed"
+			]
+		},
+		{
+			"emoji": "🚱",
+			"keywords": [
+				"非饮用水",
+				"非飲用水",
+				"non-potable water"
+			]
+		},
+		{
+			"emoji": "🚳",
+			"keywords": [
+				"禁止骑车",
+				"禁行单车",
+				"禁行單車",
+				"禁止騎車",
+				"no bicycles"
+			]
+		},
+		{
+			"emoji": "🚷",
+			"keywords": [
+				"禁止行人",
+				"no pedestrians",
+				"no walking"
+			]
+		},
+		{
+			"emoji": "🚸",
+			"keywords": [
+				"注意儿童",
+				"当心儿童",
+				"注意兒童",
+				"當心兒童"
+			]
+		},
+		{
+			"emoji": "🚹",
+			"keywords": [
+				"男性",
+				"男士",
+				"男廁"
+			]
+		},
+		{
+			"emoji": "🚺",
+			"keywords": [
+				"女士",
+				"女廁"
+			]
+		},
+		{
+			"emoji": "🚾",
+			"keywords": [
+				"卫生间",
+				"厕所",
+				"WC",
+				"洗手间",
+				"廁所",
+				"衛生間",
+				"洗手間",
+				"water closet"
+			]
+		},
+		{
+			"emoji": "🛂",
+			"keywords": [
+				"安检",
+				"customs",
+				"证件检查",
+				"通关检查",
+				"通關檢查",
+				"證件檢查"
+			]
+		},
+		{
+			"emoji": "🛃",
+			"keywords": [
+				"海关",
+				"customs",
+				"查包",
+				"海關",
+				"查行李",
+				"行李检查",
+				"行李檢查"
+			]
+		},
+		{
+			"emoji": "🛄",
+			"keywords": [
+				"baggage",
+				"luggage",
+				"提取行李",
+				"行李领取处",
+				"行李过机",
+				"行李過機",
+				"baggage claim",
+				"行李通查"
+			]
+		},
+		{
+			"emoji": "🛅",
+			"keywords": [
+				"寄存",
+				"存包",
+				"baggage",
+				"luggage"
+			]
+		},
+		{
+			"emoji": "🛐",
+			"keywords": [
+				"church",
+				"宗教场所",
+				"place of worship"
+			]
+		},
+		{
+			"emoji": "🛑",
+			"keywords": [
+				"stop",
+				"停止",
+				"八边形",
+				"red octagonal sign",
+				"red sign",
+				"stop sign",
+				"octagonal sign",
+				"停"
+			]
+		},
+		{
+			"emoji": "🛗",
+			"keywords": [
+				"电梯",
+				"升降"
+			]
+		},
+		{
+			"emoji": "🛜",
+			"keywords": [
+				"网络",
+				"WiFi",
+				"无线",
+				"无线网络",
+				"Wi-Fi"
+			]
+		},
+		{
+			"emoji": "🛠",
+			"keywords": [
+				"hammer",
+				"wrench"
+			]
+		},
+		{
+			"emoji": "🛡",
+			"keywords": [
+				"weapon",
+				"shield"
+			]
+		},
+		{
 			"emoji": "🤐",
 			"keywords": [
 				"不敢说",
@@ -21911,371 +22276,6 @@
 				"反对",
 				"右推",
 				"向右推手"
-			]
-		},
-		{
-			"emoji": "😇",
-			"keywords": [
-				"angel",
-				"纯洁",
-				"光环",
-				"halo",
-				"純潔",
-				"天使"
-			]
-		},
-		{
-			"emoji": "🙇",
-			"keywords": [
-				"bow",
-				"bowing",
-				"boy bowing"
-			]
-		},
-		{
-			"emoji": "🙇‍♀️",
-			"keywords": [
-				"thinking",
-				"鞠躬",
-				"磕头",
-				"bow",
-				"bowing",
-				"boy bowing",
-				"思考"
-			]
-		},
-		{
-			"emoji": "🙇‍♂️",
-			"keywords": [
-				"thinking",
-				"鞠躬",
-				"磕头",
-				"bow",
-				"bowing",
-				"person bowing",
-				"boy bowing",
-				"思考"
-			]
-		},
-		{
-			"emoji": "🚩",
-			"keywords": [
-				"红旗",
-				"旗帜",
-				"旗杆",
-				"旗桿",
-				"三角旗",
-				"紅旗"
-			]
-		},
-		{
-			"emoji": "🚫",
-			"keywords": [
-				"限制",
-				"禁止",
-				"不得入内",
-				"forbidden",
-				"restricted",
-				"prohibited",
-				"not allowed"
-			]
-		},
-		{
-			"emoji": "🚬",
-			"keywords": [
-				"烟",
-				"吸烟",
-				"抽烟",
-				"smoking",
-				"cigarette",
-				"吸烟区",
-				"吸煙",
-				"吸煙區"
-			]
-		},
-		{
-			"emoji": "🚭",
-			"keywords": [
-				"禁烟",
-				"禁止吸烟",
-				"无烟区",
-				"禁止吸煙",
-				"無煙區",
-				"no smoking"
-			]
-		},
-		{
-			"emoji": "🚯",
-			"keywords": [
-				"forbidden",
-				"请勿乱扔",
-				"禁丢垃圾",
-				"請勿亂扔",
-				"禁丟垃圾",
-				"don’t litter",
-				"no littering",
-				"not allowed"
-			]
-		},
-		{
-			"emoji": "🚱",
-			"keywords": [
-				"非饮用水",
-				"非飲用水",
-				"non-potable water"
-			]
-		},
-		{
-			"emoji": "🚳",
-			"keywords": [
-				"禁止骑车",
-				"禁行单车",
-				"禁行單車",
-				"禁止騎車",
-				"no bicycles"
-			]
-		},
-		{
-			"emoji": "🚷",
-			"keywords": [
-				"禁止行人",
-				"no pedestrians",
-				"no walking"
-			]
-		},
-		{
-			"emoji": "🚸",
-			"keywords": [
-				"注意儿童",
-				"当心儿童",
-				"注意兒童",
-				"當心兒童"
-			]
-		},
-		{
-			"emoji": "🚹",
-			"keywords": [
-				"男性",
-				"男士",
-				"男廁"
-			]
-		},
-		{
-			"emoji": "🚺",
-			"keywords": [
-				"女士",
-				"女廁"
-			]
-		},
-		{
-			"emoji": "🚾",
-			"keywords": [
-				"卫生间",
-				"厕所",
-				"WC",
-				"洗手间",
-				"廁所",
-				"衛生間",
-				"洗手間",
-				"water closet"
-			]
-		},
-		{
-			"emoji": "🛂",
-			"keywords": [
-				"安检",
-				"customs",
-				"证件检查",
-				"通关检查",
-				"通關檢查",
-				"證件檢查"
-			]
-		},
-		{
-			"emoji": "🛃",
-			"keywords": [
-				"海关",
-				"customs",
-				"查包",
-				"海關",
-				"查行李",
-				"行李检查",
-				"行李檢查"
-			]
-		},
-		{
-			"emoji": "🛄",
-			"keywords": [
-				"baggage",
-				"luggage",
-				"提取行李",
-				"行李领取处",
-				"行李过机",
-				"行李過機",
-				"baggage claim",
-				"行李通查"
-			]
-		},
-		{
-			"emoji": "🛅",
-			"keywords": [
-				"寄存",
-				"存包",
-				"baggage",
-				"luggage"
-			]
-		},
-		{
-			"emoji": "🛐",
-			"keywords": [
-				"church",
-				"宗教场所",
-				"place of worship"
-			]
-		},
-		{
-			"emoji": "🛑",
-			"keywords": [
-				"stop",
-				"停止",
-				"八边形",
-				"red octagonal sign",
-				"red sign",
-				"stop sign",
-				"octagonal sign",
-				"停"
-			]
-		},
-		{
-			"emoji": "🛗",
-			"keywords": [
-				"电梯",
-				"升降"
-			]
-		},
-		{
-			"emoji": "🛜",
-			"keywords": [
-				"网络",
-				"WiFi",
-				"无线",
-				"无线网络",
-				"Wi-Fi"
-			]
-		},
-		{
-			"emoji": "🛠",
-			"keywords": [
-				"hammer",
-				"wrench"
-			]
-		},
-		{
-			"emoji": "🛡",
-			"keywords": [
-				"weapon",
-				"shield"
-			]
-		},
-		{
-			"emoji": "🅰️",
-			"keywords": [
-				"blood type a"
-			]
-		},
-		{
-			"emoji": "🆎",
-			"keywords": [
-				"ab",
-				"blood type ab"
-			]
-		},
-		{
-			"emoji": "🅱️",
-			"keywords": [
-				"blood type b"
-			]
-		},
-		{
-			"emoji": "🆑",
-			"keywords": [
-				"CL",
-				"清除",
-				"清零",
-				"清零键",
-				"清零鍵"
-			]
-		},
-		{
-			"emoji": "🆔",
-			"keywords": [
-				"ID",
-				"身份证"
-			]
-		},
-		{
-			"emoji": "Ⓜ️",
-			"keywords": [
-				"M",
-				"地鐵"
-			]
-		},
-		{
-			"emoji": "🅾️",
-			"keywords": [
-				"blood type o"
-			]
-		},
-		{
-			"emoji": "🅿️",
-			"keywords": [
-				"停车",
-				"停车场",
-				"泊车",
-				"停車",
-				"停車場"
-			]
-		},
-		{
-			"emoji": "™️",
-			"keywords": [
-				"商标",
-				"商標"
-			]
-		},
-		{
-			"emoji": "🈂️",
-			"keywords": [
-				"小费"
-			]
-		},
-		{
-			"emoji": "🈹",
-			"keywords": [
-				"割"
-			]
-		},
-		{
-			"emoji": "🈲",
-			"keywords": [
-				"禁",
-				"禁止",
-				"prohibited"
-			]
-		},
-		{
-			"emoji": "㊙️",
-			"keywords": [
-				"秘",
-				"秘密",
-				"secret"
-			]
-		},
-		{
-			"emoji": "🈳",
-			"keywords": [
-				"空",
-				"空位"
 			]
 		}
 	],

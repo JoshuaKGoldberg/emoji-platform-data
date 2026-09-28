@@ -10,6 +10,7 @@ import { generateMacOS } from "./macos.js";
 import { generateSlack } from "./slack.js";
 import { generateTwemoji } from "./twemoji.js";
 import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
+import { fromUnicode } from "./utils.js";
 import { generateWeChat } from "./wechat.js";
 import { generateWindows } from "./windows.js";
 
@@ -104,7 +105,7 @@ export async function generateAll({
 							joypixels?.emoji ??
 							macos?.emoji ??
 							slack?.emoji ??
-							twemoji?.unicode ??
+							(twemoji && fromUnicode(twemoji.unicode)) ??
 							wechat?.emoji ??
 							windows?.emoji ??
 							android?.emoji)!,
@@ -129,7 +130,7 @@ export async function generateAll({
 	);
 
 	return Object.fromEntries(
-		mergeSameEmoji(Object.values(byTitle))
+		mergeSameEmoji(Object.values(byTitle).map(withPlatformGlyph))
 			.sort((a, b) => a.slug.localeCompare(b.slug))
 			.map((platformData) => [platformData.title, platformData]),
 	);
@@ -167,24 +168,31 @@ const titlePriority = [
 
 function getGlyphs(platformData: EmojiPlatformData) {
 	return new Set(
-		[
-			platformData.android?.emoji,
-			platformData.discord?.emoji,
-			platformData.emojiMart?.skins[0]?.native,
-			platformData.emojipedia?.code,
-			platformData.fluemoji?.glyph,
-			platformData.gemoji?.emoji,
-			platformData.gnome?.emoji,
-			platformData.joypixels?.emoji,
-			platformData.macos?.emoji,
-			platformData.slack?.emoji,
-			platformData.twemoji?.unicode,
-			platformData.wechat?.emoji,
-			platformData.windows?.emoji,
-		]
+		[platformData.emojipedia?.code, ...getPlatformGlyphs(platformData)]
 			.filter((glyph) => glyph !== undefined)
 			.map(withoutVariationSelectors),
 	);
+}
+
+/**
+ * Every glyph platforms other than Emojipedia know an emoji by, in the order
+ * its `emoji` is taken from them.
+ */
+function getPlatformGlyphs(platformData: EmojiPlatformData) {
+	return [
+		platformData.discord?.emoji,
+		platformData.emojiMart?.skins[0]?.native,
+		platformData.fluemoji?.glyph,
+		platformData.gemoji?.emoji,
+		platformData.gnome?.emoji,
+		platformData.joypixels?.emoji,
+		platformData.macos?.emoji,
+		platformData.slack?.emoji,
+		platformData.twemoji && fromUnicode(platformData.twemoji.unicode),
+		platformData.wechat?.emoji,
+		platformData.windows?.emoji,
+		platformData.android?.emoji,
+	].filter((glyph) => glyph !== undefined);
 }
 
 function getTitlePriority(platformData: EmojiPlatformData) {
@@ -251,6 +259,24 @@ function mergeSameEmoji(entries: EmojiPlatformData[]) {
 
 function withoutVariationSelectors(glyph: string) {
 	return glyph.replaceAll("\uFE0F", "");
+}
+
+function withPlatformGlyph(platformData: EmojiPlatformData) {
+	const code = platformData.emojipedia?.code;
+	const glyphs = getPlatformGlyphs(platformData);
+
+	if (
+		!code ||
+		!glyphs.length ||
+		glyphs.some(
+			(glyph) =>
+				withoutVariationSelectors(glyph) === withoutVariationSelectors(code),
+		)
+	) {
+		return platformData;
+	}
+
+	return { ...platformData, emoji: glyphs[0] };
 }
 
 /**

@@ -5,6 +5,7 @@ import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllGnomeData, GnomeItem } from "./types.js";
 import {
 	getEntryCldr,
+	isKnownGlyph,
 	recordByCldr,
 	toCodePointNotation,
 	toUnicode,
@@ -55,11 +56,4 @@ function countNames(entries: GnomeItem[]) {
 	}
 
 	return counts;
-}
-
-function isKnownGlyph(emojipedia: GeneratedEmojipediaData, glyph: string) {
-	return (
-		emojipedia.aliases.has(glyph) ||
-		emojipedia.aliases.has(glyph.replaceAll("️", ""))
-	);
 }

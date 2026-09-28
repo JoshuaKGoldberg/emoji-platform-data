@@ -3,6 +3,7 @@ import * as path from "node:path";
 import * as zlib from "node:zlib";
 
 import { WeChatItem } from "../src/dataTypes.js";
+import { compareStrings } from "./compareStrings.js";
 
 /** The picker's category listing, in the order it shows the emoji in. */
 interface RawCategories {
@@ -401,7 +402,7 @@ function toEntries(
 
 	const unlisted = [...keywords.values()]
 		.filter((keyword) => !listed.has(withoutVariationSelectors(keyword.emoji)))
-		.sort((a, b) => a.emoji.localeCompare(b.emoji));
+		.sort((a, b) => compareStrings(a.emoji, b.emoji));
 
 	for (const keyword of unlisted) {
 		entries.push({ emoji: keyword.emoji, keywords: keyword.terms });

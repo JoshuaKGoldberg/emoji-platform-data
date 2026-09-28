@@ -152,7 +152,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(Object.keys(byTitle).length).toBeGreaterThan(1000);
 	});
 
-	it("reaches every byTitle entry from byEmoji", async () => {
+	it("reaches every byTitle entry from byEmoji when platforms title one emoji two ways", async () => {
 		const { byEmoji, byTitle } = await importPackage(dataPackage);
 		const fromTitle = new Set(Object.values(byTitle));
 		const fromEmoji = new Set(Object.values(byEmoji));
@@ -161,7 +161,15 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(fromEmoji.size).toBe(fromTitle.size);
 	});
 
-	it("writes a separate data file for every byTitle entry", async () => {
+	it("keys byEmoji by glyph when an emoji only has Twemoji's code points", async () => {
+		const { byEmoji } = await importPackage(dataPackage);
+
+		expect(
+			Object.keys(byEmoji).filter((emoji) => /^[\da-f-]+$/.test(emoji)),
+		).toEqual([]);
+	});
+
+	it("writes a separate data file for every byTitle entry when two titles share a slug", async () => {
 		const { byTitle } = await importPackage(dataPackage);
 		const files = await fs.readdir(
 			path.join(dataPackage.directory, "lib/data"),
@@ -173,7 +181,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 	const snapshotCount = snapshotCounts.get(dataPackage.directory);
 
 	if (snapshotCount !== undefined) {
-		it("has an entry for every emoji in its platform's snapshot", async () => {
+		it("has an entry for every emoji in its platform's snapshot when read from one", async () => {
 			const { byTitle } = await importPackage(dataPackage);
 
 			expect(Object.keys(byTitle)).toHaveLength(snapshotCount);
@@ -181,7 +189,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 	}
 
 	if (dataPackage !== combinedPackage) {
-		it(`has the same entries as ${combinedName}'s ${toSourceKey(dataPackage.name)} data`, async () => {
+		it(`has the same entries as ${combinedName}'s ${toSourceKey(dataPackage.name)} data when it's a single platform's package`, async () => {
 			const source = toSourceKey(dataPackage.name);
 			const combined = await importPackage(combinedPackage);
 			const { byTitle } = await importPackage(dataPackage);
@@ -196,7 +204,56 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 });
 
 describe(combinedName, () => {
-	it("gives each emoji only platforms' data for its own glyph", async () => {
+	it("keeps both emoji when Emojipedia titles them the same", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		for (const emoji of ["🤵", "🤵‍♂️", "👯", "👯‍♀️"]) {
+			expect(byEmoji[emoji]).toMatchObject({ emoji, macos: { emoji } });
+		}
+	});
+
+	it("gives each emoji its own Twemoji data when Twemoji's description names another emoji", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		for (const [emoji, unicode] of [
+			["😁", "1f601"],
+			["😄", "1f604"],
+			["👰", "1f470"],
+			["👰‍♀️", "1f470-200d-2640-fe0f"],
+			["🕴️", "1f574"],
+			["🕴️‍♂️", "1f574-fe0f-200d-2642-fe0f"],
+			["☃️", "2603"],
+			["⛄", "26c4"],
+		]) {
+			expect(byEmoji[emoji]).toMatchObject({ emoji, twemoji: { unicode } });
+		}
+	});
+
+	it("keys an emoji by platforms' glyph when Emojipedia's glyph differs", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		expect(byEmoji["🧕‍♀️"]).toBeUndefined();
+		expect(byEmoji["🧕"]).toMatchObject({
+			android: { emoji: "🧕" },
+			emoji: "🧕",
+			emojipedia: { code: "🧕‍♀️" },
+			macos: { emoji: "🧕" },
+			slack: { emoji: "🧕" },
+			wechat: { emoji: "🧕" },
+		});
+	});
+
+	it("titles emoji without underscores when a title comes from a platform's shortcode", async () => {
+		const { byTitle } = await importPackage(combinedPackage);
+
+		expect(
+			Object.values(byTitle)
+				.map((entry) => (entry as { title: string }).title)
+				.filter((title) => title.includes("_")),
+		).toEqual([]);
+	});
+
+	it("gives each emoji only data for its own glyph when platforms are matched to it by name", async () => {
 		const { byTitle } = await importPackage(combinedPackage);
 		const mismatches = Object.values(byTitle).flatMap((entry) => {
 			const { emoji } = entry as { emoji: string };
