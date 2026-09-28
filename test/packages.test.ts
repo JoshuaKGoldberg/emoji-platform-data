@@ -162,4 +162,18 @@ describe(combinedName, () => {
 			expect(byEmoji[emoji]).toMatchObject({ emoji, twemoji: { unicode } });
 		}
 	});
+
+	it("keys an emoji by platforms' glyph when Emojipedia's glyph differs", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		expect(byEmoji["🧕‍♀️"]).toBeUndefined();
+		expect(byEmoji["🧕"]).toMatchObject({
+			android: { emoji: "🧕" },
+			emoji: "🧕",
+			emojipedia: { code: "🧕‍♀️" },
+			macos: { emoji: "🧕" },
+			slack: { emoji: "🧕" },
+			wechat: { emoji: "🧕" },
+		});
+	});
 });
