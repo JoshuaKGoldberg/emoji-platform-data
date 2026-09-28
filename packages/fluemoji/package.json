@@ -1,6 +1,6 @@
 {
 	"name": "@emoji-platform-data/fluemoji",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "Static export of Fluent UI (\"fluemoji\") metadata for unicode emojis. 🪟",
 	"repository": {
 		"type": "git",
