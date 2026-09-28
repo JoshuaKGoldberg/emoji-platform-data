@@ -6,6 +6,7 @@ import { promisify } from "node:util";
 import * as ts from "typescript";
 
 import { MacOSItem } from "../src/dataTypes.js";
+import { compareStrings } from "./compareStrings.js";
 
 interface RawEntry {
 	appleName: string;
@@ -119,18 +120,6 @@ function compareItems(a: MacOSItem, b: MacOSItem) {
 	}
 
 	return a.order - b.order;
-}
-
-/**
- * Compares by code unit rather than with localeCompare, so that refreshing on
- * two different Macs can't produce two different orderings.
- */
-function compareStrings(a: string, b: string) {
-	if (a < b) {
-		return -1;
-	}
-
-	return a > b ? 1 : 0;
 }
 
 function countByCategory(entries: MacOSItem[]) {

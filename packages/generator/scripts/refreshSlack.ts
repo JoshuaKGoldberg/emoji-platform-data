@@ -3,6 +3,7 @@ import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
 import { SlackItem } from "../src/dataTypes.js";
+import { compareStrings } from "./compareStrings.js";
 
 /** One picker category, listing its emoji by shortcode in the order it shows them. */
 interface RawCategory {
@@ -326,7 +327,7 @@ function listTranslationFiles(page: string) {
 		}
 	}
 
-	return new Map([...files].sort(([a], [b]) => a.localeCompare(b)));
+	return new Map([...files].sort(([a], [b]) => compareStrings(a, b)));
 }
 
 /**
@@ -604,7 +605,7 @@ function toEntries(module: RawModule, translations: Map<string, Translations>) {
 	return entries.sort(
 		(a, b) =>
 			(a.order ?? Infinity) - (b.order ?? Infinity) ||
-			a.name.localeCompare(b.name),
+			compareStrings(a.name, b.name),
 	);
 }
 

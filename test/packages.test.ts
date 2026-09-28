@@ -105,6 +105,14 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(fromEmoji.size).toBe(fromTitle.size);
 	});
 
+	it("keys byEmoji by glyph when an emoji only has Twemoji's code points", async () => {
+		const { byEmoji } = await importPackage(dataPackage);
+
+		expect(
+			Object.keys(byEmoji).filter((emoji) => /^[\da-f-]+$/.test(emoji)),
+		).toEqual([]);
+	});
+
 	it("writes a separate data file for every byTitle entry", async () => {
 		const { byTitle } = await importPackage(dataPackage);
 		const files = await fs.readdir(
@@ -127,4 +135,31 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 			);
 		});
 	}
+});
+
+describe(combinedName, () => {
+	it("keeps both emoji when Emojipedia titles them the same", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		for (const emoji of ["🤵", "🤵‍♂️", "👯", "👯‍♀️"]) {
+			expect(byEmoji[emoji]).toMatchObject({ emoji, macos: { emoji } });
+		}
+	});
+
+	it("gives each emoji its own Twemoji data when Twemoji's description names another emoji", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		for (const [emoji, unicode] of [
+			["😁", "1f601"],
+			["😄", "1f604"],
+			["👰", "1f470"],
+			["👰‍♀️", "1f470-200d-2640-fe0f"],
+			["🕴️", "1f574"],
+			["🕴️‍♂️", "1f574-fe0f-200d-2642-fe0f"],
+			["☃️", "2603"],
+			["⛄", "26c4"],
+		]) {
+			expect(byEmoji[emoji]).toMatchObject({ emoji, twemoji: { unicode } });
+		}
+	});
 });
