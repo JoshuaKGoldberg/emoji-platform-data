@@ -20,7 +20,7 @@ export function getEntryCldr(
 		}
 	}
 
-	const byUnicode =
+	const byUnicodeItem =
 		unicode &&
 		emojipedia.items.find((emojipediaItem) => {
 			const normalizedHexes = normalizeCodepoints(emojipediaItem.codepointsHex);
@@ -28,7 +28,8 @@ export function getEntryCldr(
 				normalizedHexes.join("-") === unicode ||
 				normalizedHexes.filter((hex) => hex !== "fe0f").join("-") === unicode
 			);
-		})?.title;
+		});
+	const byUnicode = byUnicodeItem && emojipedia.aliases.get(byUnicodeItem.code);
 
 	if (byUnicode) {
 		return byUnicode;
@@ -88,6 +89,15 @@ export function recordByCldr<T>(
 	}
 
 	return record;
+}
+
+/**
+ * The glyph for code points as platforms write them, such as "1f44b-1f3fd".
+ */
+export function fromUnicode(unicode: string) {
+	return String.fromCodePoint(
+		...unicode.split("-").map((hex) => parseInt(hex, 16)),
+	);
 }
 
 /**
