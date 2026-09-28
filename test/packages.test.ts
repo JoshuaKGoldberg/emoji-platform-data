@@ -145,4 +145,21 @@ describe(combinedName, () => {
 			expect(byEmoji[emoji]).toMatchObject({ emoji, macos: { emoji } });
 		}
 	});
+
+	it("gives each emoji its own Twemoji data when Twemoji's description names another emoji", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		for (const [emoji, unicode] of [
+			["😁", "1f601"],
+			["😄", "1f604"],
+			["👰", "1f470"],
+			["👰‍♀️", "1f470-200d-2640-fe0f"],
+			["🕴️", "1f574"],
+			["🕴️‍♂️", "1f574-fe0f-200d-2642-fe0f"],
+			["☃️", "2603"],
+			["⛄", "26c4"],
+		]) {
+			expect(byEmoji[emoji]).toMatchObject({ emoji, twemoji: { unicode } });
+		}
+	});
 });
