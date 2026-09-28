@@ -176,4 +176,14 @@ describe(combinedName, () => {
 			wechat: { emoji: "🧕" },
 		});
 	});
+
+	it("titles emoji without underscores when a title comes from a platform's shortcode", async () => {
+		const { byTitle } = await importPackage(combinedPackage);
+
+		expect(
+			Object.values(byTitle)
+				.map((entry) => (entry as { title: string }).title)
+				.filter((title) => title.includes("_")),
+		).toEqual([]);
+	});
 });
