@@ -105,7 +105,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(fromEmoji.size).toBe(fromTitle.size);
 	});
 
-	it("keys byEmoji by glyphs rather than code points", async () => {
+	it("keys byEmoji by glyph when an emoji only has Twemoji's code points", async () => {
 		const { byEmoji } = await importPackage(dataPackage);
 
 		expect(
