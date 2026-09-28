@@ -20,7 +20,7 @@ export function getEntryCldr(
 		}
 	}
 
-	const byUnicode =
+	const byUnicodeItem =
 		unicode &&
 		emojipedia.items.find((emojipediaItem) => {
 			const normalizedHexes = normalizeCodepoints(emojipediaItem.codepointsHex);
@@ -28,7 +28,8 @@ export function getEntryCldr(
 				normalizedHexes.join("-") === unicode ||
 				normalizedHexes.filter((hex) => hex !== "fe0f").join("-") === unicode
 			);
-		})?.title;
+		});
+	const byUnicode = byUnicodeItem && emojipedia.aliases.get(byUnicodeItem.code);
 
 	if (byUnicode) {
 		return byUnicode;
