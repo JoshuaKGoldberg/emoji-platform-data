@@ -3,6 +3,7 @@ import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
 import { SlackItem } from "../src/dataTypes.js";
+import { compareStrings } from "./compareStrings.js";
 
 /** One picker category, listing its emoji by shortcode in the order it shows them. */
 interface RawCategory {
@@ -183,18 +184,6 @@ if (
 	console.log(
 		`Wrote ${entries.length.toString()} emoji from ${chunk}, with keywords for ${countWithKeywords(entries).toString()} of them, in ${(locales.length + 1).toString()} locales.`,
 	);
-}
-
-/**
- * Compares by code unit rather than with localeCompare, so that refreshing
- * with two different versions of Node's ICU can't produce two different orderings.
- */
-function compareStrings(a: string, b: string) {
-	if (a < b) {
-		return -1;
-	}
-
-	return a > b ? 1 : 0;
 }
 
 function countWithKeywords(entries: SlackItem[]) {
