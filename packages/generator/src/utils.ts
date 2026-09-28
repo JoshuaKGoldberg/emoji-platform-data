@@ -91,6 +91,15 @@ export function recordByCldr<T>(
 }
 
 /**
+ * The glyph for code points as platforms write them, such as "1f44b-1f3fd".
+ */
+export function fromUnicode(unicode: string) {
+	return String.fromCodePoint(
+		...unicode.split("-").map((hex) => parseInt(hex, 16)),
+	);
+}
+
+/**
  * Code points as Unicode writes them, such as "U+1F9D1 U+200D U+1F9B0".
  */
 export function toCodePointNotation(unicode: string) {
