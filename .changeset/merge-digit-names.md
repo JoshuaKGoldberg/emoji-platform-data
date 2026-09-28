@@ -16,4 +16,4 @@
 "emoji-platform-data": minor
 ---
 
-Renamed the `byTitle` exports that had an underscore before a digit: `Keycap_10` is now `Keycap10`, `Pool_8Ball` is `Pool8Ball`, and `SkinTone_2` through `SkinTone_6` are `SkinTone2` through `SkinTone6`.
+Renamed the `byTitle` exports that had underscores before digits: `Keycap_10` is now `Keycap10`, `Pool_8Ball` is `Pool8Ball`, `SkinTone_2` through `SkinTone_6` are `SkinTone2` through `SkinTone6`, and the emoji titled by their code points, such as `U_1F468U_200DU_1F430U_200DU_1F468`, drop their underscores too.
