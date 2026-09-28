@@ -165,11 +165,7 @@ function* extractJsonBlobs(script: string) {
 			end += script[end] === "\\" ? 2 : 1;
 		}
 
-		const literal = script
-			.slice(open, end)
-			// The only escapes the bundler emits that JSON doesn't share.
-			.replaceAll("\\'", "'")
-			.replaceAll(/\\x([0-9a-fA-F]{2})/g, "\\u00$1");
+		const literal = toJsonEscapes(script.slice(open, end));
 
 		try {
 			yield JSON.parse(literal) as unknown;
@@ -658,4 +654,17 @@ function validate(entries: DiscordItem[], previous: Snapshot | undefined) {
 			].join("\n"),
 		);
 	}
+}
+
+/**
+ * Rewrites the escapes the bundler emits that JSON doesn't share, `\'` and
+ * `\x41`, into JSON's. Each escape is read whole, so that an escaped backslash
+ * followed by "x41" stays an escaped backslash.
+ */
+function toJsonEscapes(literal: string) {
+	return literal.replaceAll(
+		/\\(?:x([0-9a-fA-F]{2})|[\s\S])/g,
+		(escape, hex: string | undefined) =>
+			hex ? `\\u00${hex}` : escape === "\\'" ? "'" : escape,
+	);
 }
