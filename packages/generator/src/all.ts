@@ -257,12 +257,6 @@ function mergeSameEmoji(entries: EmojiPlatformData[]) {
 	return merged;
 }
 
-/**
- * Emojipedia's data lists a few emoji by a glyph no platform uses, such as 🧕
- * as 🧕‍♀️, which isn't a Unicode emoji. Those take the glyph the platforms
- * know them by instead, so that they merge with entries of platforms that
- * only know that glyph and can be found by it in `byEmoji`.
- */
 function withoutVariationSelectors(glyph: string) {
 	return glyph.replaceAll("\uFE0F", "");
 }
