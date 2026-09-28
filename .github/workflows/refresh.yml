@@ -94,10 +94,35 @@ jobs:
             title="feat: update $NAME emoji data"
           fi
 
+          # New names from one platform can retitle emoji that other platforms
+          # have too, so every package whose built output changes is released,
+          # along with the generator, which publishes the snapshot itself.
+          hash_packages() {
+            for directory in packages/*/; do
+              if [ -d "$directory/lib/data" ]; then
+                printf '%s %s\n' "$(jq -r .name "$directory/package.json")" "$(find "$directory/lib" -type f | sort | xargs shasum | shasum | cut -d ' ' -f 1)"
+              fi
+            done
+          }
+
+          cp "$snapshot" "$RUNNER_TEMP/snapshot.json"
+          git checkout HEAD -- "$snapshot"
+          pnpm build > /dev/null
+          hash_packages > "$RUNNER_TEMP/before.txt"
+          cp "$RUNNER_TEMP/snapshot.json" "$snapshot"
+          pnpm build > /dev/null
+          hash_packages > "$RUNNER_TEMP/after.txt"
+
+          releases=$(
+            {
+              echo "@emoji-platform-data/generator"
+              comm -13 <(sort "$RUNNER_TEMP/before.txt") <(sort "$RUNNER_TEMP/after.txt") | cut -d ' ' -f 1
+            } | sort -u | sed 's/.*/"&": minor/'
+          )
+
           cat > "$changeset" <<CHANGESET
           ---
-          "@emoji-platform-data/$PLATFORM": minor
-          "emoji-platform-data": minor
+          $releases
           ---
 
           $summary
