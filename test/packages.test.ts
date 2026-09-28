@@ -78,7 +78,63 @@ function toSourceKey(name: string) {
 		.replaceAll(/-(\w)/g, (_, letter: string) => letter.toUpperCase());
 }
 
+/**
+ * How many emoji each platform's committed snapshot has, keyed by the package
+ * directory it's published from, for the platforms that are read from one.
+ */
+async function countSnapshotEntries(dataPackages: DataPackage[]) {
+	const counts = new Map<string, number>();
+
+	for (const { directory } of dataPackages) {
+		const snapshot = path.join(
+			packagesDirectory,
+			"generator",
+			`${path.basename(directory)}.json`,
+		);
+
+		try {
+			const { entries } = JSON.parse(await fs.readFile(snapshot, "utf8")) as {
+				entries: unknown[];
+			};
+			counts.set(directory, entries.length);
+		} catch {
+			// This platform's data comes from a dependency, not a snapshot.
+		}
+	}
+
+	return counts;
+}
+
+/**
+ * The glyph a platform's data is for. Emojipedia's is left out, since its data
+ * lists a few emoji under glyphs no platform uses, such as 🧕 as 🧕‍♀️.
+ */
+function getPlatformGlyph(source: string, data: unknown) {
+	switch (source) {
+		case "emojiMart":
+			return (data as { skins: { native: string }[] }).skins[0].native;
+		case "emojipedia":
+			return undefined;
+		case "fluemoji":
+			return (data as { glyph: string }).glyph;
+		case "twemoji":
+			return String.fromCodePoint(
+				...(data as { unicode: string }).unicode
+					.split("-")
+					.map((hex) => parseInt(hex, 16)),
+			);
+		default:
+			return (data as { emoji: string }).emoji;
+	}
+}
+
+function withoutVariationSelectors(glyph: string) {
+	return glyph.replaceAll("\uFE0F", "");
+}
+
 const dataPackages = await listDataPackages();
+
+const snapshotCounts = await countSnapshotEntries(dataPackages);
 
 const combinedPackage = dataPackages.find(
 	(dataPackage) => dataPackage.name === combinedName,
@@ -114,6 +170,16 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(files).toHaveLength(Object.keys(byTitle).length);
 	});
 
+	const snapshotCount = snapshotCounts.get(dataPackage.directory);
+
+	if (snapshotCount !== undefined) {
+		it("has an entry for every emoji in its platform's snapshot", async () => {
+			const { byTitle } = await importPackage(dataPackage);
+
+			expect(Object.keys(byTitle)).toHaveLength(snapshotCount);
+		});
+	}
+
 	if (dataPackage !== combinedPackage) {
 		it(`has the same entries as ${combinedName}'s ${toSourceKey(dataPackage.name)} data`, async () => {
 			const source = toSourceKey(dataPackage.name);
@@ -127,4 +193,27 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 			);
 		});
 	}
+});
+
+describe(combinedName, () => {
+	it("gives each emoji only platforms' data for its own glyph", async () => {
+		const { byTitle } = await importPackage(combinedPackage);
+		const mismatches = Object.values(byTitle).flatMap((entry) => {
+			const { emoji } = entry as { emoji: string };
+
+			return Object.entries(entry as Record<string, unknown>)
+				.filter(([key]) => !["emoji", "slug", "title"].includes(key))
+				.flatMap(([source, data]) => {
+					const glyph = getPlatformGlyph(source, data);
+
+					return glyph &&
+						withoutVariationSelectors(glyph) !==
+							withoutVariationSelectors(emoji)
+						? [`${emoji} has ${source} data for ${glyph}`]
+						: [];
+				});
+		});
+
+		expect(mismatches).toEqual([]);
+	});
 });
