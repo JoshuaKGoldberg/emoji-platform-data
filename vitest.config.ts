@@ -8,5 +8,8 @@ export default defineConfig({
 				external: [/\/packages\/[^/]+\/lib\//],
 			},
 		},
+		typecheck: {
+			enabled: true,
+		},
 	},
 });

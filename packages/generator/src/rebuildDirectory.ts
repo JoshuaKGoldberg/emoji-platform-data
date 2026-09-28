@@ -107,6 +107,7 @@ async function writeDataDirectory({
 	const byTitleFile = path.join(directory, "byTitle");
 	const exportNames = new Set<string>();
 	const exportLines: string[] = [];
+	const declarationLines: string[] = [];
 	const byEmojiLines: string[] = [];
 
 	for (const { data, platformData } of entries) {
@@ -144,6 +145,7 @@ async function writeDataDirectory({
 
 		exportNames.add(exportName);
 		exportLines.push(exportLine);
+		declarationLines.push(`export const ${exportName}: ${typeName};\n`);
 		byEmojiLines.push(
 			`\t${JSON.stringify(platformData.emoji)}: byTitle.${exportName},`,
 		);
@@ -155,13 +157,26 @@ async function writeDataDirectory({
 	}
 
 	await Promise.all([
-		fs.writeFile(`${byTitleFile}.d.mts`, exportLines.join("")),
+		// The runtime module re-exports each emoji's JSON file. Its declarations
+		// name the same exports, but as the package's item type, so that consumers
+		// don't need resolveJsonModule and see one type for every emoji.
+		fs.writeFile(
+			`${byTitleFile}.d.mts`,
+			[
+				`import type { ${typeName} } from "./index.mjs";`,
+				"",
+				...declarationLines,
+			].join("\n"),
+		),
 		fs.writeFile(`${byTitleFile}.mjs`, exportLines.join("")),
 		fs.writeFile(
 			path.join(directory, "index.d.mts"),
 			[
+				`import * as byTitle from "./byTitle.mjs";`,
+				"",
+				`export { byTitle };`,
+				"",
 				`export const byEmoji: Record<string, ${typeName}>;`,
-				`export const byTitle: Record<string, ${typeName}>;`,
 				"",
 				await readDataTypes(),
 			].join("\n"),
