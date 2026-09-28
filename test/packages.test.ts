@@ -130,7 +130,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 });
 
 describe(combinedName, () => {
-	it("keeps each emoji that Emojipedia titles the same as another", async () => {
+	it("keeps both emoji when Emojipedia titles them the same", async () => {
 		const { byEmoji } = await importPackage(combinedPackage);
 
 		for (const emoji of ["🤵", "🤵‍♂️", "👯", "👯‍♀️"]) {
