@@ -105,7 +105,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(fromEmoji.size).toBe(fromTitle.size);
 	});
 
-	it("keys byEmoji by glyphs rather than code points", async () => {
+	it("keys byEmoji by glyph when an emoji only has Twemoji's code points", async () => {
 		const { byEmoji } = await importPackage(dataPackage);
 
 		expect(
@@ -138,7 +138,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 });
 
 describe(combinedName, () => {
-	it("gives each emoji the Twemoji data for its own glyph", async () => {
+	it("gives each emoji its own Twemoji data when Twemoji's description names another emoji", async () => {
 		const { byEmoji } = await importPackage(combinedPackage);
 
 		for (const [emoji, unicode] of [
