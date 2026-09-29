@@ -40,7 +40,7 @@ Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form 
 Each entry is a `JoyPixelsItem` describing one emoji as JoyPixels' [emoji-toolkit](https://github.com/joypixels/emoji-toolkit) knows it.
 
 `name` is the shortcode JoyPixels writes the emoji as, and `aliases` are the others it accepts, such as the two-letter `tt` for 🇹🇹 `flag_tt`.
-`keywords` are the extra terms a picker matches searches against: 1,546 of the 1,947 emoji have them, averaging 2.55 each.
+`keywords` are the extra terms a picker matches searches against: 1,548 of the 1,949 emoji have them, averaging 2.55 each.
 `emoticons` are only present for the 28 emoji that have them: ❤️ also stands in for `<3`.
 `order` is where the emoji falls in JoyPixels' picker, counting from the first emoji of its first category.
 30 emoji have no `category` or `order` because the picker doesn't show them: mostly the older families, such as 👨‍👩‍👦, and the hair components, such as 🦰.
