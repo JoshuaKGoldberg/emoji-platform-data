@@ -107,6 +107,7 @@ async function writeDataDirectory({
 	const byTitleFile = path.join(directory, "byTitle");
 	const exportNames = new Set<string>();
 	const exportLines: string[] = [];
+	const declarationLines: string[] = [];
 	const byEmojiLines: string[] = [];
 
 	// Which export each byEmoji key points to, so that two entries can't both
@@ -148,6 +149,7 @@ async function writeDataDirectory({
 
 		exportNames.add(exportName);
 		exportLines.push(exportLine);
+		declarationLines.push(`export const ${exportName}: ${typeName};`);
 
 		for (const glyph of getEmojiGlyphs(platformData)) {
 			const owner = byEmojiOwners.get(glyph);
@@ -169,13 +171,24 @@ async function writeDataDirectory({
 	}
 
 	await Promise.all([
-		fs.writeFile(`${byTitleFile}.d.mts`, exportLines.join("")),
+		fs.writeFile(
+			`${byTitleFile}.d.mts`,
+			[
+				`import type { ${typeName} } from "./index.mjs";`,
+				"",
+				...declarationLines,
+				"",
+			].join("\n"),
+		),
 		fs.writeFile(`${byTitleFile}.mjs`, exportLines.join("")),
 		fs.writeFile(
 			path.join(directory, "index.d.mts"),
 			[
+				`import * as byTitle from "./byTitle.mjs";`,
+				"",
+				`export { byTitle };`,
+				"",
 				`export const byEmoji: Record<string, ${typeName}>;`,
-				`export const byTitle: Record<string, ${typeName}>;`,
 				"",
 				await readDataTypes(),
 			].join("\n"),
