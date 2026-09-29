@@ -16,4 +16,4 @@
 "emoji-platform-data": patch
 ---
 
-Corrected the `JoyPixelsItem` docs' examples of `aliases` and `emoticons`, which JoyPixels writes as "+1" for 👍 and "<3" for ❤️.
+Corrected the `JoyPixelsItem.aliases` docs' example, which JoyPixels writes as "+1" and "thumbs_up" for 👍.
