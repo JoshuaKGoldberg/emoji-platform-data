@@ -313,6 +313,14 @@ describe(combinedName, () => {
 		expect(byEmoji["✈"]).toBe(byEmoji["✈️"]);
 	});
 
+	it("places emoji in macOS's picker categories when the picker lists them with a variation selector", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		for (const emoji of ["⏩", "⏪", "⏫", "⏬"]) {
+			expect(byEmoji[emoji]).toMatchObject({ macos: { category: "Symbols" } });
+		}
+	});
+
 	it("gives each emoji only data for its own glyph when platforms are matched to it by name", async () => {
 		const { byTitle } = await importPackage(combinedPackage);
 		const mismatches = Object.values(byTitle).flatMap((entry) => {

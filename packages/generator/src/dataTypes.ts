@@ -265,7 +265,7 @@ export interface MacOSItem {
 	/** How macOS names the emoji, such as "octopus". */
 	appleName: string;
 
-	/** Picker category listing the emoji, such as "Nature". A few emoji, such as ⏩ and ✊🏽, are in none. */
+	/** Picker category listing the emoji, such as "Nature". A few emoji, such as ⚕️ and 🧑‍🤝‍🧑, are in none. */
 	category?: string;
 
 	emoji: string;

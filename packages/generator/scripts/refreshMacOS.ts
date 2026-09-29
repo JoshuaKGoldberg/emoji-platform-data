@@ -108,7 +108,7 @@ console.log(
 
 /**
  * Sorts by the order macOS's picker shows emoji in, keeping the handful that
- * no category lists -such as ⏩ and ✊🏽- together at the end.
+ * no category lists -such as ⚕️ and 🧑‍🤝‍🧑- together at the end.
  */
 function compareItems(a: MacOSItem, b: MacOSItem) {
 	if (a.order === undefined) {
