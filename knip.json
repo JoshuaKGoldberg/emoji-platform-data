@@ -6,7 +6,6 @@
 	},
 	"workspaces": {
 		".": {
-			"entry": ["test/**/*.test-d.ts"],
 			"ignoreDependencies": ["@changesets/cli"]
 		},
 		"packages/generator": {

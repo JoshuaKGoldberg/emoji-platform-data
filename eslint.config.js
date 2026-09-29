@@ -69,12 +69,6 @@ export default defineConfig(
 		rules: { "n/no-missing-import": "off" },
 	},
 	{
-		// The type tests import the packages' built lib/ output by path, which
-		// eslint-plugin-n looks for as TypeScript sources rather than emitted files.
-		files: ["test/**/*.test-d.ts"],
-		rules: { "n/no-missing-import": "off" },
-	},
-	{
 		extends: [yml.configs["flat/recommended"], yml.configs["flat/prettier"]],
 		files: ["**/*.{yml,yaml}"],
 		rules: {
