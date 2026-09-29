@@ -10,7 +10,6 @@ export function formatExportLine(
 	// ...and some don't (e.g. woman-with-headscarf)
 	const name = currentCldrName?.match(/^\D/) ? currentCldrName : title;
 	const exportName = changeCase.pascalCase(name, {
-		// Otherwise digits get an underscore before them, such as Keycap_10.
 		mergeAmbiguousCharacters: true,
 	});
 
