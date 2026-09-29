@@ -15,7 +15,8 @@
 	"sideEffects": false,
 	"type": "module",
 	"exports": {
-		".": "./lib/index.mjs"
+		".": "./lib/index.mjs",
+		"./byTitle": "./lib/byTitle.mjs"
 	},
 	"files": [
 		"lib/"
