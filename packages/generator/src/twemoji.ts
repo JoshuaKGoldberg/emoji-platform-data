@@ -35,7 +35,7 @@ export async function generateTwemoji(
 				(item) =>
 					({
 						...item,
-						keywords: item.keywords ? item.keywords.split(",") : undefined,
+						keywords: item.keywords?.split(",").filter(Boolean),
 					}) as TwemojiItem,
 			)
 			.filter((item) => isIncludedTwemojiItem(item)),
