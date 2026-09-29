@@ -100,11 +100,17 @@ const snapshot: Snapshot = {
 	macosVersion: await readMacOSVersion(),
 };
 
-await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, "\t") + "\n");
+if (previous && isSameData(previous.entries, entries)) {
+	console.log(
+		`Read ${entries.length.toString()} emoji from macOS ${snapshot.macosVersion} (CoreEmoji ${snapshot.coreEmojiVersion}), unchanged from the snapshot.`,
+	);
+} else {
+	await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, "\t") + "\n");
 
-console.log(
-	`Wrote ${entries.length.toString()} emoji from macOS ${snapshot.macosVersion} (CoreEmoji ${snapshot.coreEmojiVersion}).`,
-);
+	console.log(
+		`Wrote ${entries.length.toString()} emoji from macOS ${snapshot.macosVersion} (CoreEmoji ${snapshot.coreEmojiVersion}).`,
+	);
+}
 
 /**
  * Sorts by the order macOS's picker shows emoji in, keeping the handful that
@@ -165,6 +171,10 @@ function foldSkinToneVariants(entries: RawEntry[]) {
 
 		return false;
 	});
+}
+
+function isSameData(left: MacOSItem[], right: MacOSItem[]) {
+	return JSON.stringify(left) === JSON.stringify(right);
 }
 
 async function readCoreEmojiVersion() {

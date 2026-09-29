@@ -26,6 +26,7 @@ The refresh then validates what came back before writing anything: how many emoj
 Those checks exist because these frameworks can keep their method names and quietly start returning nothing, which would otherwise overwrite the snapshot with a smaller, wrong one.
 
 The snapshot is byte-for-byte reproducible: refreshing twice on one Mac, or on two Macs running the same macOS version, produces the same file.
+A refresh on a newer macOS whose emoji are the same leaves the snapshot, and the macOS version it names, as they were.
 Apple changes these keywords between macOS releases, so a refresh belongs in its own pull request, with a changeset, describing which macOS version it came from.
 The daily `Refresh Data` workflow does exactly that automatically, on a `macos-latest` runner.
 It skips opening a pull request when that runner is on an older macOS than the committed snapshot, so a lagging runner image can't roll the data back.
