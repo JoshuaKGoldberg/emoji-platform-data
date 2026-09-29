@@ -231,7 +231,7 @@ export interface GnomeItem {
  * One emoji as JoyPixels' emoji-toolkit knows it, which is also how Zoom's Team Chat emoji picker knows it.
  */
 export interface JoyPixelsItem {
-	/** Other shortcodes JoyPixels accepts for the emoji, such as "thumbsup" for 👍. */
+	/** Other shortcodes JoyPixels accepts for the emoji, such as "+1" and "thumbs_up" for 👍. */
 	aliases: string[];
 
 	/** Picker category listing the emoji, such as "nature". Emoji the picker doesn't show, such as most families, have none. */

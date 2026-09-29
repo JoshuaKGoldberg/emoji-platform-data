@@ -37,7 +37,7 @@ The app is a zip, and the emoji data is a zip inside that, so both are read in m
 
 `en_us` opens with a 16-byte header of Gboard's own, then a marisa trie of 6,877 terms.
 [`packages/generator/scripts/marisa.ts`](../generator/scripts/marisa.ts) reads just enough of marisa's format to list those terms in ID order: its LOUDS bit vectors, the labels on each edge, and the tails or nested tries that longer runs of labels are stored in.
-After the trie, for each term in ID order, is a list of indexes into the list of emoji that comes last, each list preceded by its size in bytes.
+After the trie, for each term in ID order, is a list of indexes into the list of emoji that comes last, each list preceded by how many indexes it has.
 Every step insists on landing exactly where the next one starts, which is what catches the layout changing.
 
 Terms are sorted for each emoji, since the order they come in is only the trie's.

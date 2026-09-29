@@ -33,7 +33,7 @@ That comes to under 2MB.
 Each of the two is looked up by exact name and has to appear exactly once -a name that starts matching twice is as much a sign of the app having moved on as one that stops matching- and a zip that turns out to be Zip64, or whose index runs past its own end, is refused rather than read as garbage.
 
 The two files are joined by glyph, which is the only thing they share.
-They disagree about which emoji they cover: 57 the picker lists aren't searchable at all, and 531 the search knows aren't in the picker, so entries keep whatever either file knows rather than only their intersection.
+They disagree about which emoji they cover: 57 the picker lists aren't searchable at all, and 530 the search knows aren't in the picker, so entries keep whatever either file knows rather than only their intersection.
 The search index also reaches into the private use area, for Apple's logo; anything there is dropped, since it isn't a unicode emoji.
 Variation selectors are normalized away when matching, since the search index writes ❤️ as _U+2764 U+FE0F_ while the listing has _U+2764_.
 Rows of the search index that match only one of WeChat's own stickers, rather than a unicode emoji, are dropped: those are images, with no glyph to key them by.
