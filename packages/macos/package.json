@@ -1,6 +1,6 @@
 {
 	"name": "@emoji-platform-data/macos",
-	"version": "0.1.2",
+	"version": "0.2.0",
 	"description": "Static export of macOS emoji picker metadata for unicode emojis. 🍎",
 	"repository": {
 		"type": "git",
