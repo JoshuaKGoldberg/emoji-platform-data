@@ -35,7 +35,7 @@ Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form 
 Each entry is a `WeChatItem` describing one emoji as WeChat's own emoji picker knows it.
 
 `keywords` are the terms the picker matches searches against, and they're the reason this package exists: WeChat writes them in Simplified Chinese, Traditional Chinese and English all at once, so 🎉 answers to `庆祝`, `慶祝`, `party` and `confetti` alike.
-1,759 of the 1,816 emoji have them, averaging 6.08 each, for 10,689 terms in total.
+1,758 of the 1,815 emoji have them, averaging 6.08 each, for 10,689 terms in total.
 
 `category` is the picker's own grouping, named as WeChat names it: `表情与手势`, `动物`, `自然`, `食物与饮料`, `活动`, `旅行与地点`, `物体`, `符号`, and `人物`.
 `order` is where the emoji falls in the picker's overall order, counting from the first emoji of its first category.
