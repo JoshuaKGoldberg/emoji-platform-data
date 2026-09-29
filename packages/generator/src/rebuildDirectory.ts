@@ -149,7 +149,7 @@ async function writeDataDirectory({
 
 		exportNames.add(exportName);
 		exportLines.push(exportLine);
-		declarationLines.push(`export const ${exportName}: ${typeName};\n`);
+		declarationLines.push(`export const ${exportName}: ${typeName};`);
 
 		for (const glyph of getEmojiGlyphs(platformData)) {
 			const owner = byEmojiOwners.get(glyph);
@@ -177,6 +177,7 @@ async function writeDataDirectory({
 				`import type { ${typeName} } from "./index.mjs";`,
 				"",
 				...declarationLines,
+				"",
 			].join("\n"),
 		),
 		fs.writeFile(`${byTitleFile}.mjs`, exportLines.join("")),
