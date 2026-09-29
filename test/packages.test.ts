@@ -313,6 +313,15 @@ describe(combinedName, () => {
 		expect(byEmoji["✈"]).toBe(byEmoji["✈️"]);
 	});
 
+	it("gives an emoji GNOME's other locales when they write it as its skin tone template", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		expect(byEmoji["👯‍♂️"]).toMatchObject({
+			gnome: { namesByLocale: { de: "Männer mit Hasenohren" } },
+		});
+		expect(byEmoji["👨‍🐰‍👨"]).toBeUndefined();
+	});
+
 	it("gives each emoji only data for its own glyph when platforms are matched to it by name", async () => {
 		const { byTitle } = await importPackage(combinedPackage);
 		const mismatches = Object.values(byTitle).flatMap((entry) => {

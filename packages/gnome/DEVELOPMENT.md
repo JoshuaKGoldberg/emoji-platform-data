@@ -31,9 +31,9 @@ Those are turned back into the plain emoji.
 The emoji that GTK writes without a presentation selector, such as 🕵‍♂️, are kept as GTK writes them, since that's what its picker inserts.
 
 GTK doesn't always regenerate every locale at once.
-As of GTK 4.24, `en.data` is a CLDR release behind the others, so the 12 emoji new in Emoji 17.0 are only in the other locales' data.
+As of GTK 4.24, `en.data` is a CLDR release behind the others, so the 8 emoji new in Emoji 17.0 are only in the other locales' data.
 Those keep the English that each locale's data carries alongside its own -which is what GTK searches in those locales- but have no `order`, since the English picker doesn't show them.
-Emoji 17.0 also named four of its new emoji what older ones are already named, such as 👨‍🐰‍👨 and 👯‍♂️ "men with bunny ears", so the generator titles the new ones by their code points until Emojipedia knows them.
+Those locales also write four older emoji as the templates for their new skin tone variants, such as 👯‍♂️ "men with bunny ears" as 👨🏻‍🐰‍👨🏻, which drops to 👨‍🐰‍👨 without its tones, so a locale's emoji that the English data doesn't have is joined to the English emoji with the same English name.
 
 The result is committed as a snapshot, [`packages/generator/gnome.json`](../generator/gnome.json), the same way Discord and Slack are, so that building the packages never depends on a network fetch.
 GTK tags a release every few weeks but regenerates its emoji data about once a year, so the script rewrites the snapshot only when the emoji or the locales changed, and validates what it read before writing anything: how many emoji came back, how many of them have keywords, that every picker section is well represented, that every expected locale is there with names for nearly every emoji, that a few known emoji still have known names and keywords in another locale, and that neither count has fallen sharply since the last snapshot.
