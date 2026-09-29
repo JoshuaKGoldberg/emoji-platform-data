@@ -30,6 +30,7 @@ console.log(byEmoji["🐙"]);
 ```
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
+`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
 Each entry is an `AndroidItem` describing one emoji as Gboard -the keyboard Google ships with Android- knows it.
 
 `keywords` are the terms Gboard's emoji search finds the emoji by, in English, sorted.

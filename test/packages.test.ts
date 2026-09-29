@@ -177,6 +177,27 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		).toEqual([]);
 	});
 
+	it("looks up every entry by its platform's glyph when the glyph has or lacks variation selectors", async () => {
+		const { byEmoji, byTitle } = await importPackage(dataPackage);
+		const source =
+			dataPackage === combinedPackage
+				? undefined
+				: toSourceKey(dataPackage.name);
+		const misses = Object.values(byTitle).flatMap((entry) => {
+			const glyph = source
+				? getPlatformGlyph(source, entry)
+				: (entry as { emoji: string }).emoji;
+
+			return glyph
+				? [glyph, withoutVariationSelectors(glyph)].filter(
+						(candidate) => byEmoji[candidate] !== entry,
+					)
+				: [];
+		});
+
+		expect(misses).toEqual([]);
+	});
+
 	it("writes a separate data file for every byTitle entry when two titles share a slug", async () => {
 		const { byTitle } = await importPackage(dataPackage);
 		const files = await fs.readdir(
@@ -240,7 +261,7 @@ describe(combinedName, () => {
 	it("keys an emoji by platforms' glyph when Emojipedia's glyph differs", async () => {
 		const { byEmoji } = await importPackage(combinedPackage);
 
-		expect(byEmoji["🧕‍♀️"]).toBeUndefined();
+		expect(byEmoji["🧕‍♀️"]).toBe(byEmoji["🧕"]);
 		expect(byEmoji["🧕"]).toMatchObject({
 			android: { emoji: "🧕" },
 			emoji: "🧕",
@@ -259,6 +280,37 @@ describe(combinedName, () => {
 				.map((entry) => (entry as { title: string }).title)
 				.filter((title) => title.includes("_")),
 		).toEqual([]);
+	});
+
+	it("looks up an emoji by every glyph its platforms write it as when they disagree on variation selectors", async () => {
+		const { byEmoji, byTitle } = await importPackage(combinedPackage);
+		const misses = Object.values(byTitle).flatMap((entry) =>
+			Object.entries(entry as Record<string, unknown>)
+				.filter(([key]) => !["emoji", "slug", "title"].includes(key))
+				.flatMap(([source, data]) => {
+					const glyph =
+						source === "emojipedia"
+							? (data as { code: string }).code
+							: getPlatformGlyph(source, data);
+
+					return glyph && byEmoji[glyph] !== entry
+						? [
+								`${source} writes ${(entry as { emoji: string }).emoji} as ${glyph}`,
+							]
+						: [];
+				}),
+		);
+
+		expect(misses).toEqual([]);
+	});
+
+	it("finds the same entry with or without a variation selector when macOS and Twemoji write an emoji differently", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		expect(byEmoji["⚓"]).toMatchObject({ emoji: "⚓", title: "Anchor" });
+		expect(byEmoji["⚓️"]).toBe(byEmoji["⚓"]);
+		expect(byEmoji["✈️"]).toMatchObject({ emoji: "✈️", title: "Airplane" });
+		expect(byEmoji["✈"]).toBe(byEmoji["✈️"]);
 	});
 
 	it("gives each emoji only data for its own glyph when platforms are matched to it by name", async () => {

@@ -1,7 +1,7 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
-import { generateAll, GenerateAllSettings } from "./all.js";
+import { generateAll, GenerateAllSettings, getEmojiGlyphs } from "./all.js";
 import { formatExportLine } from "./formatExportLine.js";
 import { EmojiPlatformData } from "./types.js";
 
@@ -109,6 +109,10 @@ async function writeDataDirectory({
 	const exportLines: string[] = [];
 	const byEmojiLines: string[] = [];
 
+	// Which export each byEmoji key points to, so that two entries can't both
+	// claim a glyph: the later one would silently win in the object literal.
+	const byEmojiOwners = new Map<string, string>();
+
 	for (const { data, platformData } of entries) {
 		const { slug } = platformData;
 
@@ -144,9 +148,19 @@ async function writeDataDirectory({
 
 		exportNames.add(exportName);
 		exportLines.push(exportLine);
-		byEmojiLines.push(
-			`\t${JSON.stringify(platformData.emoji)}: byTitle.${exportName},`,
-		);
+
+		for (const glyph of getEmojiGlyphs(platformData)) {
+			const owner = byEmojiOwners.get(glyph);
+
+			if (owner === undefined) {
+				byEmojiOwners.set(glyph, exportName);
+				byEmojiLines.push(`\t${JSON.stringify(glyph)}: byTitle.${exportName},`);
+			} else if (owner !== exportName) {
+				throw new Error(
+					`'${platformData.title}' and '${owner}' are both known as ${glyph}.`,
+				);
+			}
+		}
 
 		await fs.writeFile(
 			path.join(directory, "data", `${slug}.json`),
