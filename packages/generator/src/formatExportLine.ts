@@ -9,7 +9,9 @@ export function formatExportLine(
 	// ...but some start with a number (e.g. 1st-place-medal)
 	// ...and some don't (e.g. woman-with-headscarf)
 	const name = currentCldrName?.match(/^\D/) ? currentCldrName : title;
-	const exportName = changeCase.pascalCase(name);
+	const exportName = changeCase.pascalCase(name, {
+		mergeAmbiguousCharacters: true,
+	});
 
 	return {
 		exportLine: `export { default as ${exportName} } from "./data/${slug}.json" with { type: "json" };\n`,

@@ -161,6 +161,14 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(fromEmoji.size).toBe(fromTitle.size);
 	});
 
+	it("names byTitle exports without underscores when a name has digits", async () => {
+		const { byTitle } = await importPackage(dataPackage);
+
+		expect(Object.keys(byTitle).filter((name) => name.includes("_"))).toEqual(
+			[],
+		);
+	});
+
 	it("keys byEmoji by glyph when an emoji only has Twemoji's code points", async () => {
 		const { byEmoji } = await importPackage(dataPackage);
 
