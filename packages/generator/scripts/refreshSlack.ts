@@ -155,6 +155,13 @@ const source = process.argv[2] ?? defaultSource;
 const previous = await readPreviousSnapshot();
 
 const page = await fetchText(source);
+
+if (page.includes("unsupported_webclient_browser")) {
+	throw new Error(
+		`${source} answered with its page for unsupported browsers, so the Chrome version in this script's userAgent needs raising.`,
+	);
+}
+
 const cdn = readCdn(page);
 const scripts = listScripts(page);
 
