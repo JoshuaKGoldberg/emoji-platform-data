@@ -157,9 +157,6 @@ async function writeDataDirectory({
 	}
 
 	await Promise.all([
-		// The runtime module re-exports each emoji's JSON file. Its declarations
-		// name the same exports, but as the package's item type, so that consumers
-		// don't need resolveJsonModule and see one type for every emoji.
 		fs.writeFile(
 			`${byTitleFile}.d.mts`,
 			[
