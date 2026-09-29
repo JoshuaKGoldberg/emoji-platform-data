@@ -91,7 +91,7 @@ jobs:
 
           count=$(jq '.entries | length' "$snapshot")
           keyworded=$(jq '[.entries[] | select(.keywords | length > 0)] | length' "$snapshot")
-          changeset=".changeset/refresh-$PLATFORM-data.md"
+          changeset=".changeset/refresh-$PLATFORM-data-$GITHUB_RUN_ID.md"
 
           if [ -n "$version" ]; then
             summary="Updated $NAME emoji data to $version."
