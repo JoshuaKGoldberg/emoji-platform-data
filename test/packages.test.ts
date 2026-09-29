@@ -313,6 +313,15 @@ describe(combinedName, () => {
 		expect(byEmoji["✈"]).toBe(byEmoji["✈️"]);
 	});
 
+	it("finds the same entry when an emoji is written with only some of its variation selectors", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		expect(byEmoji["🏳️‍⚧️"]).toMatchObject({ title: "Transgender Flag" });
+		expect(byEmoji["\u{1F3F3}\uFE0F\u200D\u26A7"]).toBe(byEmoji["🏳️‍⚧️"]);
+		expect(byEmoji["\u{1F3F3}\u200D\u26A7\uFE0F"]).toBe(byEmoji["🏳️‍⚧️"]);
+		expect(byEmoji["\u{1F575}\uFE0F\u200D\u2642"]).toBe(byEmoji["🕵️‍♂️"]);
+	});
+
 	it("gives each emoji only data for its own glyph when platforms are matched to it by name", async () => {
 		const { byTitle } = await importPackage(combinedPackage);
 		const mismatches = Object.values(byTitle).flatMap((entry) => {
