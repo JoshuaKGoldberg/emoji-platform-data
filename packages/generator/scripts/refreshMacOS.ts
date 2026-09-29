@@ -5,8 +5,8 @@ import * as path from "node:path";
 import { promisify } from "node:util";
 import * as ts from "typescript";
 
+import { compareStrings } from "../src/compareStrings.js";
 import { MacOSItem } from "../src/dataTypes.js";
-import { compareStrings } from "./compareStrings.js";
 
 interface RawEntry {
 	appleName: string;

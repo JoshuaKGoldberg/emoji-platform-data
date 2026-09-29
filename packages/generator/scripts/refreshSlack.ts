@@ -2,8 +2,8 @@ import * as crypto from "node:crypto";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
+import { compareStrings } from "../src/compareStrings.js";
 import { SlackItem } from "../src/dataTypes.js";
-import { compareStrings } from "./compareStrings.js";
 
 /** One picker category, listing its emoji by shortcode in the order it shows them. */
 interface RawCategory {
