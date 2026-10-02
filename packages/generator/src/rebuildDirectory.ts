@@ -211,12 +211,12 @@ async function writeDataDirectory({
 }
 
 /**
- * Reads the compiled declarations for dataTypes.ts, which are emitted next to
- * this file, to inline into each data package's index.d.mts.
+ * Reads the compiled declarations for dataTypes.ts, which are emitted into the
+ * generator's lib, to inline into each data package's index.d.mts.
  */
 async function readDataTypes() {
 	const raw = await fs.readFile(
-		path.join(import.meta.dirname, "dataTypes.d.ts"),
+		path.join(import.meta.dirname, "../lib/dataTypes.d.ts"),
 		"utf8",
 	);
 
