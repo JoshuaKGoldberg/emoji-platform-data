@@ -37,7 +37,7 @@ export async function generateTwemoji(
 			.filter((item) => !item.exclude_from_picker)
 			.map((item): TwemojiItem => ({
 				...item,
-				keywords: item.keywords?.split(",") ?? [],
+				keywords: item.keywords?.split(",").filter(Boolean) ?? [],
 			})),
 	);
 

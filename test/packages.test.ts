@@ -383,6 +383,22 @@ describe(combinedName, () => {
 		}
 	});
 
+	it("leaves out empty keywords when a source's keyword list has them", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		for (const [emoji, source] of [
+			["😐", "emojiMart"],
+			["😑", "emojiMart"],
+			["#️⃣", "emojiMart"],
+			["*️⃣", "emojiMart"],
+			["👨‍👩‍👧", "twemoji"],
+		]) {
+			const entry = byEmoji[emoji] as Record<string, { keywords: string[] }>;
+
+			expect(entry[source].keywords).not.toContain("");
+		}
+	});
+
 	it("finds the same entry when an emoji is written with only some of its variation selectors", async () => {
 		const { byEmoji } = await importPackage(combinedPackage);
 
