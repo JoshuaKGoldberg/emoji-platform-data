@@ -34,14 +34,15 @@ jobs:
         run: |
           snapshot="packages/generator/$PLATFORM.json"
           branch="refresh-$PLATFORM-data"
+          pr_number=$(gh pr list --head "$branch" --state open --json isCrossRepository,number --jq '.[] | select(.isCrossRepository | not) | .number')
 
           if git diff --quiet -- "$snapshot"; then
             echo "$NAME emoji data is unchanged."
 
             # A pull request from an earlier refresh is out of date once the
             # data matches main again, such as when an upstream change is undone.
-            if [ "$(gh pr list --head "$branch" --state open --json number | jq length)" != "0" ]; then
-              gh pr close "$branch" --comment "$NAME emoji data matches \`main\` again, so this is no longer needed." --delete-branch
+            if [ -n "$pr_number" ]; then
+              gh pr close "$pr_number" --comment "$NAME emoji data matches \`main\` again, so this is no longer needed." --delete-branch
             fi
 
             exit 0
@@ -91,7 +92,7 @@ jobs:
 
           count=$(jq '.entries | length' "$snapshot")
           keyworded=$(jq '[.entries[] | select(.keywords | length > 0)] | length' "$snapshot")
-          changeset=".changeset/refresh-$PLATFORM-data.md"
+          changeset=".changeset/refresh-$PLATFORM-data-$GITHUB_RUN_ID.md"
 
           if [ -n "$version" ]; then
             summary="Updated $NAME emoji data to $version."
@@ -142,7 +143,7 @@ jobs:
           git commit -m "$title"
           git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
 
-          if [ "$(gh pr list --head "$branch" --state open --json number | jq length)" != "0" ]; then
+          if [ -n "$pr_number" ]; then
             echo "Updated the existing pull request."
             exit 0
           fi

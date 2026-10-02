@@ -52,6 +52,7 @@ console.log(byTitle.SparklingHeart);
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
 `byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
+`byTitle`'s entries can also be imported on their own from `emoji-platform-data/byTitle`, such as `import { SparklingHeart } from "emoji-platform-data/byTitle"`, for bundlers such as esbuild that would otherwise include every emoji.
 
 ### Packages
 
@@ -71,7 +72,7 @@ Each project's data is also published as its own package, for consumers who only
 | [`@emoji-platform-data/joypixels`](./packages/joypixels)   | [JoyPixels / Zoom](https://github.com/joypixels/emoji-toolkit)                                                         | `byEmoji` and `byTitle` of `JoyPixelsItem`              |
 | [`@emoji-platform-data/macos`](./packages/macos)           | [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac)                           | `byEmoji` and `byTitle` of `MacOSItem`                  |
 | [`@emoji-platform-data/slack`](./packages/slack)           | [Slack](https://slack.com)                                                                                             | `byEmoji` and `byTitle` of `SlackItem`                  |
-| [`@emoji-platform-data/twemoji`](./packages/twemoji)       | [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser)                                                    | `byEmoji` and `byTitle` of `TwemojiItem`                |
+| [`@emoji-platform-data/twemoji`](./packages/twemoji)       | [Twemoji](https://github.com/twitter/twemoji-parser)                                                                   | `byEmoji` and `byTitle` of `TwemojiItem`                |
 | [`@emoji-platform-data/wechat`](./packages/wechat)         | [WeChat](https://weixin.qq.com)                                                                                        | `byEmoji` and `byTitle` of `WeChatItem`                 |
 | [`@emoji-platform-data/windows`](./packages/windows)       | [Windows](https://support.microsoft.com/windows/windows-keyboard-tips-and-tricks-588e0b72-0fff-6d3f-aeee-6e5116097942) | `byEmoji` and `byTitle` of `WindowsItem`                |
 | [`@emoji-platform-data/generator`](./packages/generator)   | -                                                                                                                      | APIs that generate the data packages above              |

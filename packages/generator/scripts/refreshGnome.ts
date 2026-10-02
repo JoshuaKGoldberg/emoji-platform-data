@@ -5,6 +5,8 @@ import { GnomeItem } from "../src/dataTypes.js";
 
 /** One emoji as a locale's data file lists it. */
 interface RawItem {
+	emoji: string;
+
 	/** The picker section the emoji is in, as an index into `categories`. */
 	group: number;
 
@@ -18,8 +20,6 @@ interface RawItem {
 	keywordsEnglish: string[];
 
 	/** The emoji's keywords in the file's locale. */
-	emoji: string;
-
 	keywordsLocal: string[];
 }
 
@@ -145,6 +145,10 @@ if (
 	);
 }
 
+function alignUp(position: number, alignment: number) {
+	return Math.ceil(position / alignment) * alignment;
+}
+
 function countWithKeywords(entries: GnomeItem[]) {
 	return entries.filter((entry) => entry.keywords.length).length;
 }
@@ -224,10 +228,6 @@ function rawUrl(tag: string, file: string) {
  * them in reverse, leaving out the last member's when it's fixed size.
  * @see https://docs.gtk.org/glib/gvariant-format-strings.html
  */
-function alignUp(position: number, alignment: number) {
-	return Math.ceil(position / alignment) * alignment;
-}
-
 function readEmojiData(data: Buffer) {
 	return splitVariableArray(data, 4).map((item): RawItem => {
 		const [codePoints, nameEnglish, nameLocal, keywordsEnglish, keywordsLocal] =

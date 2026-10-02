@@ -44,6 +44,7 @@ console.log(byTitle.SparklingHeart);
 ```
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
+`byTitle`'s entries can also be imported on their own from `emoji-platform-data/byTitle`, such as `import { SparklingHeart } from "emoji-platform-data/byTitle"`, for bundlers such as esbuild that would otherwise include every emoji.
 Each entry is an `EmojiPlatformData` combining data from:
 
 - [Android (Gboard)](https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin) (`android`)
@@ -56,7 +57,7 @@ Each entry is an `EmojiPlatformData` combining data from:
 - [JoyPixels / Zoom](https://github.com/joypixels/emoji-toolkit) (`joypixels`)
 - [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) (`macos`)
 - [Slack](https://slack.com) (`slack`)
-- [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser) (`twemoji`)
+- [Twemoji](https://github.com/twitter/twemoji-parser) (`twemoji`)
 - [WeChat](https://weixin.qq.com) (`wechat`)
 - [Windows](https://support.microsoft.com/windows/windows-keyboard-tips-and-tricks-588e0b72-0fff-6d3f-aeee-6e5116097942) (`windows`)
 

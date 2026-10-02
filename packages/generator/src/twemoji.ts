@@ -3,7 +3,7 @@ import * as path from "node:path";
 import { parse } from "yaml";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllTwemojiData, TwemojiItem, TwemojiItemIncluded } from "./types.js";
+import { AllTwemojiData, TwemojiItem } from "./types.js";
 import {
 	fromUnicode,
 	getEntryCldr,
@@ -18,7 +18,10 @@ interface TwemojiGroupRaw {
 	title: string;
 }
 
-type TwemojiItemRaw = Omit<TwemojiItem, "keywords"> & { keywords?: string };
+type TwemojiItemRaw = Omit<TwemojiItem, "keywords"> & {
+	exclude_from_picker?: true;
+	keywords?: string;
+};
 
 export async function generateTwemoji(
 	emojipedia: GeneratedEmojipediaData,
@@ -31,14 +34,11 @@ export async function generateTwemoji(
 
 	const entries = parsed.flatMap((group) =>
 		group.items
-			.map(
-				(item) =>
-					({
-						...item,
-						keywords: item.keywords ? item.keywords.split(",") : undefined,
-					}) as TwemojiItem,
-			)
-			.filter((item) => isIncludedTwemojiItem(item)),
+			.filter((item) => !item.exclude_from_picker)
+			.map((item): TwemojiItem => ({
+				...item,
+				keywords: item.keywords?.split(",") ?? [],
+			})),
 	);
 
 	// Twemoji's descriptions predate some CLDR renames and have a few mistakes,
@@ -78,8 +78,4 @@ function countTitles(resolved: { cldr: string }[]) {
 	}
 
 	return counts;
-}
-
-function isIncludedTwemojiItem(item: TwemojiItem): item is TwemojiItemIncluded {
-	return !("exclude_from_picker" in item);
 }

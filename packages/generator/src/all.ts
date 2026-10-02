@@ -1,4 +1,5 @@
 import { generateAndroid } from "./android.js";
+import { compareStrings } from "./compareStrings.js";
 import { generateDiscord } from "./discord.js";
 import { generateEmojiMart } from "./emojiMart.js";
 import { generateEmojipedia } from "./emojipedia.js";
@@ -126,12 +127,12 @@ export async function generateAll({
 
 				return [title, platformData];
 			})
-			.sort(([, a], [, b]) => a.slug.localeCompare(b.slug)),
+			.sort(([, a], [, b]) => compareStrings(a.slug, b.slug)),
 	);
 
 	return Object.fromEntries(
 		mergeSameEmoji(Object.values(byTitle).map(withPlatformGlyph))
-			.sort((a, b) => a.slug.localeCompare(b.slug))
+			.sort((a, b) => compareStrings(a.slug, b.slug))
 			.map((platformData) => [platformData.title, platformData]),
 	);
 }

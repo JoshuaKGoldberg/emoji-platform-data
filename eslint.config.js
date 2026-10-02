@@ -14,7 +14,13 @@ import tseslint from "typescript-eslint";
 
 export default defineConfig(
 	globalIgnores(
-		["node_modules", "packages/*/lib", "pnpm-lock.yaml", "pnpm-workspace.yaml"],
+		[
+			"coverage",
+			"node_modules",
+			"packages/*/lib",
+			"pnpm-lock.yaml",
+			"pnpm-workspace.yaml",
+		],
 		"Global Ignores",
 	),
 	{ linterOptions: { reportUnusedDisableDirectives: "error" } },
