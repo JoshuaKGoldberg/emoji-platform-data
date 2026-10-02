@@ -93,11 +93,16 @@ const entries = foldSkinToneVariants(kept).map(toItem).sort(compareItems);
 
 validate(entries, previous);
 
+const [coreEmojiVersion, macosVersion] = await Promise.all([
+	readCoreEmojiVersion(),
+	readMacOSVersion(),
+]);
+
 const snapshot: Snapshot = {
-	coreEmojiVersion: await readCoreEmojiVersion(),
+	coreEmojiVersion,
 	entries,
 	localeIdentifier,
-	macosVersion: await readMacOSVersion(),
+	macosVersion,
 };
 
 if (previous && isSameData(previous.entries, entries)) {
