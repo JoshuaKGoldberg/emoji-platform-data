@@ -163,7 +163,7 @@ const entries: RawEntry[] = [];
 for (let i = 0; i < tokens.count; i += 1) {
 	const token = tokens.objectAtIndex(i);
 	const emoji = String(must(token.string, "EMFEmojiToken string").js);
-	const placement: Placement = placements[emoji] ?? {
+	const placement: Placement = placements[withoutVariationSelectors(emoji)] ?? {
 		category: null,
 		order: null,
 	};
@@ -300,7 +300,10 @@ function readCategoryPlacements() {
 		for (let j = 0; j < emojis.count; j += 1) {
 			const emoji = String(emojis.objectAtIndex(j).js);
 
-			placements[emoji] ??= { category: name, order: order++ };
+			placements[withoutVariationSelectors(emoji)] ??= {
+				category: name,
+				order: order++,
+			};
 		}
 	}
 
@@ -355,4 +358,12 @@ function writeStandardOutput(text: string) {
 	$.NSFileHandle.fileHandleWithStandardOutput.writeData(
 		$(text).dataUsingEncoding($.NSUTF8StringEncoding),
 	);
+}
+
+/**
+ * Category lists and tokens disagree on some variation selectors, such as ⏩
+ * listed as U+23E9 U+FE0F but tokenized as U+23E9.
+ */
+function withoutVariationSelectors(emoji: string) {
+	return emoji.replaceAll("\uFE0F", "");
 }
