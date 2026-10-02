@@ -252,10 +252,23 @@ async function fetchRange(url: string, start: number, end: number) {
 	return Buffer.from(await response.arrayBuffer());
 }
 
+/**
+ * Fetches a file's text, or undefined if the server says there's no such file.
+ */
 async function fetchText(url: string) {
 	const response = await fetch(url);
 
-	return response.ok ? await response.text() : undefined;
+	if (response.status === 404) {
+		return undefined;
+	}
+
+	if (!response.ok) {
+		throw new Error(
+			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
+		);
+	}
+
+	return await response.text();
 }
 
 /**
@@ -425,8 +438,16 @@ function isSameData(left: AndroidItem[], right: AndroidItem[]) {
 async function pickLatestImage() {
 	let xml: string | undefined;
 
-	for (let version = 9; version > 0 && !xml; version -= 1) {
-		xml = await fetchText(`${repositoryUrl}sys-img2-${version.toString()}.xml`);
+	for (let version = 1; ; version += 1) {
+		const listing = await fetchText(
+			`${repositoryUrl}sys-img2-${version.toString()}.xml`,
+		);
+
+		if (listing === undefined) {
+			break;
+		}
+
+		xml = listing;
 	}
 
 	if (!xml) {
