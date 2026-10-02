@@ -1,7 +1,14 @@
 import * as fs from "node:fs/promises";
+import * as os from "node:os";
 import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
+
+import {
+	EmojiPlatformDataSource,
+	rebuildDirectory,
+	rebuildSourceDirectory,
+} from "../packages/generator/src/index.js";
 
 /**
  * What every data package exports, keyed by glyph and by PascalCase title.
@@ -66,6 +73,25 @@ async function importPackage({ directory, entry, name }: DataPackage) {
 	}
 
 	return (await import(pathToFileURL(file).href)) as DataExports;
+}
+
+/**
+ * Every file under a directory, keyed by its path relative to the directory.
+ */
+async function readFiles(directory: string) {
+	const files: Record<string, string> = {};
+
+	for (const entry of await fs.readdir(directory, {
+		recursive: true,
+		withFileTypes: true,
+	})) {
+		if (entry.isFile()) {
+			const file = path.join(entry.parentPath, entry.name);
+			files[path.relative(directory, file)] = await fs.readFile(file, "utf8");
+		}
+	}
+
+	return files;
 }
 
 /**
@@ -159,6 +185,42 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 
 		expect([...fromEmoji].filter((entry) => !fromTitle.has(entry))).toEqual([]);
 		expect(fromEmoji.size).toBe(fromTitle.size);
+	});
+
+	it("exports the same byTitle entries from its byTitle entry point when imported directly", async () => {
+		const { byTitle } = await importPackage(dataPackage);
+		const { exports } = JSON.parse(
+			await fs.readFile(
+				path.join(dataPackage.directory, "package.json"),
+				"utf8",
+			),
+		) as { exports: Record<string, string> };
+		const entries = (await import(
+			pathToFileURL(path.join(dataPackage.directory, exports["./byTitle"])).href
+		)) as Record<string, unknown>;
+
+		expect(Object.entries(entries)).toEqual(Object.entries(byTitle));
+	});
+
+	it("writes the same files as its lib when rebuilt from the generator's source", async () => {
+		const directory = await fs.mkdtemp(
+			path.join(os.tmpdir(), "emoji-platform-data-"),
+		);
+
+		try {
+			await (dataPackage === combinedPackage
+				? rebuildDirectory({ directory })
+				: rebuildSourceDirectory({
+						directory,
+						source: toSourceKey(dataPackage.name) as EmojiPlatformDataSource,
+					}));
+
+			expect(await readFiles(directory)).toEqual(
+				await readFiles(path.join(dataPackage.directory, "lib")),
+			);
+		} finally {
+			await fs.rm(directory, { force: true, recursive: true });
+		}
 	});
 
 	it("names byTitle exports without underscores when a name has digits", async () => {
@@ -311,6 +373,14 @@ describe(combinedName, () => {
 		expect(byEmoji["⚓️"]).toBe(byEmoji["⚓"]);
 		expect(byEmoji["✈️"]).toMatchObject({ emoji: "✈️", title: "Airplane" });
 		expect(byEmoji["✈"]).toBe(byEmoji["✈️"]);
+	});
+
+	it("places emoji in macOS's picker categories when the picker lists them with a variation selector", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		for (const emoji of ["⏩", "⏪", "⏫", "⏬"]) {
+			expect(byEmoji[emoji]).toMatchObject({ macos: { category: "Symbols" } });
+		}
 	});
 
 	it("leaves out empty keywords when a source's keyword list has them", async () => {

@@ -2,8 +2,8 @@ import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import * as zlib from "node:zlib";
 
+import { compareStrings } from "../src/compareStrings.js";
 import { WeChatItem } from "../src/dataTypes.js";
-import { compareStrings } from "./compareStrings.js";
 
 /** The picker's category listing, in the order it shows the emoji in. */
 interface RawCategories {

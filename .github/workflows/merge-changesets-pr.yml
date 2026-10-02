@@ -11,7 +11,7 @@ jobs:
           GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         name: Merge the Changesets PR if it is old enough
         run: |
-          pr_json=$(gh pr list --head changeset-release/main --state open --json createdAt,number --limit 1)
+          pr_json=$(gh pr list --head changeset-release/main --state open --json createdAt,isCrossRepository,number --jq '[.[] | select(.isCrossRepository | not)]')
 
           if [ "$(echo "$pr_json" | jq length)" = "0" ]; then
             echo "No open Changesets PR found."

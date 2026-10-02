@@ -34,19 +34,20 @@
 		"@eslint/js": "10.0.1",
 		"@eslint/markdown": "8.0.3",
 		"@types/node": "26.6.2",
+		"@vitest/coverage-v8": "5.0.2",
 		"cspell": "10.3.3",
 		"eslint": "10.11.0",
-		"eslint-plugin-jsdoc": "64.5.4",
+		"eslint-plugin-jsdoc": "65.0.0",
 		"eslint-plugin-jsonc": "3.4.2",
 		"eslint-plugin-markdown-links": "0.9.1",
-		"eslint-plugin-n": "18.3.0",
+		"eslint-plugin-n": "18.4.0",
 		"eslint-plugin-package-json": "1.10.0",
 		"eslint-plugin-perfectionist": "5.12.0",
 		"eslint-plugin-regexp": "3.3.1",
 		"eslint-plugin-yml": "3.8.1",
 		"husky": "9.1.7",
 		"knip": "6.38.0",
-		"lint-staged": "17.5.1",
+		"lint-staged": "17.6.0",
 		"prettier": "3.9.8",
 		"prettier-plugin-curly": "0.4.1",
 		"prettier-plugin-packagejson": "3.0.2",
@@ -58,7 +59,7 @@
 		"typescript-eslint": "8.70.0",
 		"vitest": "5.0.2"
 	},
-	"packageManager": "pnpm@12.6.0",
+	"packageManager": "pnpm@12.8.0",
 	"engines": {
 		"node": ">=24"
 	}

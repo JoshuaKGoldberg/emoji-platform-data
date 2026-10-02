@@ -104,6 +104,12 @@ function getBit(units: Buffer, index: number) {
 	return ((units[index >> 3] >> (index & 7)) & 1) === 1;
 }
 
+function getLink(trie: LoudsTrie, nodeId: number) {
+	return (
+		trie.bases[nodeId] + trie.extras.get(trie.linkFlags.rank1(nodeId)) * 256
+	);
+}
+
 /**
  * A BitVector: its bits, its size and count of ones, then rank and select
  * indexes. Those indexes are only for speed, so they're skipped, and rank and
@@ -148,12 +154,6 @@ function readBitVector(reader: Reader): BitVector {
  * A FlatVector: values packed at a fixed bit width, then that width and a
  * mask for it as 32-bit numbers, and how many values there are as a 64-bit one.
  */
-function getLink(trie: LoudsTrie, nodeId: number) {
-	return (
-		trie.bases[nodeId] + trie.extras.get(trie.linkFlags.rank1(nodeId)) * 256
-	);
-}
-
 function readFlatVector(reader: Reader): FlatVector {
 	const units = reader.vector();
 	const valueSize = reader.uint32();
