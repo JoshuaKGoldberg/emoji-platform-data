@@ -1,5 +1,11 @@
 # @emoji-platform-data/slack
 
+## 0.5.0
+
+### Minor Changes
+
+- [#1093](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1093) [`a7cc332`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/a7cc33284a735a9cbfa5bc8cf5e2fd8a0f05ccc7) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Updated Slack emoji data from the web client bundle.
+
 ## 0.4.0
 
 ### Minor Changes
