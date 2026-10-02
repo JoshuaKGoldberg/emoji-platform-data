@@ -79,8 +79,8 @@ export function isKnownGlyph(
 }
 
 /**
- * Equivalent to Object.fromEntries, but warns when multiple entries resolve
- * to the same CLDR title, since the later entry would silently overwrite the earlier.
+ * Equivalent to Object.fromEntries, but throws when multiple entries resolve
+ * to the same CLDR title, since the later entry would overwrite the earlier.
  */
 export function recordByCldr<T>(
 	platform: string,
@@ -90,9 +90,7 @@ export function recordByCldr<T>(
 
 	for (const [cldr, entry] of entries) {
 		if (cldr in record) {
-			console.warn(
-				`Multiple ${platform} entries resolve to '${cldr}'; keeping only the last.`,
-			);
+			throw new Error(`Multiple ${platform} entries resolve to '${cldr}'.`);
 		}
 
 		record[cldr] = entry;
