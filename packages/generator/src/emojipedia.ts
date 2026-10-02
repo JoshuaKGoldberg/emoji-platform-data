@@ -1,7 +1,11 @@
 import * as emojipedia from "emojipedia/data";
 
 import { AllEmojipediaData, EmojipediaItem } from "./types.js";
-import { normalizeTitle } from "./utils.js";
+import {
+	countTitles,
+	normalizeTitle,
+	withoutVariationSelectors,
+} from "./utils.js";
 
 export interface GeneratedEmojipediaData {
 	aliases: Map<string, string>;
@@ -39,7 +43,7 @@ export function generateEmojipedia(): GeneratedEmojipediaData {
 	// Some platforms write emoji without a variation selector Emojipedia
 	// includes, such as Twemoji's U+1F574 for 🕴️ (U+1F574 U+FE0F).
 	for (const { code } of items) {
-		const bare = code.replaceAll("\uFE0F", "");
+		const bare = withoutVariationSelectors(code);
 		if (!aliases.has(bare)) {
 			aliases.set(bare, aliases.get(code) ?? code);
 		}
@@ -62,11 +66,7 @@ export function generateEmojipedia(): GeneratedEmojipediaData {
  * Tuxedo", are titled by it instead.
  */
 function getUniqueTitles(items: EmojipediaItem[]) {
-	const counts = new Map<string, number>();
-
-	for (const { title } of items) {
-		counts.set(title, (counts.get(title) ?? 0) + 1);
-	}
+	const counts = countTitles(items.map(({ title }) => title));
 
 	return new Map(
 		items
