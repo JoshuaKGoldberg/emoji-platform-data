@@ -350,6 +350,11 @@ function toEmoji(codePoints: Buffer) {
  * Those keep the English that the locale's own data carries, as GTK's search
  * in that locale does, but have no `order`, since the English picker doesn't
  * show them.
+ *
+ * Newer locales' data also writes some emoji as the template for their skin
+ * tone variants, such as 👯‍♂️ as 👨🏻‍🐰‍👨🏻, which is no emoji once its tones are
+ * dropped, so a locale's emoji the English data doesn't know by glyph are
+ * joined to the English emoji of the same English name.
  */
 function toEntries(english: RawItem[], byLocale: Map<string, RawItem[]>) {
 	const entries = new Map<string, GnomeItem>();
@@ -389,9 +394,15 @@ function toEntries(english: RawItem[], byLocale: Map<string, RawItem[]>) {
 		}
 	}
 
+	const englishByName = new Map(
+		english.map((item) => [item.nameEnglish, item.emoji]),
+	);
+
 	for (const locale of [...byLocale.keys()].sort()) {
 		for (const item of byLocale.get(locale) ?? []) {
-			let entry = entries.get(item.emoji);
+			let entry =
+				entries.get(item.emoji) ??
+				entries.get(englishByName.get(item.nameEnglish) ?? "");
 
 			if (!entry) {
 				entry = {
