@@ -169,25 +169,41 @@ const titlePriority = [
 
 /**
  * Every glyph an emoji can be looked up by: its `emoji`, each glyph a source
- * writes it as, and each of those without variation selectors. Sources disagree
- * on the selectors: macOS writes ⚓️ (U+2693 U+FE0F) where Emojipedia and Twemoji
- * write ⚓ (U+2693), and whoever pastes an emoji in shouldn't have to know which.
+ * writes it as, and each of those with any of its variation selectors left out.
+ * Sources disagree on the selectors: macOS writes ⚓️ (U+2693 U+FE0F) where
+ * Emojipedia and Twemoji write ⚓ (U+2693), and Unicode lists partly qualified
+ * forms too, such as 🏳️‍⚧ for 🏳️‍⚧️ without its last U+FE0F.
  */
 export function getEmojiGlyphs(platformData: EmojiPlatformData) {
-	const glyphs = [
-		platformData.emoji,
-		platformData.emojipedia?.code,
-		...getPlatformGlyphs(platformData),
-	].filter((glyph) => glyph !== undefined);
-
-	return new Set([...glyphs, ...glyphs.map(withoutVariationSelectors)]);
+	return new Set(
+		[
+			platformData.emoji,
+			platformData.emojipedia?.code,
+			...getPlatformGlyphs(platformData),
+		]
+			.filter((glyph) => glyph !== undefined)
+			.flatMap(getVariationSelectorForms),
+	);
 }
 
+/**
+ * A glyph with each combination of its variation selectors kept or left out.
+ */
 function getGlyphs(platformData: EmojiPlatformData) {
 	return new Set(
 		[platformData.emojipedia?.code, ...getPlatformGlyphs(platformData)]
 			.filter((glyph) => glyph !== undefined)
 			.map(withoutVariationSelectors),
+	);
+}
+
+function getVariationSelectorForms(glyph: string) {
+	const [first, ...rest] = glyph.split("\uFE0F");
+
+	return rest.reduce(
+		(forms, part) =>
+			forms.flatMap((form) => [`${form}\uFE0F${part}`, form + part]),
+		[first],
 	);
 }
 
