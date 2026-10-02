@@ -317,20 +317,37 @@ export interface SlackItem {
 	order?: number;
 }
 
-export type TwemojiItem = TwemojiItemExcluded | TwemojiItemIncluded;
-
-export interface TwemojiItemBase {
+/**
+ * One emoji as Twemoji's emoji picker knows it.
+ */
+export interface TwemojiItem {
+	/** How Twemoji names the emoji, such as "Octopus". */
 	description: string;
-	type?: "diversity" | "regional" | "variant";
-	unicode: string;
-}
 
-export interface TwemojiItemExcluded extends TwemojiItemBase {
-	exclude_from_picker: true;
-}
-
-export interface TwemojiItemIncluded extends TwemojiItemBase {
+	/** Terms the picker matches searches against. */
 	keywords: string[];
+
+	/** For people emoji whose people can each have their own skin tone, the code points of the emoji with two different tones, with "skintone" where each goes. */
+	multi_diversity_base_different?: string;
+
+	/** Whether Twemoji only has the tone pairs of `multi_diversity_base_different` in one order. */
+	multi_diversity_base_different_is_sorted?: boolean;
+
+	/** For people emoji whose people can each have their own skin tone, the code points of the emoji with one tone for all of them, with "skintone" where it goes. */
+	multi_diversity_base_same?: string;
+
+	/** How Twemoji treats the emoji, such as "diversity" for those with skin tone variants. */
+	type?:
+		| "diversity"
+		| "flag"
+		| "keycap"
+		| "multi-diversity"
+		| "text-default"
+		| "variant"
+		| "variant,diversity";
+
+	/** The emoji's code points, such as "1f419". */
+	unicode: string;
 }
 
 /**
