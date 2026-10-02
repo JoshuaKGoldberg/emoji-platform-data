@@ -2,6 +2,7 @@ import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
 import { generateAll, GenerateAllSettings, getEmojiGlyphs } from "./all.js";
+import { compareStrings } from "./compareStrings.js";
 import { formatExportLine } from "./formatExportLine.js";
 import { EmojiPlatformData } from "./types.js";
 
@@ -231,6 +232,6 @@ function sortObjectKeys(data: unknown) {
 	}
 
 	return Object.fromEntries(
-		Object.entries(data).sort(([a], [b]) => a.localeCompare(b)),
+		Object.entries(data).sort(([a], [b]) => compareStrings(a, b)),
 	);
 }
