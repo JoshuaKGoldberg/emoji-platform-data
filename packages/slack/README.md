@@ -48,13 +48,13 @@ Each entry is a `SlackItem` describing one emoji as Slack's own emoji picker kno
 
 `name` is the shortcode Slack writes the emoji as, and `aliases` are the others it accepts: typing any of them between colons sends the emoji.
 `keywords` are the extra terms the picker matches searches against in English, which is how typing `celebrate` finds 🎉 (`tada`).
-1,845 of the 1,911 emoji have them, averaging 5.69 each; the 66 without are mostly newer people variants, such as the ones facing right, and less common flags.
+Nearly every emoji has them; the ones without are mostly newer people variants, such as the ones facing right, and less common flags.
 `order` is where the emoji falls in the picker's overall order, counting from the first emoji of its first category.
-52 emoji have no `category` or `order`: they're mostly the gender-neutral forms of older people emoji, such as 👮 `cop`, which the picker shows only as their man and woman variants.
+Emoji the picker doesn't list have no `category` or `order`: they're mostly the gender-neutral forms of older people emoji, such as 👮 `cop`, which the picker shows only as their man and woman variants.
 
 ### Other Locales
 
-Slack translates its emoji picker into 11 locales besides English: `de-DE`, `en-GB`, `es-ES`, `es-LA`, `fr-FR`, `it-IT`, `ja-JP`, `ko-KR`, `pt-BR`, `zh-CN`, and `zh-TW`.
+Besides English, Slack translates its emoji picker into `de-DE`, `en-GB`, `es-ES`, `es-LA`, `fr-FR`, `it-IT`, `ja-JP`, `ko-KR`, `pt-BR`, `zh-CN`, and `zh-TW`.
 
 `keywordsByLocale` holds the terms the picker searches in each of those, and `namesByLocale` the name it shows the emoji by.
 Slack translates each English keyword once, rather than once per emoji, so an entry's keywords in a locale line up with its English ones.

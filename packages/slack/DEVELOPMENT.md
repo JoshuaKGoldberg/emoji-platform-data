@@ -36,7 +36,7 @@ Every locale has a key for every English term as of writing, so validation insis
 Anything not found falls back to the English, as it does in the client.
 
 The emoji data lists every skin tone variant of the emoji that have them, but only so that shortcodes like `wave::skin-tone-3` resolve, so those are dropped just as Discord's are.
-It also lists 52 emoji the picker doesn't, mostly the gender-neutral forms of older people emoji such as 👮 `cop`, which the picker shows only as their man and woman variants; those are kept, without a category or order.
+It also lists emoji the picker doesn't, mostly the gender-neutral forms of older people emoji such as 👮 `cop`, which the picker shows only as their man and woman variants; those are kept, without a category or order.
 The keyword map has a stray `undefined` key, which is dropped with a warning.
 
 The result is committed as a snapshot, [`packages/generator/slack.json`](../generator/slack.json), the same way Discord's is.
