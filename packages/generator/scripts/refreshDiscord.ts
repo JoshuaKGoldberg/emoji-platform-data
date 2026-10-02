@@ -445,7 +445,11 @@ async function readKeywords() {
 async function readPreviousSnapshot() {
 	try {
 		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
+	} catch (error) {
+		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+			throw error;
+		}
+
 		return undefined;
 	}
 }
