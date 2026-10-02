@@ -1,5 +1,11 @@
 # @emoji-platform-data/emojipedia
 
+## 0.5.0
+
+### Minor Changes
+
+- [#1072](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1072) [`8c06aab`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/8c06aab1f8eb15ba824f02c4e64f0c21eba9e762) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Added each glyph with only some of its U+FE0F variation selectors to `byEmoji`, so that minimally-qualified forms Unicode lists, such as 🏳️‍⚧ (U+1F3F3 U+FE0F U+200D U+26A7), find the same entry as 🏳️‍⚧️.
+
 ## 0.4.0
 
 ### Minor Changes
