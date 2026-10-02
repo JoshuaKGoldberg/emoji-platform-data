@@ -61,7 +61,7 @@ export async function generateEmojiMart(
 				category: category.id,
 				emoticons: entry.emoticons,
 				id: entry.id,
-				keywords: entry.keywords,
+				keywords: entry.keywords.filter(Boolean),
 				name: entry.name,
 				order: order++,
 				skins: entry.skins.map(({ native, unified }) => ({ native, unified })),
