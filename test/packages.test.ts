@@ -383,6 +383,22 @@ describe(combinedName, () => {
 		}
 	});
 
+	it("leaves out empty keywords when a source's keyword list has them", async () => {
+		const { byEmoji } = await importPackage(combinedPackage);
+
+		for (const [emoji, source] of [
+			["😐", "emojiMart"],
+			["😑", "emojiMart"],
+			["#️⃣", "emojiMart"],
+			["*️⃣", "emojiMart"],
+			["👨‍👩‍👧", "twemoji"],
+		]) {
+			const entry = byEmoji[emoji] as Record<string, { keywords: string[] }>;
+
+			expect(entry[source].keywords).not.toContain("");
+		}
+	});
+
 	it("gives an emoji GNOME's other locales when they write it as its skin tone template", async () => {
 		const { byEmoji } = await importPackage(combinedPackage);
 
