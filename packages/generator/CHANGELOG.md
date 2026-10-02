@@ -1,5 +1,26 @@
 # @emoji-platform-data/generator
 
+## 0.9.0
+
+### Minor Changes
+
+- [#1070](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1070) [`4103297`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/410329726799bb8016ec77c7eb7365fff57a1d21) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Typed `TwemojiItem` as the one shape its data has, with `keywords` always present, every `type` Twemoji uses, such as `"flag"`, and its `multi_diversity_*` fields.
+  The `TwemojiItemBase`, `TwemojiItemExcluded`, and `TwemojiItemIncluded` types are gone, since excluded items never make it into the data.
+
+### Patch Changes
+
+- [#1083](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1083) [`b52e073`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/b52e073381b2cff62cdef688ae500ed6f0aec188) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Corrected the `JoyPixelsItem.aliases` docs' example, which JoyPixels writes as "+1" and "thumbs_up" for 👍.
+
+## 0.8.0
+
+### Minor Changes
+
+- [#1093](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1093) [`a7cc332`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/a7cc33284a735a9cbfa5bc8cf5e2fd8a0f05ccc7) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Updated Slack emoji data from the web client bundle.
+
+### Patch Changes
+
+- [#1068](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1068) [`12dbe4c`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/12dbe4ce8f0db77fd92c5f28beb52ec775bfa4df) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Sorted emoji and data keys by code unit rather than with `localeCompare`, so that building in another locale, such as `cs_CZ`, writes the same files.
+
 ## 0.7.0
 
 ### Minor Changes
