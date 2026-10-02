@@ -30,7 +30,7 @@ export async function generateTwemoji(
 		path.join(import.meta.dirname, "../emoji.yml"),
 		"utf8",
 	);
-	const parsed = (await parse(rawTwemoji)) as TwemojiGroupRaw[];
+	const parsed = parse(rawTwemoji) as TwemojiGroupRaw[];
 
 	const entries = parsed.flatMap((group) =>
 		group.items
