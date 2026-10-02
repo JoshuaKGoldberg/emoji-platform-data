@@ -1,5 +1,6 @@
 /.all-contributorsrc
 /.husky
+/coverage
 /packages/*/lib
 /packages/generator/android.json
 /packages/generator/discord.json

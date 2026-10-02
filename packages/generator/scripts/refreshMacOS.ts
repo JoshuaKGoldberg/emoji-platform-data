@@ -5,8 +5,8 @@ import * as path from "node:path";
 import { promisify } from "node:util";
 import * as ts from "typescript";
 
+import { compareStrings } from "../src/compareStrings.js";
 import { MacOSItem } from "../src/dataTypes.js";
-import { compareStrings } from "./compareStrings.js";
 
 interface RawEntry {
 	appleName: string;
@@ -100,15 +100,21 @@ const snapshot: Snapshot = {
 	macosVersion: await readMacOSVersion(),
 };
 
-await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, "\t") + "\n");
+if (previous && isSameData(previous.entries, entries)) {
+	console.log(
+		`Read ${entries.length.toString()} emoji from macOS ${snapshot.macosVersion} (CoreEmoji ${snapshot.coreEmojiVersion}), unchanged from the snapshot.`,
+	);
+} else {
+	await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, "\t") + "\n");
 
-console.log(
-	`Wrote ${entries.length.toString()} emoji from macOS ${snapshot.macosVersion} (CoreEmoji ${snapshot.coreEmojiVersion}).`,
-);
+	console.log(
+		`Wrote ${entries.length.toString()} emoji from macOS ${snapshot.macosVersion} (CoreEmoji ${snapshot.coreEmojiVersion}).`,
+	);
+}
 
 /**
  * Sorts by the order macOS's picker shows emoji in, keeping the handful that
- * no category lists -such as ⏩ and ✊🏽- together at the end.
+ * no category lists -such as ⚕️ and 🧑‍🤝‍🧑- together at the end.
  */
 function compareItems(a: MacOSItem, b: MacOSItem) {
 	if (a.order === undefined) {
@@ -165,6 +171,10 @@ function foldSkinToneVariants(entries: RawEntry[]) {
 
 		return false;
 	});
+}
+
+function isSameData(left: MacOSItem[], right: MacOSItem[]) {
+	return JSON.stringify(left) === JSON.stringify(right);
 }
 
 async function readCoreEmojiVersion() {

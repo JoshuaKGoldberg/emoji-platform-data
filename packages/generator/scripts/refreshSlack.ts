@@ -2,8 +2,8 @@ import * as crypto from "node:crypto";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
+import { compareStrings } from "../src/compareStrings.js";
 import { SlackItem } from "../src/dataTypes.js";
-import { compareStrings } from "./compareStrings.js";
 
 /** One picker category, listing its emoji by shortcode in the order it shows them. */
 interface RawCategory {
@@ -155,6 +155,13 @@ const source = process.argv[2] ?? defaultSource;
 const previous = await readPreviousSnapshot();
 
 const page = await fetchText(source);
+
+if (page.includes("unsupported_webclient_browser")) {
+	throw new Error(
+		`${source} answered with its page for unsupported browsers, so the Chrome version in this script's userAgent needs raising.`,
+	);
+}
+
 const cdn = readCdn(page);
 const scripts = listScripts(page);
 

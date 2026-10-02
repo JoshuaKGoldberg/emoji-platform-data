@@ -1,5 +1,5 @@
 {
-	"chunk": "gantry-v2-shared.ce74eb0b7b2bd5af.min.js",
+	"chunk": "gantry-v2-shared.d025037e7b5faaa6.min.js",
 	"entries": [
 		{
 			"aliases": [],
@@ -148878,7 +148878,7 @@
 				"en-GB": "paperclip",
 				"es-ES": "clip",
 				"es-LA": "clip",
-				"fr-FR": "trombone",
+				"fr-FR": "trombone_papier",
 				"it-IT": "graffetta",
 				"ja-JP": "ペーパークリップ",
 				"ko-KR": "클립",
@@ -148926,7 +148926,7 @@
 				"fr-FR": [
 					"lien",
 					"lié",
-					"trombone",
+					"trombone_papier",
 					"trombones"
 				],
 				"it-IT": [
