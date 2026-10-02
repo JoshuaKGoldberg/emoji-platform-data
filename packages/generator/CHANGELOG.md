@@ -1,5 +1,15 @@
 # @emoji-platform-data/generator
 
+## 0.10.0
+
+### Minor Changes
+
+- [#1076](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1076) [`5c5c494`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/5c5c49470a9086c28ba35f81248d4cbaad65c4f1) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Left out the empty keywords that emoji-mart has for 😐, 😑, #️⃣, and *️⃣ and that Twemoji has for 👨‍👩‍👧.
+
+### Patch Changes
+
+- [#1102](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1102) [`389d661`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/389d661c53bf98d432dd38aaac7f6e31221521ee) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Read the compiled `dataTypes.d.ts` from the generator's `lib` by a path that also resolves from its `src`, so that `rebuildDirectory()` can run from the TypeScript source.
+
 ## 0.9.0
 
 ### Minor Changes

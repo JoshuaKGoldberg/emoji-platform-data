@@ -1,5 +1,11 @@
 # @emoji-platform-data/twemoji
 
+## 0.5.0
+
+### Minor Changes
+
+- [#1076](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1076) [`5c5c494`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/5c5c49470a9086c28ba35f81248d4cbaad65c4f1) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Left out the empty keywords that emoji-mart has for 😐, 😑, #️⃣, and *️⃣ and that Twemoji has for 👨‍👩‍👧.
+
 ## 0.4.0
 
 ### Minor Changes
