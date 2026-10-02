@@ -2,13 +2,23 @@ import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { pathToFileURL } from "node:url";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import {
 	EmojiPlatformDataSource,
 	rebuildDirectory,
 	rebuildSourceDirectory,
 } from "../packages/generator/src/index.js";
+
+vi.mock(import("../packages/generator/src/all.js"), async (importOriginal) => {
+	const original = await importOriginal();
+	let generated: ReturnType<typeof original.generateAll> | undefined;
+
+	return {
+		...original,
+		generateAll: () => (generated ??= original.generateAll()),
+	};
+});
 
 /**
  * What every data package exports, keyed by glyph and by PascalCase title.
@@ -79,19 +89,25 @@ async function importPackage({ directory, entry, name }: DataPackage) {
  * Every file under a directory, keyed by its path relative to the directory.
  */
 async function readFiles(directory: string) {
-	const files: Record<string, string> = {};
-
-	for (const entry of await fs.readdir(directory, {
+	const entries = await fs.readdir(directory, {
 		recursive: true,
 		withFileTypes: true,
-	})) {
-		if (entry.isFile()) {
-			const file = path.join(entry.parentPath, entry.name);
-			files[path.relative(directory, file)] = await fs.readFile(file, "utf8");
-		}
-	}
+	});
 
-	return files;
+	return Object.fromEntries(
+		await Promise.all(
+			entries
+				.filter((entry) => entry.isFile())
+				.map(async (entry): Promise<[string, string]> => {
+					const file = path.join(entry.parentPath, entry.name);
+
+					return [
+						path.relative(directory, file),
+						await fs.readFile(file, "utf8"),
+					];
+				}),
+		),
+	);
 }
 
 /**
