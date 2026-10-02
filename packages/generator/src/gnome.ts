@@ -3,7 +3,7 @@ import * as path from "node:path";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllGnomeData, GnomeItem } from "./types.js";
-import { getEntryCldr, recordByCldr, toUnicode } from "./utils.js";
+import { getEntryCldr, recordByCldr } from "./utils.js";
 
 interface GnomeSnapshot {
 	entries: GnomeItem[];
@@ -24,9 +24,7 @@ export async function generateGnome(
 	return recordByCldr(
 		"gnome",
 		entries.map((entry) => [
-			getEntryCldr(emojipedia, entry.emoji, toUnicode(entry.emoji), [
-				entry.name,
-			]),
+			getEntryCldr(emojipedia, entry.emoji, [entry.name]),
 			entry,
 		]),
 	);

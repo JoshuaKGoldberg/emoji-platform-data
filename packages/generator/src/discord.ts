@@ -24,10 +24,7 @@ export async function generateDiscord(
 	return recordByCldr(
 		"discord",
 		entries.map((entry) => [
-			getEntryCldr(emojipedia, entry.emoji, undefined, [
-				entry.name,
-				...entry.aliases,
-			]),
+			getEntryCldr(emojipedia, entry.emoji, [entry.name, ...entry.aliases]),
 			entry,
 		]),
 	);

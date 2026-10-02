@@ -24,10 +24,7 @@ export async function generateSlack(
 	return recordByCldr(
 		"slack",
 		entries.map((entry) => [
-			getEntryCldr(emojipedia, entry.emoji, undefined, [
-				entry.name,
-				...entry.aliases,
-			]),
+			getEntryCldr(emojipedia, entry.emoji, [entry.name, ...entry.aliases]),
 			entry,
 		]),
 	);

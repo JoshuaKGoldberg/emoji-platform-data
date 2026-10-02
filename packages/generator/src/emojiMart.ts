@@ -52,9 +52,7 @@ export async function generateEmojiMart(
 			const entry = data.emojis[id];
 			const [skin] = entry.skins;
 
-			const cldr = getEntryCldr(emojipedia, skin.native, skin.unified, [
-				entry.name,
-			]);
+			const cldr = getEntryCldr(emojipedia, skin.native, [entry.name]);
 
 			const item: EmojiMartItem = {
 				aliases: aliases.get(entry.id),

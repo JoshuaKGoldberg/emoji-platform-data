@@ -24,7 +24,7 @@ export async function generateWindows(
 	return recordByCldr(
 		"windows",
 		entries.map((entry) => [
-			getEntryCldr(emojipedia, entry.emoji, undefined, [entry.name]),
+			getEntryCldr(emojipedia, entry.emoji, [entry.name]),
 			entry,
 		]),
 	);

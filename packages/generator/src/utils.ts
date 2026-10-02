@@ -5,7 +5,6 @@ import { GeneratedEmojipediaData } from "./emojipedia.js";
 export function getEntryCldr(
 	emojipedia: GeneratedEmojipediaData,
 	glyph: string | undefined,
-	unicode: string | undefined,
 	entries: string[],
 ) {
 	const byGlyphAlias = glyph && getGlyphAlias(emojipedia, glyph);
@@ -18,21 +17,6 @@ export function getEntryCldr(
 		if (aliased) {
 			return aliased;
 		}
-	}
-
-	const byUnicodeItem =
-		unicode &&
-		emojipedia.items.find((emojipediaItem) => {
-			const normalizedHexes = normalizeCodepoints(emojipediaItem.codepointsHex);
-			return (
-				normalizedHexes.join("-") === unicode ||
-				normalizedHexes.filter((hex) => hex !== "fe0f").join("-") === unicode
-			);
-		});
-	const byUnicode = byUnicodeItem && emojipedia.aliases.get(byUnicodeItem.code);
-
-	if (byUnicode) {
-		return byUnicode;
 	}
 
 	return titleCase(entries[0].replaceAll("_", " "))

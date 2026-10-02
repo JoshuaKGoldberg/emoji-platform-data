@@ -24,7 +24,7 @@ export async function generateMacOS(
 	return recordByCldr(
 		"macos",
 		entries.map((entry) => [
-			getEntryCldr(emojipedia, entry.emoji, undefined, [entry.appleName]),
+			getEntryCldr(emojipedia, entry.emoji, [entry.appleName]),
 			entry,
 		]),
 	);

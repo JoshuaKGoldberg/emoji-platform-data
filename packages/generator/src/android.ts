@@ -34,9 +34,7 @@ export async function generateAndroid(
 			const unicode = toUnicode(entry.emoji);
 
 			return [
-				getEntryCldr(emojipedia, entry.emoji, unicode, [
-					toCodePointNotation(unicode),
-				]),
+				getEntryCldr(emojipedia, entry.emoji, [toCodePointNotation(unicode)]),
 				entry,
 			];
 		}),
