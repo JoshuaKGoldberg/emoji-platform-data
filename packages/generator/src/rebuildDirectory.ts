@@ -189,7 +189,7 @@ async function writeDataDirectory({
 				"",
 				`export { byTitle };`,
 				"",
-				`export const byEmoji: Record<string, ${typeName}>;`,
+				`export const byEmoji: Partial<Record<string, ${typeName}>>;`,
 				"",
 				await readDataTypes(),
 			].join("\n"),
