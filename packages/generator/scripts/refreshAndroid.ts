@@ -148,7 +148,20 @@ async function extractProduct(url: string, productPath: string) {
 		url,
 	);
 
+	if (entry.method !== 8) {
+		throw new Error(
+			`The system image is compressed with method ${entry.method.toString()}, which this script can't read.`,
+		);
+	}
+
 	const header = await fetchRange(url, entry.offset, entry.offset + 29);
+
+	if (header.readUInt32LE(0) !== 0x04034b50) {
+		throw new Error(
+			`The system image has no local file header where ${url}'s central directory puts it.`,
+		);
+	}
+
 	const start =
 		entry.offset + 30 + header.readUInt16LE(26) + header.readUInt16LE(28);
 	const response = await fetch(url, {
@@ -161,12 +174,6 @@ async function extractProduct(url: string, productPath: string) {
 	if (response.status !== 206 || !response.body) {
 		throw new Error(
 			`Expected a partial response from ${url}, but got ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
-
-	if (entry.method !== 8) {
-		throw new Error(
-			`The system image is compressed with method ${entry.method.toString()}, which this script can't read.`,
 		);
 	}
 
@@ -689,6 +696,12 @@ function readLocalZipEntries(zip: Buffer, source: string) {
 }
 
 function readLocalZipFile(zip: Buffer, entry: ZipEntry) {
+	if (zip.readUInt32LE(entry.offset) !== 0x04034b50) {
+		throw new Error(
+			`'${entry.name}' has no local file header where the zip's central directory puts it.`,
+		);
+	}
+
 	const start =
 		entry.offset +
 		30 +
