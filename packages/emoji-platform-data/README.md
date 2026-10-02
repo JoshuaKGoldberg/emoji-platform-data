@@ -57,7 +57,7 @@ Each entry is an `EmojiPlatformData` combining data from:
 - [JoyPixels / Zoom](https://github.com/joypixels/emoji-toolkit) (`joypixels`)
 - [macOS](https://support.apple.com/guide/mac-help/use-emoji-and-symbols-on-mac-mchlp1560/mac) (`macos`)
 - [Slack](https://slack.com) (`slack`)
-- [Twemoji](https://raw.githubusercontent.com/twitter/twemoji-parser) (`twemoji`)
+- [Twemoji](https://github.com/twitter/twemoji-parser) (`twemoji`)
 - [WeChat](https://weixin.qq.com) (`wechat`)
 - [Windows](https://support.microsoft.com/windows/windows-keyboard-tips-and-tricks-588e0b72-0fff-6d3f-aeee-6e5116097942) (`windows`)
 
