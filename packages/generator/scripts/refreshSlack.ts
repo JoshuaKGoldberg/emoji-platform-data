@@ -135,6 +135,8 @@ const minimumEntriesWithKeywords = 1700;
  */
 const minimumTranslatedShare = 0.95;
 
+const requestTimeout = 60_000;
+
 /**
  * Sent in place of fetch's own, which Slack answers with an older build of the
  * client for browsers it doesn't support, rather than the one people use.
@@ -237,7 +239,10 @@ function* extractJsonBlobs(script: string) {
 }
 
 async function fetchText(url: string) {
-	const response = await fetch(url, { headers: { "User-Agent": userAgent } });
+	const response = await fetch(url, {
+		headers: { "User-Agent": userAgent },
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 	if (!response.ok) {
 		throw new Error(
 			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,

@@ -100,6 +100,8 @@ const minimumEntriesPerCategory = 50;
  */
 const minimumEntriesWithKeywords = 1400;
 
+const requestTimeout = 60_000;
+
 const snapshotPath = path.join(import.meta.dirname, "../wechat.json");
 
 const source = process.argv[2] ?? defaultSource;
@@ -152,6 +154,7 @@ function countWithKeywords(entries: WeChatItem[]) {
 async function fetchRange(url: string, start: number, end: number) {
 	const response = await fetch(url, {
 		headers: { Range: `bytes=${start.toString()}-${end.toString()}` },
+		signal: AbortSignal.timeout(requestTimeout),
 	});
 
 	// A server that ignores the range answers 200 with the whole file, which
@@ -166,7 +169,9 @@ async function fetchRange(url: string, start: number, end: number) {
 }
 
 async function fetchText(url: string) {
-	const response = await fetch(url);
+	const response = await fetch(url, {
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 	if (!response.ok) {
 		throw new Error(
 			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
@@ -275,7 +280,10 @@ function pickLatestApk(page: string) {
  * directory is, and the central directory says where every file in it is.
  */
 async function readCentralDirectory(url: string) {
-	const head = await fetch(url, { method: "HEAD" });
+	const head = await fetch(url, {
+		method: "HEAD",
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 	if (!head.ok) {
 		throw new Error(
 			`Could not reach ${url}: ${head.status.toString()} ${head.statusText}.`,

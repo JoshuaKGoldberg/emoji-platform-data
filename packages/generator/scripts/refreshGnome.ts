@@ -95,6 +95,8 @@ const minimumEntriesPerCategory = 50;
 
 const minimumEntriesWithKeywords = 1800;
 
+const requestTimeout = 60_000;
+
 const snapshotPath = path.join(import.meta.dirname, "../gnome.json");
 
 /** The locale the English data is in, which is also every file's fallback. */
@@ -154,7 +156,9 @@ function countWithKeywords(entries: GnomeItem[]) {
 }
 
 async function fetchBuffer(url: string) {
-	const response = await fetch(url);
+	const response = await fetch(url, {
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 	if (!response.ok) {
 		throw new Error(
 			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,

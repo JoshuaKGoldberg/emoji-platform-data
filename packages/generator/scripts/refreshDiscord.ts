@@ -102,6 +102,8 @@ const clientChunkPrefix = "web.";
  */
 const searchMethod = "nameMatchesChain";
 
+const requestTimeout = 60_000;
+
 const snapshotPath = path.join(import.meta.dirname, "../discord.json");
 
 const source = process.argv[2] ?? defaultSource;
@@ -182,7 +184,9 @@ async function fetchScript(chunk: string) {
 }
 
 async function fetchText(url: string) {
-	const response = await fetch(url);
+	const response = await fetch(url, {
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 	if (!response.ok) {
 		throw new Error(
 			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,

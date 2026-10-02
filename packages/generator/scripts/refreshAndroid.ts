@@ -71,6 +71,9 @@ const headLimit = 64 * 1024 * 1024;
 /** The emoji dictionary's own header, before the trie of its terms. */
 const dictionaryMagic = 0x9bc13afe;
 
+/** How long streaming the whole system image may take before it's given up on. */
+const downloadTimeout = 2 * 60 * 60 * 1000;
+
 const minimumEntries = 1500;
 
 const minimumKeywords = 10_000;
@@ -80,6 +83,9 @@ const packPattern = /^assets\/emoji_en_us_\d{14}\.zip$/;
 
 const repositoryUrl =
 	"https://dl.google.com/android/repository/sys-img/google_apis_playstore/";
+
+/** How long any other request may take, body included. */
+const requestTimeout = 60_000;
 
 const sectorSize = 512;
 
@@ -156,6 +162,7 @@ async function extractProduct(url: string, productPath: string) {
 			...asIs,
 			Range: `bytes=${start.toString()}-${(start + entry.compressedSize - 1).toString()}`,
 		},
+		signal: AbortSignal.timeout(downloadTimeout),
 	});
 
 	if (response.status !== 206 || !response.body) {
@@ -239,6 +246,7 @@ async function extractProduct(url: string, productPath: string) {
 async function fetchRange(url: string, start: number, end: number) {
 	const response = await fetch(url, {
 		headers: { ...asIs, Range: `bytes=${start.toString()}-${end.toString()}` },
+		signal: AbortSignal.timeout(requestTimeout),
 	});
 
 	// A server that ignores the range answers 200 with the whole file, which
@@ -253,7 +261,9 @@ async function fetchRange(url: string, start: number, end: number) {
 }
 
 async function fetchText(url: string) {
-	const response = await fetch(url);
+	const response = await fetch(url, {
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 
 	return response.ok ? await response.text() : undefined;
 }
@@ -501,7 +511,11 @@ async function readApk(productPath: string) {
  * Zips over 4GB keep those in a Zip64 record instead.
  */
 async function readCentralDirectory(url: string) {
-	const head = await fetch(url, { headers: asIs, method: "HEAD" });
+	const head = await fetch(url, {
+		headers: asIs,
+		method: "HEAD",
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 	if (!head.ok) {
 		throw new Error(
 			`Could not reach ${url}: ${head.status.toString()} ${head.statusText}.`,
