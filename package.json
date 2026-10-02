@@ -36,7 +36,7 @@
 		"@types/node": "26.6.2",
 		"cspell": "10.3.3",
 		"eslint": "10.11.0",
-		"eslint-plugin-jsdoc": "64.5.4",
+		"eslint-plugin-jsdoc": "65.0.0",
 		"eslint-plugin-jsonc": "3.4.2",
 		"eslint-plugin-markdown-links": "0.9.1",
 		"eslint-plugin-n": "18.4.0",
