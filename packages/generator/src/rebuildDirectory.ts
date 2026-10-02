@@ -236,7 +236,7 @@ async function readDataTypes(typeName: string) {
 			throw new Error(`dataTypes.d.ts doesn't declare '${name}'.`);
 		}
 
-		for (const word of withoutComments(declaration).match(/\w+/g) ?? []) {
+		for (const [word] of withoutComments(declaration).matchAll(/\w+/g)) {
 			if (declarations.has(word)) {
 				referenced.add(word);
 			}

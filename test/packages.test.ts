@@ -481,3 +481,22 @@ describe(combinedName, () => {
 		expect(mismatches).toEqual([]);
 	});
 });
+
+describe("rebuildSourceDirectory", () => {
+	it("throws when asked for a source it has no types for", async () => {
+		const directory = await fs.mkdtemp(
+			path.join(os.tmpdir(), "emoji-platform-data-"),
+		);
+
+		try {
+			await expect(
+				rebuildSourceDirectory({
+					directory,
+					source: "unknown" as EmojiPlatformDataSource,
+				}),
+			).rejects.toThrow("dataTypes.d.ts doesn't declare");
+		} finally {
+			await fs.rm(directory, { force: true, recursive: true });
+		}
+	});
+});
