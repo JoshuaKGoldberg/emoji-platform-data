@@ -34,5 +34,5 @@ name: Merge Changesets PR
 
 on:
   schedule:
-    - cron: "0 14 * * 1"
+    - cron: "37 14 * * 1"
   workflow_dispatch: ~
