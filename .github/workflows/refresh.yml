@@ -2,9 +2,8 @@ jobs:
   refresh:
     name: Refresh ${{ matrix.name }} Data
     permissions:
-      contents: write
+      contents: read
       issues: write
-      pull-requests: write
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
