@@ -7,6 +7,14 @@ import * as ts from "typescript";
 
 import { compareStrings } from "../src/compareStrings.js";
 import { MacOSItem } from "../src/dataTypes.js";
+import { withoutSkinTones } from "./shared/skinTones.js";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import {
+	checkCanaryKeywords,
+	checkCounts,
+	emojiCount,
+	throwIfProblems,
+} from "./shared/validate.js";
 
 interface RawEntry {
 	appleName: string;
@@ -34,10 +42,10 @@ interface Snapshot {
  * structurally fine but have lost their keywords, which these catch.
  */
 const canaryKeywords = {
-	"❤️": "love",
-	"🏳️‍🌈": "pride",
-	"🐙": "octopus",
-	"😀": "grin",
+	"❤️": ["love"],
+	"🏳️‍🌈": ["pride"],
+	"🐙": ["octopus"],
+	"😀": ["grin"],
 };
 
 const coreEmojiInfoPlist =
@@ -71,8 +79,6 @@ const minimumEntriesPerCategory = 50;
 
 const minimumEntries = 1500;
 
-const skinToneModifiers = /[\u{1F3FB}-\u{1F3FF}]/gu;
-
 const extractorPath = path.join(import.meta.dirname, "extractMacOS.ts");
 const snapshotPath = path.join(import.meta.dirname, "../macos.json");
 
@@ -84,7 +90,7 @@ if (process.platform !== "darwin") {
 	);
 }
 
-const previous = await readPreviousSnapshot();
+const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 const kept = (await runExtractor()).filter(
 	(entry) => Object.keys(entry.keywordWeights).length > 0,
 );
@@ -100,17 +106,12 @@ const snapshot: Snapshot = {
 	macosVersion: await readMacOSVersion(),
 };
 
-if (previous && isSameData(previous.entries, entries)) {
-	console.log(
-		`Read ${entries.length.toString()} emoji from macOS ${snapshot.macosVersion} (CoreEmoji ${snapshot.coreEmojiVersion}), unchanged from the snapshot.`,
-	);
-} else {
-	await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, "\t") + "\n");
-
-	console.log(
-		`Wrote ${entries.length.toString()} emoji from macOS ${snapshot.macosVersion} (CoreEmoji ${snapshot.coreEmojiVersion}).`,
-	);
-}
+await writeSnapshot({
+	from: `macOS ${snapshot.macosVersion} (CoreEmoji ${snapshot.coreEmojiVersion})`,
+	previous,
+	snapshot,
+	snapshotPath,
+});
 
 /**
  * Sorts by the order macOS's picker shows emoji in, keeping the handful that
@@ -155,7 +156,7 @@ function foldSkinToneVariants(entries: RawEntry[]) {
 	const byEmoji = new Map(entries.map((entry) => [entry.emoji, entry]));
 
 	return entries.filter((entry) => {
-		const toneless = entry.emoji.replaceAll(skinToneModifiers, "");
+		const toneless = withoutSkinTones(entry.emoji);
 		const base = toneless === entry.emoji ? undefined : byEmoji.get(toneless);
 
 		if (!base) {
@@ -171,10 +172,6 @@ function foldSkinToneVariants(entries: RawEntry[]) {
 
 		return false;
 	});
-}
-
-function isSameData(left: MacOSItem[], right: MacOSItem[]) {
-	return JSON.stringify(left) === JSON.stringify(right);
 }
 
 async function readCoreEmojiVersion() {
@@ -194,14 +191,6 @@ async function readMacOSVersion() {
 	const { stdout } = await run("sw_vers", ["-productVersion"]);
 
 	return stdout.trim();
-}
-
-async function readPreviousSnapshot() {
-	try {
-		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
-		return undefined;
-	}
 }
 
 /**
@@ -284,29 +273,11 @@ function toItem(entry: RawEntry): MacOSItem {
  * smaller, quietly wrong one.
  */
 function validate(entries: MacOSItem[], previous: Snapshot | undefined) {
-	const problems: string[] = [];
+	const problems = checkCounts(entries, previous?.entries, [
+		{ ...emojiCount, counted: "emoji have keywords", minimum: minimumEntries },
+	]);
 
-	if (entries.length < minimumEntries) {
-		problems.push(
-			`Only ${entries.length.toString()} emoji have keywords, out of at least ${minimumEntries.toString()} expected.`,
-		);
-	}
-
-	if (previous && entries.length < previous.entries.length * 0.95) {
-		problems.push(
-			`Emoji count fell from ${previous.entries.length.toString()} to ${entries.length.toString()}, more than refreshing should change it.`,
-		);
-	}
-
-	for (const [emoji, keyword] of Object.entries(canaryKeywords)) {
-		const entry = entries.find((candidate) => candidate.emoji === emoji);
-
-		if (!entry) {
-			problems.push(`${emoji} is missing entirely.`);
-		} else if (!entry.keywords.includes(keyword)) {
-			problems.push(`${emoji} no longer lists the keyword '${keyword}'.`);
-		}
-	}
+	checkCanaryKeywords(problems, entries, canaryKeywords);
 
 	const counts = countByCategory(entries);
 
@@ -342,12 +313,5 @@ function validate(entries: MacOSItem[], previous: Snapshot | undefined) {
 		);
 	}
 
-	if (problems.length) {
-		throw new Error(
-			[
-				"The data read out of macOS doesn't look right, so the snapshot wasn't written:",
-				...problems.map((problem) => `  ${problem}`),
-			].join("\n"),
-		);
-	}
+	throwIfProblems(problems, "out of macOS");
 }

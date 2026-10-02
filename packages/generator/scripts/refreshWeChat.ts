@@ -1,9 +1,24 @@
-import * as fs from "node:fs/promises";
 import * as path from "node:path";
-import * as zlib from "node:zlib";
 
 import { compareStrings } from "../src/compareStrings.js";
 import { WeChatItem } from "../src/dataTypes.js";
+import { fetchText } from "./shared/fetch.js";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import {
+	checkCanaryKeywords,
+	checkCounts,
+	checkDuplicates,
+	countWithKeywords,
+	emojiCount,
+	emojiWithKeywordsCount,
+	throwIfProblems,
+} from "./shared/validate.js";
+import {
+	readCentralDirectory,
+	readZipEntries,
+	readZipFile,
+	ZipEntry,
+} from "./shared/zip.js";
 
 /** The picker's category listing, in the order it shows the emoji in. */
 interface RawCategories {
@@ -37,13 +52,6 @@ interface Snapshot {
 	apk: string;
 	entries: WeChatItem[];
 	source: string;
-}
-
-/** Where one file sits inside the remote zip, and how it's compressed. */
-interface ZipEntry {
-	compressedSize: number;
-	method: number;
-	offset: number;
 }
 
 /**
@@ -104,7 +112,7 @@ const snapshotPath = path.join(import.meta.dirname, "../wechat.json");
 
 const source = process.argv[2] ?? defaultSource;
 
-const previous = await readPreviousSnapshot();
+const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 
 const apkUrl = source.endsWith(".apk")
 	? source
@@ -114,16 +122,14 @@ const apk = new URL(apkUrl).pathname.split("/").at(-1) ?? apkUrl;
 // The app is a ~280MB zip, but only two files in it matter. Reading the zip's
 // index and then just those two costs under 2MB, so this stays a job any
 // machine -or a CI runner- can do on a whim.
-const centralDirectory = await readCentralDirectory(apkUrl);
+const zipEntries = readZipEntries(
+	await readCentralDirectory(apkUrl, { tailSize: centralDirectoryTailSize }),
+);
 
 const categories = JSON.parse(
-	(await readZipFile(apkUrl, centralDirectory, categoriesPath)).toString(
-		"utf8",
-	),
+	(await readApkFile(categoriesPath)).toString("utf8"),
 ) as RawCategories;
-const keywords = toKeywords(
-	(await readZipFile(apkUrl, centralDirectory, keywordsPath)).toString("utf8"),
-);
+const keywords = toKeywords((await readApkFile(keywordsPath)).toString("utf8"));
 
 const entries = toEntries(categories, keywords);
 
@@ -134,79 +140,21 @@ const snapshot: Snapshot = { apk, entries, source };
 // Tencent ships a new build every few weeks, and the file name carries its
 // version. Rewriting the snapshot for a version bump alone would churn it -and
 // open empty refresh pull requests- for data that hasn't changed.
-if (previous && isSameData(previous.entries, entries)) {
-	console.log(
-		`Read ${entries.length.toString()} emoji from ${apk}, unchanged from the snapshot.`,
-	);
-} else {
-	await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, "\t") + "\n");
-	console.log(
-		`Wrote ${entries.length.toString()} emoji from ${apk}, with keywords for ${countWithKeywords(entries).toString()} of them.`,
-	);
-}
-
-function countWithKeywords(entries: WeChatItem[]) {
-	return entries.filter((entry) => entry.keywords.length).length;
-}
-
-async function fetchRange(url: string, start: number, end: number) {
-	const response = await fetch(url, {
-		headers: { Range: `bytes=${start.toString()}-${end.toString()}` },
-	});
-
-	// A server that ignores the range answers 200 with the whole file, which
-	// would be a ~280MB surprise rather than the slice being asked for.
-	if (response.status !== 206) {
-		throw new Error(
-			`Expected a partial response from ${url}, but got ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
-
-	return Buffer.from(await response.arrayBuffer());
-}
-
-async function fetchText(url: string) {
-	const response = await fetch(url);
-	if (!response.ok) {
-		throw new Error(
-			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
-
-	return await response.text();
-}
+await writeSnapshot({
+	details: `, with keywords for ${countWithKeywords(entries).toString()} of them`,
+	from: apk,
+	previous,
+	snapshot,
+	snapshotPath,
+});
 
 /**
- * Finds a file in the zip's central directory, insisting it appears exactly
- * once. A name that starts matching twice is as much a sign of the app having
- * moved on as one that stops matching.
+ * Finds a file in the app, insisting it appears exactly once. A name that
+ * starts matching twice is as much a sign of the app having moved on as one
+ * that stops matching.
  */
-function findZipEntry(centralDirectory: Buffer, name: string): ZipEntry {
-	const matches: ZipEntry[] = [];
-	let position = 0;
-
-	while (
-		position + 46 <= centralDirectory.length &&
-		centralDirectory.readUInt32LE(position) === 0x02014b50
-	) {
-		const nameLength = centralDirectory.readUInt16LE(position + 28);
-		const extraLength = centralDirectory.readUInt16LE(position + 30);
-		const commentLength = centralDirectory.readUInt16LE(position + 32);
-
-		const found = centralDirectory
-			.subarray(position + 46, position + 46 + nameLength)
-			.toString("utf8");
-
-		if (found === name) {
-			matches.push({
-				compressedSize: centralDirectory.readUInt32LE(position + 20),
-				method: centralDirectory.readUInt16LE(position + 10),
-				offset: centralDirectory.readUInt32LE(position + 42),
-			});
-		}
-
-		position += 46 + nameLength + extraLength + commentLength;
-	}
+function findZipEntry(entries: ZipEntry[], name: string) {
+	const matches = entries.filter((entry) => entry.name === name);
 
 	if (matches.length !== 1) {
 		throw new Error(
@@ -232,10 +180,6 @@ function hasPrivateUseCharacter(emoji: string) {
 			(codePoint >= 0xf0000 && codePoint <= 0x10fffd)
 		);
 	});
-}
-
-function isSameData(left: WeChatItem[], right: WeChatItem[]) {
-	return JSON.stringify(left) === JSON.stringify(right);
 }
 
 /**
@@ -271,96 +215,10 @@ function pickLatestApk(page: string) {
 }
 
 /**
- * Reads the zip's index: the tail holds a record saying where the central
- * directory is, and the central directory says where every file in it is.
+ * Reads one file out of the app.
  */
-async function readCentralDirectory(url: string) {
-	const head = await fetch(url, { method: "HEAD" });
-	if (!head.ok) {
-		throw new Error(
-			`Could not reach ${url}: ${head.status.toString()} ${head.statusText}.`,
-		);
-	}
-
-	const size = Number(head.headers.get("content-length"));
-	if (!size) {
-		throw new Error(`${url} didn't say how large it is.`);
-	}
-
-	const tail = await fetchRange(
-		url,
-		Math.max(0, size - centralDirectoryTailSize),
-		size - 1,
-	);
-	const end = tail.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
-
-	if (end === -1) {
-		throw new Error(`${url} doesn't end like a zip file.`);
-	}
-
-	const directorySize = tail.readUInt32LE(end + 12);
-	const directoryOffset = tail.readUInt32LE(end + 16);
-
-	// Either field reading as all-ones means the real value is in a Zip64
-	// record elsewhere, which this doesn't go looking for.
-	if (directorySize === 0xffffffff || directoryOffset === 0xffffffff) {
-		throw new Error(
-			`${url} is a Zip64 archive, which this script can't index.`,
-		);
-	}
-
-	if (directoryOffset + directorySize > size) {
-		throw new Error(`${url} has a central directory that runs past its end.`);
-	}
-
-	return await fetchRange(
-		url,
-		directoryOffset,
-		directoryOffset + directorySize - 1,
-	);
-}
-
-async function readPreviousSnapshot() {
-	try {
-		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
-		return undefined;
-	}
-}
-
-/**
- * Reads one file out of the remote zip.
- *
- * The central directory says where a file's local header is, but not how long
- * that header is, so the header is read first to find where its data starts.
- */
-async function readZipFile(
-	url: string,
-	centralDirectory: Buffer,
-	name: string,
-) {
-	const entry = findZipEntry(centralDirectory, name);
-
-	const header = await fetchRange(url, entry.offset, entry.offset + 29);
-	const start =
-		entry.offset + 30 + header.readUInt16LE(26) + header.readUInt16LE(28);
-
-	const compressed = await fetchRange(
-		url,
-		start,
-		start + entry.compressedSize - 1,
-	);
-
-	switch (entry.method) {
-		case 0:
-			return compressed;
-		case 8:
-			return zlib.inflateRawSync(compressed);
-		default:
-			throw new Error(
-				`'${name}' is compressed with method ${entry.method.toString()}, which this script can't read.`,
-			);
-	}
+async function readApkFile(name: string) {
+	return await readZipFile(apkUrl, findZipEntry(zipEntries, name));
 }
 
 /**
@@ -460,37 +318,10 @@ function toKeywords(csv: string) {
 }
 
 function validate(entries: WeChatItem[], previous: Snapshot | undefined) {
-	const problems: string[] = [];
-
-	if (entries.length < minimumEntries) {
-		problems.push(
-			`Only ${entries.length.toString()} emoji were read, out of at least ${minimumEntries.toString()} expected.`,
-		);
-	}
-
-	const withKeywords = countWithKeywords(entries);
-
-	if (withKeywords < minimumEntriesWithKeywords) {
-		problems.push(
-			`Only ${withKeywords.toString()} emoji have keywords, out of at least ${minimumEntriesWithKeywords.toString()} expected.`,
-		);
-	}
-
-	if (previous) {
-		if (entries.length < previous.entries.length * 0.95) {
-			problems.push(
-				`Emoji count fell from ${previous.entries.length.toString()} to ${entries.length.toString()}, more than refreshing should change it.`,
-			);
-		}
-
-		const before = countWithKeywords(previous.entries);
-
-		if (withKeywords < before * 0.95) {
-			problems.push(
-				`Emoji with keywords fell from ${before.toString()} to ${withKeywords.toString()}, more than refreshing should change it.`,
-			);
-		}
-	}
+	const problems = checkCounts(entries, previous?.entries, [
+		{ ...emojiCount, minimum: minimumEntries },
+		{ ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
+	]);
 
 	for (const category of expectedCategories) {
 		const count = entries.filter((entry) => entry.category === category).length;
@@ -502,38 +333,13 @@ function validate(entries: WeChatItem[], previous: Snapshot | undefined) {
 		}
 	}
 
-	for (const [emoji, terms] of Object.entries(canaryTerms)) {
-		const entry = entries.find(
-			(candidate) =>
-				withoutVariationSelectors(candidate.emoji) ===
-				withoutVariationSelectors(emoji),
-		);
-
-		if (!entry) {
-			problems.push(`${emoji} is missing entirely.`);
-			continue;
-		}
-
-		for (const term of terms) {
-			if (!entry.keywords.includes(term)) {
-				problems.push(`${emoji} no longer lists the keyword '${term}'.`);
-			}
-		}
-	}
-
-	const seen = new Set<string>();
-	const duplicates = entries.filter((entry) => {
-		const key = withoutVariationSelectors(entry.emoji);
-		const isDuplicate = seen.has(key);
-		seen.add(key);
-		return isDuplicate;
-	});
-
-	if (duplicates.length) {
-		problems.push(
-			`${duplicates.length.toString()} emoji are listed more than once, such as ${duplicates[0].emoji}.`,
-		);
-	}
+	checkCanaryKeywords(
+		problems,
+		entries,
+		canaryTerms,
+		withoutVariationSelectors,
+	);
+	checkDuplicates(problems, entries, withoutVariationSelectors);
 
 	const empty = entries.filter(
 		(entry) => !entry.keywords.length && entry.category === undefined,
@@ -545,14 +351,7 @@ function validate(entries: WeChatItem[], previous: Snapshot | undefined) {
 		);
 	}
 
-	if (problems.length) {
-		throw new Error(
-			[
-				"The data read for WeChat doesn't look right, so the snapshot wasn't written:",
-				...problems.map((problem) => `  ${problem}`),
-			].join("\n"),
-		);
-	}
+	throwIfProblems(problems, "for WeChat");
 }
 
 /**
