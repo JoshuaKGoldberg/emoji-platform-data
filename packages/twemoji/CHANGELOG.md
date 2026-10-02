@@ -1,5 +1,18 @@
 # @emoji-platform-data/twemoji
 
+## 0.4.0
+
+### Minor Changes
+
+- [#1074](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1074) [`84aa34f`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/84aa34f1aa1dec040026ac1c786dc45563eee6ef) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Exported `byTitle`'s entries on their own from each package's `/byTitle` entry point, such as `import { SparklingHeart } from "emoji-platform-data/byTitle"`, so that bundlers such as esbuild can include only the emoji that are used.
+
+- [#1070](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1070) [`4103297`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/410329726799bb8016ec77c7eb7365fff57a1d21) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Typed `TwemojiItem` as the one shape its data has, with `keywords` always present, every `type` Twemoji uses, such as `"flag"`, and its `multi_diversity_*` fields.
+  The `TwemojiItemBase`, `TwemojiItemExcluded`, and `TwemojiItemIncluded` types are gone, since excluded items never make it into the data.
+
+### Patch Changes
+
+- [#1083](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1083) [`b52e073`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/b52e073381b2cff62cdef688ae500ed6f0aec188) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Corrected the `JoyPixelsItem.aliases` docs' example, which JoyPixels writes as "+1" and "thumbs_up" for 👍.
+
 ## 0.3.0
 
 ### Minor Changes
