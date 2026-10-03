@@ -9,6 +9,13 @@
 	"ignoreDeps": ["codecov/codecov-action"],
 	"labels": ["dependencies"],
 	"minimumReleaseAge": "7 days",
+	"packageRules": [
+		{
+			"matchDatasources": ["npm"],
+			"matchUpdateTypes": ["major", "minor", "patch"],
+			"minimumReleaseAge": "7 days"
+		}
+	],
 	"patch": { "enabled": false },
 	"pinDigests": false,
 	"postUpdateOptions": ["pnpmDedupe"]
