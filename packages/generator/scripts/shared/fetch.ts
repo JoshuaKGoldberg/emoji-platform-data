@@ -1,3 +1,18 @@
+export async function fetchOk(url: string, init?: RequestInit) {
+	const response = await fetchUrl(url, init);
+	if (!response.ok) {
+		throw new Error(
+			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
+		);
+	}
+
+	return response;
+}
+
+export async function fetchText(url: string, init?: RequestInit) {
+	return await readText(await fetchOk(url, init));
+}
+
 export async function fetchUrl(url: string, init?: RequestInit) {
 	try {
 		return await fetch(url, init);
