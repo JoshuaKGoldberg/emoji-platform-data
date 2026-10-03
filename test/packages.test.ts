@@ -415,6 +415,13 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		);
 	});
 
+	it("finds nothing in byEmoji for keys only Object.prototype has", async () => {
+		const { byEmoji } = await importPackage(dataPackage);
+
+		expect(byEmoji.constructor).toBeUndefined();
+		expect("toString" in byEmoji).toBe(false);
+	});
+
 	it("keys byEmoji by glyph rather than by code points", async () => {
 		const { byEmoji } = await importPackage(dataPackage);
 

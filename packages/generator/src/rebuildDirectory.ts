@@ -203,6 +203,7 @@ async function writeDataDirectory({
 				`export { byTitle };`,
 				"",
 				`export const byEmoji = {`,
+				`\t__proto__: null,`,
 				...byEmojiLines,
 				`};`,
 				"",
