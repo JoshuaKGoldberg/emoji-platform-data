@@ -2,7 +2,7 @@ import * as emojipedia from "emojipedia/data";
 
 import { AllEmojipediaData, EmojipediaItem } from "./types.js";
 import {
-	countTitles,
+	getDuplicateTitles,
 	normalizeTitle,
 	recordByCldr,
 	withoutVariationSelectors,
@@ -64,17 +64,16 @@ export function generateEmojipedia(): GeneratedEmojipediaData {
  * Tuxedo", are titled by it instead.
  */
 function getUniqueTitles(items: EmojipediaItem[]) {
-	const counts = countTitles(items.map(({ title }) => title));
+	const duplicateTitles = getDuplicateTitles(items.map(({ title }) => title));
 
 	return new Map(
-		items
-			.filter(
-				(item) =>
-					(counts.get(item.title) ?? 0) > 1 &&
-					item.currentCldrName &&
-					item.currentCldrName !== item.title,
-			)
-			.map((item) => [item, item.currentCldrName ?? item.title]),
+		items.flatMap((item): [EmojipediaItem, string][] =>
+			duplicateTitles.has(item.title) &&
+			item.currentCldrName &&
+			item.currentCldrName !== item.title
+				? [[item, item.currentCldrName]]
+				: [],
+		),
 	);
 }
 

@@ -5,8 +5,8 @@ import { parse } from "yaml";
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllTwemojiData, TwemojiItem } from "./types.js";
 import {
-	countTitles,
 	fromUnicode,
+	getDuplicateTitles,
 	getEntryCldr,
 	isKnownGlyph,
 	recordByCldr,
@@ -54,7 +54,7 @@ export async function generateTwemoji(
 			glyph,
 		};
 	});
-	const titlesTaken = countTitles(resolved.map(({ cldr }) => cldr));
+	const duplicateTitles = getDuplicateTitles(resolved.map(({ cldr }) => cldr));
 
 	return recordByCldr(
 		"twemoji",
@@ -63,7 +63,7 @@ export async function generateTwemoji(
 			// such as 🕴️‍♂️ "man in business suit levitating" for 🕴️. That name stays
 			// with the glyph Emojipedia knows, and the other is titled by its code
 			// points, as GNOME's are.
-			(titlesTaken.get(cldr) ?? 0) > 1 && !isKnownGlyph(emojipedia, glyph)
+			duplicateTitles.has(cldr) && !isKnownGlyph(emojipedia, glyph)
 				? toCodePointNotation(entry.unicode)
 				: cldr,
 			entry,

@@ -158,7 +158,7 @@ async function writeDataDirectory({
 			if (owner === undefined) {
 				byEmojiOwners.set(glyph, exportName);
 				byEmojiLines.push(`\t${JSON.stringify(glyph)}: byTitle.${exportName},`);
-			} else if (owner !== exportName) {
+			} else {
 				throw new Error(
 					`'${platformData.title}' and '${owner}' are both known as ${glyph}.`,
 				);

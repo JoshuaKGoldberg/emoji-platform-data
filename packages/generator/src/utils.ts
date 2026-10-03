@@ -5,16 +5,21 @@ import { titleCase } from "title-case";
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 
 /**
- * How many times each title appears.
+ * Titles that appear more than once.
  */
-export function countTitles(titles: string[]) {
-	const counts = new Map<string, number>();
+export function getDuplicateTitles(titles: string[]) {
+	const seen = new Set<string>();
+	const duplicates = new Set<string>();
 
 	for (const title of titles) {
-		counts.set(title, (counts.get(title) ?? 0) + 1);
+		if (seen.has(title)) {
+			duplicates.add(title);
+		} else {
+			seen.add(title);
+		}
 	}
 
-	return counts;
+	return duplicates;
 }
 
 export function getEntryCldr(
@@ -141,7 +146,8 @@ export function toUnicode(emoji: string) {
 	// eslint-disable-next-line @typescript-eslint/no-misused-spread
 	return [...emoji]
 		.map((character) =>
-			(character.codePointAt(0) ?? 0).toString(16).padStart(4, "0"),
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			character.codePointAt(0)!.toString(16).padStart(4, "0"),
 		)
 		.join("-");
 }
