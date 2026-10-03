@@ -50,14 +50,12 @@ console.log(byTitle.SparklingHeart);
 */
 ```
 
-Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
-`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
-`byTitle`'s entries can also be imported on their own from `emoji-platform-data/byTitle`, such as `import { SparklingHeart } from "emoji-platform-data/byTitle"`, for bundlers such as esbuild that would otherwise include every emoji.
+- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byTitle` takes a PascalCase Emojipedia title, and `emoji-platform-data/byTitle` exports each one separately for smaller bundles.
 
 ### Packages
 
-`emoji-platform-data` combines emoji data from several projects.
-Each project's data is also published as its own package, for consumers who only need one source:
+`emoji-platform-data` combines these sources, which are also published on their own:
 
 | Package                                                    | Source                                                                                                                 | Exports                                                 |
 | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
@@ -77,8 +75,7 @@ Each project's data is also published as its own package, for consumers who only
 | [`@emoji-platform-data/windows`](./packages/windows)       | [Windows](https://support.microsoft.com/windows/windows-keyboard-tips-and-tricks-588e0b72-0fff-6d3f-aeee-6e5116097942) | `byEmoji` and `byTitle` of `WindowsItem`                |
 | [`@emoji-platform-data/generator`](./packages/generator)   | -                                                                                                                      | APIs that generate the data packages above              |
 
-The data packages have no runtime dependencies: they only contain static JSON and type declarations.
-Each emoji supported in at least one of those projects is stored by its emoji glyph and Emojipedia title.
+The data packages are only static JSON and types, with no runtime dependencies.
 
 ## Explainer
 
@@ -86,34 +83,27 @@ Each emoji supported in at least one of those projects is stored by its emoji gl
 
 ### Emojis
 
-An **emoji** is a small image represented by a glyph in text.
-The [Unicode Standard](https://unicode.org/standard/standard.html) defines which characters in text map to which emojis, as well as how combinations of emoji characters combine to more emojis.
-For example:
+An **emoji** is a small image that the [Unicode Standard](https://unicode.org/standard/standard.html) maps to one or more characters:
 
 - [🔥 (`fire`)](https://emojipedia.org/fire) is represented by the string code _U+1F525_
 - [❤️ (`red heart`)](https://emojipedia.org/red-heart) is represented by the string codes: _U+2764_ _U+FE0F_
 - [❤️‍🔥 (`heart on fire`)](https://emojipedia.org/heart-on-fire) is represented by ❤️ + a ["zero-width joiner"](https://emojipedia.org/zero-width-joiner) + 🔥: _U+2764 U+FE0F U+200D U+1F525_
 
-> 💡 _Emojis_ are not the same as their predecessors, _emoticons_.
-> Emoticons are symbols that combine traditional text characters, such as `:)` for "smiley" and `(╯°□°)╯︵ ┻━┻` for "table flip".
+> 💡 _Emojis_ aren't _emoticons_, which are plain text such as `:)` and `(╯°□°)╯︵ ┻━┻`.
 
 ### 🆔 Identity
 
-The formal name, or 🆔 _identity_, for each emoji is standardized in Unicode.
-However, emojis may be associated with multiple names across different specifications.
-For example, [👿](https://emojipedia.org/angry-face-with-horns) can be referred to either as _"Angry Face with Horns"_ or _"Imp"_ depending on the source.
+An emoji's 🆔 _identity_ is its name, which can differ by source: [👿](https://emojipedia.org/angry-face-with-horns) is _"Angry Face with Horns"_ or _"Imp"_.
 
 ### 🔗 Keywords
 
-In addition to their name(s), emojis commonly have related terms, or 🔗 _keywords_, associated with them.
-These keywords are not standardized and may vary drastically across the various chat applications, operating systems, and shared open source libraries that each separately implement emoji pickers.
+An emoji's 🔗 _keywords_ are related search terms, which each emoji picker chooses for itself.
 
 For example, [🐙 (`octopus`)](https://emojipedia.org/octopus) is defined in [emoji-mart@5.5.2](https://github.com/missive/emoji-mart/tree/21a2708be931c0dd16d6d0e96b47a45503576ac5/) -used by Bluesky and other projects- with `["animal", "creature", "ocean", "sea", "nature", "beach"]`.
 
 ### Platforms
 
-This project attempts to bring together the 🆔 _identity_ and 🔗 _keywords_ across several sources of emoji data, each defined as a "platform".
-Platforms include:
+This project collects 🆔 _identity_ and 🔗 _keywords_ from many sources, called _platforms_:
 
 - Chat platforms ([Discord](./packages/discord), [Slack](./packages/slack), ...)
 - Operating systems and desktop environments ([macOS](./packages/macos), [Windows](./packages/windows), [GNOME](./packages/gnome), ...)
@@ -125,13 +115,11 @@ Any grouping of emoji 🆔 _identity_ and 🔗 _keywords_ used by consumers toda
 
 ## Why?
 
-This is useful if you're looking to see the metadata supported for emojis in each of those platforms.
-For example, if you wanted to [determine the keywords associated with any emoji](https://github.com/muan/emojilib/issues/194), this would let you accumulate all the keywords across the supported platforms.
+It shows every platform's metadata for an emoji in one place, such as for [collecting all of its keywords](https://github.com/muan/emojilib/issues/194).
 
 ## Development
 
-See [`.github/CONTRIBUTING.md`](./.github/CONTRIBUTING.md), then [`.github/DEVELOPMENT.md`](./.github/DEVELOPMENT.md).
-Thanks! 🗝️
+See [`.github/CONTRIBUTING.md`](./.github/CONTRIBUTING.md), then [`.github/DEVELOPMENT.md`](./.github/DEVELOPMENT.md) 🗝️
 
 ## Contributors
 

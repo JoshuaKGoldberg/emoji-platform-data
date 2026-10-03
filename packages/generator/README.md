@@ -11,8 +11,7 @@
 	<img alt="💪 TypeScript: Strict" src="https://img.shields.io/badge/%F0%9F%92%AA_typescript-strict-21bb42.svg" />
 </p>
 
-This package contains the code that generates the [`emoji-platform-data`](https://github.com/JoshuaKGoldberg/emoji-platform-data) data packages.
-Most consumers want one of those data packages instead: they contain only static JSON and have no runtime dependencies.
+This package generates the [`emoji-platform-data`](https://github.com/JoshuaKGoldberg/emoji-platform-data) data packages, which most consumers want instead.
 
 ## Usage
 
@@ -30,9 +29,7 @@ const byTitle = await generateAll({
 console.log(byTitle["Sparkling Heart"]);
 ```
 
-`generateAll` reads Fluent UI's emoji metadata from [`microsoft/fluentui-emoji`](https://github.com/microsoft/fluentui-emoji), which isn't published to npm.
-Clone that repository, then pass its directory as `fluemojiDirectory`, which `rebuildDirectory` and `rebuildSourceDirectory` also take.
-Within this repository it's installed as a `fluemoji` dev dependency, so the default works and no option is needed.
+Pass a clone of [`microsoft/fluentui-emoji`](https://github.com/microsoft/fluentui-emoji), which isn't on npm, as `fluemojiDirectory` to `generateAll`, `rebuildDirectory`, or `rebuildSourceDirectory`.
 
 ### APIs
 

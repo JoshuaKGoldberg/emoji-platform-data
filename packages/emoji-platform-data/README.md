@@ -43,9 +43,9 @@ console.log(byTitle.SparklingHeart);
 */
 ```
 
-Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
-`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
-`byTitle`'s entries can also be imported on their own from `emoji-platform-data/byTitle`, such as `import { SparklingHeart } from "emoji-platform-data/byTitle"`, for bundlers such as esbuild that would otherwise include every emoji.
+- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byTitle` takes a PascalCase Emojipedia title, and `emoji-platform-data/byTitle` exports each one separately for smaller bundles.
+
 Each entry is an `EmojiPlatformData` combining data from:
 
 - [Android (Gboard)](https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin) (`android`)
@@ -62,7 +62,6 @@ Each entry is an `EmojiPlatformData` combining data from:
 - [WeChat](https://weixin.qq.com) (`wechat`)
 - [Windows](https://support.microsoft.com/windows/windows-keyboard-tips-and-tricks-588e0b72-0fff-6d3f-aeee-6e5116097942) (`windows`)
 
-Each of those sources is also available as its own `@emoji-platform-data/*` package.
-See the [repository README](https://github.com/JoshuaKGoldberg/emoji-platform-data#packages) for the full list.
+Each source is also published on its own as an `@emoji-platform-data/*` package, [listed in the repository README](https://github.com/JoshuaKGoldberg/emoji-platform-data#packages).
 
-This package contains only static JSON and type declarations: it has no runtime dependencies.
+This package is only static JSON and types, with no runtime dependencies.
