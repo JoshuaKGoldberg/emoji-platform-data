@@ -49,7 +49,7 @@ export async function generateTwemoji(
 		const glyph = fromUnicode(entry.unicode);
 
 		return {
-			cldr: getEntryCldr(emojipedia, glyph, entry.unicode, [entry.description]),
+			cldr: getEntryCldr(emojipedia, glyph, [entry.description]),
 			entry,
 			glyph,
 		};

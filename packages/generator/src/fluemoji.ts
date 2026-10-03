@@ -35,7 +35,7 @@ export async function generateFluemoji(
 	return recordByCldr(
 		"fluemoji",
 		(await Promise.all(pending)).map((entry) => [
-			getEntryCldr(emojipedia, entry.glyph, entry.unicode, [entry.cldr]),
+			getEntryCldr(emojipedia, entry.glyph, [entry.cldr]),
 			entry,
 		]),
 	);

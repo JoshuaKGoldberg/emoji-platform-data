@@ -27,7 +27,6 @@ describe(getEntryCldr, () => {
 			getEntryCldr(
 				{ aliases: new Map(), byCldr: {}, byCode: {}, items: [] },
 				undefined,
-				undefined,
 				[entry],
 			),
 		).toBe(title);

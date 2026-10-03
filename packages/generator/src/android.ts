@@ -18,7 +18,7 @@ export function generateAndroid(
 		// titled by their code points, as WeChat's are.
 		const unicode = toUnicode(entry.emoji);
 
-		return getEntryCldr(emojipedia, entry.emoji, unicode, [
+		return getEntryCldr(emojipedia, entry.emoji, [
 			toCodePointNotation(unicode),
 		]);
 	});

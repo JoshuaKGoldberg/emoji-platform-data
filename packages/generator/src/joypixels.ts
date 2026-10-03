@@ -112,7 +112,7 @@ export async function generateJoyPixels(
 				item.order = order++;
 			}
 
-			return [getEntryCldr(emojipedia, emoji, unicode, [description]), item];
+			return [getEntryCldr(emojipedia, emoji, [description]), item];
 		}),
 	);
 }
