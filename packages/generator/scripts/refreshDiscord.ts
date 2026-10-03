@@ -545,15 +545,13 @@ function toEntries(
  * a file name that doesn't resolve- as a miss rather than a failure.
  */
 async function tryReadKeywords(fileName: string) {
-	let script;
+	const response = await fetch(`${origin}/assets/${fileName}`);
 
-	try {
-		script = await fetchScript(fileName);
-	} catch {
+	if (!response.ok) {
 		return undefined;
 	}
 
-	for (const blob of extractJsonBlobs(script)) {
+	for (const blob of extractJsonBlobs(await response.text())) {
 		if (isKeywords(blob)) {
 			return blob;
 		}
