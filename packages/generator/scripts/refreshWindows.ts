@@ -63,6 +63,8 @@ const minimumEntriesWithKeywords = 1400;
 /** Retail releases, rather than Insider, preview, or servicing-stack builds. */
 const releaseTitle = /^Windows 11, version (\w+) \((\d+)\.(\d+)\)$/;
 
+const requestTimeout = 120_000;
+
 const snapshotPath = path.join(import.meta.dirname, "../windows.json");
 
 const uupApi = "https://api.uupdump.net";
@@ -106,7 +108,9 @@ try {
 }
 
 async function download(file: RawFile) {
-	const response = await fetch(file.url);
+	const response = await fetch(file.url, {
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 	if (!response.ok) {
 		throw new Error(
 			`Could not download ${cabName}: ${response.status.toString()} ${response.statusText}.`,
@@ -190,7 +194,9 @@ async function fetchFile(uuid: string, name: string) {
  */
 async function fetchUup<T>(query: string, key: string): Promise<T> {
 	for (let attempt = 1; ; attempt += 1) {
-		const response = await fetch(`${uupApi}/${query}`);
+		const response = await fetch(`${uupApi}/${query}`, {
+			signal: AbortSignal.timeout(requestTimeout),
+		});
 		const body = response.ok
 			? ((await response.json()) as {
 					response?: Partial<Record<string, unknown>>;
