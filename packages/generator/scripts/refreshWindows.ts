@@ -17,7 +17,6 @@ interface RawBuild {
 /** One file of a build as UUP dump lists it, served from Microsoft's CDN. */
 interface RawFile {
 	sha256: string;
-	size: string;
 	url: string;
 }
 
@@ -363,7 +362,11 @@ function readDatamap(contents: Buffer) {
 async function readPreviousSnapshot() {
 	try {
 		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
+	} catch (error) {
+		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+			throw error;
+		}
+
 		return undefined;
 	}
 }

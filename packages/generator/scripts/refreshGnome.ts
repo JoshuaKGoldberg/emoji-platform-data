@@ -7,7 +7,7 @@ import { GnomeItem } from "../src/dataTypes.js";
 interface RawItem {
 	emoji: string;
 
-	/** The picker section the emoji is in, as an index into `categories`. */
+	/** The picker section the emoji is in, as the Emojibase group number `categories` is keyed by. */
 	group: number;
 
 	/** The emoji's name in English, such as "octopus". */
@@ -252,7 +252,11 @@ function readEmojiData(data: Buffer) {
 async function readPreviousSnapshot() {
 	try {
 		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
+	} catch (error) {
+		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+			throw error;
+		}
+
 		return undefined;
 	}
 }
@@ -261,16 +265,12 @@ async function readPreviousSnapshot() {
 function endOfTupleMembers(tuple: Buffer, count: number) {
 	const size = offsetSize(tuple.length);
 
-	return readOffset(tuple, tuple.length - size * count, size);
+	return tuple.readUIntLE(tuple.length - size * count, size);
 }
 
 /** How many bytes a container of this size writes each of its offsets in. */
 function offsetSize(containerSize: number) {
 	return containerSize <= 0xff ? 1 : containerSize <= 0xffff ? 2 : 4;
-}
-
-function readOffset(buffer: Buffer, position: number, size: number) {
-	return buffer.readUIntLE(position, size);
 }
 
 function readString(bytes: Buffer) {
@@ -289,7 +289,7 @@ function splitTuple(tuple: Buffer, alignments: number[]) {
 	for (let index = 0; index < alignments.length; index += 1) {
 		start = alignUp(start, alignments[index]);
 
-		const end = readOffset(tuple, tuple.length - size * (index + 1), size);
+		const end = tuple.readUIntLE(tuple.length - size * (index + 1), size);
 		members.push(tuple.subarray(start, end));
 		start = end;
 	}
@@ -303,7 +303,7 @@ function splitVariableArray(array: Buffer, alignment: number) {
 	}
 
 	const size = offsetSize(array.length);
-	const offsetsStart = readOffset(array, array.length - size, size);
+	const offsetsStart = array.readUIntLE(array.length - size, size);
 
 	// The last offset is where the last element ends, which is where the
 	// offsets themselves begin, so it also says how many there are.
@@ -317,7 +317,7 @@ function splitVariableArray(array: Buffer, alignment: number) {
 	for (let position = offsetsStart; position < array.length; position += size) {
 		start = alignUp(start, alignment);
 
-		const end = readOffset(array, position, size);
+		const end = array.readUIntLE(position, size);
 		elements.push(array.subarray(start, end));
 		start = end;
 	}

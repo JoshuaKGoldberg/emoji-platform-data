@@ -5,6 +5,7 @@ import { parse } from "yaml";
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllTwemojiData, TwemojiItem } from "./types.js";
 import {
+	countTitles,
 	fromUnicode,
 	getEntryCldr,
 	isKnownGlyph,
@@ -53,7 +54,7 @@ export async function generateTwemoji(
 			glyph,
 		};
 	});
-	const titlesTaken = countTitles(resolved);
+	const titlesTaken = countTitles(resolved.map(({ cldr }) => cldr));
 
 	return recordByCldr(
 		"twemoji",
@@ -68,14 +69,4 @@ export async function generateTwemoji(
 			entry,
 		]),
 	);
-}
-
-function countTitles(resolved: { cldr: string }[]) {
-	const counts = new Map<string, number>();
-
-	for (const { cldr } of resolved) {
-		counts.set(cldr, (counts.get(cldr) ?? 0) + 1);
-	}
-
-	return counts;
 }

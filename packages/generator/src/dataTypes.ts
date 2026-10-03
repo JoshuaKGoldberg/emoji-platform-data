@@ -48,7 +48,7 @@ export interface DiscordItem {
 
 	emoji: string;
 
-	/** Terms the picker matches searches against, beyond the shortcodes. Flags and a few sequences have none. */
+	/** Terms the picker matches searches against, beyond the shortcodes. Country flags, keycaps, regional indicators, and some sequences, such as most families, have none. */
 	keywords: string[];
 
 	/** Discord's shortcode for the emoji, such as "octopus". */
@@ -57,7 +57,7 @@ export interface DiscordItem {
 	/** Where the emoji falls in the picker's overall order, across all categories. */
 	order: number;
 
-	/** Emoji version that introduced the emoji, such as 6.1. */
+	/** Unicode version that introduced the emoji, such as 6.1. */
 	unicodeVersion: number;
 }
 
@@ -223,7 +223,7 @@ export interface GnomeItem {
 	/** How GNOME names the emoji in each of GTK's other locales, keyed by locale, such as "Oktopus" for "de". */
 	namesByLocale: Record<string, string>;
 
-	/** Where the emoji falls in the English picker's overall order, across all categories. Emoji only GTK's other locales know yet have none. */
+	/** Where the emoji falls in the English picker's overall order, across all categories. The hair components, which the picker doesn't show, and emoji only GTK's other locales know yet have none. */
 	order?: number;
 }
 
@@ -282,7 +282,7 @@ export interface MacOSItem {
 	/** How macOS speaks the emoji aloud, such as "an octopus emoji". */
 	speechName: string;
 
-	/** The emoji's Unicode name, such as "OCTOPUS". macOS omits it for newer emoji. */
+	/** The emoji's Unicode name, such as "OCTOPUS". macOS has it for nearly every single code point emoji up to Unicode 9 and a handful of sequences, such as 🤷‍♀️, but not for other sequences or newer emoji. */
 	unicodeName?: string;
 
 	/** How VoiceOver describes the emoji, such as "an octopus". */
@@ -318,13 +318,13 @@ export interface SlackItem {
 }
 
 /**
- * One emoji as Twemoji's emoji picker knows it.
+ * One emoji as twemoji-parser's emoji configuration lists it.
  */
 export interface TwemojiItem {
 	/** How Twemoji names the emoji, such as "Octopus". */
 	description: string;
 
-	/** Terms the picker matches searches against. */
+	/** Search terms for the emoji. */
 	keywords: string[];
 
 	/** For people emoji whose people can each have their own skin tone, the code points of the emoji with two different tones, with "skintone" where each goes. */
