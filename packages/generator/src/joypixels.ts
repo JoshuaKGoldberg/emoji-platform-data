@@ -46,8 +46,8 @@ interface RawEntry {
 }
 
 /**
- * Each keyword list ends with the emoji's Unicode version, as a "uc" tag.
- * That's already `unicodeVersion`, and no one searches for "uc6".
+ * Each keyword list ends with the major part of the emoji's version, as a "uc"
+ * tag. That's already `unicodeVersion`, and no one searches for "uc6".
  */
 const unicodeVersionTag = /^uc\d+$/;
 
