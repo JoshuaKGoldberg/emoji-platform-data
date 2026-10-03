@@ -152,14 +152,3 @@ export function toUnicode(emoji: string) {
 export function withoutVariationSelectors(glyph: string) {
 	return glyph.replaceAll("\uFE0F", "");
 }
-
-/**
- * Code points as platforms write them, such as "2764-fe0f", without any U+FE0F
- * variation selectors.
- */
-function withoutVariationSelectorCodes(unicode: string) {
-	return unicode
-		.split("-")
-		.filter((hex) => hex !== "fe0f")
-		.join("-");
-}
