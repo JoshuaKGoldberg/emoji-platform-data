@@ -19,7 +19,7 @@ export function generateWeChat(
 		// nothing else names are titled by their code points instead.
 		const unicode = toUnicode(entry.emoji);
 
-		return getEntryCldr(emojipedia, entry.emoji, unicode, [
+		return getEntryCldr(emojipedia, entry.emoji, [
 			toCodePointNotation(unicode),
 		]);
 	});

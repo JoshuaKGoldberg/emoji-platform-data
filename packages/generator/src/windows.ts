@@ -9,6 +9,6 @@ export function generateWindows(
 	emojipedia: GeneratedEmojipediaData,
 ): Promise<Partial<AllWindowsData>> {
 	return readSnapshot("windows", (entry: WindowsItem) =>
-		getEntryCldr(emojipedia, entry.emoji, undefined, [entry.name]),
+		getEntryCldr(emojipedia, entry.emoji, [entry.name]),
 	);
 }
