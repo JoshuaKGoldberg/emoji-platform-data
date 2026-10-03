@@ -35,6 +35,7 @@ console.log(byEmoji["🐙"]);
 ```
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
+`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
 Each entry is an `EmojiMartItem` containing the data from [emoji-mart](https://github.com/missive/emoji-mart).
 
 `keywords` are the terms emoji-mart's picker matches searches against.

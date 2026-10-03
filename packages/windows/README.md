@@ -31,6 +31,7 @@ console.log(byEmoji["😂"]);
 ```
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
+`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
 Each entry is a `WindowsItem` describing one emoji as the Windows emoji panel -the one <kbd>Win</kbd> + <kbd>.</kbd> opens- knows it.
 
 `name` is how Windows names the emoji, which is its Unicode CLDR name, such as `octopus` for 🐙.
