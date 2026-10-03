@@ -181,48 +181,56 @@ async function extractProduct(url: string, productPath: string) {
 		let position = 0;
 		let ranges: ProductRange[] | undefined;
 
-		await pipeline(
-			Readable.fromWeb(response.body as Parameters<typeof Readable.fromWeb>[0]),
-			zlib.createInflateRaw(),
-			async (inflated: AsyncIterable<Buffer>) => {
-				for await (const chunk of inflated) {
-					crc = zlib.crc32(chunk, crc);
-
-					if (!ranges) {
-						head.push(chunk);
-						headSize += chunk.length;
-
-						// Inflating yields small chunks, so the head is only put together
-						// and tried each time it's doubled, rather than for every one.
-						if (headSize < nextAttempt) {
-							continue;
-						}
-
-						const joined = Buffer.concat(head);
-						ranges = findProductRanges(joined);
+		try {
+			await pipeline(
+				Readable.fromWeb(
+					response.body as Parameters<typeof Readable.fromWeb>[0],
+				),
+				zlib.createInflateRaw(),
+				async (inflated: AsyncIterable<Buffer>) => {
+					for await (const chunk of inflated) {
+						crc = zlib.crc32(chunk, crc);
 
 						if (!ranges) {
-							if (headSize > headLimit) {
-								throw new Error(
-									`Found no product partition in the first ${headLimit.toString()} bytes of the system image.`,
-								);
+							head.push(chunk);
+							headSize += chunk.length;
+
+							// Inflating yields small chunks, so the head is only put together
+							// and tried each time it's doubled, rather than for every one.
+							if (headSize < nextAttempt) {
+								continue;
 							}
 
-							nextAttempt *= 2;
+							const joined = Buffer.concat(head);
+							ranges = findProductRanges(joined);
+
+							if (!ranges) {
+								if (headSize > headLimit) {
+									throw new Error(
+										`Found no product partition in the first ${headLimit.toString()} bytes of the system image.`,
+									);
+								}
+
+								nextAttempt *= 2;
+								continue;
+							}
+
+							await writeProductRanges(product, ranges, joined, 0);
+							position = headSize;
+							head.length = 0;
 							continue;
 						}
 
-						await writeProductRanges(product, ranges, joined, 0);
-						position = headSize;
-						head.length = 0;
-						continue;
+						await writeProductRanges(product, ranges, chunk, position);
+						position += chunk.length;
 					}
-
-					await writeProductRanges(product, ranges, chunk, position);
-					position += chunk.length;
-				}
-			},
-		);
+				},
+			);
+		} catch (error) {
+			throw new Error(`Could not read the product partition out of ${url}.`, {
+				cause: error,
+			});
+		}
 
 		if (position !== entry.size) {
 			throw new Error(
