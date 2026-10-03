@@ -36,8 +36,7 @@ export function getEntryCldr(
 
 	return titleCase(entries[0].replaceAll("_", " "))
 		.replaceAll("#", "Hash")
-		.replaceAll("*", "Asterisk")
-		.replaceAll("’s Symbol", "’s Room");
+		.replaceAll("*", "Asterisk");
 }
 
 /**
