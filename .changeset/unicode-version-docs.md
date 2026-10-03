@@ -16,4 +16,4 @@
 "emoji-platform-data": patch
 ---
 
-Corrected the `DiscordItem`, `GnomeItem`, `MacOSItem`, and `TwemojiItem` docs that didn't match their data.
+Corrected the `DiscordItem.unicodeVersion` and `JoyPixelsItem.unicodeVersion` docs, which are Emoji versions for emoji from Emoji 11.0 on.
