@@ -105,21 +105,21 @@ For example, [👿](https://emojipedia.org/angry-face-with-horns) can be referre
 
 ### 🔗 Keywords
 
-In addition to their name(s), emojis commonly have related terms, or _🔗 keywords_, associated with them.
+In addition to their name(s), emojis commonly have related terms, or 🔗 _keywords_, associated with them.
 These keywords are not standardized and may vary drastically across the various chat applications, operating systems, and shared open source libraries that each separately implement emoji pickers.
 
 For example, [🐙 (`octopus`)](https://emojipedia.org/octopus) is defined in [emoji-mart@5.5.2](https://github.com/missive/emoji-mart/tree/21a2708be931c0dd16d6d0e96b47a45503576ac5/) -used by Bluesky and other projects- with `["animal", "creature", "ocean", "sea", "nature", "beach"]`.
 
 ### Platforms
 
-This project attempts to bring together the 🆔 _identity_ and _🔗 keywords_ across several sources of emoji data, each defined as a "platform".
+This project attempts to bring together the 🆔 _identity_ and 🔗 _keywords_ across several sources of emoji data, each defined as a "platform".
 Platforms include:
 
-- Chat platforms ([Discord](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/16), [Slack](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/7), ...)
-- Operating systems ([macOS](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/5), [Windows](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/6), ...)
-- Open source libraries used by platforms ([`emoji-mart`](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/14), [GNOME](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/9)...)
+- Chat platforms ([Discord](./packages/discord), [Slack](./packages/slack), ...)
+- Operating systems and desktop environments ([macOS](./packages/macos), [Windows](./packages/windows), [GNOME](./packages/gnome), ...)
+- Open source libraries used by platforms ([`emoji-mart`](./packages/emoji-mart), ...)
 
-Any grouping of emoji 🆔 _identity_ and _🔗 keywords_ used by consumers today can qualify as a platform.
+Any grouping of emoji 🆔 _identity_ and 🔗 _keywords_ used by consumers today can qualify as a platform.
 
 > 🚀 If your platform isn't included in `emoji-platform-data` and doesn't have a tracking [`platform-support` issue](https://github.com/JoshuaKGoldberg/emoji-platform-data/issues?q=is%3Aissue+is%3Aopen+label%3A%22platform+support%22), please file an issue asking for it!
 
@@ -131,7 +131,7 @@ For example, if you wanted to [determine the keywords associated with any emoji]
 ## Development
 
 See [`.github/CONTRIBUTING.md`](./.github/CONTRIBUTING.md), then [`.github/DEVELOPMENT.md`](./.github/DEVELOPMENT.md).
-Thanks! 🗝
+Thanks! 🗝️
 
 ## Contributors
 
