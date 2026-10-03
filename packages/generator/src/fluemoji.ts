@@ -39,7 +39,7 @@ export async function generateFluemoji(
 	return recordByCldr(
 		"fluemoji",
 		entries.map((entry) => [
-			getEntryCldr(emojipedia, entry.glyph, entry.unicode, [entry.cldr]),
+			getEntryCldr(emojipedia, entry.glyph, [entry.cldr]),
 			entry,
 		]),
 	);

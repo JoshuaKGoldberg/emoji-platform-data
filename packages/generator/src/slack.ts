@@ -9,9 +9,6 @@ export function generateSlack(
 	emojipedia: GeneratedEmojipediaData,
 ): Promise<Partial<AllSlackData>> {
 	return readSnapshot("slack", (entry: SlackItem) =>
-		getEntryCldr(emojipedia, entry.emoji, undefined, [
-			entry.name,
-			...entry.aliases,
-		]),
+		getEntryCldr(emojipedia, entry.emoji, [entry.name, ...entry.aliases]),
 	);
 }

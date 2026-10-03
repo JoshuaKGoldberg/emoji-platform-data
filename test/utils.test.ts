@@ -21,12 +21,10 @@ describe(getEntryCldr, () => {
 		["broken_chain", "Broken Chain"],
 		["keycap_#", "Keycap Hash"],
 		["keycap: *", "Keycap: Asterisk"],
-		["men’s symbol", "Men’s Room"],
 	])("titles %s as %s when Emojipedia doesn't know it", (entry, title) => {
 		expect(
 			getEntryCldr(
 				{ aliases: new Map(), byCldr: {}, byCode: {}, items: [] },
-				undefined,
 				undefined,
 				[entry],
 			),

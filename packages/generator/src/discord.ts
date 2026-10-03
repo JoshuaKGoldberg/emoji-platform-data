@@ -9,9 +9,6 @@ export function generateDiscord(
 	emojipedia: GeneratedEmojipediaData,
 ): Promise<Partial<AllDiscordData>> {
 	return readSnapshot("discord", (entry: DiscordItem) =>
-		getEntryCldr(emojipedia, entry.emoji, undefined, [
-			entry.name,
-			...entry.aliases,
-		]),
+		getEntryCldr(emojipedia, entry.emoji, [entry.name, ...entry.aliases]),
 	);
 }
