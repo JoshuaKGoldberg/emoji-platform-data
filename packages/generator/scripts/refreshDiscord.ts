@@ -549,7 +549,9 @@ function toEntries(
  * a file name that doesn't resolve- as a miss rather than a failure.
  */
 async function tryReadKeywords(fileName: string) {
-	const response = await fetch(`${origin}/assets/${fileName}`);
+	const response = await fetch(`${origin}/assets/${fileName}`, {
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 
 	if (!response.ok) {
 		return undefined;
