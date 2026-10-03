@@ -187,6 +187,7 @@ jobs:
         if: failure()
         name: Report the failure in an issue
         run: |
+          set -o pipefail
           title="🛠 Tooling: Refresh $NAME Data is failing"
           existing=$(gh issue list --state open --json number,title --limit 100 | jq -r --arg title "$title" '.[] | select(.title == $title) | .number' | head -1)
 
@@ -215,6 +216,7 @@ jobs:
         if: success()
         name: Close the failure issue, if there is one
         run: |
+          set -o pipefail
           title="🛠 Tooling: Refresh $NAME Data is failing"
           existing=$(gh issue list --state open --json number,title --limit 100 | jq -r --arg title "$title" '.[] | select(.title == $title) | .number' | head -1)
 
