@@ -26,7 +26,6 @@ export async function generateFluemoji(
 		);
 	}
 
-	// Sorting keeps which entry wins a CLDR collision independent of glob order.
 	files.sort();
 
 	const pending = files.map(async (file) =>

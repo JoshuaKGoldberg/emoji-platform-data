@@ -541,7 +541,7 @@ async function readTranslations() {
  * Keeps the emoji Slack has a shortcode of their own for, which is every one
  * that isn't an alias of another.
  *
- * That includes 52 the picker doesn't list, which is why their position is
+ * That includes some the picker doesn't list, which is why their position is
  * optional. They're mostly the gender-neutral forms of older people emoji,
  * such as 👮 `cop`, which the picker shows only as their man and woman variants.
  *

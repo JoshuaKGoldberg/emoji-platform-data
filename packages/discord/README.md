@@ -40,7 +40,7 @@ Each entry is a `DiscordItem` describing one emoji as Discord's own emoji picker
 
 `name` is the shortcode Discord writes the emoji as, and `aliases` are the others it accepts: typing any of them between colons sends the emoji.
 `keywords` are the extra terms the picker matches searches against, which is how typing `celebrate` finds 🎉 (`tada`).
-1,557 of the 1,932 emoji have them, averaging 6.15 each; the 375 without, which the picker finds by name alone, are mostly country flags, along with keycaps, regional indicators, and some sequences, such as most families.
+Most emoji have them; the ones without, which the picker finds by name alone, are mostly country flags, along with keycaps, regional indicators, and some sequences, such as most families.
 `order` is where the emoji falls in the picker's overall order, counting from the first emoji of its first category.
 
 This package contains only static JSON and type declarations: it has no runtime dependencies.
