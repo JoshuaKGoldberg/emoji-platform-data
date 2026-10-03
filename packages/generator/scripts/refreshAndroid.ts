@@ -7,8 +7,23 @@ import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import * as zlib from "node:zlib";
 
+import { compareStrings } from "../src/compareStrings.js";
 import { AndroidItem } from "../src/dataTypes.js";
 import { readMarisaKeys } from "./marisa.js";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import {
+	checkCanaryKeywords,
+	checkCounts,
+	emojiCount,
+	throwIfProblems,
+} from "./shared/validate.js";
+import {
+	fetchZipDataStart,
+	inflateZipEntry,
+	readCentralDirectory,
+	readZipEntries,
+	ZipEntry,
+} from "./shared/zip.js";
 
 /** A byte range of the system image that belongs to the product partition. */
 interface ProductRange {
@@ -29,16 +44,6 @@ interface SystemImage {
 	apiLevel: number;
 	path: string;
 	url: string;
-}
-
-/** Where one file sits inside a zip, and how it's compressed. */
-interface ZipEntry {
-	compressedSize: number;
-	crc32: number;
-	method: number;
-	name: string;
-	offset: number;
-	size: number;
 }
 
 /** Where Gboard sits in the product partition of Google's system images. */
@@ -89,7 +94,7 @@ const sectorSize = 512;
 
 const snapshotPath = path.join(import.meta.dirname, "../android.json");
 
-const previous = await readPreviousSnapshot();
+const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 
 const image = await pickLatestImage();
 const directory = await fs.mkdtemp(path.join(os.tmpdir(), "refresh-android-"));
@@ -112,19 +117,13 @@ try {
 	// emoji data changes less often than that. Rewriting the snapshot for a new
 	// image alone would churn it -and open empty refresh pull requests- for data
 	// that hasn't changed.
-	if (previous && isSameData(previous.entries, entries)) {
-		console.log(
-			`Read ${entries.length.toString()} emoji from ${pack} in ${image.path}, unchanged from the snapshot.`,
-		);
-	} else {
-		await fs.writeFile(
-			snapshotPath,
-			JSON.stringify(snapshot, null, "\t") + "\n",
-		);
-		console.log(
-			`Wrote ${entries.length.toString()} emoji from ${pack} in ${image.path}, with ${countKeywords(entries).toString()} keywords between them.`,
-		);
-	}
+	await writeSnapshot({
+		details: `, with ${countKeywords(entries).toString()} keywords between them`,
+		from: `${pack} in ${image.path}`,
+		previous,
+		snapshot,
+		snapshotPath,
+	});
 } finally {
 	await fs.rm(directory, { force: true, recursive: true });
 }
@@ -145,16 +144,17 @@ function countKeywords(entries: AndroidItem[]) {
  * are written out.
  */
 async function extractProduct(url: string, productPath: string) {
-	const centralDirectory = await readCentralDirectory(url);
+	const centralDirectory = await readCentralDirectory(url, {
+		headers: asIs,
+		tailSize: centralDirectoryTailSize,
+	});
 	const entry = findZipEntry(
-		readEntries(centralDirectory),
+		readZipEntries(centralDirectory),
 		(name) => name.endsWith("/system.img"),
 		url,
 	);
 
-	const header = await fetchRange(url, entry.offset, entry.offset + 29);
-	const start =
-		entry.offset + 30 + header.readUInt16LE(26) + header.readUInt16LE(28);
+	const start = await fetchZipDataStart(url, entry, asIs);
 	const response = await fetch(url, {
 		headers: {
 			...asIs,
@@ -249,22 +249,6 @@ async function extractProduct(url: string, productPath: string) {
 	} finally {
 		await product.close();
 	}
-}
-
-async function fetchRange(url: string, start: number, end: number) {
-	const response = await fetch(url, {
-		headers: { ...asIs, Range: `bytes=${start.toString()}-${end.toString()}` },
-	});
-
-	// A server that ignores the range answers 200 with the whole file, which
-	// would be a ~2GB surprise rather than the slice being asked for.
-	if (response.status !== 206) {
-		throw new Error(
-			`Expected a partial response from ${url}, but got ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
-
-	return Buffer.from(await response.arrayBuffer());
 }
 
 /**
@@ -437,10 +421,6 @@ function findZipEntry(
 	return found[0];
 }
 
-function isSameData(left: AndroidItem[], right: AndroidItem[]) {
-	return JSON.stringify(left) === JSON.stringify(right);
-}
-
 /**
  * The newest stable Android system image with Google Play, and so Gboard.
  *
@@ -547,60 +527,6 @@ async function readApk(productPath: string) {
 }
 
 /**
- * Reads the zip's index: the tail holds a record saying where the central
- * directory is, and the central directory says where every file in it is.
- * Zips over 4GB keep those in a Zip64 record instead.
- */
-async function readCentralDirectory(url: string) {
-	const head = await fetch(url, { headers: asIs, method: "HEAD" });
-	if (!head.ok) {
-		throw new Error(
-			`Could not reach ${url}: ${head.status.toString()} ${head.statusText}.`,
-		);
-	}
-
-	const size = Number(head.headers.get("content-length"));
-	if (!size) {
-		throw new Error(`${url} didn't say how large it is.`);
-	}
-
-	const tail = await fetchRange(
-		url,
-		Math.max(0, size - centralDirectoryTailSize),
-		size - 1,
-	);
-	const end = tail.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
-
-	if (end === -1) {
-		throw new Error(`${url} doesn't end like a zip file.`);
-	}
-
-	let directorySize = tail.readUInt32LE(end + 12);
-	let directoryOffset = tail.readUInt32LE(end + 16);
-
-	if (directorySize === 0xffffffff || directoryOffset === 0xffffffff) {
-		const zip64 = tail.lastIndexOf(Buffer.from([0x50, 0x4b, 0x06, 0x06]));
-
-		if (zip64 === -1) {
-			throw new Error(`${url} is missing its Zip64 end record.`);
-		}
-
-		directorySize = Number(tail.readBigUInt64LE(zip64 + 40));
-		directoryOffset = Number(tail.readBigUInt64LE(zip64 + 48));
-	}
-
-	if (directoryOffset + directorySize > size) {
-		throw new Error(`${url} has a central directory that runs past its end.`);
-	}
-
-	return await fetchRange(
-		url,
-		directoryOffset,
-		directoryOffset + directorySize - 1,
-	);
-}
-
-/**
  * Reads the emoji search dictionary: which terms find which emoji.
  *
  * After its own 16-byte header comes a marisa trie of every term, then, for
@@ -690,40 +616,6 @@ function readDictionary(contents: Buffer) {
 	return terms;
 }
 
-function readEntries(centralDirectory: Buffer) {
-	const entries: ZipEntry[] = [];
-	let position = 0;
-
-	while (
-		position + 46 <= centralDirectory.length &&
-		centralDirectory.readUInt32LE(position) === 0x02014b50
-	) {
-		const nameLength = centralDirectory.readUInt16LE(position + 28);
-		const extraLength = centralDirectory.readUInt16LE(position + 30);
-		const commentLength = centralDirectory.readUInt16LE(position + 32);
-		const extraStart = position + 46 + nameLength;
-
-		const entry: ZipEntry = {
-			compressedSize: centralDirectory.readUInt32LE(position + 20),
-			crc32: centralDirectory.readUInt32LE(position + 16),
-			method: centralDirectory.readUInt16LE(position + 10),
-			name: centralDirectory.toString("utf8", position + 46, extraStart),
-			offset: centralDirectory.readUInt32LE(position + 42),
-			size: centralDirectory.readUInt32LE(position + 24),
-		};
-
-		readZip64Extra(
-			entry,
-			centralDirectory.subarray(extraStart, extraStart + extraLength),
-		);
-		entries.push(entry);
-
-		position += 46 + nameLength + extraLength + commentLength;
-	}
-
-	return entries;
-}
-
 function readLocalZipEntries(zip: Buffer, source: string) {
 	const end = zip.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
 
@@ -734,7 +626,7 @@ function readLocalZipEntries(zip: Buffer, source: string) {
 	const directorySize = zip.readUInt32LE(end + 12);
 	const directoryOffset = zip.readUInt32LE(end + 16);
 
-	return readEntries(
+	return readZipEntries(
 		zip.subarray(directoryOffset, directoryOffset + directorySize),
 	);
 }
@@ -745,18 +637,11 @@ function readLocalZipFile(zip: Buffer, entry: ZipEntry) {
 		30 +
 		zip.readUInt16LE(entry.offset + 26) +
 		zip.readUInt16LE(entry.offset + 28);
-	const compressed = zip.subarray(start, start + entry.compressedSize);
 
-	switch (entry.method) {
-		case 0:
-			return compressed;
-		case 8:
-			return zlib.inflateRawSync(compressed);
-		default:
-			throw new Error(
-				`'${entry.name}' is compressed with method ${entry.method.toString()}, which this script can't read.`,
-			);
-	}
+	return inflateZipEntry(
+		entry,
+		zip.subarray(start, start + entry.compressedSize),
+	);
 }
 
 /**
@@ -786,42 +671,6 @@ function readPack(apk: Buffer) {
 	};
 }
 
-async function readPreviousSnapshot() {
-	try {
-		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-			throw error;
-		}
-
-		return undefined;
-	}
-}
-
-/**
- * Sizes and offsets too large for 32 bits are written as all ones, with the
- * real values in a Zip64 extra field, in the order the fields appear.
- */
-function readZip64Extra(entry: ZipEntry, extra: Buffer) {
-	for (let position = 0; position + 4 <= extra.length;) {
-		const id = extra.readUInt16LE(position);
-		const size = extra.readUInt16LE(position + 2);
-
-		if (id === 0x0001) {
-			let field = position + 4;
-
-			for (const key of ["size", "compressedSize", "offset"] as const) {
-				if (entry[key] === 0xffffffff) {
-					entry[key] = Number(extra.readBigUInt64LE(field));
-					field += 8;
-				}
-			}
-		}
-
-		position += 4 + size;
-	}
-}
-
 /**
  * Turns the dictionary into one entry per emoji, in the dictionary's own order.
  * Keywords are sorted, since the order they come in is only the trie's.
@@ -829,57 +678,22 @@ function readZip64Extra(entry: ZipEntry, extra: Buffer) {
 function toEntries(terms: Map<string, string[]>) {
 	return [...terms].map(([emoji, keywords]) => ({
 		emoji,
-		keywords: keywords.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0)),
+		keywords: keywords.sort(compareStrings),
 	}));
 }
 
 function validate(entries: AndroidItem[], previous: Snapshot | undefined) {
-	const problems: string[] = [];
+	const problems = checkCounts(entries, previous?.entries, [
+		{ ...emojiCount, minimum: minimumEntries },
+		{
+			count: countKeywords,
+			counted: "keywords were read",
+			minimum: minimumKeywords,
+			name: "Keyword count",
+		},
+	]);
 
-	if (entries.length < minimumEntries) {
-		problems.push(
-			`Only ${entries.length.toString()} emoji were read, out of at least ${minimumEntries.toString()} expected.`,
-		);
-	}
-
-	const keywords = countKeywords(entries);
-
-	if (keywords < minimumKeywords) {
-		problems.push(
-			`Only ${keywords.toString()} keywords were read, out of at least ${minimumKeywords.toString()} expected.`,
-		);
-	}
-
-	if (previous) {
-		if (entries.length < previous.entries.length * 0.95) {
-			problems.push(
-				`Emoji count fell from ${previous.entries.length.toString()} to ${entries.length.toString()}, more than refreshing should change it.`,
-			);
-		}
-
-		const before = countKeywords(previous.entries);
-
-		if (keywords < before * 0.95) {
-			problems.push(
-				`Keyword count fell from ${before.toString()} to ${keywords.toString()}, more than refreshing should change it.`,
-			);
-		}
-	}
-
-	for (const [emoji, terms] of Object.entries(canaryTerms)) {
-		const entry = entries.find((candidate) => candidate.emoji === emoji);
-
-		if (!entry) {
-			problems.push(`${emoji} is missing entirely.`);
-			continue;
-		}
-
-		for (const term of terms) {
-			if (!entry.keywords.includes(term)) {
-				problems.push(`${emoji} no longer lists the keyword '${term}'.`);
-			}
-		}
-	}
+	checkCanaryKeywords(problems, entries, canaryTerms);
 
 	const empty = entries.filter((entry) => !entry.keywords.length);
 
@@ -889,14 +703,7 @@ function validate(entries: AndroidItem[], previous: Snapshot | undefined) {
 		);
 	}
 
-	if (problems.length) {
-		throw new Error(
-			[
-				"The data read for Android doesn't look right, so the snapshot wasn't written:",
-				...problems.map((problem) => `  ${problem}`),
-			].join("\n"),
-		);
-	}
+	throwIfProblems(problems, "for Android");
 }
 
 /**
