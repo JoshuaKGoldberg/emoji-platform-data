@@ -9,6 +9,7 @@ import { compareStrings } from "../packages/generator/src/compareStrings.js";
 import {
 	defaultFluemojiDirectory,
 	EmojiPlatformDataSource,
+	generateAll,
 	generateEmojipedia,
 	rebuildDirectory,
 	rebuildSourceDirectory,
@@ -20,7 +21,10 @@ vi.mock(import("../packages/generator/src/all.js"), async (importOriginal) => {
 
 	return {
 		...original,
-		generateAll: () => (generated ??= original.generateAll()),
+		generateAll: (settings?: Parameters<typeof original.generateAll>[0]) =>
+			settings
+				? original.generateAll(settings)
+				: (generated ??= original.generateAll()),
 	};
 });
 
@@ -48,6 +52,8 @@ interface JoyPixelsEntry {
  * The package combining every platform, which the others each take one of.
  */
 const combinedName = "emoji-platform-data";
+
+const maximumConcurrentReads = 256;
 
 const packagesDirectory = path.join(import.meta.dirname, "../packages");
 
@@ -130,25 +136,25 @@ async function readDeclaredTypes({ directory, name }: DataPackage) {
  * Every file under a directory, keyed by its path relative to the directory.
  */
 async function readFiles(directory: string) {
-	const entries = await fs.readdir(directory, {
-		recursive: true,
-		withFileTypes: true,
-	});
+	const files = (
+		await fs.readdir(directory, { recursive: true, withFileTypes: true })
+	)
+		.filter((entry) => entry.isFile())
+		.map((entry) => path.join(entry.parentPath, entry.name));
+	const contents: Record<string, string> = {};
 
-	return Object.fromEntries(
-		await Promise.all(
-			entries
-				.filter((entry) => entry.isFile())
-				.map(async (entry): Promise<[string, string]> => {
-					const file = path.join(entry.parentPath, entry.name);
+	for (let start = 0; start < files.length; start += maximumConcurrentReads) {
+		const chunk = files.slice(start, start + maximumConcurrentReads);
+		const read = await Promise.all(
+			chunk.map((file) => fs.readFile(file, "utf8")),
+		);
 
-					return [
-						path.relative(directory, file),
-						await fs.readFile(file, "utf8"),
-					];
-				}),
-		),
-	);
+		for (const [index, file] of chunk.entries()) {
+			contents[path.relative(directory, file)] = read[index];
+		}
+	}
+
+	return contents;
 }
 
 /**
@@ -687,6 +693,15 @@ describe(combinedName, () => {
 });
 
 describe("@emoji-platform-data/generator", () => {
+	it("generates the same data when generateAll is called again", async () => {
+		const actual = await vi.importActual<
+			typeof import("../packages/generator/src/all.js")
+		>("../packages/generator/src/all.js");
+		const first = structuredClone(await generateAll());
+
+		expect(await actual.generateAll()).toEqual(first);
+	});
+
 	it("resolves each Emojipedia title to its own emoji when another emoji's alternate name is the same", () => {
 		const { aliases, byCldr } = generateEmojipedia();
 
