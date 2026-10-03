@@ -1,5 +1,6 @@
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
+  queue: max
 
 jobs:
   pack:
