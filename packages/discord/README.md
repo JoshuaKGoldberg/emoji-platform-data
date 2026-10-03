@@ -58,4 +58,4 @@ Those are left out here: their shortcodes are mechanical suffixes on the base em
 
 The shortcodes, keywords, categories, and ordering are Discord's.
 This package's MIT license covers the code that extracts and packages them, not the underlying data.
-No Discord emoji artwork is included: these are text names only.
+No Discord emoji artwork is included: these are text names and keywords only.
