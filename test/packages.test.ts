@@ -3,16 +3,30 @@ import { createRequire } from "node:module";
 import * as os from "node:os";
 import * as path from "node:path";
 import { pathToFileURL } from "node:url";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { compareStrings } from "../packages/generator/src/compareStrings.js";
 import {
 	defaultFluemojiDirectory,
 	EmojiPlatformDataSource,
+	generateAll,
 	generateEmojipedia,
 	rebuildDirectory,
 	rebuildSourceDirectory,
 } from "../packages/generator/src/index.js";
+
+vi.mock(import("../packages/generator/src/all.js"), async (importOriginal) => {
+	const original = await importOriginal();
+	let generated: ReturnType<typeof original.generateAll> | undefined;
+
+	return {
+		...original,
+		generateAll: (settings?: Parameters<typeof original.generateAll>[0]) =>
+			settings
+				? original.generateAll(settings)
+				: (generated ??= original.generateAll()),
+	};
+});
 
 /**
  * What every data package exports, keyed by glyph and by PascalCase title.
@@ -38,6 +52,8 @@ interface JoyPixelsEntry {
  * The package combining every platform, which the others each take one of.
  */
 const combinedName = "emoji-platform-data";
+
+const maximumConcurrentReads = 256;
 
 const packagesDirectory = path.join(import.meta.dirname, "../packages");
 
@@ -120,19 +136,25 @@ async function readDeclaredTypes({ directory, name }: DataPackage) {
  * Every file under a directory, keyed by its path relative to the directory.
  */
 async function readFiles(directory: string) {
-	const files: Record<string, string> = {};
+	const files = (
+		await fs.readdir(directory, { recursive: true, withFileTypes: true })
+	)
+		.filter((entry) => entry.isFile())
+		.map((entry) => path.join(entry.parentPath, entry.name));
+	const contents: Record<string, string> = {};
 
-	for (const entry of await fs.readdir(directory, {
-		recursive: true,
-		withFileTypes: true,
-	})) {
-		if (entry.isFile()) {
-			const file = path.join(entry.parentPath, entry.name);
-			files[path.relative(directory, file)] = await fs.readFile(file, "utf8");
+	for (let start = 0; start < files.length; start += maximumConcurrentReads) {
+		const chunk = files.slice(start, start + maximumConcurrentReads);
+		const read = await Promise.all(
+			chunk.map((file) => fs.readFile(file, "utf8")),
+		);
+
+		for (const [index, file] of chunk.entries()) {
+			contents[path.relative(directory, file)] = read[index];
 		}
 	}
 
-	return files;
+	return contents;
 }
 
 /**
@@ -671,6 +693,15 @@ describe(combinedName, () => {
 });
 
 describe("@emoji-platform-data/generator", () => {
+	it("generates the same data when generateAll is called again", async () => {
+		const actual = await vi.importActual<
+			typeof import("../packages/generator/src/all.js")
+		>("../packages/generator/src/all.js");
+		const first = structuredClone(await generateAll());
+
+		expect(await actual.generateAll()).toEqual(first);
+	});
+
 	it("resolves each Emojipedia title to its own emoji when another emoji's alternate name is the same", () => {
 		const { aliases, byCldr } = generateEmojipedia();
 
