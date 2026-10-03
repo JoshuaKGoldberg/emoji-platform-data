@@ -10,6 +10,7 @@ import * as zlib from "node:zlib";
 import { compareStrings } from "../src/compareStrings.js";
 import { AndroidItem } from "../src/dataTypes.js";
 import { readMarisaKeys } from "./marisa.js";
+import { requestTimeout } from "./shared/fetch.js";
 import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
 import {
 	checkCanaryKeywords,
@@ -76,6 +77,9 @@ const headLimit = 64 * 1024 * 1024;
 
 /** The emoji dictionary's own header, before the trie of its terms. */
 const dictionaryMagic = 0x9bc13afe;
+
+/** How long streaming the whole system image may take before it's given up on. */
+const downloadTimeout = 2 * 60 * 60 * 1000;
 
 /** The newest system image listing schema version when this was written. */
 const knownListingVersion = 5;
@@ -166,6 +170,7 @@ async function extractProduct(url: string, productPath: string) {
 			...asIs,
 			Range: `bytes=${start.toString()}-${(start + entry.compressedSize - 1).toString()}`,
 		},
+		signal: AbortSignal.timeout(downloadTimeout),
 	});
 
 	if (response.status !== 206 || !response.body) {
@@ -255,7 +260,9 @@ async function extractProduct(url: string, productPath: string) {
  * Fetches a file's text, or undefined if the server says there's no such file.
  */
 async function fetchText(url: string) {
-	const response = await fetch(url);
+	const response = await fetch(url, {
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 
 	if (response.status === 404) {
 		return undefined;
