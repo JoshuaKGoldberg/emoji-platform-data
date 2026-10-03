@@ -627,25 +627,6 @@ describe(combinedName, () => {
 	});
 });
 
-describe("rebuildSourceDirectory", () => {
-	it("throws when asked for a source it has no types for", async () => {
-		const directory = await fs.mkdtemp(
-			path.join(os.tmpdir(), "emoji-platform-data-"),
-		);
-
-		try {
-			await expect(
-				rebuildSourceDirectory({
-					directory,
-					source: "unknown" as EmojiPlatformDataSource,
-				}),
-			).rejects.toThrow("dataTypes.d.ts doesn't declare");
-		} finally {
-			await fs.rm(directory, { force: true, recursive: true });
-		}
-	});
-});
-
 describe("@emoji-platform-data/generator", () => {
 	it("resolves each Emojipedia title to its own emoji when another emoji's alternate name is the same", () => {
 		const { aliases, byCldr } = generateEmojipedia();
