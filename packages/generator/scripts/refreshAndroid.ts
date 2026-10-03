@@ -4,6 +4,7 @@ import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 import * as zlib from "node:zlib";
 
 import { AndroidItem } from "../src/dataTypes.js";
@@ -170,9 +171,6 @@ async function extractProduct(url: string, productPath: string) {
 		);
 	}
 
-	const inflated = Readable.fromWeb(
-		response.body as Parameters<typeof Readable.fromWeb>[0],
-	).pipe(zlib.createInflateRaw());
 	const product = await fs.open(productPath, "w");
 
 	try {
@@ -183,41 +181,55 @@ async function extractProduct(url: string, productPath: string) {
 		let position = 0;
 		let ranges: ProductRange[] | undefined;
 
-		for await (const chunk of inflated as AsyncIterable<Buffer>) {
-			crc = zlib.crc32(chunk, crc);
+		try {
+			await pipeline(
+				Readable.fromWeb(
+					response.body as Parameters<typeof Readable.fromWeb>[0],
+				),
+				zlib.createInflateRaw(),
+				async (inflated: AsyncIterable<Buffer>) => {
+					for await (const chunk of inflated) {
+						crc = zlib.crc32(chunk, crc);
 
-			if (!ranges) {
-				head.push(chunk);
-				headSize += chunk.length;
+						if (!ranges) {
+							head.push(chunk);
+							headSize += chunk.length;
 
-				// Inflating yields small chunks, so the head is only put together
-				// and tried each time it's doubled, rather than for every one.
-				if (headSize < nextAttempt) {
-					continue;
-				}
+							// Inflating yields small chunks, so the head is only put together
+							// and tried each time it's doubled, rather than for every one.
+							if (headSize < nextAttempt) {
+								continue;
+							}
 
-				const joined = Buffer.concat(head);
-				ranges = findProductRanges(joined);
+							const joined = Buffer.concat(head);
+							ranges = findProductRanges(joined);
 
-				if (!ranges) {
-					if (headSize > headLimit) {
-						throw new Error(
-							`Found no product partition in the first ${headLimit.toString()} bytes of the system image.`,
-						);
+							if (!ranges) {
+								if (headSize > headLimit) {
+									throw new Error(
+										`Found no product partition in the first ${headLimit.toString()} bytes of the system image.`,
+									);
+								}
+
+								nextAttempt *= 2;
+								continue;
+							}
+
+							await writeProductRanges(product, ranges, joined, 0);
+							position = headSize;
+							head.length = 0;
+							continue;
+						}
+
+						await writeProductRanges(product, ranges, chunk, position);
+						position += chunk.length;
 					}
-
-					nextAttempt *= 2;
-					continue;
-				}
-
-				await writeProductRanges(product, ranges, joined, 0);
-				position = headSize;
-				head.length = 0;
-				continue;
-			}
-
-			await writeProductRanges(product, ranges, chunk, position);
-			position += chunk.length;
+				},
+			);
+		} catch (error) {
+			throw new Error(`Could not read the product partition out of ${url}.`, {
+				cause: error,
+			});
 		}
 
 		if (position !== entry.size) {
