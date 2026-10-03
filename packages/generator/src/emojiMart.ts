@@ -4,7 +4,12 @@ import { fileURLToPath } from "node:url";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllEmojiMartData, EmojiMartItem } from "./types.js";
-import { getEntryCldr, normalizeCodepoints, recordByCldr } from "./utils.js";
+import {
+	getEntryCldr,
+	normalizeCodepoints,
+	recordByCldr,
+	withoutVariationSelectorCodes,
+} from "./utils.js";
 
 interface ResolvedEntry {
 	/**
@@ -96,7 +101,8 @@ function hasCodepoints(codepointsHex: string[], unified: string) {
 
 	return (
 		normalized === unified ||
-		withoutVariationSelectors(normalized) === withoutVariationSelectors(unified)
+		withoutVariationSelectorCodes(normalized) ===
+			withoutVariationSelectorCodes(unified)
 	);
 }
 
@@ -121,11 +127,4 @@ function pickEntry(cldr: string, group: ResolvedEntry[]) {
 	);
 
 	return kept;
-}
-
-function withoutVariationSelectors(unified: string) {
-	return unified
-		.split("-")
-		.filter((hex) => hex !== "fe0f")
-		.join("-");
 }
