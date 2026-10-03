@@ -1,5 +1,6 @@
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
+  queue: max
 
 jobs:
   pack:
@@ -52,14 +53,18 @@ jobs:
           # Each package's release notes link the pull requests that went into
           # it. A pull request can go into many packages' releases at once, so
           # it gets one comment listing them all, rather than one per release.
-          for tag in $(jq -r '.[] | "\(.name)@\(.version)"' <<< "$PUBLISHED_PACKAGES"); do
+          tags=$(jq -r '.[] | "\(.name)@\(.version)"' <<< "$PUBLISHED_PACKAGES")
+
+          for tag in $tags; do
             url=$(gh release view "$tag" --json url --jq .url)
-            gh release view "$tag" --json body --jq .body |
-              grep -oE '/pull/[0-9]+' |
+            notes=$(gh release view "$tag" --json body --jq .body)
+            grep -oE '/pull/[0-9]+' <<< "$notes" |
               cut -d / -f 3 |
               sort -u |
               sed "s|\$| [\`$tag\`]($url)|"
-          done | sort -n > "$RUNNER_TEMP/released.txt"
+          done > "$RUNNER_TEMP/released-unsorted.txt"
+
+          sort -n "$RUNNER_TEMP/released-unsorted.txt" > "$RUNNER_TEMP/released.txt"
 
           for pr in $(cut -d ' ' -f 1 "$RUNNER_TEMP/released.txt" | uniq); do
             releases=$(grep "^$pr " "$RUNNER_TEMP/released.txt" | cut -d ' ' -f 2- | sed 's/^/- /')
@@ -67,7 +72,9 @@ jobs:
 
             gh pr comment "$pr" --body "$body"
 
-            for issue in $(gh pr view "$pr" --json closingIssuesReferences --jq '.closingIssuesReferences[].number'); do
+            issues=$(gh pr view "$pr" --json closingIssuesReferences --jq '.closingIssuesReferences[].number')
+
+            for issue in $issues; do
               gh issue comment "$issue" --body "$body"
             done
           done

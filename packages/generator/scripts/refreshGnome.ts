@@ -97,6 +97,8 @@ const expectedLocales = [
 
 const gitlabProject = "https://gitlab.gnome.org/api/v4/projects/GNOME%2Fgtk";
 
+const maximumConcurrentFetches = 5;
+
 const minimumEntries = 1800;
 
 /** The smallest section, Activities, holds eighty emoji, so this is a wide margin. */
@@ -114,11 +116,14 @@ const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 const tag = process.argv[2] ?? (await pickLatestStableTag());
 const files = await listDataFiles(tag);
 
-const byLocale = new Map<string, RawItem[]>();
-
-for (const [locale, file] of files) {
-	byLocale.set(locale, readEmojiData(await fetchBuffer(rawUrl(tag, file))));
-}
+const byLocale = new Map(
+	await mapConcurrently(
+		[...files],
+		maximumConcurrentFetches,
+		async ([locale, file]) =>
+			[locale, readEmojiData(await fetchBuffer(rawUrl(tag, file)))] as const,
+	),
+);
 
 const english = byLocale.get(sourceLocale);
 
@@ -173,6 +178,26 @@ async function listDataFiles(tag: string) {
 			.filter((file) => file.name.endsWith(".data"))
 			.map((file) => [file.name.slice(0, -".data".length), file.path]),
 	);
+}
+
+async function mapConcurrently<Item, Result>(
+	items: Item[],
+	limit: number,
+	callback: (item: Item) => Promise<Result>,
+) {
+	const results: Result[] = [];
+	let next = 0;
+
+	await Promise.all(
+		Array.from({ length: limit }, async () => {
+			while (next < items.length) {
+				const index = next++;
+				results[index] = await callback(items[index]);
+			}
+		}),
+	);
+
+	return results;
 }
 
 /**
@@ -336,14 +361,10 @@ function toEntries(english: RawItem[], byLocale: Map<string, RawItem[]>) {
 	const entries = new Map<string, GnomeItem>();
 	let order = 0;
 
-	const shown = [...english]
+	const shown = english
 		.map((item, index) => ({ index, item }))
 		.filter(({ item }) => categories.has(item.group))
-		.sort(
-			(a, b) =>
-				[...categories.keys()].indexOf(a.item.group) -
-					[...categories.keys()].indexOf(b.item.group) || a.index - b.index,
-		)
+		.sort((a, b) => a.item.group - b.item.group || a.index - b.index)
 		.map(({ item }) => item);
 
 	for (const item of shown) {

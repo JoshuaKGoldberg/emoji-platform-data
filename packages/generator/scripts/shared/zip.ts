@@ -61,19 +61,26 @@ export async function fetchZipDataStart(
 		headers,
 	);
 
+	if (header.readUInt32LE(0) !== 0x04034b50) {
+		throw new Error(
+			`'${entry.name}' has no local file header where ${url}'s central directory puts it.`,
+		);
+	}
+
 	return entry.offset + 30 + header.readUInt16LE(26) + header.readUInt16LE(28);
 }
 
 export function inflateZipEntry(entry: ZipEntry, compressed: Buffer) {
-	switch (entry.method) {
-		case 0:
-			return compressed;
-		case 8:
-			return zlib.inflateRawSync(compressed);
-		default:
-			throw new Error(
-				`'${entry.name}' is compressed with method ${entry.method.toString()}, which this script can't read.`,
-			);
+	checkZipMethod(entry);
+
+	return entry.method === 8 ? zlib.inflateRawSync(compressed) : compressed;
+}
+
+function checkZipMethod(entry: ZipEntry) {
+	if (entry.method !== 0 && entry.method !== 8) {
+		throw new Error(
+			`'${entry.name}' is compressed with method ${entry.method.toString()}, which this script can't read.`,
+		);
 	}
 }
 
@@ -178,6 +185,8 @@ export async function readZipFile(
 	entry: ZipEntry,
 	headers?: Record<string, string>,
 ) {
+	checkZipMethod(entry);
+
 	const start = await fetchZipDataStart(url, entry, headers);
 
 	return inflateZipEntry(

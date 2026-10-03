@@ -1,9 +1,10 @@
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import * as crypto from "node:crypto";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 import * as zlib from "node:zlib";
 
 import { compareStrings } from "../src/compareStrings.js";
@@ -75,6 +76,9 @@ const headLimit = 64 * 1024 * 1024;
 
 /** The emoji dictionary's own header, before the trie of its terms. */
 const dictionaryMagic = 0x9bc13afe;
+
+/** The newest system image listing schema version when this was written. */
+const knownListingVersion = 5;
 
 const minimumEntries = 1500;
 
@@ -170,9 +174,6 @@ async function extractProduct(url: string, productPath: string) {
 		);
 	}
 
-	const inflated = Readable.fromWeb(
-		response.body as Parameters<typeof Readable.fromWeb>[0],
-	).pipe(zlib.createInflateRaw());
 	const product = await fs.open(productPath, "w");
 
 	try {
@@ -183,41 +184,55 @@ async function extractProduct(url: string, productPath: string) {
 		let position = 0;
 		let ranges: ProductRange[] | undefined;
 
-		for await (const chunk of inflated as AsyncIterable<Buffer>) {
-			crc = zlib.crc32(chunk, crc);
+		try {
+			await pipeline(
+				Readable.fromWeb(
+					response.body as Parameters<typeof Readable.fromWeb>[0],
+				),
+				zlib.createInflateRaw(),
+				async (inflated: AsyncIterable<Buffer>) => {
+					for await (const chunk of inflated) {
+						crc = zlib.crc32(chunk, crc);
 
-			if (!ranges) {
-				head.push(chunk);
-				headSize += chunk.length;
+						if (!ranges) {
+							head.push(chunk);
+							headSize += chunk.length;
 
-				// Inflating yields small chunks, so the head is only put together
-				// and tried each time it's doubled, rather than for every one.
-				if (headSize < nextAttempt) {
-					continue;
-				}
+							// Inflating yields small chunks, so the head is only put together
+							// and tried each time it's doubled, rather than for every one.
+							if (headSize < nextAttempt) {
+								continue;
+							}
 
-				const joined = Buffer.concat(head);
-				ranges = findProductRanges(joined);
+							const joined = Buffer.concat(head);
+							ranges = findProductRanges(joined);
 
-				if (!ranges) {
-					if (headSize > headLimit) {
-						throw new Error(
-							`Found no product partition in the first ${headLimit.toString()} bytes of the system image.`,
-						);
+							if (!ranges) {
+								if (headSize > headLimit) {
+									throw new Error(
+										`Found no product partition in the first ${headLimit.toString()} bytes of the system image.`,
+									);
+								}
+
+								nextAttempt *= 2;
+								continue;
+							}
+
+							await writeProductRanges(product, ranges, joined, 0);
+							position = headSize;
+							head.length = 0;
+							continue;
+						}
+
+						await writeProductRanges(product, ranges, chunk, position);
+						position += chunk.length;
 					}
-
-					nextAttempt *= 2;
-					continue;
-				}
-
-				await writeProductRanges(product, ranges, joined, 0);
-				position = headSize;
-				head.length = 0;
-				continue;
-			}
-
-			await writeProductRanges(product, ranges, chunk, position);
-			position += chunk.length;
+				},
+			);
+		} catch (error) {
+			throw new Error(`Could not read the product partition out of ${url}.`, {
+				cause: error,
+			});
 		}
 
 		if (position !== entry.size) {
@@ -236,10 +251,23 @@ async function extractProduct(url: string, productPath: string) {
 	}
 }
 
+/**
+ * Fetches a file's text, or undefined if the server says there's no such file.
+ */
 async function fetchText(url: string) {
 	const response = await fetch(url);
 
-	return response.ok ? await response.text() : undefined;
+	if (response.status === 404) {
+		return undefined;
+	}
+
+	if (!response.ok) {
+		throw new Error(
+			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
+		);
+	}
+
+	return await response.text();
 }
 
 /**
@@ -405,8 +433,16 @@ function findZipEntry(
 async function pickLatestImage() {
 	let xml: string | undefined;
 
-	for (let version = 9; version > 0 && !xml; version -= 1) {
-		xml = await fetchText(`${repositoryUrl}sys-img2-${version.toString()}.xml`);
+	for (let version = knownListingVersion; ; version += 1) {
+		const listing = await fetchText(
+			`${repositoryUrl}sys-img2-${version.toString()}.xml`,
+		);
+
+		if (listing === undefined) {
+			break;
+		}
+
+		xml = listing;
 	}
 
 	if (!xml) {
@@ -461,18 +497,33 @@ async function readApk(productPath: string) {
 		);
 	}
 
-	try {
-		return execFileSync(
-			"dump.erofs",
-			["--cat", `--path=${apkPath}`, productPath],
-			{ maxBuffer: 512 * 1024 * 1024, stdio: ["ignore", "pipe", "pipe"] },
-		);
-	} catch (error) {
+	const result = spawnSync(
+		"dump.erofs",
+		["--cat", `--path=${apkPath}`, productPath],
+		{ maxBuffer: 512 * 1024 * 1024, stdio: ["ignore", "pipe", "pipe"] },
+	);
+
+	const failure = `Could not read ${apkPath} out of the product partition. That needs erofs-utils 1.8.5 or newer, such as with \`brew install erofs-utils\`.`;
+
+	if (result.error) {
+		throw new Error(failure, { cause: result.error });
+	}
+
+	const stderr = result.stderr.toString().trim();
+
+	if (result.status !== 0 || !result.stdout.length || stderr) {
 		throw new Error(
-			`Could not read ${apkPath} out of the product partition. That needs erofs-utils 1.8.5 or newer, such as with \`brew install erofs-utils\`.`,
-			{ cause: error },
+			[
+				failure,
+				result.signal && `dump.erofs was killed by ${result.signal}.`,
+				stderr,
+			]
+				.filter(Boolean)
+				.join("\n"),
 		);
 	}
+
+	return result.stdout;
 }
 
 /**

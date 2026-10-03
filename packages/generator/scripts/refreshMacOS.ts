@@ -99,11 +99,16 @@ const entries = foldSkinToneVariants(await runExtractor())
 
 validate(entries, previous);
 
+const [coreEmojiVersion, macosVersion] = await Promise.all([
+	readCoreEmojiVersion(),
+	readMacOSVersion(),
+]);
+
 const snapshot: Snapshot = {
-	coreEmojiVersion: await readCoreEmojiVersion(),
+	coreEmojiVersion,
 	entries,
 	localeIdentifier,
-	macosVersion: await readMacOSVersion(),
+	macosVersion,
 };
 
 await writeSnapshot({

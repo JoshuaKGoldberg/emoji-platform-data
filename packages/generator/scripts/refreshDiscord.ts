@@ -123,6 +123,8 @@ const snapshotPath = path.join(import.meta.dirname, "../discord.json");
 const source = process.argv[2] ?? defaultSource;
 const origin = new URL(source).origin;
 
+const fetchedScripts = new Map<string, Promise<string>>();
+
 const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 
 const page = await fetchText(source);
@@ -156,7 +158,14 @@ await writeSnapshot({
 });
 
 async function fetchScript(chunk: string) {
-	return await fetchText(`${origin}/assets/${chunk}`);
+	let script = fetchedScripts.get(chunk);
+
+	if (!script) {
+		script = fetchText(`${origin}/assets/${chunk}`);
+		fetchedScripts.set(chunk, script);
+	}
+
+	return await script;
 }
 
 /**

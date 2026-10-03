@@ -1,15 +1,19 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { generateAll } from "../packages/generator/src/all.js";
+import { generateAll, getEmojiGlyphs } from "../packages/generator/src/all.js";
 import { generateDiscord } from "../packages/generator/src/discord.js";
+import { generateEmojipedia } from "../packages/generator/src/emojipedia.js";
 import { generateGemoji } from "../packages/generator/src/gemoji.js";
 import { generateMacOS } from "../packages/generator/src/macos.js";
 import { generateSlack } from "../packages/generator/src/slack.js";
+import { generateTwemoji } from "../packages/generator/src/twemoji.js";
 import {
 	DiscordItem,
+	EmojipediaItem,
 	GemojiItem,
 	MacOSItem,
 	SlackItem,
+	TwemojiItem,
 } from "../packages/generator/src/types.js";
 
 vi.mock("../packages/generator/src/android.js", () => ({
@@ -139,4 +143,106 @@ describe(generateAll, () => {
 			},
 		});
 	});
+
+	it.each([
+		["Broken Chain", "broken-chain"],
+		["Piñata", "pi-ata"],
+		["A/B Button (Blood Type)", "a-b-button-blood-type"],
+		["Keycap: *", "keycap"],
+		["U+1F517", "u-1f517"],
+	])("slugs %s as %s when no platform gives it a slug", async (title, slug) => {
+		vi.mocked(generateMacOS).mockResolvedValueOnce({
+			[title]: { emoji: "🔗" } as MacOSItem,
+		});
+
+		expect(await generateAll()).toMatchObject({ [title]: { slug } });
+	});
+
+	it("slugs a title by its Twemoji description when it has one", async () => {
+		vi.mocked(generateTwemoji).mockResolvedValueOnce({
+			"U+1F517": {
+				description: "link symbol",
+				unicode: "1f517",
+			} as TwemojiItem,
+		});
+
+		expect(await generateAll()).toMatchObject({
+			"U+1F517": { slug: "link-symbol" },
+		});
+	});
+
+	it.each([
+		{
+			code: "\u{1F9D5}\u200D\u2640\uFE0F",
+			emoji: "\u{1F9D5}",
+			macos: "\u{1F9D5}",
+			when: "no platform writes it as Emojipedia does",
+		},
+		{
+			code: "\u2693",
+			emoji: "\u2693",
+			macos: "\u2693\uFE0F",
+			when: "a platform writes it with another variation selector",
+		},
+		{
+			code: "\u{1F9D5}\u200D\u2640\uFE0F",
+			emoji: "\u{1F9D5}\u200D\u2640\uFE0F",
+			macos: undefined,
+			when: "no platform has it",
+		},
+	])("keys an emoji by $emoji when $when", async ({ code, emoji, macos }) => {
+		vi.mocked(generateEmojipedia).mockReturnValueOnce({
+			aliases: new Map(),
+			byCldr: { Emoji: { code, slug: "emoji" } as EmojipediaItem },
+			byCode: {},
+			items: [],
+		});
+		vi.mocked(generateMacOS).mockResolvedValueOnce(
+			macos ? { Emoji: { emoji: macos } as MacOSItem } : {},
+		);
+
+		expect(await generateAll()).toMatchObject({ Emoji: { emoji } });
+	});
+});
+
+describe(getEmojiGlyphs, () => {
+	it.each([
+		{ count: 0, emoji: "\u2693", glyphs: ["\u2693"] },
+		{
+			count: 1,
+			emoji: "\u2693\uFE0F",
+			glyphs: ["\u2693\uFE0F", "\u2693"],
+		},
+		{
+			count: 2,
+			emoji: "\u{1F3F3}\uFE0F\u200D\u26A7\uFE0F",
+			glyphs: [
+				"\u{1F3F3}\uFE0F\u200D\u26A7\uFE0F",
+				"\u{1F3F3}\uFE0F\u200D\u26A7",
+				"\u{1F3F3}\u200D\u26A7\uFE0F",
+				"\u{1F3F3}\u200D\u26A7",
+			],
+		},
+		{
+			count: 3,
+			emoji: "a\uFE0Fb\uFE0Fc\uFE0F",
+			glyphs: [
+				"a\uFE0Fb\uFE0Fc\uFE0F",
+				"a\uFE0Fb\uFE0Fc",
+				"a\uFE0Fbc\uFE0F",
+				"a\uFE0Fbc",
+				"ab\uFE0Fc\uFE0F",
+				"ab\uFE0Fc",
+				"abc\uFE0F",
+				"abc",
+			],
+		},
+	])(
+		"looks an emoji with $count variation selectors up by each combination of them kept or left out",
+		({ emoji, glyphs }) => {
+			expect(getEmojiGlyphs({ emoji, slug: "emoji", title: "Emoji" })).toEqual(
+				new Set(glyphs),
+			);
+		},
+	);
 });

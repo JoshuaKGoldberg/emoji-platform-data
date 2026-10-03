@@ -31,7 +31,7 @@ export async function generateTwemoji(
 		path.join(import.meta.dirname, "../emoji.yml"),
 		"utf8",
 	);
-	const parsed = (await parse(rawTwemoji)) as TwemojiGroupRaw[];
+	const parsed = parse(rawTwemoji) as TwemojiGroupRaw[];
 
 	const entries = parsed.flatMap((group) =>
 		group.items
@@ -49,7 +49,7 @@ export async function generateTwemoji(
 		const glyph = fromUnicode(entry.unicode);
 
 		return {
-			cldr: getEntryCldr(emojipedia, glyph, entry.unicode, [entry.description]),
+			cldr: getEntryCldr(emojipedia, glyph, [entry.description]),
 			entry,
 			glyph,
 		};
