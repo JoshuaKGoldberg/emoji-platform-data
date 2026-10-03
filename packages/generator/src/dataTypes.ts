@@ -86,7 +86,7 @@ export interface EmojiMartItem {
 	/** The emoji, then each of its skin tone variants. */
 	skins: EmojiMartSkin[];
 
-	/** Emoji version that introduced the emoji, such as 1. */
+	/** Emoji version that introduced the emoji, such as 13.1 for ❤️‍🔥, with the emoji from Emoji 0.6 and 0.7 counted as 1. */
 	version: number;
 }
 
