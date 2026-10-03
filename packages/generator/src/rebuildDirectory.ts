@@ -191,7 +191,8 @@ async function writeDataDirectory({
 				"",
 				`export const byEmoji: Record<string, ${typeName}>;`,
 				"",
-				await readDataTypes(),
+				await readDataTypes(typeName),
+				"",
 			].join("\n"),
 		),
 		fs.writeFile(
@@ -212,17 +213,39 @@ async function writeDataDirectory({
 
 /**
  * Reads the compiled declarations for dataTypes.ts, which are emitted into the
- * generator's lib, to inline into each data package's index.d.mts.
+ * generator's lib, to inline the ones a data package's type refers to into its
+ * index.d.mts.
  */
-async function readDataTypes() {
+async function readDataTypes(typeName: string) {
 	const raw = await fs.readFile(
 		path.join(import.meta.dirname, "../lib/dataTypes.d.ts"),
 		"utf8",
 	);
+	const declarations = splitDeclarations(
+		raw
+			.split("\n")
+			.filter((line) => !line.startsWith("//# sourceMappingURL="))
+			.join("\n"),
+	);
+	const referenced = new Set([typeName]);
 
-	return raw
-		.split("\n")
-		.filter((line) => !line.startsWith("//# sourceMappingURL="))
+	for (const name of referenced) {
+		const declaration = declarations.get(name);
+
+		if (!declaration) {
+			throw new Error(`dataTypes.d.ts doesn't declare '${name}'.`);
+		}
+
+		for (const [word] of withoutComments(declaration).matchAll(/\w+/g)) {
+			if (declarations.has(word)) {
+				referenced.add(word);
+			}
+		}
+	}
+
+	return Array.from(declarations)
+		.filter(([name]) => referenced.has(name))
+		.map(([, declaration]) => declaration)
 		.join("\n");
 }
 
@@ -240,4 +263,30 @@ function sortObjectKeys(data: unknown): unknown {
 			.sort(([a], [b]) => compareStrings(a, b))
 			.map(([key, value]) => [key, sortObjectKeys(value)]),
 	);
+}
+
+/**
+ * Each top-level declaration in a .d.ts file, with its doc comment, keyed by
+ * its name.
+ */
+function splitDeclarations(raw: string) {
+	const declarations = new Map<string, string>();
+	let comment = "";
+
+	for (const chunk of raw.split(/^(?=\/\*\*|export )/m)) {
+		const name = /^export (?:interface|type) (\w+)/.exec(chunk)?.[1];
+
+		if (name) {
+			declarations.set(name, (comment + chunk).trimEnd());
+			comment = "";
+		} else {
+			comment += chunk;
+		}
+	}
+
+	return declarations;
+}
+
+function withoutComments(declaration: string) {
+	return declaration.replaceAll(/\/\*\*[\s\S]*?\*\//g, "");
 }

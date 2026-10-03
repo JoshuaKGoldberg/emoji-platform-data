@@ -100,6 +100,23 @@ async function importPackage({ directory, entry, name }: DataPackage) {
 }
 
 /**
+ * The name of each type a package's index.d.mts declares.
+ */
+async function readDeclaredTypes({ directory, name }: DataPackage) {
+	await assertBuilt(name, directory, "./lib/index.d.mts");
+
+	const declarations = await fs.readFile(
+		path.join(directory, "lib/index.d.mts"),
+		"utf8",
+	);
+
+	return Array.from(
+		declarations.matchAll(/^export (?:interface|type) (\w+)/gm),
+		([, name]) => name,
+	);
+}
+
+/**
  * Every file under a directory, keyed by its path relative to the directory.
  */
 async function readFiles(directory: string) {
@@ -447,6 +464,19 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 	}
 
 	if (dataPackage !== combinedPackage) {
+		it("declares none of another platform's types when it's a single platform's package", async () => {
+			const declared = await readDeclaredTypes(dataPackage);
+			const others = await Promise.all(
+				dataPackages
+					.filter((other) => other !== dataPackage && other !== combinedPackage)
+					.map(readDeclaredTypes),
+			);
+
+			expect(
+				declared.filter((name) => others.some((names) => names.includes(name))),
+			).toEqual([]);
+		});
+
 		it(`has the same entries as ${combinedName}'s ${toSourceKey(dataPackage.name)} data when it's a single platform's package`, async () => {
 			const source = toSourceKey(dataPackage.name);
 			const combined = await importPackage(combinedPackage);
@@ -462,6 +492,21 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 });
 
 describe(combinedName, () => {
+	it("declares every type of each platform's package when it combines their data", async () => {
+		const declared = await readDeclaredTypes(combinedPackage);
+		const missing = (
+			await Promise.all(
+				dataPackages
+					.filter((dataPackage) => dataPackage !== combinedPackage)
+					.map(readDeclaredTypes),
+			)
+		)
+			.flat()
+			.filter((name) => !declared.includes(name));
+
+		expect(missing).toEqual([]);
+	});
+
 	it.each(["🤵", "🤵‍♂️", "👯", "👯‍♀️"])(
 		"keeps %s when Emojipedia titles it the same as another emoji",
 		async (emoji) => {
