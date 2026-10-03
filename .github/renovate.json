@@ -11,5 +11,6 @@
 	"minimumReleaseAge": "7 days",
 	"patch": { "enabled": false },
 	"pinDigests": false,
-	"postUpdateOptions": ["pnpmDedupe"]
+	"postUpdateOptions": ["pnpmDedupe"],
+	"rebaseWhen": "conflicted"
 }
