@@ -42,7 +42,7 @@ Rather than reimplement that choice, the script offers every form the client spe
 
 The data lists every skin tone variant of the emoji that have them, but only so that shortcodes like `wave_tone3` resolve.
 Their names are mechanical suffixes on the base emoji's, unlike the macOS variants that carry real search terms, so they're dropped rather than folded in.
-What's left is the 1,932 emoji the picker lists, 1,557 of which have keywords; the rest are almost all country flags, which the picker finds by name alone.
+What's left is the 1,932 emoji the picker lists, 1,557 of which have keywords; the rest, which the picker finds by name alone, are mostly country flags, along with keycaps, regional indicators, and some sequences, such as most families.
 
 The result is committed as a snapshot, [`packages/generator/discord.json`](../generator/discord.json), the same way macOS is, so that building the packages never depends on a network fetch.
 Discord rebuilds its bundle many times a day and every deploy renames the chunks, so the script rewrites the snapshot only when the emoji themselves changed, and validates what it read before writing anything: how many emoji came back, how many of them have keywords, that every picker category is well represented, that a few known emoji still have known shortcodes _and_ known keywords, and that neither count has fallen sharply since the last snapshot.
