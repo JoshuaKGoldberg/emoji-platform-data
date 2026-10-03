@@ -102,7 +102,9 @@ async function importPackage({ directory, entry, name }: DataPackage) {
 /**
  * The name of each type a package's index.d.mts declares.
  */
-async function readDeclaredTypes({ directory }: DataPackage) {
+async function readDeclaredTypes({ directory, name }: DataPackage) {
+	await assertBuilt(name, directory, "./lib/index.d.mts");
+
 	const declarations = await fs.readFile(
 		path.join(directory, "lib/index.d.mts"),
 		"utf8",
