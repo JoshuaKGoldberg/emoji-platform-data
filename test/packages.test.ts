@@ -334,6 +334,12 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 	});
 
 	it("resolves its byTitle entry point when imported directly", async () => {
+		await assertBuilt(
+			dataPackage.name,
+			dataPackage.directory,
+			dataPackage.entry,
+		);
+
 		const { exports } = JSON.parse(
 			await fs.readFile(
 				path.join(dataPackage.directory, "package.json"),
@@ -382,6 +388,12 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 	});
 
 	it("sorts the keys of every object in its data files when a source lists them in another order", async () => {
+		await assertBuilt(
+			dataPackage.name,
+			dataPackage.directory,
+			dataPackage.entry,
+		);
+
 		const files = await readFiles(path.join(dataPackage.directory, "lib/data"));
 		const unsorted = Object.entries(files).flatMap(([file, contents]) =>
 			findUnsortedObjects(JSON.parse(contents), file),
