@@ -157,7 +157,7 @@ export function withoutVariationSelectors(glyph: string) {
  * Code points as platforms write them, such as "2764-fe0f", without any U+FE0F
  * variation selectors.
  */
-export function withoutVariationSelectorCodes(unicode: string) {
+function withoutVariationSelectorCodes(unicode: string) {
 	return unicode
 		.split("-")
 		.filter((hex) => hex !== "fe0f")
