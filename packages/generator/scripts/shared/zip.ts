@@ -1,6 +1,6 @@
 import * as zlib from "node:zlib";
 
-import { requestTimeout } from "./fetch.js";
+import { fetchUrl, readBuffer, requestTimeout } from "./fetch.js";
 
 /** Where one file sits inside a zip, and how it's compressed. */
 export interface ZipEntry {
@@ -26,7 +26,7 @@ async function fetchRange(
 	end: number,
 	headers?: Record<string, string>,
 ) {
-	const response = await fetch(url, {
+	const response = await fetchUrl(url, {
 		headers: {
 			...headers,
 			Range: `bytes=${start.toString()}-${end.toString()}`,
@@ -43,7 +43,7 @@ async function fetchRange(
 		);
 	}
 
-	return Buffer.from(await response.arrayBuffer());
+	return await readBuffer(response);
 }
 
 /**
@@ -96,7 +96,7 @@ export async function readCentralDirectory(
 	url: string,
 	{ headers, tailSize }: RemoteZip,
 ) {
-	const head = await fetch(url, {
+	const head = await fetchUrl(url, {
 		headers,
 		method: "HEAD",
 		signal: AbortSignal.timeout(requestTimeout),

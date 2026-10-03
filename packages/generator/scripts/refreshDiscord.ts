@@ -7,7 +7,12 @@ import {
 	listScripts,
 	searchScripts,
 } from "./shared/bundles.js";
-import { fetchText, requestTimeout } from "./shared/fetch.js";
+import {
+	fetchText,
+	fetchUrl,
+	readText,
+	requestTimeout,
+} from "./shared/fetch.js";
 import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
 import {
 	checkCanaryShortcodes,
@@ -456,7 +461,7 @@ function toEntries(
  * a file name that doesn't resolve- as a miss rather than a failure.
  */
 async function tryReadKeywords(fileName: string) {
-	const response = await fetch(`${origin}/assets/${fileName}`, {
+	const response = await fetchUrl(`${origin}/assets/${fileName}`, {
 		signal: AbortSignal.timeout(requestTimeout),
 	});
 
@@ -464,7 +469,7 @@ async function tryReadKeywords(fileName: string) {
 		return undefined;
 	}
 
-	for (const blob of extractJsonBlobs(await response.text())) {
+	for (const blob of extractJsonBlobs(await readText(response))) {
 		if (isKeywords(blob)) {
 			return blob;
 		}

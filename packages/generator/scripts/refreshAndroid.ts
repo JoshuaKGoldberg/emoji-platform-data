@@ -10,7 +10,7 @@ import * as zlib from "node:zlib";
 import { compareStrings } from "../src/compareStrings.js";
 import { AndroidItem } from "../src/dataTypes.js";
 import { readMarisaKeys } from "./marisa.js";
-import { requestTimeout } from "./shared/fetch.js";
+import { fetchUrl, readText, requestTimeout } from "./shared/fetch.js";
 import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
 import {
 	checkCanaryKeywords,
@@ -165,7 +165,7 @@ async function extractProduct(url: string, productPath: string) {
 	}
 
 	const start = await fetchZipDataStart(url, entry, asIs);
-	const response = await fetch(url, {
+	const response = await fetchUrl(url, {
 		headers: {
 			...asIs,
 			Range: `bytes=${start.toString()}-${(start + entry.compressedSize - 1).toString()}`,
@@ -260,7 +260,7 @@ async function extractProduct(url: string, productPath: string) {
  * Fetches a file's text, or undefined if the server says there's no such file.
  */
 async function fetchText(url: string) {
-	const response = await fetch(url, {
+	const response = await fetchUrl(url, {
 		signal: AbortSignal.timeout(requestTimeout),
 	});
 
@@ -274,7 +274,7 @@ async function fetchText(url: string) {
 		);
 	}
 
-	return await response.text();
+	return await readText(response);
 }
 
 /**
