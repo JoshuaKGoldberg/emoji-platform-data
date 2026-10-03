@@ -39,11 +39,12 @@ console.log(byEmoji["🐙"]);
 ```
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
+`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
 Each entry is a `GnomeItem` describing one emoji as GNOME's emoji picker -GTK's emoji chooser, the one <kbd>Ctrl</kbd> + <kbd>.</kbd> opens in any GTK text field- knows it.
 
-`name` and `keywords` are what the picker shows and searches in English: every emoji has keywords, averaging 5.28 each.
+`name` and `keywords` are what the picker shows and searches in English: every emoji has keywords.
 They're the [Unicode CLDR](https://cldr.unicode.org) annotations, by way of [Emojibase](https://emojibase.dev), so most of them are already known to other sources in `emoji-platform-data`.
-What GNOME adds is the same for 24 other locales: `namesByLocale` and `keywordsByLocale`, keyed by locale, such as `de` or `ja`, which the picker searches alongside the English.
+What GNOME adds is the same for GTK's other locales: `namesByLocale` and `keywordsByLocale`, keyed by locale, such as `de` or `ja`, which the picker searches alongside the English.
 
 `category` is the picker's own section, named as its headings name it: `Smileys & People`, `Body & Clothing`, `Animals & Nature`, `Food & Drink`, `Travel & Places`, `Activities`, `Objects`, `Symbols`, and `Flags`.
 `order` is where the emoji falls in the English picker, counting from the first emoji of its first section.

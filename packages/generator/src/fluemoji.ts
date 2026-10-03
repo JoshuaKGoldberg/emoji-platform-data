@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllFluemojiData, FluemojiItem } from "./types.js";
-import { getEntryCldr, recordByCldr } from "./utils.js";
+import { fromUnicode, getEntryCldr, recordByCldr } from "./utils.js";
 
 export const defaultFluemojiDirectory = path.join(
 	import.meta.dirname,
@@ -26,7 +26,6 @@ export async function generateFluemoji(
 		);
 	}
 
-	// Sorting keeps which entry wins a CLDR collision independent of glob order.
 	files.sort();
 
 	const pending = files.map(async (file) =>
@@ -50,9 +49,7 @@ export async function generateFluemoji(
  * @see https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/690
  */
 function repairGlyph(entry: FluemojiItem): FluemojiItem {
-	const glyph = String.fromCodePoint(
-		...entry.unicode.split(" ").map((hex) => parseInt(hex, 16)),
-	);
+	const glyph = fromUnicode(entry.unicode.replaceAll(" ", "-"));
 
 	if (glyph === entry.glyph) {
 		return entry;

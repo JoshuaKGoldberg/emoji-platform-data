@@ -1,6 +1,21 @@
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
 import { titleCase } from "title-case";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
+
+/**
+ * How many times each title appears.
+ */
+export function countTitles(titles: string[]) {
+	const counts = new Map<string, number>();
+
+	for (const title of titles) {
+		counts.set(title, (counts.get(title) ?? 0) + 1);
+	}
+
+	return counts;
+}
 
 export function getEntryCldr(
 	emojipedia: GeneratedEmojipediaData,
@@ -26,7 +41,7 @@ export function getEntryCldr(
 			const normalizedHexes = normalizeCodepoints(emojipediaItem.codepointsHex);
 			return (
 				normalizedHexes.join("-") === unicode ||
-				normalizedHexes.filter((hex) => hex !== "fe0f").join("-") === unicode
+				withoutVariationSelectorCodes(normalizedHexes.join("-")) === unicode
 			);
 		});
 	const byUnicode = byUnicodeItem && emojipedia.aliases.get(byUnicodeItem.code);
@@ -63,7 +78,7 @@ export function normalizeTitle(text: string) {
 function getGlyphAlias(emojipedia: GeneratedEmojipediaData, glyph: string) {
 	return (
 		emojipedia.aliases.get(glyph) ??
-		emojipedia.aliases.get(glyph.replaceAll("\uFE0F", ""))
+		emojipedia.aliases.get(withoutVariationSelectors(glyph))
 	);
 }
 
@@ -78,8 +93,8 @@ export function isKnownGlyph(
 }
 
 /**
- * Equivalent to Object.fromEntries, but warns when multiple entries resolve
- * to the same CLDR title, since the later entry would silently overwrite the earlier.
+ * Equivalent to Object.fromEntries, but throws when multiple entries resolve
+ * to the same CLDR title, since the later entry would overwrite the earlier.
  */
 export function recordByCldr<T>(
 	platform: string,
@@ -89,9 +104,7 @@ export function recordByCldr<T>(
 
 	for (const [cldr, entry] of entries) {
 		if (cldr in record) {
-			console.warn(
-				`Multiple ${platform} entries resolve to '${cldr}'; keeping only the last.`,
-			);
+			throw new Error(`Multiple ${platform} entries resolve to '${cldr}'.`);
 		}
 
 		record[cldr] = entry;
@@ -106,6 +119,26 @@ export function recordByCldr<T>(
 export function fromUnicode(unicode: string) {
 	return String.fromCodePoint(
 		...unicode.split("-").map((hex) => parseInt(hex, 16)),
+	);
+}
+
+/**
+ * Reads a platform's data snapshot committed alongside this package, keyed by
+ * the title each entry resolves to.
+ */
+export async function readSnapshot<Entry>(
+	platform: string,
+	getCldr: (entry: Entry) => string,
+) {
+	const raw = await fs.readFile(
+		path.join(import.meta.dirname, `../${platform}.json`),
+		"utf8",
+	);
+	const { entries } = JSON.parse(raw) as { entries: Entry[] };
+
+	return recordByCldr(
+		platform,
+		entries.map((entry) => [getCldr(entry), entry]),
 	);
 }
 
@@ -126,5 +159,23 @@ export function toUnicode(emoji: string) {
 		.map((character) =>
 			(character.codePointAt(0) ?? 0).toString(16).padStart(4, "0"),
 		)
+		.join("-");
+}
+
+/**
+ * A glyph without any of its U+FE0F variation selectors.
+ */
+export function withoutVariationSelectors(glyph: string) {
+	return glyph.replaceAll("\uFE0F", "");
+}
+
+/**
+ * Code points as platforms write them, such as "2764-fe0f", without any U+FE0F
+ * variation selectors.
+ */
+export function withoutVariationSelectorCodes(unicode: string) {
+	return unicode
+		.split("-")
+		.filter((hex) => hex !== "fe0f")
 		.join("-");
 }

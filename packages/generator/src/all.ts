@@ -11,7 +11,7 @@ import { generateMacOS } from "./macos.js";
 import { generateSlack } from "./slack.js";
 import { generateTwemoji } from "./twemoji.js";
 import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
-import { fromUnicode } from "./utils.js";
+import { fromUnicode, withoutVariationSelectors } from "./utils.js";
 import { generateWeChat } from "./wechat.js";
 import { generateWindows } from "./windows.js";
 
@@ -91,25 +91,9 @@ export async function generateAll({
 				const wechat = allWeChat[title];
 				const windows = allWindows[title];
 
-				const platformData = {
+				const platforms = {
 					android,
 					discord,
-					emoji:
-						// One of these must have been defined.
-						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-						(emojipedia?.code ??
-							discord?.emoji ??
-							emojiMart?.skins[0]?.native ??
-							fluemoji?.glyph ??
-							gemoji?.emoji ??
-							gnome?.emoji ??
-							joypixels?.emoji ??
-							macos?.emoji ??
-							slack?.emoji ??
-							(twemoji && fromUnicode(twemoji.unicode)) ??
-							wechat?.emoji ??
-							windows?.emoji ??
-							android?.emoji)!,
 					emojiMart,
 					emojipedia,
 					fluemoji,
@@ -118,11 +102,16 @@ export async function generateAll({
 					joypixels,
 					macos,
 					slack,
-					slug: emojipedia?.slug ?? slugify(twemoji?.description ?? title),
-					title,
 					twemoji,
 					wechat,
 					windows,
+				};
+
+				const platformData = {
+					...platforms,
+					emoji: emojipedia?.code ?? getPlatformGlyphs(platforms)[0],
+					slug: emojipedia?.slug ?? slugify(twemoji?.description ?? title),
+					title,
 				};
 
 				return [title, platformData];
@@ -211,7 +200,7 @@ function getVariationSelectorForms(glyph: string) {
  * Every glyph platforms other than Emojipedia know an emoji by, in the order
  * its `emoji` is taken from them.
  */
-function getPlatformGlyphs(platformData: EmojiPlatformData) {
+function getPlatformGlyphs(platformData: Partial<EmojiPlatformData>) {
 	return [
 		platformData.discord?.emoji,
 		platformData.emojiMart?.skins[0]?.native,
@@ -288,10 +277,6 @@ function mergeSameEmoji(entries: EmojiPlatformData[]) {
 	}
 
 	return merged;
-}
-
-function withoutVariationSelectors(glyph: string) {
-	return glyph.replaceAll("\uFE0F", "");
 }
 
 function withPlatformGlyph(platformData: EmojiPlatformData) {
