@@ -4,6 +4,7 @@ import * as zlib from "node:zlib";
 
 import { compareStrings } from "../src/compareStrings.js";
 import { WeChatItem } from "../src/dataTypes.js";
+import { fetchUrl, readBuffer, readText } from "./network.js";
 
 /** The picker's category listing, in the order it shows the emoji in. */
 interface RawCategories {
@@ -150,7 +151,7 @@ function countWithKeywords(entries: WeChatItem[]) {
 }
 
 async function fetchRange(url: string, start: number, end: number) {
-	const response = await fetch(url, {
+	const response = await fetchUrl(url, {
 		headers: { Range: `bytes=${start.toString()}-${end.toString()}` },
 	});
 
@@ -162,18 +163,18 @@ async function fetchRange(url: string, start: number, end: number) {
 		);
 	}
 
-	return Buffer.from(await response.arrayBuffer());
+	return await readBuffer(response);
 }
 
 async function fetchText(url: string) {
-	const response = await fetch(url);
+	const response = await fetchUrl(url);
 	if (!response.ok) {
 		throw new Error(
 			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
 		);
 	}
 
-	return await response.text();
+	return await readText(response);
 }
 
 /**
@@ -276,7 +277,7 @@ function pickLatestApk(page: string) {
  * directory is, and the central directory says where every file in it is.
  */
 async function readCentralDirectory(url: string) {
-	const head = await fetch(url, { method: "HEAD" });
+	const head = await fetchUrl(url, { method: "HEAD" });
 	if (!head.ok) {
 		throw new Error(
 			`Could not reach ${url}: ${head.status.toString()} ${head.statusText}.`,

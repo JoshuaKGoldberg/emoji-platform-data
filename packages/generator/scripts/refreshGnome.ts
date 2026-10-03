@@ -2,6 +2,7 @@ import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
 import { GnomeItem } from "../src/dataTypes.js";
+import { fetchUrl, readBuffer } from "./network.js";
 
 /** One emoji as a locale's data file lists it. */
 interface RawItem {
@@ -154,14 +155,14 @@ function countWithKeywords(entries: GnomeItem[]) {
 }
 
 async function fetchBuffer(url: string) {
-	const response = await fetch(url);
+	const response = await fetchUrl(url);
 	if (!response.ok) {
 		throw new Error(
 			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
 		);
 	}
 
-	return Buffer.from(await response.arrayBuffer());
+	return await readBuffer(response);
 }
 
 async function fetchJson<T>(url: string) {

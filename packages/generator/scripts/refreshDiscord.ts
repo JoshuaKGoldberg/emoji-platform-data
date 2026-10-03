@@ -2,6 +2,7 @@ import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
 import { DiscordItem } from "../src/dataTypes.js";
+import { fetchUrl, readText } from "./network.js";
 
 interface RawData {
 	emojis: RawEmoji[];
@@ -182,14 +183,14 @@ async function fetchScript(chunk: string) {
 }
 
 async function fetchText(url: string) {
-	const response = await fetch(url);
+	const response = await fetchUrl(url);
 	if (!response.ok) {
 		throw new Error(
 			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
 		);
 	}
 
-	return await response.text();
+	return await readText(response);
 }
 
 /**
@@ -545,13 +546,13 @@ function toEntries(
  * a file name that doesn't resolve- as a miss rather than a failure.
  */
 async function tryReadKeywords(fileName: string) {
-	const response = await fetch(`${origin}/assets/${fileName}`);
+	const response = await fetchUrl(`${origin}/assets/${fileName}`);
 
 	if (!response.ok) {
 		return undefined;
 	}
 
-	for (const blob of extractJsonBlobs(await response.text())) {
+	for (const blob of extractJsonBlobs(await readText(response))) {
 		if (isKeywords(blob)) {
 			return blob;
 		}

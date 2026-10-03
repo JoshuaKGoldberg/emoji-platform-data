@@ -4,6 +4,7 @@ import * as path from "node:path";
 
 import { compareStrings } from "../src/compareStrings.js";
 import { SlackItem } from "../src/dataTypes.js";
+import { fetchUrl, readText } from "./network.js";
 
 /** One picker category, listing its emoji by shortcode in the order it shows them. */
 interface RawCategory {
@@ -237,14 +238,16 @@ function* extractJsonBlobs(script: string) {
 }
 
 async function fetchText(url: string) {
-	const response = await fetch(url, { headers: { "User-Agent": userAgent } });
+	const response = await fetchUrl(url, {
+		headers: { "User-Agent": userAgent },
+	});
 	if (!response.ok) {
 		throw new Error(
 			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
 		);
 	}
 
-	return await response.text();
+	return await readText(response);
 }
 
 /**

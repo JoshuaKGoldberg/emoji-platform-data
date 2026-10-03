@@ -5,6 +5,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 
 import { WindowsItem } from "../src/dataTypes.js";
+import { fetchUrl, readBuffer, readText } from "./network.js";
 
 /** One build as UUP dump lists it. */
 interface RawBuild {
@@ -108,14 +109,14 @@ function countWithKeywords(entries: WindowsItem[]) {
 }
 
 async function download(file: RawFile) {
-	const response = await fetch(file.url);
+	const response = await fetchUrl(file.url);
 	if (!response.ok) {
 		throw new Error(
 			`Could not download ${cabName}: ${response.status.toString()} ${response.statusText}.`,
 		);
 	}
 
-	const contents = Buffer.from(await response.arrayBuffer());
+	const contents = await readBuffer(response);
 	const sha256 = crypto.createHash("sha256").update(contents).digest("hex");
 
 	// UUP dump only brokers the link: the file itself comes from Microsoft's
@@ -192,9 +193,9 @@ async function fetchFile(uuid: string, name: string) {
  */
 async function fetchUup<T>(query: string, key: string): Promise<T> {
 	for (let attempt = 1; ; attempt += 1) {
-		const response = await fetch(`${uupApi}/${query}`);
+		const response = await fetchUrl(`${uupApi}/${query}`);
 		const body = response.ok
-			? ((await response.json()) as {
+			? (JSON.parse(await readText(response)) as {
 					response?: Partial<Record<string, unknown>>;
 				})
 			: undefined;

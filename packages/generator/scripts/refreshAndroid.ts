@@ -8,6 +8,7 @@ import * as zlib from "node:zlib";
 
 import { AndroidItem } from "../src/dataTypes.js";
 import { readMarisaKeys } from "./marisa.js";
+import { fetchUrl, readBuffer, readText } from "./network.js";
 
 /** A byte range of the system image that belongs to the product partition. */
 interface ProductRange {
@@ -151,7 +152,7 @@ async function extractProduct(url: string, productPath: string) {
 	const header = await fetchRange(url, entry.offset, entry.offset + 29);
 	const start =
 		entry.offset + 30 + header.readUInt16LE(26) + header.readUInt16LE(28);
-	const response = await fetch(url, {
+	const response = await fetchUrl(url, {
 		headers: {
 			...asIs,
 			Range: `bytes=${start.toString()}-${(start + entry.compressedSize - 1).toString()}`,
@@ -237,7 +238,7 @@ async function extractProduct(url: string, productPath: string) {
 }
 
 async function fetchRange(url: string, start: number, end: number) {
-	const response = await fetch(url, {
+	const response = await fetchUrl(url, {
 		headers: { ...asIs, Range: `bytes=${start.toString()}-${end.toString()}` },
 	});
 
@@ -249,13 +250,13 @@ async function fetchRange(url: string, start: number, end: number) {
 		);
 	}
 
-	return Buffer.from(await response.arrayBuffer());
+	return await readBuffer(response);
 }
 
 async function fetchText(url: string) {
-	const response = await fetch(url);
+	const response = await fetchUrl(url);
 
-	return response.ok ? await response.text() : undefined;
+	return response.ok ? await readText(response) : undefined;
 }
 
 /**
@@ -501,7 +502,7 @@ async function readApk(productPath: string) {
  * Zips over 4GB keep those in a Zip64 record instead.
  */
 async function readCentralDirectory(url: string) {
-	const head = await fetch(url, { headers: asIs, method: "HEAD" });
+	const head = await fetchUrl(url, { headers: asIs, method: "HEAD" });
 	if (!head.ok) {
 		throw new Error(
 			`Could not reach ${url}: ${head.status.toString()} ${head.statusText}.`,
