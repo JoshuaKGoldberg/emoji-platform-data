@@ -25,6 +25,7 @@ console.log(byTitle.SparklingHeart);
 ```
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
+`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
 Each entry is an `EmojipediaItem` containing the data from [Emojipedia](https://github.com/JoshuaKGoldberg/emojipedia).
 
 This package contains only static JSON and type declarations: it has no runtime dependencies.

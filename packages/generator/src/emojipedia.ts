@@ -4,6 +4,7 @@ import { AllEmojipediaData, EmojipediaItem } from "./types.js";
 import {
 	countTitles,
 	normalizeTitle,
+	recordByCldr,
 	withoutVariationSelectors,
 } from "./utils.js";
 
@@ -47,7 +48,8 @@ export function generateEmojipedia(): GeneratedEmojipediaData {
 
 	return {
 		aliases,
-		byCldr: Object.fromEntries(
+		byCldr: recordByCldr(
+			"emojipedia",
 			items.map((item) => [titles.get(item) ?? item.title, item]),
 		),
 		byCode,
