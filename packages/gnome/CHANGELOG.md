@@ -1,5 +1,18 @@
 # @emoji-platform-data/gnome
 
+## 0.7.0
+
+### Minor Changes
+
+- [#1210](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1210) [`737a6f0`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/737a6f06c763079d0257f61d6663260abce24edf) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Made `byEmoji` a null-prototype object, so looking up `Object.prototype`'s keys such as `"constructor"` or `"toString"` finds nothing. `Object.prototype`'s methods are gone from it too, such as `byEmoji.hasOwnProperty()`, so check for an emoji with `Object.hasOwn(byEmoji, glyph)` or `glyph in byEmoji` instead.
+
+- [#1187](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1187) [`d575dd0`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/d575dd06ce93c0b21e4674fb19068e4ff5c847e7) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Declared only the types each package's entries refer to in its `index.d.mts`, so that, for example, `@emoji-platform-data/twemoji` no longer exports `AndroidItem`.
+  The `All*Data` record types are gone from every data package, including `emoji-platform-data`, since no entry refers to them.
+
+### Patch Changes
+
+- [#1194](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1194) [`9bf532f`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/9bf532fa2f24fd538df93558cc3c3043b26aaab6) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Corrected the `DiscordItem`, `GnomeItem`, `MacOSItem`, and `TwemojiItem` docs that didn't match their data.
+
 ## 0.6.0
 
 ### Minor Changes

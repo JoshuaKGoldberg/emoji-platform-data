@@ -1,5 +1,36 @@
 # @emoji-platform-data/generator
 
+## 0.12.0
+
+### Minor Changes
+
+- [#1210](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1210) [`737a6f0`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/737a6f06c763079d0257f61d6663260abce24edf) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Made `byEmoji` a null-prototype object, so looking up `Object.prototype`'s keys such as `"constructor"` or `"toString"` finds nothing. `Object.prototype`'s methods are gone from it too, such as `byEmoji.hasOwnProperty()`, so check for an emoji with `Object.hasOwn(byEmoji, glyph)` or `glyph in byEmoji` instead.
+
+- [#1187](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1187) [`d575dd0`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/d575dd06ce93c0b21e4674fb19068e4ff5c847e7) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Declared only the types each package's entries refer to in its `index.d.mts`, so that, for example, `@emoji-platform-data/twemoji` no longer exports `AndroidItem`.
+  The `All*Data` record types are gone from every data package, including `emoji-platform-data`, since no entry refers to them.
+
+### Patch Changes
+
+- [#1172](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1172) [`6092ee3`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/6092ee31b1189f0bf4c14bd9f8a56fb57aafcc9b) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Removed the replacement of "’s Symbol" with "’s Room" in titles that fall back to a platform's own name, which no title reached.
+
+- [#1153](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1153) [`9680ebb`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/9680ebb499f63620766521137033da1df8639619) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Removed the lookup of emoji by their code points that ran after their glyphs and names, which scanned every Emojipedia item for each emoji yet never matched one the glyph lookup hadn't.
+
+- [#1194](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1194) [`9bf532f`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/9bf532fa2f24fd538df93558cc3c3043b26aaab6) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Corrected the `DiscordItem`, `GnomeItem`, `MacOSItem`, and `TwemojiItem` docs that didn't match their data.
+
+- [#1157](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1157) [`25909a1`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/25909a10f30f8903d05bdece8c15aae2d9126e0f) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Resolved each Emojipedia title to its own emoji when another emoji has that title as an alternate name, such as "Snowman", which had resolved to ⛄ "Snowman Without Snow" rather than ☃️.
+
+- [#1229](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1229) [`6327d01`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/6327d019a7fef2d1ce4326c610b6f97ddfb50fd6) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Read fluemoji's metadata files one at a time, so `generateFluemoji` no longer fails with `EMFILE` where a process can't open over 1,600 files at once.
+
+- [#1184](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1184) [`53cd708`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/53cd7089cd7bb2ea76c39e3798737b4cdd119502) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Failed generation with an error when two emoji-mart entries resolve to the same title, as with every other platform, rather than warning and keeping one of them, and removed code that never ran.
+
+- [#1156](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1156) [`d1afcd1`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/d1afcd1819a1bb104355a2c298915bf4e4cd8ca7) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Shared the generator's snapshot reading, code point parsing, variation selector stripping, and title counting between platforms, without changing any data it generates.
+
+- [#1164](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1164) [`3fbf86f`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/3fbf86feaa5e9ea8a0f5b6fe7022c6c2dc60e80d) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Failed generation with an error when two of one platform's emoji resolve to the same title, rather than warning and keeping only the last.
+
+- [#1165](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1165) [`514a424`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/514a4249ecaf99c87eb9e6d0263756e9f7112cfd) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Sorted the keys of every object in each data file, not only its top-level ones, so that a change in a source's key order no longer reorders the published data.
+
+- [#1204](https://github.com/JoshuaKGoldberg/emoji-platform-data/pull/1204) [`5abd550`](https://github.com/JoshuaKGoldberg/emoji-platform-data/commit/5abd550c5df477a011c6c0031c647ba811f20fb6) Thanks [@JoshuaKGoldberg](https://github.com/JoshuaKGoldberg)! - Corrected the `DiscordItem.unicodeVersion` and `JoyPixelsItem.unicodeVersion` docs, which called every value a Unicode version, though nearly all emoji from Emoji 11.0 on have their Emoji version.
+
 ## 0.11.0
 
 ### Minor Changes
