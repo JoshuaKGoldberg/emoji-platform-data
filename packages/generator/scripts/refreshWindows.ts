@@ -17,7 +17,6 @@ interface RawBuild {
 /** One file of a build as UUP dump lists it, served from Microsoft's CDN. */
 interface RawFile {
 	sha256: string;
-	size: string;
 	url: string;
 }
 
