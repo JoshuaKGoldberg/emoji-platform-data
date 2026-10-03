@@ -493,9 +493,17 @@ async function readApk(productPath: string) {
 		throw new Error(failure, { cause: result.error });
 	}
 
-	if (result.status !== 0 || !result.stdout.length) {
+	const stderr = result.stderr.toString().trim();
+
+	if (result.status !== 0 || !result.stdout.length || stderr) {
 		throw new Error(
-			[failure, result.stderr.toString().trim()].filter(Boolean).join("\n"),
+			[
+				failure,
+				result.signal && `dump.erofs was killed by ${result.signal}.`,
+				stderr,
+			]
+				.filter(Boolean)
+				.join("\n"),
 		);
 	}
 
