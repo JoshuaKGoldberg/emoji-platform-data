@@ -43,7 +43,7 @@ console.log(byTitle.SparklingHeart);
 */
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title, and `emoji-platform-data/byTitle` exports each one separately for smaller bundles.
 
 Each entry is an `EmojiPlatformData` combining data from:

@@ -50,12 +50,12 @@ console.log(byTitle.SparklingHeart);
 */
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title, and `emoji-platform-data/byTitle` exports each one separately for smaller bundles.
 
 ### Packages
 
-`emoji-platform-data` combines these sources, which are also published on their own:
+Each source is also published as its own package:
 
 | Package                                                    | Source                                                                                                                 | Exports                                                 |
 | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
@@ -115,7 +115,7 @@ Any grouping of emoji 🆔 _identity_ and 🔗 _keywords_ used by consumers toda
 
 ## Why?
 
-It shows every platform's metadata for an emoji in one place, such as for [collecting all of its keywords](https://github.com/muan/emojilib/issues/194).
+`emoji-platform-data` shows every platform's metadata for an emoji in one place, such as to [collect all of its keywords](https://github.com/muan/emojilib/issues/194).
 
 ## Development
 

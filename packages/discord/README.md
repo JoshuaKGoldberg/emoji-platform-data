@@ -34,16 +34,16 @@ console.log(byEmoji["👍"]);
 */
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title.
 
 Each entry is a `DiscordItem` describing one emoji as Discord's own emoji picker knows it:
 
 - `name` is the shortcode Discord writes the emoji as, and `aliases` are the others it accepts.
-- `keywords` are the picker's other search terms, such as `celebrate` for 🎉 (`tada`): most country flags, keycaps, regional indicators, and some sequences, such as most families, have none.
+- `keywords` are the picker's other search terms, such as `celebrate` for 🎉 (`tada`): country flags, keycaps, regional indicators, and some sequences, such as most families, have none.
 - `order` is the emoji's position in the picker, across all categories.
 
-This package is static JSON and types with no runtime dependencies, also included in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
+This package is only static JSON and types, with no runtime dependencies, and its data is also in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
 
 ## Where This Data Comes From
 
@@ -51,4 +51,4 @@ This is a snapshot of the emoji data in Discord's web client JavaScript bundle, 
 
 Skin tone variants, such as `wave_tone3`, are left out since they have no terms of their own.
 
-The shortcodes, keywords, categories, and ordering are Discord's: this package's MIT license only covers the code that packages them, and it includes no Discord emoji artwork.
+The shortcodes, keywords, categories, and ordering are Discord's: this package's MIT license only covers the code that packages them, and this package includes no Discord emoji artwork.

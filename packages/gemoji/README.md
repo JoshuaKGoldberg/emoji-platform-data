@@ -24,9 +24,9 @@ console.log(byEmoji["💖"]);
 console.log(byTitle.SparklingHeart);
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title.
 
 Each entry is a `GemojiItem` containing the data from [Gemoji](https://github.com/wooorm/gemoji).
 
-This package is static JSON and types with no runtime dependencies, also included in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
+This package is only static JSON and types, with no runtime dependencies, and its data is also in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).

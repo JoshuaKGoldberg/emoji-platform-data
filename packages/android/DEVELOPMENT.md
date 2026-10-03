@@ -18,7 +18,7 @@ brew install erofs-utils
 pnpm --filter @emoji-platform-data/generator refresh:android
 ```
 
-[`packages/generator/scripts/refreshAndroid.ts`](../generator/scripts/refreshAndroid.ts) takes the newest stable x86_64 Google Play image from the SDK's listing, other than extension builds, betas, and 16KB page size images, and asks Google's CDN for every file as-is, since it reports gzipped sizes otherwise.
+[`packages/generator/scripts/refreshAndroid.ts`](../generator/scripts/refreshAndroid.ts) takes the newest stable x86_64 Google Play image from the SDK's listing, other than extension builds, betas, and 16KB page size images, whose partitions are ext4 rather than EROFS, and asks Google's CDN for the image as-is, since it reports gzipped sizes otherwise.
 
 The image is a ~2.3GB zip whose `system.img`, deflated as one ~2.8GB stream, is read without being on disk all at once:
 
@@ -38,7 +38,7 @@ The image is a ~2.3GB zip whose `system.img`, deflated as one ~2.8GB stream, is 
 
 Each emoji's terms are sorted, and `en_us.shortcuts` is ignored.
 
-The snapshot, [`packages/generator/android.json`](../generator/android.json), is rewritten only when the emoji changed, and the script fails without writing it if:
+The snapshot, [`packages/generator/android.json`](../generator/android.json), is rewritten only when its data changed, not just the source it was read from, and the script fails without writing it if:
 
 - Too few emoji or keywords came back, or either count fell sharply since the last snapshot
 - An emoji has no keywords

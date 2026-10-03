@@ -43,13 +43,13 @@ console.log(byEmoji["🐙"]);
 */
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title.
 
 Each entry is a `SlackItem` describing one emoji as Slack's own emoji picker knows it:
 
 - `name` is the shortcode Slack writes the emoji as, and `aliases` are the others it accepts.
-- `keywords` are the picker's other English search terms, such as `celebrate` for 🎉 (`tada`): a few, mostly newer people variants and less common flags, have none.
+- `keywords` are the picker's other English search terms, such as `celebrate` for 🎉 (`tada`): a few dozen emoji, mostly newer people variants and less common flags, have none.
 - `order` is the emoji's position in the picker, across all categories.
 - Emoji the picker doesn't list, mostly the gender-neutral forms of older people emoji such as 👮 `cop`, have no `category` or `order`.
 
@@ -58,10 +58,10 @@ Each entry is a `SlackItem` describing one emoji as Slack's own emoji picker kno
 Besides English, Slack translates its emoji picker into `de-DE`, `en-GB`, `es-ES`, `es-LA`, `fr-FR`, `it-IT`, `ja-JP`, `ko-KR`, `pt-BR`, `zh-CN`, and `zh-TW`.
 
 - `keywordsByLocale` and `namesByLocale` are the picker's search terms and names in each of those.
-- Slack translates each English keyword once for every emoji, so a locale's keywords line up with the English ones, but can suit some emoji better than others.
+- Slack translates each English keyword once for all the emoji that use it, so a translation can suit some of them better than others.
 - Terms a locale has no translation for stay in English, so `en-GB` is nearly all English.
 
-This package is static JSON and types with no runtime dependencies, also included in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
+This package is only static JSON and types, with no runtime dependencies, and its data is also in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
 
 ## Where This Data Comes From
 
@@ -69,4 +69,4 @@ This is a snapshot of the emoji data in Slack's web client JavaScript bundle and
 
 Skin tone variants, such as `wave::skin-tone-3`, are left out since they have no terms of their own.
 
-The shortcodes, keywords, translations, categories, and ordering are Slack's: this package's MIT license only covers the code that packages them, and it includes no Slack emoji artwork.
+The shortcodes, keywords, translations, categories, and ordering are Slack's: this package's MIT license only covers the code that packages them, and this package includes no Slack emoji artwork.

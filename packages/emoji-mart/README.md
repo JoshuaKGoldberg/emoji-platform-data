@@ -34,7 +34,7 @@ console.log(byEmoji["🐙"]);
 */
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title.
 
 Each entry is an `EmojiMartItem` containing the data from [emoji-mart](https://github.com/missive/emoji-mart):
@@ -44,7 +44,7 @@ Each entry is an `EmojiMartItem` containing the data from [emoji-mart](https://g
 - `skins` is the emoji followed by its skin tone variants, such as 👋 then 👋🏻 through 👋🏿.
 - `aliases` and `emoticons` are only on the few emoji that have them, such as `thumbsup` for 👍 and `:)` for 😃.
 
-This package is static JSON and types with no runtime dependencies, also included in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
+This package is only static JSON and types, with no runtime dependencies, and its data is also in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
 
 ## Where This Data Comes From
 

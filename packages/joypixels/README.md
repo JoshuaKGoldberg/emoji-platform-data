@@ -36,13 +36,13 @@ console.log(byEmoji["❤️"]);
 */
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title.
 
 Each entry is a `JoyPixelsItem` describing one emoji as JoyPixels' [emoji-toolkit](https://github.com/joypixels/emoji-toolkit) knows it:
 
 - `name` is the shortcode JoyPixels writes the emoji as, and `aliases` are the others it accepts, such as `tt` for 🇹🇹 `flag_tt`.
-- `keywords` are the other terms a picker matches searches against, close to the Unicode CLDR annotations.
+- `keywords` are the other terms a picker matches searches against, close to the Unicode CLDR annotations: most emoji have them.
 - `emoticons` are only on the few emoji that have them, such as `<3` for ❤️.
 - `order` is the emoji's position in JoyPixels' picker, across all categories.
 - Emoji the picker doesn't show, mostly the older families such as 👨‍👩‍👦 and the hair components such as 🦰, have no `category` or `order`.
@@ -51,7 +51,7 @@ Each entry is a `JoyPixelsItem` describing one emoji as JoyPixels' [emoji-toolki
 
 Zoom's Team Chat emoji picker uses this same shortcode and keyword data, with its own categories and order that aren't in this package.
 
-This package is static JSON and types with no runtime dependencies, also included in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
+This package is only static JSON and types, with no runtime dependencies, and its data is also in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
 
 ## Where This Data Comes From
 

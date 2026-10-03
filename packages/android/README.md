@@ -29,14 +29,14 @@ console.log(byEmoji["🐙"]);
 */
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title.
 
 Each entry is an `AndroidItem` describing one emoji as Gboard -the keyboard Google ships with Android- knows it.
 
 `keywords` are the sorted English terms Gboard's emoji search finds the emoji by, such as `lulz` and `rotfl` for 😂.
 
-This package is static JSON and types with no runtime dependencies, also included in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
+This package is only static JSON and types, with no runtime dependencies, and its data is also in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
 
 ## Where This Data Comes From
 
@@ -44,4 +44,4 @@ This is a snapshot of the English emoji search dictionary Gboard ships with, rea
 
 It has none of the newer or other-language data Gboard can download once installed, and no names, categories, or picker order.
 
-The keywords are Google's: this package's MIT license only covers the code that packages them, and it includes no emoji artwork.
+The keywords are Google's: this package's MIT license only covers the code that packages them, and this package includes no emoji artwork.

@@ -31,17 +31,17 @@ console.log(byEmoji["🐙"]);
 */
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title.
 
 Each entry is a `WeChatItem` describing one emoji as WeChat's own emoji picker knows it:
 
-- `keywords` are the terms the picker searches, mixing Simplified Chinese, Traditional Chinese, and English, such as `庆祝`, `慶祝`, and `party` for 🎉.
+- `keywords` are the terms the picker searches, mixing Simplified Chinese, Traditional Chinese, and English, such as `庆祝`, `慶祝`, and `party` for 🎉: nearly every emoji has them.
 - `category` is the picker's group, named as WeChat names it, such as `动物`.
 - `order` is the emoji's position in the picker, across all categories.
 - Emoji WeChat's search finds but its picker doesn't list have no `category` or `order`.
 
-This package is static JSON and types with no runtime dependencies, also included in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
+This package is only static JSON and types, with no runtime dependencies, and its data is also in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
 
 ## Where This Data Comes From
 
@@ -51,4 +51,4 @@ The picker's descriptions, such as `笑出眼泪的脸` for 😂, are left out s
 
 WeChat's own stickers, the `[捂脸]` artwork its picker shows alongside these, aren't here either: they're images rather than unicode emoji, so there's no glyph to key them by.
 
-The keywords, categories, and ordering are WeChat's: this package's MIT license only covers the code that packages them, and it includes no WeChat emoji artwork.
+The keywords, categories, and ordering are WeChat's: this package's MIT license only covers the code that packages them, and this package includes no WeChat emoji artwork.

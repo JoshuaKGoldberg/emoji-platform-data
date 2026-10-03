@@ -36,7 +36,7 @@ console.log(byEmoji["🐙"]);
 */
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title.
 
 Each entry is a `MacOSItem` describing one emoji as macOS's own emoji picker knows it:
@@ -44,10 +44,10 @@ Each entry is a `MacOSItem` describing one emoji as macOS's own emoji picker kno
 - `keywords` are the terms the picker searches, ordered by how strongly macOS weights each one for the emoji.
 - `order` is the emoji's position in the picker, across all categories.
 
-This package is static JSON and types with no runtime dependencies, also included in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
+This package is only static JSON and types, with no runtime dependencies, and its data is also in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
 
 ## Where This Data Comes From
 
 This is a snapshot of the emoji search index in macOS's private `CoreEmoji.framework`, and [`DEVELOPMENT.md`](https://github.com/JoshuaKGoldberg/emoji-platform-data/blob/main/packages/macos/DEVELOPMENT.md) explains how to refresh it.
 
-The keywords, names, and categories are Apple's: this package's MIT license only covers the code that packages them, and it includes no Apple emoji artwork.
+The keywords, names, and categories are Apple's: this package's MIT license only covers the code that packages them, and this package includes no Apple emoji artwork.

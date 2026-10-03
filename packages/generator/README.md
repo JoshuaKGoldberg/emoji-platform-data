@@ -29,7 +29,7 @@ const byTitle = await generateAll({
 console.log(byTitle["Sparkling Heart"]);
 ```
 
-Pass a clone of [`microsoft/fluentui-emoji`](https://github.com/microsoft/fluentui-emoji), which isn't on npm, as `fluemojiDirectory` to `generateAll`, `rebuildDirectory`, or `rebuildSourceDirectory`.
+Pass a clone of [`microsoft/fluentui-emoji`](https://github.com/microsoft/fluentui-emoji), which isn't on npm, as `fluemojiDirectory` to `generateAll`, `rebuildDirectory`, or `rebuildSourceDirectory`, unless it's installed alongside this package as `fluemoji`.
 
 ### APIs
 

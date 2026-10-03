@@ -25,16 +25,19 @@ pnpm --filter @emoji-platform-data/generator refresh:wechat https://dldir1v6.qq.
 
 [`packages/generator/scripts/refreshWeChat.ts`](../generator/scripts/refreshWeChat.ts) scrapes <https://weixin.qq.com> for the Android builds it offers and takes the newest, since Tencent lists several at once including years-old ones kept for older devices.
 
-The script range-requests only the ~280MB build's zip central directory and those two files, under 2MB in all, and fails if either name doesn't appear exactly once or the zip's index runs past its own end.
+The script range-requests only the ~280MB build's zip central directory and those two files, under 2MB in all, and fails rather than guessing if the server ignores ranges, either name isn't there exactly once, or the zip's structure doesn't add up.
 
-The two files are joined by glyph, ignoring variation selectors, keeping every emoji either one has but dropping private use area characters such as Apple's logo and search rows that only match WeChat's own stickers.
+The two files are joined by glyph, ignoring variation selectors, keeping every emoji either one has except:
+
+- Private use area characters, such as Apple's logo
+- Search rows that only match WeChat's own stickers
 
 The picker's descriptions, such as `笑出眼泪的脸` for 😂, are deliberately left out, since they read as translations of the Unicode names.
 
-The snapshot, [`packages/generator/wechat.json`](../generator/wechat.json), is rewritten only when the emoji changed, and the script fails without writing it if:
+The snapshot, [`packages/generator/wechat.json`](../generator/wechat.json), is rewritten only when its data changed, not just the source it was read from, and the script fails without writing it if:
 
 - Too few emoji came back or have keywords, or either count fell sharply since the last snapshot
 - A picker category has too few emoji
-- A known emoji lost a known Chinese or English term
+- A known emoji lost a known Chinese or English term, which also catches the glyph join breaking
 
 The daily `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.

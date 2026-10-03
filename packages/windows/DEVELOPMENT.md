@@ -25,9 +25,9 @@ The undocumented file opens with a hash table, then interleaves two kinds of rec
 
 Each emoji's first pair is its name and the rest are its keywords, and the script fails unless the pairs end exactly where the hash table's lookup lists start.
 
-Skin tone combinations of emoji that show more than one person, such as 🫱🏻‍🫲🏼, are dropped.
+Skin tone variants are dropped, which the data only has for emoji showing more than one person, such as 🫱🏻‍🫲🏼.
 
-The snapshot, [`packages/generator/windows.json`](../generator/windows.json), is rewritten only when the emoji changed, and the script fails without writing it if:
+The snapshot, [`packages/generator/windows.json`](../generator/windows.json), is rewritten only when its data changed, not just the source it was read from, and the script fails without writing it if:
 
 - Too few emoji came back or have keywords, or either count fell sharply since the last snapshot
 - An emoji has no name

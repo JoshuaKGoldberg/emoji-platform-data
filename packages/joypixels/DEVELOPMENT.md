@@ -4,4 +4,4 @@
 
 ## Where This Data Comes From
 
-This package's data is `emoji.json` from [`emoji-toolkit`](https://www.npmjs.com/package/emoji-toolkit), a generator dependency that Renovate keeps up to date, read by [`packages/generator/src/joypixels.ts`](../generator/src/joypixels.ts).
+This package's data is `emoji.json` from [`emoji-toolkit`](https://www.npmjs.com/package/emoji-toolkit), a generator dependency that Renovate bumps, read by [`packages/generator/src/joypixels.ts`](../generator/src/joypixels.ts).

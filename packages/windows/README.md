@@ -30,15 +30,15 @@ console.log(byEmoji["😂"]);
 */
 ```
 
-- `byEmoji` takes a glyph, with or without U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title.
 
 Each entry is a `WindowsItem` describing one emoji as the Windows emoji panel -the one <kbd>Win</kbd> + <kbd>.</kbd> opens- knows it:
 
-- `name` is the emoji's Unicode CLDR name, such as `octopus` for 🐙.
-- `keywords` are the other terms the panel searches, from CLDR's annotations to slang and emoticons, such as `ttyl` for 👋 and `:-o` for 😲.
+- `name` is how Windows names the emoji, close to its Unicode CLDR name, such as `octopus` for 🐙.
+- `keywords` are the other terms the panel searches, from CLDR's annotations to slang and emoticons, such as `ttyl` for 👋 and `:-o` for 😲: nearly every emoji has them.
 
-This package is static JSON and types with no runtime dependencies, also included in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
+This package is only static JSON and types, with no runtime dependencies, and its data is also in the combined [`emoji-platform-data`](http://npmjs.com/package/emoji-platform-data).
 
 ## Where This Data Comes From
 
@@ -48,4 +48,4 @@ Skin tone combinations of emoji showing more than one person, such as 🫱🏻�
 
 The panel's categories and order aren't here, since they're part of the panel itself rather than this data.
 
-The names and keywords are Microsoft's: this package's MIT license only covers the code that packages them, and it includes no Windows emoji artwork.
+The names and keywords are Microsoft's: this package's MIT license only covers the code that packages them, and this package includes no Windows emoji artwork.
