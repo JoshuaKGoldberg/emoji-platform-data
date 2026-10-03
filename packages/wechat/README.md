@@ -59,4 +59,4 @@ WeChat's own stickers, the `[捂脸]` artwork its picker shows alongside these, 
 
 The keywords, categories, and ordering are WeChat's.
 This package's MIT license covers the code that extracts and packages them, not the underlying data.
-No WeChat emoji artwork is included: these are text names only.
+No WeChat emoji artwork is included: these are text keywords only.
