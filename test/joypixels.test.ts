@@ -71,6 +71,7 @@ describe(generateJoyPixels, () => {
 
 	it("leaves out a digit, # or * on its own when the picker doesn't show it", async () => {
 		const result = await generate({
+			"00a9": createEntry("00a9-fe0f", "copyright", { order: 0 }),
 			"1f1e6": createEntry("1f1e6", "regional indicator a", {
 				display: 0,
 				order: 3,
@@ -80,6 +81,7 @@ describe(generateJoyPixels, () => {
 		});
 
 		expect(Object.values(result).map((item) => item?.emoji)).toEqual([
+			"\u00A9\uFE0F",
 			"#\uFE0F\u20E3",
 			"\u{1F1E6}",
 		]);
