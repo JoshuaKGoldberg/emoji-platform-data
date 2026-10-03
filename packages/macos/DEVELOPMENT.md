@@ -19,10 +19,12 @@ pnpm --filter @emoji-platform-data/generator refresh:macos
 
 That compiles [`packages/generator/scripts/extractMacOS.ts`](../generator/scripts/extractMacOS.ts) and runs it under `osascript`, as [JavaScript for Automation](https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/Introduction.html), whose Objective-C bridge can call private frameworks.
 It loads `EmojiFoundation.framework` -the framework macOS's own emoji picker uses- where each `EMFEmojiToken` knows its emoji and the document ID for that emoji in the search index, and `EMFInvertedIndex` turns that ID into the emoji's keywords and their search weights.
-[`packages/generator/scripts/refreshMacOS.ts`](../generator/scripts/refreshMacOS.ts) then keeps the emoji that have keywords, sorts each emoji's keywords by weight, drops the weights themselves, and records the macOS and CoreEmoji versions it read.
+`EMFEmojiCategory` lists each picker category's emoji, other than Recents, in the order the picker shows them, which gives each emoji its `category` and `order`; the few that no category lists, such as ⚕️, have neither.
+[`packages/generator/scripts/refreshMacOS.ts`](../generator/scripts/refreshMacOS.ts) then keeps the emoji that have keywords, and folds the skin tone variants that the search index has, but the picker doesn't list, into their base emoji, keeping each term's strongest weight.
+It sorts each emoji's keywords by weight, drops the weights themselves, and records the macOS and CoreEmoji versions it read.
 
 Every class and selector the extraction uses is private API, so it checks all of them up front and names any that a macOS update has moved.
-The refresh then validates what came back before writing anything: how many emoji have keywords, that each picker category is well represented, that a few known emoji still have known keywords, and that the count hasn't fallen sharply since the last snapshot.
+The refresh then validates what came back before writing anything: how many emoji have keywords, that each picker category is well represented and no unrecognized one has appeared, that every emoji has its names and keywords, that a few known emoji still have known keywords, and that the count hasn't fallen sharply since the last snapshot.
 Those checks exist because these frameworks can keep their method names and quietly start returning nothing, which would otherwise overwrite the snapshot with a smaller, wrong one.
 
 The snapshot is byte-for-byte reproducible: refreshing twice on one Mac, or on two Macs running the same macOS version, produces the same file.

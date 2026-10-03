@@ -77,4 +77,4 @@ Those are left out here: their shortcodes are mechanical suffixes on the base em
 
 The shortcodes, keywords, translations, categories, and ordering are Slack's.
 This package's MIT license covers the code that extracts and packages them, not the underlying data.
-No Slack emoji artwork is included: these are text names only.
+No Slack emoji artwork is included: these are text names and keywords only.

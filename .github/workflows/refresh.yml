@@ -92,14 +92,23 @@ jobs:
 
           count=$(jq '.entries | length' "$snapshot")
           keyworded=$(jq '[.entries[] | select(.keywords | length > 0)] | length' "$snapshot")
+          added=$(git show "HEAD:$snapshot" | jq --slurpfile new "$snapshot" '[$new[0].entries[].emoji] - [.entries[].emoji] | length')
           changeset=".changeset/refresh-$PLATFORM-data-$GITHUB_RUN_ID.md"
+
+          if [ "$added" -gt 0 ]; then
+            bump="minor"
+            type="feat"
+          else
+            bump="patch"
+            type="fix"
+          fi
 
           if [ -n "$version" ]; then
             summary="Updated $NAME emoji data to $version."
-            title="feat: update $NAME emoji data to $version"
+            title="$type: update $NAME emoji data to $version"
           else
             summary="Updated $NAME emoji data from $source."
-            title="feat: update $NAME emoji data"
+            title="$type: update $NAME emoji data"
           fi
 
           # New names from one platform can retitle emoji that other platforms
@@ -125,7 +134,7 @@ jobs:
             {
               echo "@emoji-platform-data/generator"
               comm -13 <(sort "$RUNNER_TEMP/before.txt") <(sort "$RUNNER_TEMP/after.txt") | cut -d ' ' -f 1
-            } | sort -u | sed 's/.*/"&": minor/'
+            } | sort -u | sed "s/.*/\"&\": $bump/"
           )
 
           cat > "$changeset" <<CHANGESET
@@ -143,14 +152,28 @@ jobs:
           git commit -m "$title"
           git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
 
+          body=$(cat <<BODY
+          ## PR Checklist
+
+          - [x] Steps in [CONTRIBUTING.md](https://github.com/$GH_REPO/blob/main/.github/CONTRIBUTING.md) were taken
+          - [x] If this changes what a package publishes, a changeset was added with \`pnpm changeset\` (see [DEVELOPMENT.md](https://github.com/$GH_REPO/blob/main/.github/DEVELOPMENT.md#releasing))
+
+          ## Overview
+
+          $summary This refreshes \`$snapshot\` to the $count emoji it has now, $keyworded of them with search keywords. See \`packages/$PLATFORM/DEVELOPMENT.md\` for how the extraction works.
+
+          🗝️
+          BODY
+          )
+
           if [ -n "$pr_number" ]; then
-            echo "Updated the existing pull request."
+            gh pr edit "$pr_number" --body "$body" --title "$title"
             exit 0
           fi
 
           gh pr create \
             --base main \
-            --body "$summary This refreshes \`$snapshot\` to the $count emoji it has now, $keyworded of them with search keywords. See \`packages/$PLATFORM/DEVELOPMENT.md\` for how the extraction works." \
+            --body "$body" \
             --head "$branch" \
             --title "$title"
       - env:

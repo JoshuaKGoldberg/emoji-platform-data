@@ -13,6 +13,12 @@ Reading it needs nothing but a network connection, so any machine can refresh it
 pnpm --filter @emoji-platform-data/generator refresh:slack
 ```
 
+The script can also be pointed at another page that serves the client, such as GovSlack's:
+
+```shell
+pnpm --filter @emoji-platform-data/generator refresh:slack https://app.slack-gov.com/client
+```
+
 [`packages/generator/scripts/refreshSlack.ts`](../generator/scripts/refreshSlack.ts) fetches <https://app.slack.com/client>, which serves the full client page even to a signed-out visitor, as long as the request looks like it comes from a browser Slack supports.
 Fetch's own user agent gets an older build instead, so the script sends a current Chrome one.
 The page names the CDN it loads from in a `data-cdn` attribute, lists the scripts it loads up front, and maps each locale to its translation file.
@@ -35,8 +41,9 @@ A value of `0` means the translation is the same as the English.
 Every locale has a key for every English term as of writing, so validation insists on 95% of them being found, which is what catches the hashing changing.
 Anything not found falls back to the English, as it does in the client.
 
-The emoji data lists every skin tone variant of the emoji that have them, but only so that shortcodes like `wave::skin-tone-3` resolve, so those are dropped just as Discord's are.
-It also lists emoji the picker doesn't, mostly the gender-neutral forms of older people emoji such as 👮 `cop`, which the picker shows only as their man and woman variants; those are kept, without a category or order.
+The emoji data has every skin tone variant of the emoji that have them, so that shortcodes like `wave::skin-tone-3` resolve, but nests each one inside its base emoji's record rather than listing it as a record of its own.
+The script keeps every top-level record that isn't an alias, so those variants are left out, as Discord's are, only because Slack doesn't surface them as records of their own.
+The emoji data also lists emoji the picker doesn't, mostly the gender-neutral forms of older people emoji such as 👮 `cop`, which the picker shows only as their man and woman variants; those are kept, without a category or order.
 The keyword map has a stray `undefined` key, which is dropped with a warning.
 
 The result is committed as a snapshot, [`packages/generator/slack.json`](../generator/slack.json), the same way Discord's is.
