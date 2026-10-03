@@ -21,7 +21,11 @@ interface SnapshotWrite<Snapshot extends { entries: unknown[] }> {
 export async function readPreviousSnapshot<Snapshot>(snapshotPath: string) {
 	try {
 		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
+	} catch (error) {
+		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+			throw error;
+		}
+
 		return undefined;
 	}
 }

@@ -12,6 +12,7 @@ import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
 import {
 	checkCanaryKeywords,
 	checkCounts,
+	checkDuplicates,
 	emojiCount,
 	throwIfProblems,
 } from "./shared/validate.js";
@@ -74,7 +75,7 @@ const expectedCategories = [
 	"TravelAndPlaces",
 ];
 
-/** The smallest category holds a few hundred emoji, so this is a wide margin. */
+/** The smallest category holds over a hundred emoji, so this is a wide margin. */
 const minimumEntriesPerCategory = 50;
 
 const minimumEntries = 1500;
@@ -91,11 +92,10 @@ if (process.platform !== "darwin") {
 }
 
 const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
-const kept = (await runExtractor()).filter(
-	(entry) => Object.keys(entry.keywordWeights).length > 0,
-);
-
-const entries = foldSkinToneVariants(kept).map(toItem).sort(compareItems);
+const entries = foldSkinToneVariants(await runExtractor())
+	.filter(hasKeywords)
+	.map(toItem)
+	.sort(compareItems);
 
 validate(entries, previous);
 
@@ -151,13 +151,29 @@ function countByCategory(entries: MacOSItem[]) {
  * would lose search terms the picker really does match. Each term keeps the
  * strongest weight any variant gave it, so it sorts against the base emoji's
  * own terms on the same scale.
+ *
+ * The search index lists some emoji both with and without U+FE0F, such as ☺️
+ * (U+263A U+FE0F) and ☺ (U+263A), and only one of the two has keywords, so
+ * that's the one a variant folds into.
  */
 function foldSkinToneVariants(entries: RawEntry[]) {
-	const byEmoji = new Map(entries.map((entry) => [entry.emoji, entry]));
+	const byEmoji = new Map<string, RawEntry>();
+
+	for (const entry of entries) {
+		const key = withoutVariationSelectors(entry.emoji);
+		const existing = byEmoji.get(key);
+
+		if (!existing || (!hasKeywords(existing) && hasKeywords(entry))) {
+			byEmoji.set(key, entry);
+		}
+	}
 
 	return entries.filter((entry) => {
 		const toneless = withoutSkinTones(entry.emoji);
-		const base = toneless === entry.emoji ? undefined : byEmoji.get(toneless);
+		const base =
+			toneless === entry.emoji
+				? undefined
+				: byEmoji.get(withoutVariationSelectors(toneless));
 
 		if (!base) {
 			return true;
@@ -172,6 +188,10 @@ function foldSkinToneVariants(entries: RawEntry[]) {
 
 		return false;
 	});
+}
+
+function hasKeywords(entry: RawEntry) {
+	return Object.keys(entry.keywordWeights).length > 0;
 }
 
 async function readCoreEmojiVersion() {
@@ -313,5 +333,20 @@ function validate(entries: MacOSItem[], previous: Snapshot | undefined) {
 		);
 	}
 
+	const toned = entries.filter(
+		(entry) => withoutSkinTones(entry.emoji) !== entry.emoji,
+	);
+
+	if (toned.length) {
+		problems.push(
+			`${toned.length.toString()} skin tone variants weren't folded into their base emoji, such as ${toned[0].emoji}.`,
+		);
+	}
+
+	checkDuplicates(problems, entries, withoutVariationSelectors);
 	throwIfProblems(problems, "out of macOS");
+}
+
+function withoutVariationSelectors(emoji: string) {
+	return emoji.replaceAll("\uFE0F", "");
 }
