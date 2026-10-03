@@ -37,6 +37,7 @@ console.log(byEmoji["❤️"]);
 ```
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
+`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
 Each entry is a `JoyPixelsItem` describing one emoji as JoyPixels' [emoji-toolkit](https://github.com/joypixels/emoji-toolkit) knows it.
 
 `name` is the shortcode JoyPixels writes the emoji as, and `aliases` are the others it accepts, such as the two-letter `tt` for 🇹🇹 `flag_tt`.

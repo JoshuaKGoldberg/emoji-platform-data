@@ -32,6 +32,7 @@ console.log(byEmoji["🐙"]);
 ```
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
+`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
 Each entry is a `WeChatItem` describing one emoji as WeChat's own emoji picker knows it.
 
 `keywords` are the terms the picker matches searches against, and they're the reason this package exists: WeChat writes them in Simplified Chinese, Traditional Chinese and English all at once, so 🎉 answers to `庆祝`, `慶祝`, `party` and `confetti` alike.
@@ -58,4 +59,4 @@ WeChat's own stickers, the `[捂脸]` artwork its picker shows alongside these, 
 
 The keywords, categories, and ordering are WeChat's.
 This package's MIT license covers the code that extracts and packages them, not the underlying data.
-No WeChat emoji artwork is included: these are text names only.
+No WeChat emoji artwork is included: these are text keywords only.

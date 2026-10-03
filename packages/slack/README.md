@@ -44,6 +44,7 @@ console.log(byEmoji["🐙"]);
 ```
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
+`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
 Each entry is a `SlackItem` describing one emoji as Slack's own emoji picker knows it.
 
 `name` is the shortcode Slack writes the emoji as, and `aliases` are the others it accepts: typing any of them between colons sends the emoji.
@@ -77,4 +78,4 @@ Those are left out here: their shortcodes are mechanical suffixes on the base em
 
 The shortcodes, keywords, translations, categories, and ordering are Slack's.
 This package's MIT license covers the code that extracts and packages them, not the underlying data.
-No Slack emoji artwork is included: these are text names only.
+No Slack emoji artwork is included: these are text names and keywords only.

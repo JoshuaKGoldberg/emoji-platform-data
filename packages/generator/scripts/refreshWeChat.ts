@@ -219,7 +219,8 @@ function findZipEntry(centralDirectory: Buffer, name: string): ZipEntry {
 
 /**
  * Whether a glyph is in a private use area, which WeChat's search index reaches
- * into: it lists Apple's  logo, which is Apple's alone and not a unicode emoji.
+ * into: it lists Apple's logo, U+F8FF, which is Apple's alone and not a unicode
+ * emoji.
  */
 function hasPrivateUseCharacter(emoji: string) {
 	// Code points are the unit the private use areas are defined in.
@@ -323,7 +324,11 @@ async function readCentralDirectory(url: string) {
 async function readPreviousSnapshot() {
 	try {
 		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
+	} catch (error) {
+		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+			throw error;
+		}
+
 		return undefined;
 	}
 }
@@ -443,7 +448,7 @@ function toKeywords(csv: string) {
 			}
 
 			// A joiner only means something between two emoji, and the index has
-			// at least one stray one in front of an emoji it belongs to, ‍🦱.
+			// at least one stray one in front of an emoji it belongs to, U+200D 🦱.
 			const glyph = emoji.replaceAll(/^\u200D+|\u200D+$/g, "");
 			const key = withoutVariationSelectors(glyph);
 			const existing = keywords.get(key);
@@ -560,5 +565,5 @@ function validate(entries: WeChatItem[], previous: Snapshot | undefined) {
  * writes ❤️ as U+2764 U+FE0F, while the picker's listing has U+2764.
  */
 function withoutVariationSelectors(emoji: string) {
-	return emoji.replaceAll("️", "");
+	return emoji.replaceAll("\uFE0F", "");
 }

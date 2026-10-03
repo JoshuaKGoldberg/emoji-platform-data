@@ -23,10 +23,16 @@ npm i @emoji-platform-data/generator
 ```ts
 import { generateAll } from "@emoji-platform-data/generator";
 
-const byTitle = await generateAll();
+const byTitle = await generateAll({
+	fluemojiDirectory: "path/to/fluentui-emoji",
+});
 
 console.log(byTitle["Sparkling Heart"]);
 ```
+
+`generateAll` reads Fluent UI's emoji metadata from [`microsoft/fluentui-emoji`](https://github.com/microsoft/fluentui-emoji), which isn't published to npm.
+Clone that repository, then pass its directory as `fluemojiDirectory`, which `rebuildDirectory` and `rebuildSourceDirectory` also take.
+Within this repository it's installed as a `fluemoji` dev dependency, so the default works and no option is needed.
 
 ### APIs
 
@@ -34,12 +40,3 @@ console.log(byTitle["Sparkling Heart"]);
 - `generateAndroid()`, `generateDiscord()`, `generateEmojiMart()`, `generateEmojipedia()`, `generateFluemoji()`, `generateGemoji()`, `generateGnome()`, `generateJoyPixels()`, `generateMacOS()`, `generateSlack()`, `generateTwemoji()`, `generateWeChat()`, `generateWindows()`: generate data for a single platform
 - `rebuildDirectory({ directory })`: writes a directory exporting the combined data, in the shape published as `emoji-platform-data`
 - `rebuildSourceDirectory({ directory, source })`: writes a directory exporting a single platform's data, in the shape published as `@emoji-platform-data/*`
-
-> Note: `generateFluemoji` reads image metadata from [`microsoft/fluentui-emoji`](https://github.com/microsoft/fluentui-emoji), which isn't published to npm.
-> Clone that repository, then point the generator at it:
->
-> ```ts
-> await generateAll({ fluemojiDirectory: "path/to/fluentui-emoji" });
-> ```
->
-> Within this repository it's installed as a `fluemoji` dev dependency, so the default works and no option is needed.

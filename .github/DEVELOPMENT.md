@@ -105,6 +105,8 @@ pnpm test
 It checks that `byEmoji` and `byTitle` agree, that every `byTitle` entry has a data file of its own, and that each single-platform package matches that platform's data in `emoji-platform-data`.
 Data packages are found by reading `packages/*`, so a new platform is tested as soon as it has a package.
 
+Each other `test/*.test.ts` file unit tests one of the generator's `src/` modules, such as `test/utils.test.ts` for `utils.ts`, with small synthetic entries in place of upstream data.
+
 ## Type Checking
 
 You should be able to see suggestions from [TypeScript](https://typescriptlang.org) in your editor for all open files.
