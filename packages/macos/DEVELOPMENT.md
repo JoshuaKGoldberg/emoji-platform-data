@@ -4,12 +4,9 @@
 
 ## Refreshing macOS Data
 
-Most other sources are an npm or Git dependency that `pnpm build` can read on any machine.
-macOS is not: its emoji keywords live in a search index inside `CoreEmoji.framework`, a private system framework.
-Reading it needs a Mac.
+macOS's emoji keywords are in a search index inside `CoreEmoji.framework`, a private system framework, so reading them needs a Mac.
 
-So `@emoji-platform-data/macos` is built from a snapshot, [`packages/generator/macos.json`](../generator/macos.json), that is committed to this repository.
-Building the packages reads that file and never touches the system frameworks, which is why contributors on Linux and Windows can build everything.
+Building reads the committed snapshot, [`packages/generator/macos.json`](../generator/macos.json), so it works on any OS.
 
 To refresh the snapshot on any Mac:
 
@@ -17,22 +14,28 @@ To refresh the snapshot on any Mac:
 pnpm --filter @emoji-platform-data/generator refresh:macos
 ```
 
-That compiles [`packages/generator/scripts/extractMacOS.ts`](../generator/scripts/extractMacOS.ts) and runs it under `osascript`, as [JavaScript for Automation](https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/Introduction.html), whose Objective-C bridge can call private frameworks.
-It loads `EmojiFoundation.framework` -the framework macOS's own emoji picker uses- where each `EMFEmojiToken` knows its emoji and the document ID for that emoji in the search index, and `EMFInvertedIndex` turns that ID into the emoji's keywords and their search weights.
-`EMFEmojiCategory` lists each picker category's emoji, other than Recents, in the order the picker shows them, which gives each emoji its `category` and `order`; the few that no category lists, such as ⚕️, have neither.
-[`packages/generator/scripts/refreshMacOS.ts`](../generator/scripts/refreshMacOS.ts) then keeps the emoji that have keywords, and folds the skin tone variants that the search index has, but the picker doesn't list, into their base emoji, keeping each term's strongest weight.
-It sorts each emoji's keywords by weight, drops the weights themselves, and records the macOS and CoreEmoji versions it read.
+That compiles [`packages/generator/scripts/extractMacOS.ts`](../generator/scripts/extractMacOS.ts) and runs it under `osascript`, as [JavaScript for Automation](https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/Introduction.html), whose Objective-C bridge loads `EmojiFoundation.framework`, the one macOS's own emoji picker uses:
 
-Every class and selector the extraction uses is private API, so it checks all of them up front and names any that a macOS update has moved.
-The refresh then validates what came back before writing anything: how many emoji have keywords, that each picker category is well represented and no unrecognized one has appeared, that every emoji has its names and keywords, that a few known emoji still have known keywords, and that the count hasn't fallen sharply since the last snapshot.
-Those checks exist because these frameworks can keep their method names and quietly start returning nothing, which would otherwise overwrite the snapshot with a smaller, wrong one.
+- `EMFEmojiToken` gives each emoji's document ID in the search index, which `EMFInvertedIndex` turns into keywords and search weights
+- `EMFEmojiCategory` gives each emoji its `category` and `order` in the picker, skipping Recents, though a few such as ⚕️ have neither
 
-The snapshot is byte-for-byte reproducible: refreshing twice on one Mac, or on two Macs running the same macOS version, produces the same file.
-A refresh on a newer macOS whose emoji are the same leaves the snapshot, and the macOS version it names, as they were.
-Apple changes these keywords between macOS releases, so a refresh belongs in its own pull request, with a changeset, describing which macOS version it came from.
-The daily `Refresh Data` workflow does exactly that automatically, on a `macos-latest` runner.
-It skips opening a pull request when that runner is on an older macOS than the committed snapshot, so a lagging runner image can't roll the data back.
+[`packages/generator/scripts/refreshMacOS.ts`](../generator/scripts/refreshMacOS.ts) then:
 
-Both files are unusually low-level for this repository, and they depend on private frameworks that Apple can rename or restructure in any release.
-If a future macOS breaks the extraction, the failure will name the missing class or selector, and the `required` map at the top of `extractMacOS.ts` lists every symbol it depends on.
-Its type declarations for the bridge describe the same API surface, but only the `required` map is checked at runtime, so the two are meant to be kept in step.
+- Keeps the emoji with keywords
+- Folds skin tone variants the picker doesn't list into their base emoji, keeping each term's strongest weight
+- Sorts each emoji's keywords by weight, then drops the weights
+- Records the macOS and CoreEmoji versions
+
+The snapshot is reproducible on a given macOS version and rewritten only when its data changed, not just the macOS version it was read from, and the script fails without writing it if:
+
+- A private class or selector in the `required` map at the top of `extractMacOS.ts` is missing, which the error names
+- Too few emoji have keywords, or that count fell sharply since the last snapshot
+- A picker category has too few emoji, or an unrecognized one appeared
+- An emoji is missing its names or keywords
+- A known emoji lost a known keyword
+
+Each refresh goes in its own pull request with a changeset naming its macOS version.
+
+The daily `Refresh Data` workflow runs the same thing on `macos-latest` and opens a pull request when the data changed, unless the runner's macOS is older than the snapshot's.
+
+Keep the bridge's type declarations in `extractMacOS.ts` in step with its `required` map, since only the map is checked at runtime.

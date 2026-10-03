@@ -4,5 +4,4 @@
 
 ## Where This Data Comes From
 
-This package's data is [`@emoji-mart/data`](https://www.npmjs.com/package/@emoji-mart/data), a dependency of the generator, read by [`packages/generator/src/emojiMart.ts`](../generator/src/emojiMart.ts).
-There's nothing to refresh by hand: Renovate bumps the dependency when a new version is published, and building picks it up.
+This package's data is [`@emoji-mart/data`](https://www.npmjs.com/package/@emoji-mart/data), a generator dependency that Renovate bumps, read by [`packages/generator/src/emojiMart.ts`](../generator/src/emojiMart.ts).

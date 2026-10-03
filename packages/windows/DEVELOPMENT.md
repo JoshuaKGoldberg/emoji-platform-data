@@ -4,9 +4,7 @@
 
 ## Refreshing Windows Data
 
-The Windows emoji panel, the one <kbd>Win</kbd> + <kbd>.</kbd> opens, has its own keywords, and they aren't the [Fluent UI emoji](https://github.com/microsoft/fluentui-emoji) metadata that `fluemoji` reads.
-The panel asks `AdvancedEmojiDS.dll` for them, which reads them from `datamap.0409.dat`: `0409` is the locale ID for en-US, and each display language installs its own.
-That file ships in the `Microsoft-Windows-LanguageFeatures-Basic-en-us` feature on demand, the language's basic typing features, rather than in Windows itself.
+The Windows emoji panel, the one <kbd>Win</kbd> + <kbd>.</kbd> opens, reads its keywords from `datamap.0409.dat` in the `Microsoft-Windows-LanguageFeatures-Basic-en-us` feature on demand, not from the [Fluent UI emoji](https://github.com/microsoft/fluentui-emoji) metadata that `fluemoji` reads.
 
 Reading it needs a network connection and [7-Zip](https://7-zip.org), but not Windows:
 
@@ -14,27 +12,25 @@ Reading it needs a network connection and [7-Zip](https://7-zip.org), but not Wi
 pnpm --filter @emoji-platform-data/generator refresh:windows
 ```
 
-[`packages/generator/scripts/refreshWindows.ts`](../generator/scripts/refreshWindows.ts) asks [UUP dump](https://uupdump.net), which reads Windows Update's own listings, for the newest retail release of Windows 11 and the link Windows Update gives for that release's feature on demand.
-Newest is by build number rather than by release name or date: a release for new hardware, such as 26H1, can be a newer build than the release that existing PCs get later in the same year, and it carries the newer data.
-The ~22MB cabinet then downloads straight from Microsoft's CDN and is checked against the SHA-256 that Windows Update lists for it, so UUP dump only brokers the link.
-It's LZX-compressed, which Node can't inflate, so the script has 7-Zip extract the one file, whichever of `7zz` or `7z` is installed.
-GitHub's Ubuntu runners come with `7z`; on a Mac, `brew install sevenzip`.
+[`packages/generator/scripts/refreshWindows.ts`](../generator/scripts/refreshWindows.ts) gets the file in three steps:
 
-The file itself is undocumented, but it isn't complicated.
-It opens with a hash table, then interleaves two kinds of record:
+1. [UUP dump](https://uupdump.net) gives the retail Windows 11 release with the newest build number, which can be a new-hardware release such as 26H1, and Windows Update's link for its feature on demand
+2. The ~22MB cabinet downloads from Microsoft's CDN and is checked against Windows Update's SHA-256
+3. 7-Zip extracts the LZX-compressed file, as `7zz` or `7z` (`brew install sevenzip` on a Mac; GitHub's Ubuntu runners come with `7z`)
+
+The undocumented file opens with a hash table, then interleaves two kinds of record:
 
 - Strings, as null-terminated UTF-16, each written once, where first used
 - Pairs of an emoji and one of its terms, as the offsets of those two strings, then an ID counting down from -2
 
-Each emoji's first pair is its name, and the rest are its keywords, in order.
-Past the last pair are the lists the hash table points to, which index those same pairs for lookup rather than adding any.
-The script reads up to where the first of those lists starts, and insists on landing exactly there, which is what catches the layout changing.
+Each emoji's first pair is its name and the rest are its keywords, and the script fails unless the pairs end exactly where the hash table's lookup lists start.
 
-The data lists each skin tone combination of the emoji that show more than one person, such as 🫱🏻‍🫲🏼.
-Their keywords are their base emoji's plus the names of their skin tones, so they're dropped.
+Skin tone variants are dropped, which the data only has for emoji showing more than one person, such as 🫱🏻‍🫲🏼.
 
-The result is committed as a snapshot, [`packages/generator/windows.json`](../generator/windows.json), the same way Discord, macOS, Slack, and WeChat are, so that building the packages never depends on a network fetch.
-Windows ships a cumulative update every month, but this feature on demand only changes with a new release -26H2 still ships the same one as 24H2- so the script rewrites the snapshot only when the emoji themselves changed.
-It validates what it read before writing anything: how many emoji came back, how many of them have keywords, that each has a name, that a few known emoji still carry known keywords that CLDR doesn't have, and that neither count has fallen sharply since the last snapshot.
+The snapshot, [`packages/generator/windows.json`](../generator/windows.json), is rewritten only when its data changed, not just the source it was read from, and the script fails without writing it if:
+
+- Too few emoji came back or have keywords, or either count fell sharply since the last snapshot
+- An emoji has no name
+- A known emoji lost a known keyword that CLDR doesn't have
 
 The daily `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.

@@ -50,13 +50,14 @@ console.log(byTitle.SparklingHeart);
 */
 ```
 
-Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
-`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
-`byTitle`'s entries can also be imported on their own from `emoji-platform-data/byTitle`, such as `import { SparklingHeart } from "emoji-platform-data/byTitle"`, for bundlers such as esbuild that would otherwise include every emoji.
+The conglomerate `emoji-platform-data` package provides straightforward records of emoji data across common platforms:
+
+- `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
+- `byTitle` takes a PascalCase Emojipedia title, and `emoji-platform-data/byTitle` exports each one separately for smaller bundles.
 
 ### Packages
 
-`emoji-platform-data` combines emoji data from several projects.
+`emoji-platform-data` combines emoji data from a collection of well-known projects.
 Each project's data is also published as its own package, for consumers who only need one source:
 
 | Package                                                    | Source                                                                                                                 | Exports                                                 |
@@ -77,8 +78,8 @@ Each project's data is also published as its own package, for consumers who only
 | [`@emoji-platform-data/windows`](./packages/windows)       | [Windows](https://support.microsoft.com/windows/windows-keyboard-tips-and-tricks-588e0b72-0fff-6d3f-aeee-6e5116097942) | `byEmoji` and `byTitle` of `WindowsItem`                |
 | [`@emoji-platform-data/generator`](./packages/generator)   | -                                                                                                                      | APIs that generate the data packages above              |
 
-The data packages have no runtime dependencies: they only contain static JSON and type declarations.
-Each emoji supported in at least one of those projects is stored by its emoji glyph and Emojipedia title.
+The data packages are only static JSON and types, with no runtime dependencies.
+Each emoji supported in at least one of those projects is stored by its emoji glyph and [Emojipedia](https://emojipedia.org) title.
 
 ## Explainer
 
@@ -128,10 +129,14 @@ Any grouping of emoji 🆔 _identity_ and 🔗 _keywords_ used by consumers toda
 This is useful if you're looking to see the metadata supported for emojis in each of those platforms.
 For example, if you wanted to [determine the keywords associated with any emoji](https://github.com/muan/emojilib/issues/194), this would let you accumulate all the keywords across the supported platforms.
 
+Also, isn't this just cool?!
+Look how different each platform's understanding of emojis is!
+Even just the keywords associated with each emoji are _so different_ across platforms!
+🤯
+
 ## Development
 
-See [`.github/CONTRIBUTING.md`](./.github/CONTRIBUTING.md), then [`.github/DEVELOPMENT.md`](./.github/DEVELOPMENT.md).
-Thanks! 🗝️
+See [`.github/CONTRIBUTING.md`](./.github/CONTRIBUTING.md), then [`.github/DEVELOPMENT.md`](./.github/DEVELOPMENT.md) 🗝️
 
 ## Contributors
 

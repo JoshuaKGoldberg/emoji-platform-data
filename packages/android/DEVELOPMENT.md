@@ -4,12 +4,9 @@
 
 ## Refreshing Android Data
 
-Android's own open source keyboard, AOSP's LatinIME, has emoji categories but no emoji search, and [AndroidX's emoji picker](https://developer.android.com/develop/ui/views/text-and-emoji/emoji-picker) only lists emoji by category.
-The search that people use on Android is Gboard's, which is closed source.
-Google doesn't offer Gboard's app for download outside of the Play Store, but it does publish it inside the Android emulator's system images with Google Play, on the same public repository the Android SDK installs from.
+The data is Gboard's emoji search, from the Android emulator's Google Play system images on the public repository the Android SDK installs from.
 
-Gboard carries its English emoji search data in the app itself, as `assets/emoji_en_us_<timestamp>.zip`; other languages, and newer English data, are downloaded after it's installed.
-That zip holds two files:
+Gboard bundles only its English data, as `assets/emoji_en_us_<timestamp>.zip`, which holds two files:
 
 - `en_us`: the search index, a [marisa trie](https://github.com/s-yata/marisa-trie) of every term, then which emoji each term finds
 - `en_us.shortcuts`: a protobuf listing a few terms for each emoji, all of which are also in `en_us`
@@ -21,31 +18,30 @@ brew install erofs-utils
 pnpm --filter @emoji-platform-data/generator refresh:android
 ```
 
-[`packages/generator/scripts/refreshAndroid.ts`](../generator/scripts/refreshAndroid.ts) reads the SDK's system image listing for the newest stable x86_64 image with Google Play, leaving out extension builds, betas, and the 16KB page size images, whose partitions are ext4 rather than EROFS.
-Google's CDN gzips responses for clients that accept it and then reports the gzipped size, so every request to it asks for the file as-is.
+[`packages/generator/scripts/refreshAndroid.ts`](../generator/scripts/refreshAndroid.ts) takes the newest stable x86_64 Google Play image from the SDK's listing, other than extension builds, betas, and 16KB page size images, whose partitions are ext4 rather than EROFS, and asks Google's CDN for the image as-is, since it reports gzipped sizes otherwise.
 
-The image is a ~2.3GB zip, and Gboard is inside `system.img`, a disk image in it that's deflated as one ~2.8GB stream.
-That can't be read piecemeal the way WeChat's app is, but it doesn't need to be on disk all at once either:
+The image is a ~2.3GB zip whose `system.img`, deflated as one ~2.8GB stream, is read without being on disk all at once:
 
 1. The zip's central directory, read with range requests, says where `system.img` is
 2. `system.img` streams in and inflates, and its CRC-32 is checked against the zip's at the end
 3. Its first few megabytes hold a GPT partition table, whose `super` partition holds [Android's dynamic partitions](https://source.android.com/docs/core/ota/dynamic_partitions), whose metadata says which ranges of `super` make up the `product` partition
 4. Only those ranges are written to disk, as a ~1.75GB `product.img`
 
-`product.img` is EROFS, which is compressed, so `dump.erofs --cat` reads `/app/LatinIMEGooglePrebuilt/LatinIMEGooglePrebuilt.apk` out of it.
-The app is a zip, and the emoji data is a zip inside that, so both are read in memory.
+`dump.erofs --cat` reads `/app/LatinIMEGooglePrebuilt/LatinIMEGooglePrebuilt.apk` out of the EROFS `product.img`, and the emoji zip inside that app is read in memory.
 
-`en_us` opens with a 16-byte header of Gboard's own, then a marisa trie of its terms.
-[`packages/generator/scripts/marisa.ts`](../generator/scripts/marisa.ts) reads just enough of marisa's format to list those terms in ID order: its LOUDS bit vectors, the labels on each edge, and the tails or nested tries that longer runs of labels are stored in.
-After the trie, for each term in ID order, is a list of indexes into the list of emoji that comes last, each list preceded by how many indexes it has.
-Every step insists on landing exactly where the next one starts, which is what catches the layout changing.
+`en_us` is laid out as follows, and the script fails if any part doesn't end exactly where the next starts:
 
-Terms are sorted for each emoji, since the order they come in is only the trie's.
-`en_us.shortcuts` is left out, since everything in it is in `en_us` too.
+- A 16-byte header of Gboard's own
+- A marisa trie of the terms, which [`packages/generator/scripts/marisa.ts`](../generator/scripts/marisa.ts) reads just enough of to list them in ID order
+- For each term in ID order, how many emoji it finds, then their indexes into the emoji list
+- The emoji list
 
-The result is committed as a snapshot, [`packages/generator/android.json`](../generator/android.json), the same way Discord, macOS, Slack, and WeChat are, so that building the packages never depends on a network fetch.
-Google rebuilds the system images every few months, but the emoji data bundled in Gboard changes less often, so the script rewrites the snapshot only when the emoji themselves changed.
-It validates what it read before writing anything: how many emoji and keywords came back, that every emoji has keywords, that a few known emoji still carry known keywords that CLDR doesn't have, and that neither count has fallen sharply since the last snapshot.
+Each emoji's terms are sorted, and `en_us.shortcuts` is ignored.
 
-The daily `Refresh Data` workflow runs the same thing and opens a pull request when the data changed.
-Ubuntu 24.04's own erofs-utils is 1.7, so it installs a newer one with the Homebrew that GitHub's Ubuntu runners come with.
+The snapshot, [`packages/generator/android.json`](../generator/android.json), is rewritten only when its data changed, not just the source it was read from, and the script fails without writing it if:
+
+- Too few emoji or keywords came back, or either count fell sharply since the last snapshot
+- An emoji has no keywords
+- A known emoji lost a known keyword that CLDR doesn't have
+
+The daily `Refresh Data` workflow runs the same thing and opens a pull request when the data changed, installing erofs-utils with Homebrew since Ubuntu 24.04's is 1.7.
