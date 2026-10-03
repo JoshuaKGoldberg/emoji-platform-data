@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import * as crypto from "node:crypto";
 import * as fs from "node:fs/promises";
 import * as os from "node:os";
@@ -481,18 +481,25 @@ async function readApk(productPath: string) {
 		);
 	}
 
-	try {
-		return execFileSync(
-			"dump.erofs",
-			["--cat", `--path=${apkPath}`, productPath],
-			{ maxBuffer: 512 * 1024 * 1024, stdio: ["ignore", "pipe", "pipe"] },
-		);
-	} catch (error) {
+	const result = spawnSync(
+		"dump.erofs",
+		["--cat", `--path=${apkPath}`, productPath],
+		{ maxBuffer: 512 * 1024 * 1024, stdio: ["ignore", "pipe", "pipe"] },
+	);
+
+	const failure = `Could not read ${apkPath} out of the product partition. That needs erofs-utils 1.8.5 or newer, such as with \`brew install erofs-utils\`.`;
+
+	if (result.error) {
+		throw new Error(failure, { cause: result.error });
+	}
+
+	if (result.status !== 0 || !result.stdout.length) {
 		throw new Error(
-			`Could not read ${apkPath} out of the product partition. That needs erofs-utils 1.8.5 or newer, such as with \`brew install erofs-utils\`.`,
-			{ cause: error },
+			[failure, result.stderr.toString().trim()].filter(Boolean).join("\n"),
 		);
 	}
+
+	return result.stdout;
 }
 
 /**
