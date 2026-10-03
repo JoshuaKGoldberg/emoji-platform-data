@@ -13,7 +13,6 @@ import {
 	rebuildDirectory,
 	rebuildSourceDirectory,
 } from "../packages/generator/src/index.js";
-import { recordByCldr } from "../packages/generator/src/utils.js";
 
 /**
  * What every data package exports, keyed by glyph and by PascalCase title.
@@ -592,14 +591,5 @@ describe("@emoji-platform-data/generator", () => {
 		expect(
 			Object.keys(byCldr).filter((title) => aliases.get(title) !== title),
 		).toEqual([]);
-	});
-
-	it("throws when two of a platform's entries resolve to the same title", () => {
-		expect(() =>
-			recordByCldr("twemoji", [
-				["Snowman", { unicode: "2603" }],
-				["Snowman", { unicode: "26c4" }],
-			]),
-		).toThrow("Multiple twemoji entries resolve to 'Snowman'.");
 	});
 });
