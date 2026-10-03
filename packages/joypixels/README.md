@@ -62,7 +62,7 @@ This data is `emoji.json` from [`emoji-toolkit`](https://www.npmjs.com/package/e
 Its keywords are close to the Unicode CLDR annotations, so most of them are already known to other sources in `emoji-platform-data`.
 What it adds is mostly shortcodes no other source uses, most of them the two-letter aliases for flags.
 
-emoji-toolkit ends each keyword list with the emoji's Unicode version, such as `uc6`.
+emoji-toolkit ends each keyword list with the major part of the emoji's version, such as `uc6`.
 Those are left out here, since they're `unicodeVersion`.
 It also lists every skin tone variant of the emoji that have them.
 Their shortcodes are mechanical suffixes on the base emoji's, such as `wave_tone3`, so those are left out too, but the few keywords they have that their base emoji doesn't are folded in: 🤲 is `prayer` because its variants are.
