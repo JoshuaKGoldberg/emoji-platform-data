@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { generateAll } from "../packages/generator/src/all.js";
 import {
+	EmojiPlatformDataSource,
 	rebuildDirectory,
 	rebuildSourceDirectory,
 } from "../packages/generator/src/rebuildDirectory.js";
@@ -115,5 +116,16 @@ describe(rebuildSourceDirectory, () => {
 		).rejects.toThrow(
 			`'Chain Broken' and 'BrokenChain' are both known as ${brokenChain}.`,
 		);
+	});
+
+	it("throws when asked for a source it has no types for", async () => {
+		vi.mocked(generateAll).mockResolvedValueOnce({});
+
+		await expect(
+			rebuildSourceDirectory({
+				directory,
+				source: "unknown" as EmojiPlatformDataSource,
+			}),
+		).rejects.toThrow("dataTypes.d.ts doesn't declare");
 	});
 });
