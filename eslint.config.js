@@ -59,10 +59,7 @@ export default defineConfig(
 	},
 	{
 		files: ["packages/generator/src/emojipedia.ts"],
-		rules: {
-			// https://github.com/typescript-eslint/typescript-eslint/issues/12956
-			"@typescript-eslint/no-unsafe-enum-assignment": "off",
-		},
+		rules: { "@typescript-eslint/no-unsafe-enum-assignment": "off" },
 	},
 	{
 		extends: [jsonc.configs["flat/recommended-with-json"]],
