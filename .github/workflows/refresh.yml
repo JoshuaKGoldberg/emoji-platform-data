@@ -192,7 +192,7 @@ jobs:
           # keyword going missing, so the end of their output goes in the issue.
           # A failure in any other step has no output here, and links the run.
           if [ -s "$RUNNER_TEMP/refresh.log" ]; then
-            output=$(tail -n 40 "$RUNNER_TEMP/refresh.log" | perl -pe 's/\e\[[0-9;]*m//g')
+            output=$(tail -n 100 "$RUNNER_TEMP/refresh.log" | perl -pe 's/\e\[[0-9;]*m//g')
             details=$(printf 'The end of its output:\n\n~~~\n%s\n~~~' "$output")
           else
             details="It failed before reading any data, so see the run for what went wrong."
