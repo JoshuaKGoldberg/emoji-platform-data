@@ -39,10 +39,10 @@ export function generateEmojipedia(): GeneratedEmojipediaData {
 
 	// Some platforms write emoji without a variation selector Emojipedia
 	// includes, such as Twemoji's U+1F574 for 🕴️ (U+1F574 U+FE0F).
-	for (const { code } of items) {
-		const bare = withoutVariationSelectors(code);
+	for (const item of items) {
+		const bare = withoutVariationSelectors(item.code);
 		if (!aliases.has(bare)) {
-			aliases.set(bare, aliases.get(code) ?? code);
+			aliases.set(bare, titles.get(item) ?? item.title);
 		}
 	}
 

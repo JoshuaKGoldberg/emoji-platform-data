@@ -2,7 +2,6 @@ import * as fs from "node:fs/promises";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { generateEmojiMart } from "../packages/generator/src/emojiMart.js";
-import { EmojipediaItem } from "../packages/generator/src/types.js";
 
 vi.mock("node:fs/promises", { spy: true });
 
@@ -37,38 +36,11 @@ const aliases = new Map([
 ]);
 
 describe(generateEmojiMart, () => {
-	it.each([
-		[
-			"the entry with Emojipedia's codepoints",
-			"man_in_tuxedo",
-			{
-				"Man in Tuxedo": {
-					codepointsHex: ["U+1F935", "U+200D", "U+2642", "U+FE0F"],
-				} as EmojipediaItem,
-			},
-		],
-		["the first entry", "person_in_tuxedo", {}],
-	])(
-		"keeps %s and warns when two entries resolve to one title",
-		async (_, kept, byCldr) => {
-			const warn = vi
-				.spyOn(console, "warn")
-				.mockImplementation(() => undefined);
+	it("throws when two entries resolve to one title", async () => {
+		vi.mocked(fs.readFile).mockResolvedValueOnce(JSON.stringify(data));
 
-			vi.mocked(fs.readFile).mockResolvedValueOnce(JSON.stringify(data));
-
-			const result = await generateEmojiMart({
-				aliases,
-				byCldr,
-				byCode: {},
-				items: [],
-			});
-
-			expect(Object.keys(result)).toEqual(["Man in Tuxedo"]);
-			expect(result["Man in Tuxedo"]).toMatchObject({ id: kept });
-			expect(warn).toHaveBeenCalledExactlyOnceWith(
-				`Multiple emojiMart entries resolve to 'Man in Tuxedo'; keeping '${kept}'.`,
-			);
-		},
-	);
+		await expect(
+			generateEmojiMart({ aliases, byCldr: {}, byCode: {}, items: [] }),
+		).rejects.toThrow("Multiple emojiMart entries resolve to 'Man in Tuxedo'.");
+	});
 });

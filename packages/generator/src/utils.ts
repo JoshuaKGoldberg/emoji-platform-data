@@ -20,7 +20,6 @@ export function countTitles(titles: string[]) {
 export function getEntryCldr(
 	emojipedia: GeneratedEmojipediaData,
 	glyph: string | undefined,
-	unicode: string | undefined,
 	entries: string[],
 ) {
 	const byGlyphAlias = glyph && getGlyphAlias(emojipedia, glyph);
@@ -35,25 +34,9 @@ export function getEntryCldr(
 		}
 	}
 
-	const byUnicodeItem =
-		unicode &&
-		emojipedia.items.find((emojipediaItem) => {
-			const normalizedHexes = normalizeCodepoints(emojipediaItem.codepointsHex);
-			return (
-				normalizedHexes.join("-") === unicode ||
-				withoutVariationSelectorCodes(normalizedHexes.join("-")) === unicode
-			);
-		});
-	const byUnicode = byUnicodeItem && emojipedia.aliases.get(byUnicodeItem.code);
-
-	if (byUnicode) {
-		return byUnicode;
-	}
-
 	return titleCase(entries[0].replaceAll("_", " "))
 		.replaceAll("#", "Hash")
-		.replaceAll("*", "Asterisk")
-		.replaceAll("’s Symbol", "’s Room");
+		.replaceAll("*", "Asterisk");
 }
 
 /**
@@ -174,7 +157,7 @@ export function withoutVariationSelectors(glyph: string) {
  * Code points as platforms write them, such as "2764-fe0f", without any U+FE0F
  * variation selectors.
  */
-export function withoutVariationSelectorCodes(unicode: string) {
+function withoutVariationSelectorCodes(unicode: string) {
 	return unicode
 		.split("-")
 		.filter((hex) => hex !== "fe0f")
