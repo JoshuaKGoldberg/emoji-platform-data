@@ -7,7 +7,7 @@ import { GnomeItem } from "../src/dataTypes.js";
 interface RawItem {
 	emoji: string;
 
-	/** The picker section the emoji is in, as an index into `categories`. */
+	/** The picker section the emoji is in, as the Emojibase group number `categories` is keyed by. */
 	group: number;
 
 	/** The emoji's name in English, such as "octopus". */

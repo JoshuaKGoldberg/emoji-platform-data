@@ -494,9 +494,10 @@ function searchModule(client: string) {
  * Keeps the emoji the picker lists, which are the ones a category covers.
  *
  * The data also carries every skin tone variant of those, but only to route
- * shortcodes like `wave_tone3` to them. Those names are mechanical suffixes on
- * the base emoji's, so there's nothing in them to fold back in, and keeping
- * them would give one emoji a tone axis nothing else in the data set has.
+ * shortcodes like `wave_tone3` to them, and after the last category's range,
+ * so no category covers them. Those names are mechanical suffixes on the base
+ * emoji's, so there's nothing in them to fold back in, and keeping them would
+ * give one emoji a tone axis nothing else in the data set has.
  */
 function toEntries(
 	{ emojis, emojisByCategory }: RawData,

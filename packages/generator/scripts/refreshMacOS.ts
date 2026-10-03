@@ -66,7 +66,7 @@ const expectedCategories = [
 	"TravelAndPlaces",
 ];
 
-/** The smallest category holds a few hundred emoji, so this is a wide margin. */
+/** The smallest category holds over a hundred emoji, so this is a wide margin. */
 const minimumEntriesPerCategory = 50;
 
 const minimumEntries = 1500;
