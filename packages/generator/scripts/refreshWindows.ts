@@ -5,6 +5,16 @@ import * as os from "node:os";
 import * as path from "node:path";
 
 import { WindowsItem } from "../src/dataTypes.js";
+import { withoutSkinTones } from "./shared/skinTones.js";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import {
+	checkCanaryKeywords,
+	checkCounts,
+	countWithKeywords,
+	emojiCount,
+	emojiWithKeywordsCount,
+	throwIfProblems,
+} from "./shared/validate.js";
 
 /** One build as UUP dump lists it. */
 interface RawBuild {
@@ -53,13 +63,11 @@ const minimumEntriesWithKeywords = 1400;
 /** Retail releases, rather than Insider, preview, or servicing-stack builds. */
 const releaseTitle = /^Windows 11, version (\w+) \((\d+)\.(\d+)\)$/;
 
-const skinTones = /[\u{1F3FB}-\u{1F3FF}]/u;
-
 const snapshotPath = path.join(import.meta.dirname, "../windows.json");
 
 const uupApi = "https://api.uupdump.net";
 
-const previous = await readPreviousSnapshot();
+const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 
 const build = await pickLatestBuild();
 const file = await fetchFile(build.uuid, cabName);
@@ -86,25 +94,15 @@ try {
 	// with each, but this feature on demand only changes with a new release.
 	// Rewriting the snapshot for a build bump alone would churn it -and open
 	// empty refresh pull requests- for data that hasn't changed.
-	if (previous && isSameData(previous.entries, entries)) {
-		console.log(
-			`Read ${entries.length.toString()} emoji from Windows 11 ${build.release} (${build.build}), unchanged from the snapshot.`,
-		);
-	} else {
-		await fs.writeFile(
-			snapshotPath,
-			JSON.stringify(snapshot, null, "\t") + "\n",
-		);
-		console.log(
-			`Wrote ${entries.length.toString()} emoji from Windows 11 ${build.release} (${build.build}), with keywords for ${countWithKeywords(entries).toString()} of them.`,
-		);
-	}
+	await writeSnapshot({
+		details: `, with keywords for ${countWithKeywords(entries).toString()} of them`,
+		from: `Windows 11 ${build.release} (${build.build})`,
+		previous,
+		snapshot,
+		snapshotPath,
+	});
 } finally {
 	await fs.rm(directory, { force: true, recursive: true });
-}
-
-function countWithKeywords(entries: WindowsItem[]) {
-	return entries.filter((entry) => entry.keywords.length).length;
 }
 
 async function download(file: RawFile) {
@@ -229,10 +227,6 @@ function findSevenZip() {
 	);
 }
 
-function isSameData(left: WindowsItem[], right: WindowsItem[]) {
-	return JSON.stringify(left) === JSON.stringify(right);
-}
-
 /**
  * The newest retail release of Windows 11.
  *
@@ -353,18 +347,6 @@ function readDatamap(contents: Buffer) {
 	return terms;
 }
 
-async function readPreviousSnapshot() {
-	try {
-		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-			throw error;
-		}
-
-		return undefined;
-	}
-}
-
 /**
  * Turns each emoji's terms into an entry, in the data's own order.
  *
@@ -374,57 +356,17 @@ async function readPreviousSnapshot() {
  */
 function toEntries(terms: Map<string, string[]>) {
 	return [...terms]
-		.filter(([emoji]) => !skinTones.test(emoji))
+		.filter(([emoji]) => withoutSkinTones(emoji) === emoji)
 		.map(([emoji, [name, ...keywords]]) => ({ emoji, keywords, name }));
 }
 
 function validate(entries: WindowsItem[], previous: Snapshot | undefined) {
-	const problems: string[] = [];
+	const problems = checkCounts(entries, previous?.entries, [
+		{ ...emojiCount, minimum: minimumEntries },
+		{ ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
+	]);
 
-	if (entries.length < minimumEntries) {
-		problems.push(
-			`Only ${entries.length.toString()} emoji were read, out of at least ${minimumEntries.toString()} expected.`,
-		);
-	}
-
-	const withKeywords = countWithKeywords(entries);
-
-	if (withKeywords < minimumEntriesWithKeywords) {
-		problems.push(
-			`Only ${withKeywords.toString()} emoji have keywords, out of at least ${minimumEntriesWithKeywords.toString()} expected.`,
-		);
-	}
-
-	if (previous) {
-		if (entries.length < previous.entries.length * 0.95) {
-			problems.push(
-				`Emoji count fell from ${previous.entries.length.toString()} to ${entries.length.toString()}, more than refreshing should change it.`,
-			);
-		}
-
-		const before = countWithKeywords(previous.entries);
-
-		if (withKeywords < before * 0.95) {
-			problems.push(
-				`Emoji with keywords fell from ${before.toString()} to ${withKeywords.toString()}, more than refreshing should change it.`,
-			);
-		}
-	}
-
-	for (const [emoji, terms] of Object.entries(canaryTerms)) {
-		const entry = entries.find((candidate) => candidate.emoji === emoji);
-
-		if (!entry) {
-			problems.push(`${emoji} is missing entirely.`);
-			continue;
-		}
-
-		for (const term of terms) {
-			if (!entry.keywords.includes(term)) {
-				problems.push(`${emoji} no longer lists the keyword '${term}'.`);
-			}
-		}
-	}
+	checkCanaryKeywords(problems, entries, canaryTerms);
 
 	const unnamed = entries.filter((entry) => !entry.name);
 
@@ -434,12 +376,5 @@ function validate(entries: WindowsItem[], previous: Snapshot | undefined) {
 		);
 	}
 
-	if (problems.length) {
-		throw new Error(
-			[
-				"The data read for Windows doesn't look right, so the snapshot wasn't written:",
-				...problems.map((problem) => `  ${problem}`),
-			].join("\n"),
-		);
-	}
+	throwIfProblems(problems, "for Windows");
 }

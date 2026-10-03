@@ -49,7 +49,7 @@ jobs:
       - run: pnpm run test --coverage
       - env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        if: always()
+        if: ${{ !cancelled() }}
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
   type_check:
     name: Type Check

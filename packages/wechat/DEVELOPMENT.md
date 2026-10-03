@@ -30,7 +30,7 @@ pnpm --filter @emoji-platform-data/generator refresh:wechat https://dldir1v6.qq.
 That build is a ~280MB file, and downloading it daily to read 220KB out of it would be silly.
 It's a zip, though, and the CDN serves ranges, so the script reads it the way a zip is meant to be read: the last few kilobytes hold a record pointing at the central directory, the central directory says where every file inside sits, and only the two files that matter are fetched and inflated.
 That comes to under 2MB.
-Each of the two is looked up by exact name and has to appear exactly once -a name that starts matching twice is as much a sign of the app having moved on as one that stops matching- and a zip that turns out to be Zip64, or whose index runs past its own end, is refused rather than read as garbage.
+Each of the two is looked up by exact name and has to appear exactly once -a name that starts matching twice is as much a sign of the app having moved on as one that stops matching- and a zip whose index runs past its own end is refused rather than read as garbage.
 
 The two files are joined by glyph, which is the only thing they share.
 They disagree about which emoji they cover: some the picker lists aren't searchable at all, and many the search knows aren't in the picker, so entries keep whatever either file knows rather than only their intersection.
