@@ -36,7 +36,8 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/prepare
-      - id: publish
+      - continue-on-error: true
+        id: publish
         uses: changesets/action/publish@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           github-token: ${{ secrets.ACCESS_TOKEN }}
@@ -68,6 +69,28 @@ jobs:
 
             for issue in $(gh pr view "$pr" --json closingIssuesReferences --jq '.closingIssuesReferences[].number'); do
               gh issue comment "$issue" --body "$body"
+            done
+          done
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        if: steps.publish.outcome == 'failure'
+        name: Check whether an earlier run already released what failed to publish
+        run: |
+          for tag in $(jq -r 'select(.private | not) | "\(.name)@\(.version)"' packages/*/package.json); do
+            if ! gh release view "$tag" --json tagName > /dev/null; then
+              echo "$tag has no GitHub release, so it wasn't published."
+              exit 1
+            fi
+
+            until npm view "$tag" version > /dev/null 2>&1; do
+              if [ "$SECONDS" -gt 1200 ]; then
+                echo "$tag has a GitHub release, but npm still doesn't list it."
+                exit 1
+              fi
+
+              echo "Waiting for npm to list $tag..."
+              sleep 30
             done
           done
 
