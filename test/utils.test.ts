@@ -4,6 +4,7 @@ import {
 	fromUnicode,
 	getEntryCldr,
 	normalizeCodepoints,
+	recordByCldr,
 	toCodePointNotation,
 	toUnicode,
 } from "../packages/generator/src/utils.js";
@@ -46,6 +47,26 @@ describe(normalizeCodepoints, () => {
 		],
 	])("normalizes %j as %j", (codepointsHex, normalized) => {
 		expect(normalizeCodepoints(codepointsHex)).toEqual(normalized);
+	});
+});
+
+describe(recordByCldr, () => {
+	it("keeps every entry when their titles are different", () => {
+		expect(
+			recordByCldr("discord", [
+				["Broken Chain", 1],
+				["Chains", 2],
+			]),
+		).toEqual({ "Broken Chain": 1, Chains: 2 });
+	});
+
+	it("throws when two entries have the same title", () => {
+		expect(() =>
+			recordByCldr("discord", [
+				["Broken Chain", 1],
+				["Broken Chain", 2],
+			]),
+		).toThrow("Multiple discord entries resolve to 'Broken Chain'.");
 	});
 });
 

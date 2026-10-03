@@ -46,6 +46,12 @@ const wheelchair: FluemojiItem = {
 };
 
 describe(generateFluemoji, () => {
+	it("throws when the directory has no assets", async () => {
+		await expect(generateFluemoji(emojipedia, directory)).rejects.toThrow(
+			`No fluemoji assets found in ${directory}.`,
+		);
+	});
+
 	it("keeps an entry's glyph when it matches its unicode", async () => {
 		const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
