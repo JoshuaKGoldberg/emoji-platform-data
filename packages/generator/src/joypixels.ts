@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllJoyPixelsData, JoyPixelsItem } from "./types.js";
-import { getEntryCldr, recordByCldr } from "./utils.js";
+import { fromUnicode, getEntryCldr, recordByCldr } from "./utils.js";
 
 /**
  * One entry of emoji-toolkit's emoji.json, keyed by its code points.
@@ -46,8 +46,8 @@ interface RawEntry {
 }
 
 /**
- * Each keyword list ends with the emoji's Unicode version, as a "uc" tag.
- * That's already `unicodeVersion`, and no one searches for "uc6".
+ * Each keyword list ends with the major part of the emoji's version, as a "uc"
+ * tag. That's already `unicodeVersion`, and no one searches for "uc6".
  */
 const unicodeVersionTag = /^uc\d+$/;
 
@@ -82,9 +82,7 @@ export async function generateJoyPixels(
 		"joypixels",
 		entries.map(([key, entry]) => {
 			const unicode = entry.code_points.fully_qualified;
-			const emoji = String.fromCodePoint(
-				...unicode.split("-").map((hex) => parseInt(hex, 16)),
-			);
+			const emoji = fromUnicode(unicode);
 			const description = unescapeAmpersands(entry.name);
 			const keywords = withoutVersionTags(entry.keywords);
 
@@ -114,7 +112,7 @@ export async function generateJoyPixels(
 				item.order = order++;
 			}
 
-			return [getEntryCldr(emojipedia, emoji, unicode, [description]), item];
+			return [getEntryCldr(emojipedia, emoji, [description]), item];
 		}),
 	);
 }

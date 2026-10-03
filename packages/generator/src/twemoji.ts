@@ -5,6 +5,7 @@ import { parse } from "yaml";
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllTwemojiData, TwemojiItem } from "./types.js";
 import {
+	countTitles,
 	fromUnicode,
 	getEntryCldr,
 	isKnownGlyph,
@@ -30,7 +31,7 @@ export async function generateTwemoji(
 		path.join(import.meta.dirname, "../emoji.yml"),
 		"utf8",
 	);
-	const parsed = (await parse(rawTwemoji)) as TwemojiGroupRaw[];
+	const parsed = parse(rawTwemoji) as TwemojiGroupRaw[];
 
 	const entries = parsed.flatMap((group) =>
 		group.items
@@ -48,12 +49,12 @@ export async function generateTwemoji(
 		const glyph = fromUnicode(entry.unicode);
 
 		return {
-			cldr: getEntryCldr(emojipedia, glyph, entry.unicode, [entry.description]),
+			cldr: getEntryCldr(emojipedia, glyph, [entry.description]),
 			entry,
 			glyph,
 		};
 	});
-	const titlesTaken = countTitles(resolved);
+	const titlesTaken = countTitles(resolved.map(({ cldr }) => cldr));
 
 	return recordByCldr(
 		"twemoji",
@@ -68,14 +69,4 @@ export async function generateTwemoji(
 			entry,
 		]),
 	);
-}
-
-function countTitles(resolved: { cldr: string }[]) {
-	const counts = new Map<string, number>();
-
-	for (const { cldr } of resolved) {
-		counts.set(cldr, (counts.get(cldr) ?? 0) + 1);
-	}
-
-	return counts;
 }

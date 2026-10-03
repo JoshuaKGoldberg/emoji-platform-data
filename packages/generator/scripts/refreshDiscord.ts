@@ -107,6 +107,8 @@ const snapshotPath = path.join(import.meta.dirname, "../discord.json");
 const source = process.argv[2] ?? defaultSource;
 const origin = new URL(source).origin;
 
+const fetchedScripts = new Map<string, Promise<string>>();
+
 const previous = await readPreviousSnapshot();
 
 const page = await fetchText(source);
@@ -178,7 +180,14 @@ function* extractJsonBlobs(script: string) {
 }
 
 async function fetchScript(chunk: string) {
-	return await fetchText(`${origin}/assets/${chunk}`);
+	let script = fetchedScripts.get(chunk);
+
+	if (!script) {
+		script = fetchText(`${origin}/assets/${chunk}`);
+		fetchedScripts.set(chunk, script);
+	}
+
+	return await script;
 }
 
 async function fetchText(url: string) {
@@ -445,7 +454,11 @@ async function readKeywords() {
 async function readPreviousSnapshot() {
 	try {
 		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
+	} catch (error) {
+		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+			throw error;
+		}
+
 		return undefined;
 	}
 }
@@ -494,9 +507,10 @@ function searchModule(client: string) {
  * Keeps the emoji the picker lists, which are the ones a category covers.
  *
  * The data also carries every skin tone variant of those, but only to route
- * shortcodes like `wave_tone3` to them. Those names are mechanical suffixes on
- * the base emoji's, so there's nothing in them to fold back in, and keeping
- * them would give one emoji a tone axis nothing else in the data set has.
+ * shortcodes like `wave_tone3` to them, and after the last category's range,
+ * so no category covers them. Those names are mechanical suffixes on the base
+ * emoji's, so there's nothing in them to fold back in, and keeping them would
+ * give one emoji a tone axis nothing else in the data set has.
  */
 function toEntries(
 	{ emojis, emojisByCategory }: RawData,
@@ -540,15 +554,13 @@ function toEntries(
  * a file name that doesn't resolve- as a miss rather than a failure.
  */
 async function tryReadKeywords(fileName: string) {
-	let script;
+	const response = await fetch(`${origin}/assets/${fileName}`);
 
-	try {
-		script = await fetchScript(fileName);
-	} catch {
+	if (!response.ok) {
 		return undefined;
 	}
 
-	for (const blob of extractJsonBlobs(script)) {
+	for (const blob of extractJsonBlobs(await response.text())) {
 		if (isKeywords(blob)) {
 			return blob;
 		}
