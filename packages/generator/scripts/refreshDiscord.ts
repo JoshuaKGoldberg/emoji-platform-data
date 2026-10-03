@@ -7,7 +7,12 @@ import {
 	listScripts,
 	searchScripts,
 } from "./shared/bundles.js";
-import { fetchText, fetchUrl, readText } from "./shared/fetch.js";
+import {
+	fetchText,
+	fetchUrl,
+	readText,
+	requestTimeout,
+} from "./shared/fetch.js";
 import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
 import {
 	checkCanaryShortcodes,
@@ -456,7 +461,9 @@ function toEntries(
  * a file name that doesn't resolve- as a miss rather than a failure.
  */
 async function tryReadKeywords(fileName: string) {
-	const response = await fetchUrl(`${origin}/assets/${fileName}`);
+	const response = await fetchUrl(`${origin}/assets/${fileName}`, {
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 
 	if (!response.ok) {
 		return undefined;
