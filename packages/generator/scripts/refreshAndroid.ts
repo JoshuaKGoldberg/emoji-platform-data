@@ -71,6 +71,9 @@ const headLimit = 64 * 1024 * 1024;
 /** The emoji dictionary's own header, before the trie of its terms. */
 const dictionaryMagic = 0x9bc13afe;
 
+/** The newest system image listing schema version when this was written. */
+const knownListingVersion = 5;
+
 const minimumEntries = 1500;
 
 const minimumKeywords = 10_000;
@@ -438,7 +441,7 @@ function isSameData(left: AndroidItem[], right: AndroidItem[]) {
 async function pickLatestImage() {
 	let xml: string | undefined;
 
-	for (let version = 1; ; version += 1) {
+	for (let version = knownListingVersion; ; version += 1) {
 		const listing = await fetchText(
 			`${repositoryUrl}sys-img2-${version.toString()}.xml`,
 		);
