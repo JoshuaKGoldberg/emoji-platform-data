@@ -28,13 +28,17 @@ export async function generateFluemoji(
 
 	files.sort();
 
-	const pending = files.map(async (file) =>
-		repairGlyph(JSON.parse(await fs.readFile(file, "utf8")) as FluemojiItem),
-	);
+	const entries: FluemojiItem[] = [];
+
+	for (const file of files) {
+		entries.push(
+			repairGlyph(JSON.parse(await fs.readFile(file, "utf8")) as FluemojiItem),
+		);
+	}
 
 	return recordByCldr(
 		"fluemoji",
-		(await Promise.all(pending)).map((entry) => [
+		entries.map((entry) => [
 			getEntryCldr(emojipedia, entry.glyph, [entry.cldr]),
 			entry,
 		]),

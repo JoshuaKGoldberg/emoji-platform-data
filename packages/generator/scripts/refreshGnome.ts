@@ -1,7 +1,16 @@
-import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
 import { GnomeItem } from "../src/dataTypes.js";
+import { fetchOk } from "./shared/fetch.js";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import {
+	checkCanaries,
+	checkCounts,
+	countWithKeywords,
+	emojiCount,
+	emojiWithKeywordsCount,
+	throwIfProblems,
+} from "./shared/validate.js";
 
 /** One emoji as a locale's data file lists it. */
 interface RawItem {
@@ -97,14 +106,12 @@ const minimumEntriesPerCategory = 50;
 
 const minimumEntriesWithKeywords = 1800;
 
-const requestTimeout = 60_000;
-
 const snapshotPath = path.join(import.meta.dirname, "../gnome.json");
 
 /** The locale the English data is in, which is also every file's fallback. */
 const sourceLocale = "en";
 
-const previous = await readPreviousSnapshot();
+const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 
 const tag = process.argv[2] ?? (await pickLatestStableTag());
 const files = await listDataFiles(tag);
@@ -137,48 +144,25 @@ const snapshot: Snapshot = { entries, gtk: tag, locales };
 // someone regenerates it from a new CLDR, which is about once a year.
 // Rewriting the snapshot for a new tag alone would churn it -and open empty
 // refresh pull requests- for data that hasn't changed.
-if (
-	previous &&
-	isSameData(previous.entries, entries) &&
-	isSameData(previous.locales, locales)
-) {
-	console.log(
-		`Read ${entries.length.toString()} emoji from GTK ${tag}, unchanged from the snapshot.`,
-	);
-} else {
-	await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, "\t") + "\n");
-	console.log(
-		`Wrote ${entries.length.toString()} emoji from GTK ${tag}, with keywords for ${countWithKeywords(entries).toString()} of them, in ${(locales.length + 1).toString()} locales.`,
-	);
-}
+await writeSnapshot({
+	dataFields: ["entries", "locales"],
+	details: `, with keywords for ${countWithKeywords(entries).toString()} of them, in ${(locales.length + 1).toString()} locales`,
+	from: `GTK ${tag}`,
+	previous,
+	snapshot,
+	snapshotPath,
+});
 
 function alignUp(position: number, alignment: number) {
 	return Math.ceil(position / alignment) * alignment;
 }
 
-function countWithKeywords(entries: GnomeItem[]) {
-	return entries.filter((entry) => entry.keywords.length).length;
-}
-
 async function fetchBuffer(url: string) {
-	const response = await fetch(url, {
-		signal: AbortSignal.timeout(requestTimeout),
-	});
-	if (!response.ok) {
-		throw new Error(
-			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
-
-	return Buffer.from(await response.arrayBuffer());
+	return Buffer.from(await (await fetchOk(url)).arrayBuffer());
 }
 
 async function fetchJson<T>(url: string) {
 	return JSON.parse((await fetchBuffer(url)).toString("utf8")) as T;
-}
-
-function isSameData(left: unknown, right: unknown) {
-	return JSON.stringify(left) === JSON.stringify(right);
 }
 
 /**
@@ -272,18 +256,6 @@ function readEmojiData(data: Buffer) {
 			nameLocal: readString(nameLocal),
 		};
 	});
-}
-
-async function readPreviousSnapshot() {
-	try {
-		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-			throw error;
-		}
-
-		return undefined;
-	}
 }
 
 /** Where the last of a tuple's variable-size members ends. */
@@ -454,37 +426,10 @@ function validate(
 	locales: string[],
 	previous: Snapshot | undefined,
 ) {
-	const problems: string[] = [];
-
-	if (entries.length < minimumEntries) {
-		problems.push(
-			`Only ${entries.length.toString()} emoji were read, out of at least ${minimumEntries.toString()} expected.`,
-		);
-	}
-
-	const withKeywords = countWithKeywords(entries);
-
-	if (withKeywords < minimumEntriesWithKeywords) {
-		problems.push(
-			`Only ${withKeywords.toString()} emoji have keywords, out of at least ${minimumEntriesWithKeywords.toString()} expected.`,
-		);
-	}
-
-	if (previous) {
-		if (entries.length < previous.entries.length * 0.95) {
-			problems.push(
-				`Emoji count fell from ${previous.entries.length.toString()} to ${entries.length.toString()}, more than refreshing should change it.`,
-			);
-		}
-
-		const before = countWithKeywords(previous.entries);
-
-		if (withKeywords < before * 0.95) {
-			problems.push(
-				`Emoji with keywords fell from ${before.toString()} to ${withKeywords.toString()}, more than refreshing should change it.`,
-			);
-		}
-	}
+	const problems = checkCounts(entries, previous?.entries, [
+		{ ...emojiCount, minimum: minimumEntries },
+		{ ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
+	]);
 
 	for (const category of categories.values()) {
 		const count = entries.filter((entry) => entry.category === category).length;
@@ -513,14 +458,7 @@ function validate(
 		}
 	}
 
-	for (const [emoji, canary] of Object.entries(canaryTerms)) {
-		const entry = entries.find((candidate) => candidate.emoji === emoji);
-
-		if (!entry) {
-			problems.push(`${emoji} is missing entirely.`);
-			continue;
-		}
-
+	checkCanaries(problems, entries, canaryTerms, (entry, canary, emoji) => {
 		if (!entry.keywords.length) {
 			problems.push(`${emoji} no longer has English keywords.`);
 		}
@@ -539,14 +477,7 @@ function validate(
 				`${emoji} no longer lists the keyword '${canary.keyword}' in '${canary.locale}'.`,
 			);
 		}
-	}
+	});
 
-	if (problems.length) {
-		throw new Error(
-			[
-				"The data read for GNOME doesn't look right, so the snapshot wasn't written:",
-				...problems.map((problem) => `  ${problem}`),
-			].join("\n"),
-		);
-	}
+	throwIfProblems(problems, "for GNOME");
 }

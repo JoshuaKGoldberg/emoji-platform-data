@@ -1,7 +1,23 @@
-import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
 import { DiscordItem } from "../src/dataTypes.js";
+import {
+	extractJsonBlobs,
+	findOnly,
+	listScripts,
+	searchScripts,
+} from "./shared/bundles.js";
+import { fetchText, requestTimeout } from "./shared/fetch.js";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import {
+	checkCanaryShortcodes,
+	checkCounts,
+	checkDuplicates,
+	countWithKeywords,
+	emojiCount,
+	emojiWithKeywordsCount,
+	throwIfProblems,
+} from "./shared/validate.js";
 
 interface RawData {
 	emojis: RawEmoji[];
@@ -102,8 +118,6 @@ const clientChunkPrefix = "web.";
  */
 const searchMethod = "nameMatchesChain";
 
-const requestTimeout = 60_000;
-
 const snapshotPath = path.join(import.meta.dirname, "../discord.json");
 
 const source = process.argv[2] ?? defaultSource;
@@ -111,10 +125,10 @@ const origin = new URL(source).origin;
 
 const fetchedScripts = new Map<string, Promise<string>>();
 
-const previous = await readPreviousSnapshot();
+const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 
 const page = await fetchText(source);
-const scripts = listScripts(page);
+const scripts = listScripts(page, /\/assets\/([\w.-]+\.js)/g, source);
 
 const { chunk: dataChunk, data } = await readEmojiData();
 const names = new Set(data.emojis.map((emoji) => emoji.names[0]));
@@ -135,51 +149,13 @@ const snapshot: Snapshot = {
 // Discord redeploys constantly, and every deploy renames the chunks. Rewriting
 // the file for a rename alone would churn it -and open empty refresh pull
 // requests- for data that hasn't changed.
-if (previous && isSameData(previous.entries, entries)) {
-	console.log(
-		`Read ${entries.length.toString()} emoji from ${dataChunk}, unchanged from the snapshot.`,
-	);
-} else {
-	await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, "\t") + "\n");
-	console.log(
-		`Wrote ${entries.length.toString()} emoji from ${dataChunk}, with keywords for ${countWithKeywords(entries).toString()} of them from ${keywordChunk}.`,
-	);
-}
-
-function countWithKeywords(entries: DiscordItem[]) {
-	return entries.filter((entry) => entry.keywords.length).length;
-}
-
-/**
- * Pulls the JSON blobs out of a script.
- *
- * The bundler emits a large JSON module as a string literal it parses at
- * runtime, so these are read as literals rather than by matching the shape of
- * what's inside them. A blob is found by asking what it holds, not by where it
- * sits or what its first key is, since neither is Discord's to keep stable.
- */
-function* extractJsonBlobs(script: string) {
-	const prefix = "JSON.parse('";
-
-	for (let start = script.indexOf(prefix); start !== -1;) {
-		const open = start + prefix.length;
-		let end = open;
-
-		while (end < script.length && script[end] !== "'") {
-			end += script[end] === "\\" ? 2 : 1;
-		}
-
-		const literal = toJsonEscapes(script.slice(open, end));
-
-		try {
-			yield JSON.parse(literal) as unknown;
-		} catch {
-			// A literal that doesn't parse isn't one of the blobs being looked for.
-		}
-
-		start = script.indexOf(prefix, end);
-	}
-}
+await writeSnapshot({
+	details: `, with keywords for ${countWithKeywords(entries).toString()} of them from ${keywordChunk}`,
+	from: dataChunk,
+	previous,
+	snapshot,
+	snapshotPath,
+});
 
 async function fetchScript(chunk: string) {
 	let script = fetchedScripts.get(chunk);
@@ -190,32 +166,6 @@ async function fetchScript(chunk: string) {
 	}
 
 	return await script;
-}
-
-async function fetchText(url: string) {
-	const response = await fetch(url, {
-		signal: AbortSignal.timeout(requestTimeout),
-	});
-	if (!response.ok) {
-		throw new Error(
-			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
-
-	return await response.text();
-}
-
-/**
- * Finds a value in the script, insisting it appears exactly once.
- *
- * These read minified code that nothing promises to keep stable. A pattern that
- * starts matching twice is as much a sign of that code having moved on as one
- * that stops matching, and quietly taking the first of two would be a coin flip.
- */
-function findOnly(script: string, pattern: RegExp) {
-	const matches = [...script.matchAll(pattern)].map((match) => match[1]);
-
-	return matches.length === 1 ? matches[0] : undefined;
 }
 
 /**
@@ -229,10 +179,6 @@ function isClientScript(script: string) {
 	return localeChunkIds(script).some(
 		(chunkId) => chunkFileNames(script, chunkId).length > 0,
 	);
-}
-
-function isSameData(left: DiscordItem[], right: DiscordItem[]) {
-	return JSON.stringify(left) === JSON.stringify(right);
 }
 
 /**
@@ -287,23 +233,6 @@ function isRawData(value: unknown): value is RawData {
 }
 
 /**
- * The scripts a page loads, in the order it lists them.
- */
-function listScripts(page: string) {
-	const scripts = [
-		...new Set(
-			[...page.matchAll(/\/assets\/([\w.-]+\.js)/g)].map((match) => match[1]),
-		),
-	];
-
-	if (!scripts.length) {
-		throw new Error(`No scripts were listed by ${source}.`);
-	}
-
-	return scripts;
-}
-
-/**
  * Every chunk id the client script loads this locale's strings from.
  *
  * The keywords are one of these; so are the client's other translated strings.
@@ -338,7 +267,7 @@ function chunkFileNames(client: string, chunkId: string) {
 	const literal = findOnly(
 		client,
 		RegExp(`"${chunkId}"===\\w+\\?"([\\w.-]+\\.js)"`, "g"),
-	);
+	)?.[1];
 
 	if (literal) {
 		fileNames.push(literal);
@@ -347,7 +276,7 @@ function chunkFileNames(client: string, chunkId: string) {
 	const suffixed = findOnly(
 		client,
 		RegExp(`"${chunkId}"===\\w+\\?""\\+\\w+\\+"(\\.[0-9a-f]+\\.js)"`, "g"),
-	);
+	)?.[1];
 
 	if (suffixed) {
 		fileNames.push(`${chunkId}${suffixed}`);
@@ -356,7 +285,7 @@ function chunkFileNames(client: string, chunkId: string) {
 	const mapped = findOnly(
 		client,
 		RegExp(`[,{]"?${chunkId}"?:"([0-9a-f]+)"`, "g"),
-	);
+	)?.[1];
 
 	if (mapped) {
 		fileNames.push(`${mapped}.js`);
@@ -365,47 +294,22 @@ function chunkFileNames(client: string, chunkId: string) {
 	return fileNames;
 }
 
-/**
- * Reads the scripts a page lists, starting with the ones named as expected.
- *
- * Discord splits the client and the emoji data into chunks it names, which is
- * what this looks for first. Those names are Discord's to change, so a miss
- * falls back to reading every script, which is slower but doesn't depend on
- * the names at all.
- */
-async function readChunk<Data>(
-	prefix: string,
-	description: string,
-	read: (script: string) => Data | undefined,
-): Promise<{ chunk: string; data: Data }> {
-	const named = scripts.filter((script) => script.startsWith(prefix));
-	const ordered = [
-		...named,
-		...scripts.filter((script) => !named.includes(script)),
-	];
-
-	for (const chunk of ordered) {
-		const data = read(await fetchScript(chunk));
-
-		if (data !== undefined) {
-			return { chunk, data };
-		}
-	}
-
-	throw new Error(
-		`None of the ${scripts.length.toString()} scripts listed by ${source} contained ${description}.`,
-	);
-}
-
 async function readEmojiData() {
-	return await readChunk(dataChunkPrefix, "emoji data", (script) => {
-		for (const blob of extractJsonBlobs(script)) {
-			if (isRawData(blob)) {
-				return blob;
+	return await searchScripts({
+		description: "emoji data",
+		fetchScript,
+		prefix: dataChunkPrefix,
+		read: (script) => {
+			for (const blob of extractJsonBlobs(script)) {
+				if (isRawData(blob)) {
+					return blob;
+				}
 			}
-		}
 
-		return undefined;
+			return undefined;
+		},
+		scripts,
+		source,
 	});
 }
 
@@ -422,11 +326,14 @@ async function readEmojiData() {
  * one that turns out to hold keywords for emoji that exist.
  */
 async function readKeywords() {
-	const { chunk, data: client } = await readChunk(
-		clientChunkPrefix,
-		"the client's locale chunk map",
-		(script) => (isClientScript(script) ? script : undefined),
-	);
+	const { chunk, data: client } = await searchScripts({
+		description: "the client's locale chunk map",
+		fetchScript,
+		prefix: clientChunkPrefix,
+		read: (script) => (isClientScript(script) ? script : undefined),
+		scripts,
+		source,
+	});
 
 	const referenced = referencedLocaleChunkId(client);
 	const candidates = [
@@ -455,24 +362,15 @@ async function readKeywords() {
 	);
 }
 
-async function readPreviousSnapshot() {
-	try {
-		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-			throw error;
-		}
-
-		return undefined;
-	}
-}
-
 /**
  * Follows the emoji store's search method to the chunk id for this locale's
  * keywords, when the client still looks the way it did when this was written.
  */
 function referencedLocaleChunkId(client: string) {
-	const module = findOnly(searchModule(client), /\w+\((\d+)\)\.\w+\[\w+\]/g);
+	const module = findOnly(
+		searchModule(client),
+		/\w+\((\d+)\)\.\w+\[\w+\]/g,
+	)?.[1];
 
 	if (!module) {
 		return undefined;
@@ -484,7 +382,7 @@ function referencedLocaleChunkId(client: string) {
 			`\\b${module}\\(\\w+,\\w+,\\w+\\)\\{.*?"?${locale}"?\\s*:\\s*\\(\\)\\s*=>\\s*\\w+\\.e\\(\\s*"?(\\d+)"?\\s*\\)`,
 			"gs",
 		),
-	);
+	)?.[1];
 }
 
 /**
@@ -584,37 +482,10 @@ async function tryReadKeywords(fileName: string) {
  * shouldn't overwrite the snapshot with what it found.
  */
 function validate(entries: DiscordItem[], previous: Snapshot | undefined) {
-	const problems: string[] = [];
-
-	if (entries.length < minimumEntries) {
-		problems.push(
-			`Only ${entries.length.toString()} emoji were read, out of at least ${minimumEntries.toString()} expected.`,
-		);
-	}
-
-	const withKeywords = countWithKeywords(entries);
-
-	if (withKeywords < minimumEntriesWithKeywords) {
-		problems.push(
-			`Only ${withKeywords.toString()} emoji have keywords, out of at least ${minimumEntriesWithKeywords.toString()} expected.`,
-		);
-	}
-
-	if (previous) {
-		if (entries.length < previous.entries.length * 0.95) {
-			problems.push(
-				`Emoji count fell from ${previous.entries.length.toString()} to ${entries.length.toString()}, more than refreshing should change it.`,
-			);
-		}
-
-		const before = countWithKeywords(previous.entries);
-
-		if (withKeywords < before * 0.95) {
-			problems.push(
-				`Emoji with keywords fell from ${before.toString()} to ${withKeywords.toString()}, more than refreshing should change it.`,
-			);
-		}
-	}
+	const problems = checkCounts(entries, previous?.entries, [
+		{ ...emojiCount, minimum: minimumEntries },
+		{ ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
+	]);
 
 	for (const category of expectedCategories) {
 		const count = entries.filter((entry) => entry.category === category).length;
@@ -626,35 +497,8 @@ function validate(entries: DiscordItem[], previous: Snapshot | undefined) {
 		}
 	}
 
-	for (const [emoji, { keyword, name }] of Object.entries(canaryTerms)) {
-		const entry = entries.find((candidate) => candidate.emoji === emoji);
-
-		if (!entry) {
-			problems.push(`${emoji} is missing entirely.`);
-			continue;
-		}
-
-		if (![entry.name, ...entry.aliases].includes(name)) {
-			problems.push(`${emoji} no longer lists the shortcode '${name}'.`);
-		}
-
-		if (!entry.keywords.includes(keyword)) {
-			problems.push(`${emoji} no longer lists the keyword '${keyword}'.`);
-		}
-	}
-
-	const seen = new Set<string>();
-	const duplicates = entries.filter((entry) => {
-		const isDuplicate = seen.has(entry.emoji);
-		seen.add(entry.emoji);
-		return isDuplicate;
-	});
-
-	if (duplicates.length) {
-		problems.push(
-			`${duplicates.length.toString()} emoji are listed more than once, such as ${duplicates[0].emoji}.`,
-		);
-	}
+	checkCanaryShortcodes(problems, entries, canaryTerms);
+	checkDuplicates(problems, entries);
 
 	const unnamed = entries.filter((entry) => !entry.name);
 
@@ -664,25 +508,5 @@ function validate(entries: DiscordItem[], previous: Snapshot | undefined) {
 		);
 	}
 
-	if (problems.length) {
-		throw new Error(
-			[
-				"The data read for Discord doesn't look right, so the snapshot wasn't written:",
-				...problems.map((problem) => `  ${problem}`),
-			].join("\n"),
-		);
-	}
-}
-
-/**
- * Rewrites the escapes the bundler emits that JSON doesn't share, `\'` and
- * `\x41`, into JSON's. Each escape is read whole, so that an escaped backslash
- * followed by "x41" stays an escaped backslash.
- */
-function toJsonEscapes(literal: string) {
-	return literal.replaceAll(
-		/\\(?:x([0-9a-fA-F]{2})|[\s\S])/g,
-		(escape, hex: string | undefined) =>
-			hex ? `\\u00${hex}` : escape === "\\'" ? "'" : escape,
-	);
+	throwIfProblems(problems, "for Discord");
 }

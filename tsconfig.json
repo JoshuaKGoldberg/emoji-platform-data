@@ -10,7 +10,7 @@
 	"include": [
 		"eslint.config.js",
 		"packages/*/build.ts",
-		"packages/generator/scripts/*.ts",
+		"packages/generator/scripts/**/*.ts",
 		"test/*.ts",
 		"vitest.config.ts"
 	]
