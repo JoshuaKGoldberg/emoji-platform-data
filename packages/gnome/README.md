@@ -39,6 +39,7 @@ console.log(byEmoji["🐙"]);
 ```
 
 Emojis can be looked up by their glyph with `byEmoji` or by the PascalCase form of their Emojipedia title with `byTitle`.
+`byEmoji` knows each emoji by every glyph platforms write it as, with or without the U+FE0F variation selector, so `byEmoji["⚓️"]` as macOS writes it and `byEmoji["⚓"]` as Twemoji does are the same entry.
 Each entry is a `GnomeItem` describing one emoji as GNOME's emoji picker -GTK's emoji chooser, the one <kbd>Ctrl</kbd> + <kbd>.</kbd> opens in any GTK text field- knows it.
 
 `name` and `keywords` are what the picker shows and searches in English: every emoji has keywords, averaging 5.28 each.
