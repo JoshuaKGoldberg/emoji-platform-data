@@ -1,9 +1,26 @@
 import * as crypto from "node:crypto";
-import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
 import { compareStrings } from "../src/compareStrings.js";
 import { SlackItem } from "../src/dataTypes.js";
+import {
+	extractJsonBlobs,
+	findOnly,
+	listScripts,
+	searchScripts,
+	toJsonEscapes,
+} from "./shared/bundles.js";
+import { fetchText } from "./shared/fetch.js";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import {
+	checkCanaryShortcodes,
+	checkCounts,
+	checkDuplicates,
+	countWithKeywords,
+	emojiCount,
+	emojiWithKeywordsCount,
+	throwIfProblems,
+} from "./shared/validate.js";
 
 /** One picker category, listing its emoji by shortcode in the order it shows them. */
 interface RawCategory {
@@ -144,6 +161,8 @@ const minimumTranslatedShare = 0.95;
 const userAgent =
 	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
 
+const headers = { "User-Agent": userAgent };
+
 /** The chunk holding the standard emoji module, when it still names it that. */
 const dataChunkPrefix = "gantry-v2-shared.";
 
@@ -154,9 +173,9 @@ const snapshotPath = path.join(import.meta.dirname, "../slack.json");
 
 const source = process.argv[2] ?? defaultSource;
 
-const previous = await readPreviousSnapshot();
+const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 
-const page = await fetchText(source);
+const page = await fetchText(source, { headers });
 
 if (page.includes("unsupported_webclient_browser")) {
 	throw new Error(
@@ -165,9 +184,24 @@ if (page.includes("unsupported_webclient_browser")) {
 }
 
 const cdn = readCdn(page);
-const scripts = listScripts(page);
 
-const { chunk, module } = await readModule();
+// Lazily loaded chunks are only named in the page, never loaded by it, so
+// these are the loader's calls rather than every file name the page mentions.
+const scripts = listScripts(
+	page,
+	/"([\w-]+\.[0-9a-f]{16}\.min\.js)(?:\?[^"]*)?","anonymous"/g,
+	source,
+);
+
+const { chunk, data: module } = await searchScripts({
+	description: "the standard emoji data",
+	fetchScript: (script) => fetchText(cdn + script, { headers }),
+	prefix: dataChunkPrefix,
+	read: readModuleFrom,
+	scripts,
+	source,
+});
+
 const translations = await readTranslations();
 const locales = [...translations.keys()];
 
@@ -180,24 +214,14 @@ const snapshot: Snapshot = { chunk, entries, locales, source };
 // Slack redeploys often, and every deploy renames the chunks. Rewriting the
 // file for a rename alone would churn it -and open empty refresh pull
 // requests- for data that hasn't changed.
-if (
-	previous &&
-	isSameData(previous.entries, entries) &&
-	isSameData(previous.locales, locales)
-) {
-	console.log(
-		`Read ${entries.length.toString()} emoji from ${chunk}, unchanged from the snapshot.`,
-	);
-} else {
-	await fs.writeFile(snapshotPath, JSON.stringify(snapshot, null, "\t") + "\n");
-	console.log(
-		`Wrote ${entries.length.toString()} emoji from ${chunk}, with keywords for ${countWithKeywords(entries).toString()} of them, in ${(locales.length + 1).toString()} locales.`,
-	);
-}
-
-function countWithKeywords(entries: SlackItem[]) {
-	return entries.filter((entry) => entry.keywords.length).length;
-}
+await writeSnapshot({
+	dataFields: ["entries", "locales"],
+	details: `, with keywords for ${countWithKeywords(entries).toString()} of them, in ${(locales.length + 1).toString()} locales`,
+	from: chunk,
+	previous,
+	snapshot,
+	snapshotPath,
+});
 
 /**
  * Reads a JavaScript string literal's text without evaluating it, by turning
@@ -205,61 +229,6 @@ function countWithKeywords(entries: SlackItem[]) {
  */
 function decodeString(literal: string) {
 	return JSON.parse(toJsonEscapes(literal)) as string;
-}
-
-/**
- * Pulls the JSON blobs out of a script.
- *
- * The bundler emits a large JSON module as a string literal it parses at
- * runtime, so these are read as literals rather than by matching the shape of
- * what's inside them. A blob is found by asking what it holds, not by where it
- * sits or what its first key is, since neither is Slack's to keep stable.
- */
-function* extractJsonBlobs(script: string) {
-	const prefix = "JSON.parse('";
-
-	for (let start = script.indexOf(prefix); start !== -1;) {
-		const open = start + prefix.length;
-		let end = open;
-
-		while (end < script.length && script[end] !== "'") {
-			end += script[end] === "\\" ? 2 : 1;
-		}
-
-		const literal = toJsonEscapes(script.slice(open, end));
-
-		try {
-			yield JSON.parse(literal) as unknown;
-		} catch {
-			// A literal that doesn't parse isn't one of the blobs being looked for.
-		}
-
-		start = script.indexOf(prefix, end);
-	}
-}
-
-async function fetchText(url: string) {
-	const response = await fetch(url, { headers: { "User-Agent": userAgent } });
-	if (!response.ok) {
-		throw new Error(
-			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
-
-	return await response.text();
-}
-
-/**
- * Finds a match in the script, insisting it appears exactly once.
- *
- * These read minified code that nothing promises to keep stable. A pattern that
- * starts matching twice is as much a sign of that code having moved on as one
- * that stops matching, and quietly taking the first of two would be a coin flip.
- */
-function findOnly(script: string, pattern: RegExp) {
-	const matches = [...script.matchAll(pattern)];
-
-	return matches.length === 1 ? matches[0] : undefined;
 }
 
 function isCategories(value: unknown): value is RawCategory[] {
@@ -295,10 +264,6 @@ function isEmojiData(value: unknown): value is RawEmojiData {
 	);
 }
 
-function isSameData(left: unknown, right: unknown) {
-	return JSON.stringify(left) === JSON.stringify(right);
-}
-
 async function mapConcurrently<Item, Result>(
 	items: Item[],
 	limit: number,
@@ -317,29 +282,6 @@ async function mapConcurrently<Item, Result>(
 	);
 
 	return results;
-}
-
-/**
- * The scripts a page loads up front, in the order it lists them.
- * Lazily loaded chunks are only named in the page, never loaded by it, so this
- * matches the loader's calls rather than every file name the page mentions.
- */
-function listScripts(page: string) {
-	const scripts = [
-		...new Set(
-			[
-				...page.matchAll(
-					/"([\w-]+\.[0-9a-f]{16}\.min\.js)(?:\?[^"]*)?","anonymous"/g,
-				),
-			].map((match) => match[1]),
-		),
-	];
-
-	if (!scripts.length) {
-		throw new Error(`No scripts were listed by ${source}.`);
-	}
-
-	return scripts;
 }
 
 /**
@@ -370,33 +312,6 @@ function readCdn(page: string) {
 	}
 
 	return cdn;
-}
-
-/**
- * Reads the standard emoji module out of the scripts the page lists.
- *
- * Slack names the chunk it bundles that module into, which is what this looks
- * for first. That name is Slack's to change, so a miss falls back to reading
- * every script the page loads up front.
- */
-async function readModule() {
-	const named = scripts.filter((script) => script.startsWith(dataChunkPrefix));
-	const ordered = [
-		...named,
-		...scripts.filter((script) => !named.includes(script)),
-	];
-
-	for (const chunk of ordered) {
-		const module = readModuleFrom(await fetchText(cdn + chunk));
-
-		if (module) {
-			return { chunk, module };
-		}
-	}
-
-	throw new Error(
-		`None of the ${scripts.length.toString()} scripts listed by ${source} contained the standard emoji data.`,
-	);
 }
 
 /**
@@ -437,18 +352,6 @@ function readModuleFrom(script: string): RawModule | undefined {
 			Object.entries(names).map(([name, text]) => [name, [text].flat()[0]]),
 		),
 	};
-}
-
-async function readPreviousSnapshot() {
-	try {
-		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-			throw error;
-		}
-
-		return undefined;
-	}
 }
 
 /**
@@ -545,10 +448,9 @@ async function readTranslations() {
 			[...files],
 			maximumConcurrentFetches,
 			async ([locale, file]) => {
-				const all = JSON.parse(await fetchText(cdn + file)) as Record<
-					string,
-					TranslationTable | undefined
-				>;
+				const all = JSON.parse(
+					await fetchText(cdn + file, { headers }),
+				) as Record<string, TranslationTable | undefined>;
 				const keywords = all.emoji_keywords;
 				const names = all.emoji_names;
 
@@ -687,37 +589,10 @@ function translatedShare(texts: string[], table: TranslationTable) {
  * the snapshot with what it found.
  */
 function validate(entries: SlackItem[], previous: Snapshot | undefined) {
-	const problems: string[] = [];
-
-	if (entries.length < minimumEntries) {
-		problems.push(
-			`Only ${entries.length.toString()} emoji were read, out of at least ${minimumEntries.toString()} expected.`,
-		);
-	}
-
-	const withKeywords = countWithKeywords(entries);
-
-	if (withKeywords < minimumEntriesWithKeywords) {
-		problems.push(
-			`Only ${withKeywords.toString()} emoji have keywords, out of at least ${minimumEntriesWithKeywords.toString()} expected.`,
-		);
-	}
-
-	if (previous) {
-		if (entries.length < previous.entries.length * 0.95) {
-			problems.push(
-				`Emoji count fell from ${previous.entries.length.toString()} to ${entries.length.toString()}, more than refreshing should change it.`,
-			);
-		}
-
-		const before = countWithKeywords(previous.entries);
-
-		if (withKeywords < before * 0.95) {
-			problems.push(
-				`Emoji with keywords fell from ${before.toString()} to ${withKeywords.toString()}, more than refreshing should change it.`,
-			);
-		}
-	}
+	const problems = checkCounts(entries, previous?.entries, [
+		{ ...emojiCount, minimum: minimumEntries },
+		{ ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
+	]);
 
 	for (const [category, minimum] of Object.entries(expectedCategories)) {
 		const count = entries.filter((entry) => entry.category === category).length;
@@ -778,22 +653,7 @@ function validate(entries: SlackItem[], previous: Snapshot | undefined) {
 		}
 	}
 
-	for (const [emoji, { keyword, name }] of Object.entries(canaryTerms)) {
-		const entry = entries.find((candidate) => candidate.emoji === emoji);
-
-		if (!entry) {
-			problems.push(`${emoji} is missing entirely.`);
-			continue;
-		}
-
-		if (![entry.name, ...entry.aliases].includes(name)) {
-			problems.push(`${emoji} no longer lists the shortcode '${name}'.`);
-		}
-
-		if (!entry.keywords.includes(keyword)) {
-			problems.push(`${emoji} no longer lists the keyword '${keyword}'.`);
-		}
-	}
+	checkCanaryShortcodes(problems, entries, canaryTerms);
 
 	for (const [emoji, { keyword, locale, name }] of Object.entries(
 		canaryTranslations,
@@ -811,49 +671,6 @@ function validate(entries: SlackItem[], previous: Snapshot | undefined) {
 		}
 	}
 
-	const seen = new Set<string>();
-	const duplicates = entries.filter((entry) => {
-		const isDuplicate = seen.has(entry.emoji);
-		seen.add(entry.emoji);
-		return isDuplicate;
-	});
-
-	if (duplicates.length) {
-		problems.push(
-			`${duplicates.length.toString()} emoji are listed more than once, such as ${duplicates[0].emoji}.`,
-		);
-	}
-
-	if (problems.length) {
-		throw new Error(
-			[
-				"The data read for Slack doesn't look right, so the snapshot wasn't written:",
-				...problems.map((problem) => `  ${problem}`),
-			].join("\n"),
-		);
-	}
-}
-
-/**
- * Rewrites the escapes JavaScript string literals have that JSON doesn't, such
- * as `\'`, `\x41`, and `\u{1F600}`, into JSON's. Each escape is read whole, so
- * that an escaped backslash followed by "x41" stays an escaped backslash.
- */
-function toJsonEscapes(literal: string) {
-	return literal.replaceAll(
-		/\\(?:x([0-9a-fA-F]{2})|u\{([0-9a-fA-F]+)\}|[\s\S])/g,
-		(escape, hex: string | undefined, codePoint: string | undefined) => {
-			if (hex) {
-				return `\\u00${hex}`;
-			}
-
-			if (codePoint) {
-				return JSON.stringify(
-					String.fromCodePoint(parseInt(codePoint, 16)),
-				).slice(1, -1);
-			}
-
-			return escape === "\\'" ? "'" : escape;
-		},
-	);
+	checkDuplicates(problems, entries);
+	throwIfProblems(problems, "for Slack");
 }
