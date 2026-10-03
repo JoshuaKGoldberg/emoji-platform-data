@@ -52,7 +52,7 @@ This data is the Unicode 15 _native_ set from [`@emoji-mart/data`](https://www.n
 
 That set is a fixed snapshot rather than a moving target: `@emoji-mart/data` last published in April 2024, so its data stops at Unicode 15.
 This package therefore adds keywords for emoji the other sources already know, and never emoji of its own.
-82 of the emoji in `emoji-platform-data` aren't in it at all, including every emoji added since Unicode 15.
+Some of the emoji in `emoji-platform-data` aren't in it at all, including every emoji added since Unicode 15.
 For emoji it does cover, its keywords are unusually good at the abstract ones: 📝 is also `exam`, `quiz`, and `study`, and ⚰️ is also `vampire`, `rip`, and `graveyard`.
 
 The names and keywords are emoji-mart's, under [Missive's MIT license](https://github.com/missive/emoji-mart/blob/main/LICENSE).
