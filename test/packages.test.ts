@@ -1,10 +1,12 @@
 import * as fs from "node:fs/promises";
+import { createRequire } from "node:module";
 import * as os from "node:os";
 import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 
 import {
+	defaultFluemojiDirectory,
 	EmojiPlatformDataSource,
 	rebuildDirectory,
 	rebuildSourceDirectory,
@@ -24,12 +26,24 @@ interface DataPackage {
 	name: string;
 }
 
+interface JoyPixelsEntry {
+	code_points: { fully_qualified: string };
+	display: number;
+	diversity: null | string;
+}
+
 /**
  * The package combining every platform, which the others each take one of.
  */
 const combinedName = "emoji-platform-data";
 
 const packagesDirectory = path.join(import.meta.dirname, "../packages");
+
+const generatorDirectory = path.join(packagesDirectory, "generator");
+
+const requireFromGenerator = createRequire(
+	path.join(generatorDirectory, "package.json"),
+);
 
 /**
  * Every package whose export is generated into its lib/ directory, which is all
@@ -105,18 +119,101 @@ function toSourceKey(name: string) {
 }
 
 /**
- * How many emoji each platform's committed snapshot has, keyed by the package
- * directory it's published from, for the platforms that are read from one.
+ * Imports one of the generator's dependencies.
  */
-async function countSnapshotEntries(dataPackages: DataPackage[]) {
+async function importFromGenerator<T>(specifier: string) {
+	return (await import(
+		pathToFileURL(requireFromGenerator.resolve(specifier)).href
+	)) as T;
+}
+
+/**
+ * Reads a JSON file from one of the generator's dependencies.
+ */
+async function readGeneratorJson<T>(specifier: string) {
+	return JSON.parse(
+		await fs.readFile(requireFromGenerator.resolve(specifier), "utf8"),
+	) as T;
+}
+
+/**
+ * How many emoji the generator reads for a platform that isn't read from a
+ * snapshot, leaving out the entries it doesn't make emoji of their own.
+ */
+async function countDependencyEntries(name: string) {
+	switch (name) {
+		case "emoji-mart": {
+			const { emojis } = await readGeneratorJson<{ emojis: object }>(
+				"@emoji-mart/data/sets/15/native.json",
+			);
+
+			return Object.keys(emojis).length;
+		}
+
+		case "emojipedia": {
+			const items =
+				await importFromGenerator<Record<string, { code: string }>>(
+					"emojipedia/data",
+				);
+
+			return new Set(Object.values(items).map(({ code }) => code)).size;
+		}
+
+		case "fluemoji": {
+			const files: string[] = [];
+
+			for await (const file of fs.glob("assets/*/metadata.json", {
+				cwd: defaultFluemojiDirectory,
+			})) {
+				files.push(file);
+			}
+
+			return files.length;
+		}
+
+		case "gemoji":
+			return (await importFromGenerator<{ gemoji: unknown[] }>("gemoji")).gemoji
+				.length;
+
+		case "joypixels": {
+			const entries = await readGeneratorJson<Record<string, JoyPixelsEntry>>(
+				"emoji-toolkit/emoji.json",
+			);
+
+			return Object.values(entries).filter(
+				({ code_points, display, diversity }) =>
+					!diversity &&
+					(display || !/^00[\da-f]{2}-fe0f$/.test(code_points.fully_qualified)),
+			).length;
+		}
+
+		case "twemoji": {
+			const { parse } = await importFromGenerator<{
+				parse: (source: string) => unknown;
+			}>("yaml");
+			const groups = parse(
+				await fs.readFile(path.join(generatorDirectory, "emoji.yml"), "utf8"),
+			) as { items: { exclude_from_picker?: true }[] }[];
+
+			return groups
+				.flatMap(({ items }) => items)
+				.filter((item) => !item.exclude_from_picker).length;
+		}
+	}
+
+	return undefined;
+}
+
+/**
+ * How many emoji the generator reads for each platform, keyed by the package
+ * directory it's published from.
+ */
+async function countSourceEntries(dataPackages: DataPackage[]) {
 	const counts = new Map<string, number>();
 
 	for (const { directory } of dataPackages) {
-		const snapshot = path.join(
-			packagesDirectory,
-			"generator",
-			`${path.basename(directory)}.json`,
-		);
+		const name = path.basename(directory);
+		const snapshot = path.join(generatorDirectory, `${name}.json`);
 
 		try {
 			const { entries } = JSON.parse(await fs.readFile(snapshot, "utf8")) as {
@@ -124,7 +221,11 @@ async function countSnapshotEntries(dataPackages: DataPackage[]) {
 			};
 			counts.set(directory, entries.length);
 		} catch {
-			// This platform's data comes from a dependency, not a snapshot.
+			const count = await countDependencyEntries(name);
+
+			if (count !== undefined) {
+				counts.set(directory, count);
+			}
 		}
 	}
 
@@ -170,7 +271,7 @@ function withoutVariationSelectors(glyph: string) {
 
 const dataPackages = await listDataPackages();
 
-const snapshotCounts = await countSnapshotEntries(dataPackages);
+const sourceCounts = await countSourceEntries(dataPackages);
 
 const combinedPackage = dataPackages.find(
 	(dataPackage) => dataPackage.name === combinedName,
@@ -280,13 +381,13 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(files).toHaveLength(Object.keys(byTitle).length);
 	});
 
-	const snapshotCount = snapshotCounts.get(dataPackage.directory);
+	const sourceCount = sourceCounts.get(dataPackage.directory);
 
-	if (snapshotCount !== undefined) {
-		it("has an entry for every emoji in its platform's snapshot when read from one", async () => {
+	if (sourceCount !== undefined) {
+		it("has an entry for every emoji the generator reads for its platform", async () => {
 			const { byTitle } = await importPackage(dataPackage);
 
-			expect(Object.keys(byTitle)).toHaveLength(snapshotCount);
+			expect(Object.keys(byTitle)).toHaveLength(sourceCount);
 		});
 	}
 
