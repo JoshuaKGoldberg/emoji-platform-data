@@ -1,5 +1,7 @@
 jobs:
   refresh:
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.platform }}
     name: Refresh ${{ matrix.name }} Data
     permissions:
       contents: write
