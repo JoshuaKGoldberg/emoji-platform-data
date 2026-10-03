@@ -4,17 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import { GeneratedEmojipediaData } from "./emojipedia.js";
 import { AllEmojiMartData, EmojiMartItem } from "./types.js";
-import { getEntryCldr, normalizeCodepoints, recordByCldr } from "./utils.js";
-
-interface ResolvedEntry {
-	/**
-	 * Whether the entry's own codepoints are the ones Emojipedia lists for its
-	 * resolved title, rather than the entry having matched only by name.
-	 */
-	exact: boolean;
-
-	item: EmojiMartItem;
-}
+import { getEntryCldr, recordByCldr } from "./utils.js";
 
 /**
  * Reads emoji-mart's Unicode 15 "native" set.
@@ -41,7 +31,7 @@ export async function generateEmojiMart(
 		aliases.set(id, [...(aliases.get(id) ?? []), alias]);
 	}
 
-	const byCldr = new Map<string, ResolvedEntry[]>();
+	const entries: [string, EmojiMartItem][] = [];
 	let order = 0;
 
 	// Walking the categories, rather than the emojis, is what gives each entry
@@ -52,9 +42,7 @@ export async function generateEmojiMart(
 			const entry = data.emojis[id];
 			const [skin] = entry.skins;
 
-			const cldr = getEntryCldr(emojipedia, skin.native, skin.unified, [
-				entry.name,
-			]);
+			const cldr = getEntryCldr(emojipedia, skin.native, [entry.name]);
 
 			const item: EmojiMartItem = {
 				aliases: aliases.get(entry.id),
@@ -68,64 +56,9 @@ export async function generateEmojiMart(
 				version: entry.version,
 			};
 
-			const emojipediaItem = emojipedia.byCldr[cldr];
-
-			byCldr.set(cldr, [
-				...(byCldr.get(cldr) ?? []),
-				{
-					exact:
-						!!emojipediaItem &&
-						hasCodepoints(emojipediaItem.codepointsHex, skin.unified),
-					item,
-				},
-			]);
+			entries.push([cldr, item]);
 		}
 	}
 
-	return recordByCldr(
-		"emojiMart",
-		Array.from(byCldr, ([cldr, group]): [string, EmojiMartItem] => [
-			cldr,
-			pickEntry(cldr, group).item,
-		]),
-	);
-}
-
-function hasCodepoints(codepointsHex: string[], unified: string) {
-	const normalized = normalizeCodepoints(codepointsHex).join("-");
-
-	return (
-		normalized === unified ||
-		withoutVariationSelectors(normalized) === withoutVariationSelectors(unified)
-	);
-}
-
-/**
- * Two emoji-mart entries can resolve to one title, because this repository keys
- * emoji by Emojipedia title and Emojipedia gives two of its items the same
- * title: 🤵 `person-in-tuxedo` and 🤵‍♂️ `man-in-tuxedo` are both "Man in
- * Tuxedo". Keeping whichever entry has the codepoints of the item that survived
- * that collapse lands on the same emoji the rest of the data did.
- */
-function pickEntry(cldr: string, group: ResolvedEntry[]) {
-	// Emojipedia doesn't list every base glyph separately, such as 🧕 apart from
-	// 🧕‍♀️, so a lone inexact entry is still the best data for its title.
-	if (group.length === 1) {
-		return group[0];
-	}
-
-	const kept = group.find((entry) => entry.exact) ?? group[0];
-
-	console.warn(
-		`Multiple emojiMart entries resolve to '${cldr}'; keeping '${kept.item.id}'.`,
-	);
-
-	return kept;
-}
-
-function withoutVariationSelectors(unified: string) {
-	return unified
-		.split("-")
-		.filter((hex) => hex !== "fe0f")
-		.join("-");
+	return recordByCldr("emojiMart", entries);
 }

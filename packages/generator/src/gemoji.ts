@@ -10,7 +10,7 @@ export function generateGemoji(
 	return recordByCldr(
 		"gemoji",
 		gemoji.map((entry) => [
-			getEntryCldr(emojipedia, entry.emoji, undefined, [entry.description]),
+			getEntryCldr(emojipedia, entry.emoji, [entry.description]),
 			entry,
 		]),
 	);

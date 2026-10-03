@@ -219,7 +219,8 @@ function findZipEntry(centralDirectory: Buffer, name: string): ZipEntry {
 
 /**
  * Whether a glyph is in a private use area, which WeChat's search index reaches
- * into: it lists Apple's  logo, which is Apple's alone and not a unicode emoji.
+ * into: it lists Apple's logo, U+F8FF, which is Apple's alone and not a unicode
+ * emoji.
  */
 function hasPrivateUseCharacter(emoji: string) {
 	// Code points are the unit the private use areas are defined in.
@@ -323,7 +324,11 @@ async function readCentralDirectory(url: string) {
 async function readPreviousSnapshot() {
 	try {
 		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
+	} catch (error) {
+		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+			throw error;
+		}
+
 		return undefined;
 	}
 }
@@ -341,7 +346,20 @@ async function readZipFile(
 ) {
 	const entry = findZipEntry(centralDirectory, name);
 
+	if (entry.method !== 0 && entry.method !== 8) {
+		throw new Error(
+			`'${name}' is compressed with method ${entry.method.toString()}, which this script can't read.`,
+		);
+	}
+
 	const header = await fetchRange(url, entry.offset, entry.offset + 29);
+
+	if (header.readUInt32LE(0) !== 0x04034b50) {
+		throw new Error(
+			`'${name}' has no local file header where ${url}'s central directory puts it.`,
+		);
+	}
+
 	const start =
 		entry.offset + 30 + header.readUInt16LE(26) + header.readUInt16LE(28);
 
@@ -351,16 +369,7 @@ async function readZipFile(
 		start + entry.compressedSize - 1,
 	);
 
-	switch (entry.method) {
-		case 0:
-			return compressed;
-		case 8:
-			return zlib.inflateRawSync(compressed);
-		default:
-			throw new Error(
-				`'${name}' is compressed with method ${entry.method.toString()}, which this script can't read.`,
-			);
-	}
+	return entry.method === 8 ? zlib.inflateRawSync(compressed) : compressed;
 }
 
 /**
@@ -443,7 +452,7 @@ function toKeywords(csv: string) {
 			}
 
 			// A joiner only means something between two emoji, and the index has
-			// at least one stray one in front of an emoji it belongs to, ‍🦱.
+			// at least one stray one in front of an emoji it belongs to, U+200D 🦱.
 			const glyph = emoji.replaceAll(/^\u200D+|\u200D+$/g, "");
 			const key = withoutVariationSelectors(glyph);
 			const existing = keywords.get(key);
@@ -560,5 +569,5 @@ function validate(entries: WeChatItem[], previous: Snapshot | undefined) {
  * writes ❤️ as U+2764 U+FE0F, while the picker's listing has U+2764.
  */
 function withoutVariationSelectors(emoji: string) {
-	return emoji.replaceAll("️", "");
+	return emoji.replaceAll("\uFE0F", "");
 }

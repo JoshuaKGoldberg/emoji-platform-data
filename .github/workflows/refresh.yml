@@ -1,10 +1,11 @@
 jobs:
   refresh:
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.platform }}
     name: Refresh ${{ matrix.name }} Data
     permissions:
-      contents: write
+      contents: read
       issues: write
-      pull-requests: write
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -20,6 +21,7 @@ jobs:
           /home/linuxbrew/.linuxbrew/bin/brew install erofs-utils
       - env:
           PLATFORM: ${{ matrix.platform }}
+        id: read
         name: Read ${{ matrix.name }} emoji data
         # The output is kept so that a failure can be reported with it.
         run: |
@@ -92,14 +94,23 @@ jobs:
 
           count=$(jq '.entries | length' "$snapshot")
           keyworded=$(jq '[.entries[] | select(.keywords | length > 0)] | length' "$snapshot")
+          added=$(git show "HEAD:$snapshot" | jq --slurpfile new "$snapshot" '[$new[0].entries[].emoji] - [.entries[].emoji] | length')
           changeset=".changeset/refresh-$PLATFORM-data-$GITHUB_RUN_ID.md"
+
+          if [ "$added" -gt 0 ]; then
+            bump="minor"
+            type="feat"
+          else
+            bump="patch"
+            type="fix"
+          fi
 
           if [ -n "$version" ]; then
             summary="Updated $NAME emoji data to $version."
-            title="feat: update $NAME emoji data to $version"
+            title="$type: update $NAME emoji data to $version"
           else
             summary="Updated $NAME emoji data from $source."
-            title="feat: update $NAME emoji data"
+            title="$type: update $NAME emoji data"
           fi
 
           # New names from one platform can retitle emoji that other platforms
@@ -125,7 +136,7 @@ jobs:
             {
               echo "@emoji-platform-data/generator"
               comm -13 <(sort "$RUNNER_TEMP/before.txt") <(sort "$RUNNER_TEMP/after.txt") | cut -d ' ' -f 1
-            } | sort -u | sed 's/.*/"&": minor/'
+            } | sort -u | sed "s/.*/\"&\": $bump/"
           )
 
           cat > "$changeset" <<CHANGESET
@@ -143,14 +154,28 @@ jobs:
           git commit -m "$title"
           git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
 
+          body=$(cat <<BODY
+          ## PR Checklist
+
+          - [x] Steps in [CONTRIBUTING.md](https://github.com/$GH_REPO/blob/main/.github/CONTRIBUTING.md) were taken
+          - [x] If this changes what a package publishes, a changeset was added with \`pnpm changeset\` (see [DEVELOPMENT.md](https://github.com/$GH_REPO/blob/main/.github/DEVELOPMENT.md#releasing))
+
+          ## Overview
+
+          $summary This refreshes \`$snapshot\` to the $count emoji it has now, $keyworded of them with search keywords. See \`packages/$PLATFORM/DEVELOPMENT.md\` for how the extraction works.
+
+          🗝️
+          BODY
+          )
+
           if [ -n "$pr_number" ]; then
-            echo "Updated the existing pull request."
+            gh pr edit "$pr_number" --body "$body" --title "$title"
             exit 0
           fi
 
           gh pr create \
             --base main \
-            --body "$summary This refreshes \`$snapshot\` to the $count emoji it has now, $keyworded of them with search keywords. See \`packages/$PLATFORM/DEVELOPMENT.md\` for how the extraction works." \
+            --body "$body" \
             --head "$branch" \
             --title "$title"
       - env:
@@ -158,19 +183,23 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           NAME: ${{ matrix.name }}
           PLATFORM: ${{ matrix.platform }}
+          READ_OUTCOME: ${{ steps.read.outcome }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         if: failure()
         name: Report the failure in an issue
         run: |
+          set -o pipefail
           title="🛠 Tooling: Refresh $NAME Data is failing"
           existing=$(gh issue list --state open --json number,title --limit 100 | jq -r --arg title "$title" '.[] | select(.title == $title) | .number' | head -1)
 
           # The refresh scripts' errors say what looked wrong, such as a known
           # keyword going missing, so the end of their output goes in the issue.
           # A failure in any other step has no output here, and links the run.
-          if [ -s "$RUNNER_TEMP/refresh.log" ]; then
+          if [ "$READ_OUTCOME" = failure ] && [ -s "$RUNNER_TEMP/refresh.log" ]; then
             output=$(tail -n 40 "$RUNNER_TEMP/refresh.log" | perl -pe 's/\e\[[0-9;]*m//g')
             details=$(printf 'The end of its output:\n\n~~~\n%s\n~~~' "$output")
+          elif [ "$READ_OUTCOME" = success ]; then
+            details="It read the data, then failed in a later step, so see the run for what went wrong."
           else
             details="It failed before reading any data, so see the run for what went wrong."
           fi
@@ -190,6 +219,7 @@ jobs:
         if: success()
         name: Close the failure issue, if there is one
         run: |
+          set -o pipefail
           title="🛠 Tooling: Refresh $NAME Data is failing"
           existing=$(gh issue list --state open --json number,title --limit 100 | jq -r --arg title "$title" '.[] | select(.title == $title) | .number' | head -1)
 

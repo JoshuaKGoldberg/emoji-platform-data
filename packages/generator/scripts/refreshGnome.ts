@@ -7,7 +7,7 @@ import { GnomeItem } from "../src/dataTypes.js";
 interface RawItem {
 	emoji: string;
 
-	/** The picker section the emoji is in, as an index into `categories`. */
+	/** The picker section the emoji is in, as the Emojibase group number `categories` is keyed by. */
 	group: number;
 
 	/** The emoji's name in English, such as "octopus". */
@@ -88,6 +88,8 @@ const expectedLocales = [
 
 const gitlabProject = "https://gitlab.gnome.org/api/v4/projects/GNOME%2Fgtk";
 
+const maximumConcurrentFetches = 5;
+
 const minimumEntries = 1800;
 
 /** The smallest section, Activities, holds eighty emoji, so this is a wide margin. */
@@ -105,11 +107,14 @@ const previous = await readPreviousSnapshot();
 const tag = process.argv[2] ?? (await pickLatestStableTag());
 const files = await listDataFiles(tag);
 
-const byLocale = new Map<string, RawItem[]>();
-
-for (const [locale, file] of files) {
-	byLocale.set(locale, readEmojiData(await fetchBuffer(rawUrl(tag, file))));
-}
+const byLocale = new Map(
+	await mapConcurrently(
+		[...files],
+		maximumConcurrentFetches,
+		async ([locale, file]) =>
+			[locale, readEmojiData(await fetchBuffer(rawUrl(tag, file)))] as const,
+	),
+);
 
 const english = byLocale.get(sourceLocale);
 
@@ -187,6 +192,26 @@ async function listDataFiles(tag: string) {
 	);
 }
 
+async function mapConcurrently<Item, Result>(
+	items: Item[],
+	limit: number,
+	callback: (item: Item) => Promise<Result>,
+) {
+	const results: Result[] = [];
+	let next = 0;
+
+	await Promise.all(
+		Array.from({ length: limit }, async () => {
+			while (next < items.length) {
+				const index = next++;
+				results[index] = await callback(items[index]);
+			}
+		}),
+	);
+
+	return results;
+}
+
 /**
  * The newest stable GTK 4 release. GTK numbers its development releases with
  * an odd minor version, such as 4.23.4, and its stable ones with an even one.
@@ -248,7 +273,11 @@ function readEmojiData(data: Buffer) {
 async function readPreviousSnapshot() {
 	try {
 		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
+	} catch (error) {
+		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+			throw error;
+		}
+
 		return undefined;
 	}
 }
@@ -257,16 +286,12 @@ async function readPreviousSnapshot() {
 function endOfTupleMembers(tuple: Buffer, count: number) {
 	const size = offsetSize(tuple.length);
 
-	return readOffset(tuple, tuple.length - size * count, size);
+	return tuple.readUIntLE(tuple.length - size * count, size);
 }
 
 /** How many bytes a container of this size writes each of its offsets in. */
 function offsetSize(containerSize: number) {
 	return containerSize <= 0xff ? 1 : containerSize <= 0xffff ? 2 : 4;
-}
-
-function readOffset(buffer: Buffer, position: number, size: number) {
-	return buffer.readUIntLE(position, size);
 }
 
 function readString(bytes: Buffer) {
@@ -285,7 +310,7 @@ function splitTuple(tuple: Buffer, alignments: number[]) {
 	for (let index = 0; index < alignments.length; index += 1) {
 		start = alignUp(start, alignments[index]);
 
-		const end = readOffset(tuple, tuple.length - size * (index + 1), size);
+		const end = tuple.readUIntLE(tuple.length - size * (index + 1), size);
 		members.push(tuple.subarray(start, end));
 		start = end;
 	}
@@ -299,7 +324,7 @@ function splitVariableArray(array: Buffer, alignment: number) {
 	}
 
 	const size = offsetSize(array.length);
-	const offsetsStart = readOffset(array, array.length - size, size);
+	const offsetsStart = array.readUIntLE(array.length - size, size);
 
 	// The last offset is where the last element ends, which is where the
 	// offsets themselves begin, so it also says how many there are.
@@ -313,7 +338,7 @@ function splitVariableArray(array: Buffer, alignment: number) {
 	for (let position = offsetsStart; position < array.length; position += size) {
 		start = alignUp(start, alignment);
 
-		const end = readOffset(array, position, size);
+		const end = array.readUIntLE(position, size);
 		elements.push(array.subarray(start, end));
 		start = end;
 	}
@@ -360,14 +385,10 @@ function toEntries(english: RawItem[], byLocale: Map<string, RawItem[]>) {
 	const entries = new Map<string, GnomeItem>();
 	let order = 0;
 
-	const shown = [...english]
+	const shown = english
 		.map((item, index) => ({ index, item }))
 		.filter(({ item }) => categories.has(item.group))
-		.sort(
-			(a, b) =>
-				[...categories.keys()].indexOf(a.item.group) -
-					[...categories.keys()].indexOf(b.item.group) || a.index - b.index,
-		)
+		.sort((a, b) => a.item.group - b.item.group || a.index - b.index)
 		.map(({ item }) => item);
 
 	for (const item of shown) {

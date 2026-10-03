@@ -121,6 +121,8 @@ const expectedLocales = [
  */
 const hashLengths = [7, 10, 20, 40];
 
+const maximumConcurrentFetches = 5;
+
 /** The keyword map lists a stray key or two that aren't emoji, such as "undefined". */
 const maximumUnknownKeywordNames = 5;
 
@@ -297,6 +299,26 @@ function isSameData(left: unknown, right: unknown) {
 	return JSON.stringify(left) === JSON.stringify(right);
 }
 
+async function mapConcurrently<Item, Result>(
+	items: Item[],
+	limit: number,
+	callback: (item: Item) => Promise<Result>,
+) {
+	const results: Result[] = [];
+	let next = 0;
+
+	await Promise.all(
+		Array.from({ length: limit }, async () => {
+			while (next < items.length) {
+				const index = next++;
+				results[index] = await callback(items[index]);
+			}
+		}),
+	);
+
+	return results;
+}
+
 /**
  * The scripts a page loads up front, in the order it lists them.
  * Lazily loaded chunks are only named in the page, never loaded by it, so this
@@ -420,7 +442,11 @@ function readModuleFrom(script: string): RawModule | undefined {
 async function readPreviousSnapshot() {
 	try {
 		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
-	} catch {
+	} catch (error) {
+		if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+			throw error;
+		}
+
 		return undefined;
 	}
 }
@@ -513,36 +539,40 @@ function readTranslatedMap(script: string, namespace: string) {
  */
 async function readTranslations() {
 	const files = listTranslationFiles(page);
-	const translations = new Map<string, Translations>();
 
-	for (const [locale, file] of files) {
-		const all = JSON.parse(await fetchText(cdn + file)) as Record<
-			string,
-			TranslationTable | undefined
-		>;
-		const keywords = all.emoji_keywords;
-		const names = all.emoji_names;
+	return new Map<string, Translations>(
+		await mapConcurrently(
+			[...files],
+			maximumConcurrentFetches,
+			async ([locale, file]) => {
+				const all = JSON.parse(await fetchText(cdn + file)) as Record<
+					string,
+					TranslationTable | undefined
+				>;
+				const keywords = all.emoji_keywords;
+				const names = all.emoji_names;
 
-		if (!keywords || !names) {
-			throw new Error(`${file} has no emoji translations for ${locale}.`);
-		}
+				if (!keywords || !names) {
+					throw new Error(`${file} has no emoji translations for ${locale}.`);
+				}
 
-		translations.set(locale, { keywords, names });
-	}
-
-	return translations;
+				return [locale, { keywords, names }] as const;
+			},
+		),
+	);
 }
 
 /**
  * Keeps the emoji Slack has a shortcode of their own for, which is every one
  * that isn't an alias of another.
  *
- * That includes 52 the picker doesn't list, which is why their position is
+ * That includes some the picker doesn't list, which is why their position is
  * optional. They're mostly the gender-neutral forms of older people emoji,
  * such as 👮 `cop`, which the picker shows only as their man and woman variants.
  *
- * The data also carries every skin tone variant of those, but only to route
- * shortcodes like `wave::skin-tone-3` to them. Those names are mechanical
+ * Skin tone variants, which route shortcodes like `wave::skin-tone-3`, aren't
+ * records of their own: they're nested in their base emoji's record, under
+ * `skinVariations`, so this never sees them. Those names are mechanical
  * suffixes on the base emoji's, so there's nothing in them to fold back in.
  */
 function toEntries(module: RawModule, translations: Map<string, Translations>) {
