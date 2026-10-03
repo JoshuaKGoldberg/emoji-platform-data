@@ -5,6 +5,7 @@ import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 
+import { compareStrings } from "../packages/generator/src/compareStrings.js";
 import {
 	defaultFluemojiDirectory,
 	EmojiPlatformDataSource,
@@ -234,6 +235,31 @@ async function countSourceEntries(dataPackages: DataPackage[]) {
 }
 
 /**
+ * The path to each object in a parsed JSON value whose keys aren't sorted.
+ */
+function findUnsortedObjects(value: unknown, at: string): string[] {
+	if (Array.isArray(value)) {
+		return value.flatMap((item, index) =>
+			findUnsortedObjects(item, `${at}[${String(index)}]`),
+		);
+	}
+
+	if (typeof value !== "object" || value === null) {
+		return [];
+	}
+
+	const keys = Object.keys(value);
+	const sorted = [...keys].sort(compareStrings);
+
+	return [
+		...(keys.some((key, index) => key !== sorted[index]) ? [at] : []),
+		...Object.entries(value).flatMap(([key, child]) =>
+			findUnsortedObjects(child, `${at}.${key}`),
+		),
+	];
+}
+
+/**
  * The glyph a platform's data is for. Emojipedia's is left out, since its data
  * lists a few emoji under glyphs no platform uses, such as 🧕 as 🧕‍♀️.
  */
@@ -334,6 +360,15 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		} finally {
 			await fs.rm(directory, { force: true, recursive: true });
 		}
+	});
+
+	it("sorts the keys of every object in its data files when a source lists them in another order", async () => {
+		const files = await readFiles(path.join(dataPackage.directory, "lib/data"));
+		const unsorted = Object.entries(files).flatMap(([file, contents]) =>
+			findUnsortedObjects(JSON.parse(contents), file),
+		);
+
+		expect(unsorted).toEqual([]);
 	});
 
 	it("names byTitle exports without underscores when a name has digits", async () => {

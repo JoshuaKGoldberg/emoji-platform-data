@@ -226,12 +226,18 @@ async function readDataTypes() {
 		.join("\n");
 }
 
-function sortObjectKeys(data: unknown) {
+function sortObjectKeys(data: unknown): unknown {
+	if (Array.isArray(data)) {
+		return data.map(sortObjectKeys);
+	}
+
 	if (typeof data !== "object" || data === null) {
 		return data;
 	}
 
 	return Object.fromEntries(
-		Object.entries(data).sort(([a], [b]) => compareStrings(a, b)),
+		Object.entries(data)
+			.sort(([a], [b]) => compareStrings(a, b))
+			.map(([key, value]) => [key, sortObjectKeys(value)]),
 	);
 }
