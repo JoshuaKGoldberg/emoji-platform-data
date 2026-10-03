@@ -50,12 +50,15 @@ console.log(byTitle.SparklingHeart);
 */
 ```
 
+The conglomerate `emoji-platform-data` package provides straightforward records of emoji data across common platforms:
+
 - `byEmoji` takes a glyph as any platform writes it, with or without its U+FE0F: `byEmoji["⚓️"]` and `byEmoji["⚓"]` are the same entry.
 - `byTitle` takes a PascalCase Emojipedia title, and `emoji-platform-data/byTitle` exports each one separately for smaller bundles.
 
 ### Packages
 
-Each source is also published as its own package:
+`emoji-platform-data` combines emoji data from a collection of well-known projects.
+Each project's data is also published as its own package, for consumers who only need one source:
 
 | Package                                                    | Source                                                                                                                 | Exports                                                 |
 | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
@@ -76,6 +79,7 @@ Each source is also published as its own package:
 | [`@emoji-platform-data/generator`](./packages/generator)   | -                                                                                                                      | APIs that generate the data packages above              |
 
 The data packages are only static JSON and types, with no runtime dependencies.
+Each emoji supported in at least one of those projects is stored by its emoji glyph and [Emojipedia](https://emojipedia.org) title.
 
 ## Explainer
 
@@ -83,27 +87,34 @@ The data packages are only static JSON and types, with no runtime dependencies.
 
 ### Emojis
 
-An **emoji** is a small image that the [Unicode Standard](https://unicode.org/standard/standard.html) maps to one or more characters:
+An **emoji** is a small image represented by a glyph in text.
+The [Unicode Standard](https://unicode.org/standard/standard.html) defines which characters in text map to which emojis, as well as how combinations of emoji characters combine to more emojis.
+For example:
 
 - [🔥 (`fire`)](https://emojipedia.org/fire) is represented by the string code _U+1F525_
 - [❤️ (`red heart`)](https://emojipedia.org/red-heart) is represented by the string codes: _U+2764_ _U+FE0F_
 - [❤️‍🔥 (`heart on fire`)](https://emojipedia.org/heart-on-fire) is represented by ❤️ + a ["zero-width joiner"](https://emojipedia.org/zero-width-joiner) + 🔥: _U+2764 U+FE0F U+200D U+1F525_
 
-> 💡 _Emojis_ aren't _emoticons_, which are plain text such as `:)` and `(╯°□°)╯︵ ┻━┻`.
+> 💡 _Emojis_ are not the same as their predecessors, _emoticons_.
+> Emoticons are symbols that combine traditional text characters, such as `:)` for "smiley" and `(╯°□°)╯︵ ┻━┻` for "table flip".
 
 ### 🆔 Identity
 
-An emoji's 🆔 _identity_ is its name, which can differ by source: [👿](https://emojipedia.org/angry-face-with-horns) is _"Angry Face with Horns"_ or _"Imp"_.
+The formal name, or 🆔 _identity_, for each emoji is standardized in Unicode.
+However, emojis may be associated with multiple names across different specifications.
+For example, [👿](https://emojipedia.org/angry-face-with-horns) can be referred to either as _"Angry Face with Horns"_ or _"Imp"_ depending on the source.
 
 ### 🔗 Keywords
 
-An emoji's 🔗 _keywords_ are related search terms, which each emoji picker chooses for itself.
+In addition to their name(s), emojis commonly have related terms, or 🔗 _keywords_, associated with them.
+These keywords are not standardized and may vary drastically across the various chat applications, operating systems, and shared open source libraries that each separately implement emoji pickers.
 
 For example, [🐙 (`octopus`)](https://emojipedia.org/octopus) is defined in [emoji-mart@5.5.2](https://github.com/missive/emoji-mart/tree/21a2708be931c0dd16d6d0e96b47a45503576ac5/) -used by Bluesky and other projects- with `["animal", "creature", "ocean", "sea", "nature", "beach"]`.
 
 ### Platforms
 
-This project collects 🆔 _identity_ and 🔗 _keywords_ from many sources, called _platforms_:
+This project attempts to bring together the 🆔 _identity_ and 🔗 _keywords_ across several sources of emoji data, each defined as a "platform".
+Platforms include:
 
 - Chat platforms ([Discord](./packages/discord), [Slack](./packages/slack), ...)
 - Operating systems and desktop environments ([macOS](./packages/macos), [Windows](./packages/windows), [GNOME](./packages/gnome), ...)
@@ -115,7 +126,13 @@ Any grouping of emoji 🆔 _identity_ and 🔗 _keywords_ used by consumers toda
 
 ## Why?
 
-`emoji-platform-data` shows every platform's metadata for an emoji in one place, such as to [collect all of its keywords](https://github.com/muan/emojilib/issues/194).
+This is useful if you're looking to see the metadata supported for emojis in each of those platforms.
+For example, if you wanted to [determine the keywords associated with any emoji](https://github.com/muan/emojilib/issues/194), this would let you accumulate all the keywords across the supported platforms.
+
+Also, isn't this just cool?!
+Look how different each platform's understanding of emojis is!
+Even just the keywords associated with each emoji are _so different_ across platforms!
+🤯
 
 ## Development
 
