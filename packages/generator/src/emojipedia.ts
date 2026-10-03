@@ -25,19 +25,15 @@ export function generateEmojipedia(): GeneratedEmojipediaData {
 	for (const item of items) {
 		const title = titles.get(item) ?? item.title;
 
-		for (const alternate of [
-			item.appleName,
-			item.code,
-			item.currentCldrName,
-			title,
-		].filter((x): x is string => !!x)) {
-			aliases.set(alternate, title);
-
-			const normalized = normalizeTitle(alternate);
-			if (normalized) {
-				aliases.set(normalized, title);
-			}
+		for (const alternate of [item.appleName, item.code, item.currentCldrName]) {
+			setAlias(aliases, alternate, title);
 		}
+	}
+
+	for (const item of items) {
+		const title = titles.get(item) ?? item.title;
+
+		setAlias(aliases, title, title);
 	}
 
 	// Some platforms write emoji without a variation selector Emojipedia
@@ -78,4 +74,21 @@ function getUniqueTitles(items: EmojipediaItem[]) {
 			)
 			.map((item) => [item, item.currentCldrName ?? item.title]),
 	);
+}
+
+function setAlias(
+	aliases: Map<string, string>,
+	alternate: string | undefined,
+	title: string,
+) {
+	if (!alternate) {
+		return;
+	}
+
+	aliases.set(alternate, title);
+
+	const normalized = normalizeTitle(alternate);
+	if (normalized) {
+		aliases.set(normalized, title);
+	}
 }

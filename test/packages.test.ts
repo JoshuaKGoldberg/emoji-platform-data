@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import {
 	defaultFluemojiDirectory,
 	EmojiPlatformDataSource,
+	generateEmojipedia,
 	rebuildDirectory,
 	rebuildSourceDirectory,
 } from "../packages/generator/src/index.js";
@@ -545,5 +546,15 @@ describe(combinedName, () => {
 		});
 
 		expect(mismatches).toEqual([]);
+	});
+});
+
+describe("@emoji-platform-data/generator", () => {
+	it("resolves each Emojipedia title to its own emoji when another emoji's alternate name is the same", () => {
+		const { aliases, byCldr } = generateEmojipedia();
+
+		expect(
+			Object.keys(byCldr).filter((title) => aliases.get(title) !== title),
+		).toEqual([]);
 	});
 });
