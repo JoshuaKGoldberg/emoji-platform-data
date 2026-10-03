@@ -43,7 +43,7 @@ Anything not found falls back to the English, as it does in the client.
 
 The emoji data has every skin tone variant of the emoji that have them, so that shortcodes like `wave::skin-tone-3` resolve, but nests each one inside its base emoji's record rather than listing it as a record of its own.
 The script keeps every top-level record that isn't an alias, so those variants are left out, as Discord's are, only because Slack doesn't surface them as records of their own.
-The emoji data also lists 52 emoji the picker doesn't, mostly the gender-neutral forms of older people emoji such as 👮 `cop`, which the picker shows only as their man and woman variants; those are kept, without a category or order.
+The emoji data also lists emoji the picker doesn't, mostly the gender-neutral forms of older people emoji such as 👮 `cop`, which the picker shows only as their man and woman variants; those are kept, without a category or order.
 The keyword map has a stray `undefined` key, which is dropped with a warning.
 
 The result is committed as a snapshot, [`packages/generator/slack.json`](../generator/slack.json), the same way Discord's is.

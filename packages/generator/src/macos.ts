@@ -9,6 +9,6 @@ export function generateMacOS(
 	emojipedia: GeneratedEmojipediaData,
 ): Promise<Partial<AllMacOSData>> {
 	return readSnapshot("macos", (entry: MacOSItem) =>
-		getEntryCldr(emojipedia, entry.emoji, undefined, [entry.appleName]),
+		getEntryCldr(emojipedia, entry.emoji, [entry.appleName]),
 	);
 }

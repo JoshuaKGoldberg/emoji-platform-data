@@ -57,7 +57,7 @@ export interface DiscordItem {
 	/** Where the emoji falls in the picker's overall order, across all categories. */
 	order: number;
 
-	/** Unicode version that introduced the emoji, such as 6.1. */
+	/** Version that introduced the emoji: its Emoji version from Emoji 11.0 on, such as 13.1 for ❤️‍🔥, and before that the Unicode version of its newest code point other than U+FE0F, such as 6 for 👱‍♀️. ♟️ has its code point's 1.1, though it came in Emoji 11.0. */
 	unicodeVersion: number;
 }
 
@@ -254,7 +254,7 @@ export interface JoyPixelsItem {
 	/** Where the emoji falls in the picker's overall order, across all categories. */
 	order?: number;
 
-	/** Unicode version that introduced the emoji, such as 6. */
+	/** Version that introduced the emoji: its Emoji version from Emoji 11.0 on, such as 13.1 for ❤️‍🔥, and before that the Unicode version of its newest code point other than U+FE0F, such as 6 for 👱‍♀️. ♟️ has its code point's 1.1, though it came in Emoji 11.0. */
 	unicodeVersion: number;
 }
 

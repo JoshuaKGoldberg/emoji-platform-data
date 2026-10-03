@@ -175,9 +175,6 @@ export function getEmojiGlyphs(platformData: EmojiPlatformData) {
 	);
 }
 
-/**
- * A glyph with each combination of its variation selectors kept or left out.
- */
 function getGlyphs(platformData: EmojiPlatformData) {
 	return new Set(
 		[platformData.emojipedia?.code, ...getPlatformGlyphs(platformData)]
@@ -186,6 +183,9 @@ function getGlyphs(platformData: EmojiPlatformData) {
 	);
 }
 
+/**
+ * A glyph with each combination of its variation selectors kept or left out.
+ */
 function getVariationSelectorForms(glyph: string) {
 	const [first, ...rest] = glyph.split("\uFE0F");
 

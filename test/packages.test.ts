@@ -77,18 +77,43 @@ async function listDataPackages() {
 }
 
 /**
+ * Throws an error saying to run pnpm build first when a package is missing a
+ * file its build generates.
+ */
+async function assertBuilt(name: string, directory: string, file: string) {
+	try {
+		await fs.access(path.join(directory, file));
+	} catch {
+		throw new Error(`${name} has no ${file}; run pnpm build first.`);
+	}
+}
+
+/**
  * Imports a package through its package.json export, as a consumer would.
  */
 async function importPackage({ directory, entry, name }: DataPackage) {
 	const file = path.join(directory, entry);
 
-	try {
-		await fs.access(file);
-	} catch {
-		throw new Error(`${name} has no ${entry}; run pnpm build first.`);
-	}
+	await assertBuilt(name, directory, entry);
 
 	return (await import(pathToFileURL(file).href)) as DataExports;
+}
+
+/**
+ * The name of each type a package's index.d.mts declares.
+ */
+async function readDeclaredTypes({ directory, name }: DataPackage) {
+	await assertBuilt(name, directory, "./lib/index.d.mts");
+
+	const declarations = await fs.readFile(
+		path.join(directory, "lib/index.d.mts"),
+		"utf8",
+	);
+
+	return Array.from(
+		declarations.matchAll(/^export (?:interface|type) (\w+)/gm),
+		([, name]) => name,
+	);
 }
 
 /**
@@ -316,7 +341,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(Object.keys(byTitle).length).toBeGreaterThan(1000);
 	});
 
-	it("reaches every byTitle entry from byEmoji when platforms title one emoji two ways", async () => {
+	it("reaches every byTitle entry from byEmoji", async () => {
 		const { byEmoji, byTitle } = await importPackage(dataPackage);
 		const fromTitle = new Set(Object.values(byTitle));
 		const fromEmoji = new Set(Object.values(byEmoji));
@@ -326,6 +351,12 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 	});
 
 	it("resolves its byTitle entry point when imported directly", async () => {
+		await assertBuilt(
+			dataPackage.name,
+			dataPackage.directory,
+			dataPackage.entry,
+		);
+
 		const { exports } = JSON.parse(
 			await fs.readFile(
 				path.join(dataPackage.directory, "package.json"),
@@ -342,6 +373,17 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 	});
 
 	it("writes the same files as its lib when rebuilt from the generator's source", async () => {
+		await assertBuilt(
+			"@emoji-platform-data/generator",
+			generatorDirectory,
+			"./lib/dataTypes.d.ts",
+		);
+		await assertBuilt(
+			dataPackage.name,
+			dataPackage.directory,
+			dataPackage.entry,
+		);
+
 		const directory = await fs.mkdtemp(
 			path.join(os.tmpdir(), "emoji-platform-data-"),
 		);
@@ -363,6 +405,12 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 	});
 
 	it("sorts the keys of every object in its data files when a source lists them in another order", async () => {
+		await assertBuilt(
+			dataPackage.name,
+			dataPackage.directory,
+			dataPackage.entry,
+		);
+
 		const files = await readFiles(path.join(dataPackage.directory, "lib/data"));
 		const unsorted = Object.entries(files).flatMap(([file, contents]) =>
 			findUnsortedObjects(JSON.parse(contents), file),
@@ -379,7 +427,14 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		);
 	});
 
-	it("keys byEmoji by glyph when an emoji only has Twemoji's code points", async () => {
+	it("finds nothing in byEmoji for keys only Object.prototype has", async () => {
+		const { byEmoji } = await importPackage(dataPackage);
+
+		expect(byEmoji.constructor).toBeUndefined();
+		expect("toString" in byEmoji).toBe(false);
+	});
+
+	it("keys byEmoji by glyph rather than by code points", async () => {
 		const { byEmoji } = await importPackage(dataPackage);
 
 		expect(
@@ -408,7 +463,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 		expect(misses).toEqual([]);
 	});
 
-	it("writes a separate data file for every byTitle entry when two titles share a slug", async () => {
+	it("writes a data file for every byTitle entry", async () => {
 		const { byTitle } = await importPackage(dataPackage);
 		const files = await fs.readdir(
 			path.join(dataPackage.directory, "lib/data"),
@@ -428,6 +483,19 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 	}
 
 	if (dataPackage !== combinedPackage) {
+		it("declares none of another platform's types when it's a single platform's package", async () => {
+			const declared = await readDeclaredTypes(dataPackage);
+			const others = await Promise.all(
+				dataPackages
+					.filter((other) => other !== dataPackage && other !== combinedPackage)
+					.map(readDeclaredTypes),
+			);
+
+			expect(
+				declared.filter((name) => others.some((names) => names.includes(name))),
+			).toEqual([]);
+		});
+
 		it(`has the same entries as ${combinedName}'s ${toSourceKey(dataPackage.name)} data when it's a single platform's package`, async () => {
 			const source = toSourceKey(dataPackage.name);
 			const combined = await importPackage(combinedPackage);
@@ -443,30 +511,47 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 });
 
 describe(combinedName, () => {
-	it("keeps both emoji when Emojipedia titles them the same", async () => {
-		const { byEmoji } = await importPackage(combinedPackage);
+	it("declares every type of each platform's package when it combines their data", async () => {
+		const declared = await readDeclaredTypes(combinedPackage);
+		const missing = (
+			await Promise.all(
+				dataPackages
+					.filter((dataPackage) => dataPackage !== combinedPackage)
+					.map(readDeclaredTypes),
+			)
+		)
+			.flat()
+			.filter((name) => !declared.includes(name));
 
-		for (const emoji of ["🤵", "🤵‍♂️", "👯", "👯‍♀️"]) {
+		expect(missing).toEqual([]);
+	});
+
+	it.each(["🤵", "🤵‍♂️", "👯", "👯‍♀️"])(
+		"keeps %s when Emojipedia titles it the same as another emoji",
+		async (emoji) => {
+			const { byEmoji } = await importPackage(combinedPackage);
+
 			expect(byEmoji[emoji]).toMatchObject({ emoji, macos: { emoji } });
-		}
-	});
+		},
+	);
 
-	it("gives each emoji its own Twemoji data when Twemoji's description names another emoji", async () => {
-		const { byEmoji } = await importPackage(combinedPackage);
+	it.each([
+		["😁", "1f601"],
+		["😄", "1f604"],
+		["👰", "1f470"],
+		["👰‍♀️", "1f470-200d-2640-fe0f"],
+		["🕴️", "1f574"],
+		["🕴️‍♂️", "1f574-fe0f-200d-2642-fe0f"],
+		["☃️", "2603"],
+		["⛄", "26c4"],
+	])(
+		"gives %s Twemoji's %s data when Twemoji's description names another emoji",
+		async (emoji, unicode) => {
+			const { byEmoji } = await importPackage(combinedPackage);
 
-		for (const [emoji, unicode] of [
-			["😁", "1f601"],
-			["😄", "1f604"],
-			["👰", "1f470"],
-			["👰‍♀️", "1f470-200d-2640-fe0f"],
-			["🕴️", "1f574"],
-			["🕴️‍♂️", "1f574-fe0f-200d-2642-fe0f"],
-			["☃️", "2603"],
-			["⛄", "26c4"],
-		]) {
 			expect(byEmoji[emoji]).toMatchObject({ emoji, twemoji: { unicode } });
-		}
-	});
+		},
+	);
 
 	it("keys an emoji by platforms' glyph when Emojipedia's glyph differs", async () => {
 		const { byEmoji } = await importPackage(combinedPackage);
@@ -520,29 +605,30 @@ describe(combinedName, () => {
 		expect(byEmoji["✈"]).toBe(byEmoji["✈️"]);
 	});
 
-	it("places emoji in macOS's picker categories when the picker lists them with a variation selector", async () => {
-		const { byEmoji } = await importPackage(combinedPackage);
+	it.each(["⏩", "⏪", "⏫", "⏬"])(
+		"places %s in macOS's picker categories when the picker lists it with a variation selector",
+		async (emoji) => {
+			const { byEmoji } = await importPackage(combinedPackage);
 
-		for (const emoji of ["⏩", "⏪", "⏫", "⏬"]) {
 			expect(byEmoji[emoji]).toMatchObject({ macos: { category: "Symbols" } });
-		}
-	});
+		},
+	);
 
-	it("leaves out empty keywords when a source's keyword list has them", async () => {
-		const { byEmoji } = await importPackage(combinedPackage);
-
-		for (const [emoji, source] of [
-			["😐", "emojiMart"],
-			["😑", "emojiMart"],
-			["#️⃣", "emojiMart"],
-			["*️⃣", "emojiMart"],
-			["👨‍👩‍👧", "twemoji"],
-		]) {
+	it.each([
+		["😐", "emojiMart"],
+		["😑", "emojiMart"],
+		["#️⃣", "emojiMart"],
+		["*️⃣", "emojiMart"],
+		["👨‍👩‍👧", "twemoji"],
+	])(
+		"leaves out empty keywords from %s's %s data when the source's keyword list has them",
+		async (emoji, source) => {
+			const { byEmoji } = await importPackage(combinedPackage);
 			const entry = byEmoji[emoji] as Record<string, { keywords: string[] }>;
 
 			expect(entry[source].keywords).not.toContain("");
-		}
-	});
+		},
+	);
 
 	it("finds the same entry when an emoji is written with only some of its variation selectors", async () => {
 		const { byEmoji } = await importPackage(combinedPackage);

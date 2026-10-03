@@ -20,7 +20,6 @@ export function countTitles(titles: string[]) {
 export function getEntryCldr(
 	emojipedia: GeneratedEmojipediaData,
 	glyph: string | undefined,
-	unicode: string | undefined,
 	entries: string[],
 ) {
 	const byGlyphAlias = glyph && getGlyphAlias(emojipedia, glyph);
@@ -35,25 +34,9 @@ export function getEntryCldr(
 		}
 	}
 
-	const byUnicodeItem =
-		unicode &&
-		emojipedia.items.find((emojipediaItem) => {
-			const normalizedHexes = normalizeCodepoints(emojipediaItem.codepointsHex);
-			return (
-				normalizedHexes.join("-") === unicode ||
-				withoutVariationSelectorCodes(normalizedHexes.join("-")) === unicode
-			);
-		});
-	const byUnicode = byUnicodeItem && emojipedia.aliases.get(byUnicodeItem.code);
-
-	if (byUnicode) {
-		return byUnicode;
-	}
-
 	return titleCase(entries[0].replaceAll("_", " "))
 		.replaceAll("#", "Hash")
-		.replaceAll("*", "Asterisk")
-		.replaceAll("’s Symbol", "’s Room");
+		.replaceAll("*", "Asterisk");
 }
 
 /**
@@ -94,8 +77,8 @@ export function isKnownGlyph(
 }
 
 /**
- * Equivalent to Object.fromEntries, but warns when multiple entries resolve
- * to the same CLDR title, since the later entry would silently overwrite the earlier.
+ * Equivalent to Object.fromEntries, but throws when multiple entries resolve
+ * to the same CLDR title, since the later entry would overwrite the earlier.
  */
 export function recordByCldr<T>(
 	platform: string,
@@ -105,9 +88,7 @@ export function recordByCldr<T>(
 
 	for (const [cldr, entry] of entries) {
 		if (cldr in record) {
-			console.warn(
-				`Multiple ${platform} entries resolve to '${cldr}'; keeping only the last.`,
-			);
+			throw new Error(`Multiple ${platform} entries resolve to '${cldr}'.`);
 		}
 
 		record[cldr] = entry;
@@ -176,7 +157,7 @@ export function withoutVariationSelectors(glyph: string) {
  * Code points as platforms write them, such as "2764-fe0f", without any U+FE0F
  * variation selectors.
  */
-export function withoutVariationSelectorCodes(unicode: string) {
+function withoutVariationSelectorCodes(unicode: string) {
 	return unicode
 		.split("-")
 		.filter((hex) => hex !== "fe0f")
