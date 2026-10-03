@@ -154,6 +154,16 @@ function getPlatformGlyph(source: string, data: unknown) {
 	}
 }
 
+/**
+ * The glyph byEmoji should find a platform's data by, which for Emojipedia is
+ * its code.
+ */
+function getLookupGlyph(source: string, data: unknown) {
+	return source === "emojipedia"
+		? (data as { code: string }).code
+		: getPlatformGlyph(source, data);
+}
+
 function withoutVariationSelectors(glyph: string) {
 	return glyph.replaceAll("\uFE0F", "");
 }
@@ -247,7 +257,7 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 				: toSourceKey(dataPackage.name);
 		const misses = Object.values(byTitle).flatMap((entry) => {
 			const glyph = source
-				? getPlatformGlyph(source, entry)
+				? getLookupGlyph(source, entry)
 				: (entry as { emoji: string }).emoji;
 
 			return glyph
@@ -350,10 +360,7 @@ describe(combinedName, () => {
 			Object.entries(entry as Record<string, unknown>)
 				.filter(([key]) => !["emoji", "slug", "title"].includes(key))
 				.flatMap(([source, data]) => {
-					const glyph =
-						source === "emojipedia"
-							? (data as { code: string }).code
-							: getPlatformGlyph(source, data);
+					const glyph = getLookupGlyph(source, data);
 
 					return glyph && byEmoji[glyph] !== entry
 						? [
