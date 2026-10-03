@@ -40,8 +40,8 @@ describe(generateTwemoji, () => {
 	});
 
 	it.each([
-		["after", [levitating, manLevitating]],
-		["before", [manLevitating, levitating]],
+		["before", [levitating, manLevitating]],
+		["after", [manLevitating, levitating]],
 	])(
 		"titles an entry by its code points when its description names an emoji listed %s it by glyph",
 		async (_, items) => {
