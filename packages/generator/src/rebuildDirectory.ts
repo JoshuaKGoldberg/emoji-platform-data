@@ -155,14 +155,14 @@ async function writeDataDirectory({
 		for (const glyph of getEmojiGlyphs(platformData)) {
 			const owner = byEmojiOwners.get(glyph);
 
-			if (owner === undefined) {
-				byEmojiOwners.set(glyph, exportName);
-				byEmojiLines.push(`\t${JSON.stringify(glyph)}: byTitle.${exportName},`);
-			} else {
+			if (owner !== undefined) {
 				throw new Error(
 					`'${platformData.title}' and '${owner}' are both known as ${glyph}.`,
 				);
 			}
+
+			byEmojiOwners.set(glyph, exportName);
+			byEmojiLines.push(`\t${JSON.stringify(glyph)}: byTitle.${exportName},`);
 		}
 
 		await fs.writeFile(
