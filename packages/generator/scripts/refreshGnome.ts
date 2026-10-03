@@ -385,14 +385,10 @@ function toEntries(english: RawItem[], byLocale: Map<string, RawItem[]>) {
 	const entries = new Map<string, GnomeItem>();
 	let order = 0;
 
-	const shown = [...english]
+	const shown = english
 		.map((item, index) => ({ index, item }))
 		.filter(({ item }) => categories.has(item.group))
-		.sort(
-			(a, b) =>
-				[...categories.keys()].indexOf(a.item.group) -
-					[...categories.keys()].indexOf(b.item.group) || a.index - b.index,
-		)
+		.sort((a, b) => a.item.group - b.item.group || a.index - b.index)
 		.map(({ item }) => item);
 
 	for (const item of shown) {
