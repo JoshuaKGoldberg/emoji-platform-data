@@ -5,6 +5,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 
 import { WindowsItem } from "../src/dataTypes.js";
+import { fetchUrl, readBuffer, readText } from "./shared/fetch.js";
 import { withoutSkinTones } from "./shared/skinTones.js";
 import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
 import {
@@ -63,6 +64,8 @@ const minimumEntriesWithKeywords = 1400;
 /** Retail releases, rather than Insider, preview, or servicing-stack builds. */
 const releaseTitle = /^Windows 11, version (\w+) \((\d+)\.(\d+)\)$/;
 
+const requestTimeout = 120_000;
+
 const snapshotPath = path.join(import.meta.dirname, "../windows.json");
 
 const uupApi = "https://api.uupdump.net";
@@ -106,14 +109,16 @@ try {
 }
 
 async function download(file: RawFile) {
-	const response = await fetch(file.url);
+	const response = await fetchUrl(file.url, {
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 	if (!response.ok) {
 		throw new Error(
 			`Could not download ${cabName}: ${response.status.toString()} ${response.statusText}.`,
 		);
 	}
 
-	const contents = Buffer.from(await response.arrayBuffer());
+	const contents = await readBuffer(response);
 	const sha256 = crypto.createHash("sha256").update(contents).digest("hex");
 
 	// UUP dump only brokers the link: the file itself comes from Microsoft's
@@ -190,9 +195,11 @@ async function fetchFile(uuid: string, name: string) {
  */
 async function fetchUup<T>(query: string, key: string): Promise<T> {
 	for (let attempt = 1; ; attempt += 1) {
-		const response = await fetch(`${uupApi}/${query}`);
+		const response = await fetchUrl(`${uupApi}/${query}`, {
+			signal: AbortSignal.timeout(requestTimeout),
+		});
 		const body = response.ok
-			? ((await response.json()) as {
+			? (JSON.parse(await readText(response)) as {
 					response?: Partial<Record<string, unknown>>;
 				})
 			: undefined;

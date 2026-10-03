@@ -1,7 +1,7 @@
 import * as path from "node:path";
 
 import { GnomeItem } from "../src/dataTypes.js";
-import { fetchOk } from "./shared/fetch.js";
+import { fetchOk, readBuffer } from "./shared/fetch.js";
 import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
 import {
 	checkCanaries,
@@ -158,7 +158,7 @@ function alignUp(position: number, alignment: number) {
 }
 
 async function fetchBuffer(url: string) {
-	return Buffer.from(await (await fetchOk(url)).arrayBuffer());
+	return await readBuffer(await fetchOk(url));
 }
 
 async function fetchJson<T>(url: string) {

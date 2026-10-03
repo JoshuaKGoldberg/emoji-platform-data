@@ -10,6 +10,7 @@ import * as zlib from "node:zlib";
 import { compareStrings } from "../src/compareStrings.js";
 import { AndroidItem } from "../src/dataTypes.js";
 import { readMarisaKeys } from "./marisa.js";
+import { fetchUrl, readText, requestTimeout } from "./shared/fetch.js";
 import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
 import {
 	checkCanaryKeywords,
@@ -76,6 +77,9 @@ const headLimit = 64 * 1024 * 1024;
 
 /** The emoji dictionary's own header, before the trie of its terms. */
 const dictionaryMagic = 0x9bc13afe;
+
+/** How long streaming the whole system image may take before it's given up on. */
+const downloadTimeout = 2 * 60 * 60 * 1000;
 
 /** The newest system image listing schema version when this was written. */
 const knownListingVersion = 5;
@@ -154,23 +158,24 @@ async function extractProduct(url: string, productPath: string) {
 		url,
 	);
 
+	if (entry.method !== 8) {
+		throw new Error(
+			`The system image is compressed with method ${entry.method.toString()}, which this script can't read.`,
+		);
+	}
+
 	const start = await fetchZipDataStart(url, entry, asIs);
-	const response = await fetch(url, {
+	const response = await fetchUrl(url, {
 		headers: {
 			...asIs,
 			Range: `bytes=${start.toString()}-${(start + entry.compressedSize - 1).toString()}`,
 		},
+		signal: AbortSignal.timeout(downloadTimeout),
 	});
 
 	if (response.status !== 206 || !response.body) {
 		throw new Error(
 			`Expected a partial response from ${url}, but got ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
-
-	if (entry.method !== 8) {
-		throw new Error(
-			`The system image is compressed with method ${entry.method.toString()}, which this script can't read.`,
 		);
 	}
 
@@ -255,7 +260,9 @@ async function extractProduct(url: string, productPath: string) {
  * Fetches a file's text, or undefined if the server says there's no such file.
  */
 async function fetchText(url: string) {
-	const response = await fetch(url);
+	const response = await fetchUrl(url, {
+		signal: AbortSignal.timeout(requestTimeout),
+	});
 
 	if (response.status === 404) {
 		return undefined;
@@ -267,7 +274,7 @@ async function fetchText(url: string) {
 		);
 	}
 
-	return await response.text();
+	return await readText(response);
 }
 
 /**
@@ -632,6 +639,12 @@ function readLocalZipEntries(zip: Buffer, source: string) {
 }
 
 function readLocalZipFile(zip: Buffer, entry: ZipEntry) {
+	if (zip.readUInt32LE(entry.offset) !== 0x04034b50) {
+		throw new Error(
+			`'${entry.name}' has no local file header where the zip's central directory puts it.`,
+		);
+	}
+
 	const start =
 		entry.offset +
 		30 +
