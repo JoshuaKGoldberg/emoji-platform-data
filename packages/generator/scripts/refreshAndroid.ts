@@ -43,6 +43,8 @@ interface Snapshot {
 /** A system image as the Android SDK's repository lists it. */
 interface SystemImage {
 	apiLevel: number;
+	/** Whether the image is for 16KB memory pages, rather than 4KB. */
+	largePages: boolean;
 	path: string;
 	url: string;
 }
@@ -113,7 +115,7 @@ try {
 	const { contents, pack } = readPack(apk);
 	const entries = toEntries(readDictionary(contents));
 
-	validate(entries, previous);
+	validate(entries, pack, previous);
 
 	const snapshot: Snapshot = { entries, image: image.path, pack };
 
@@ -433,9 +435,9 @@ function findZipEntry(
  *
  * The SDK's repository lists them in an XML file whose name carries a schema
  * version, which is bumped now and then, so the newest schema that exists is
- * the one read. Extension builds and betas are left out, and so are the images
- * for 16KB memory pages, whose partitions are formatted as ext4 rather than
- * EROFS. They carry the same Gboard.
+ * the one read. Extension builds and betas are left out. Newer API levels
+ * might only have images for 16KB memory pages, so those are read too, but an
+ * API level's 4KB image is preferred when it has both.
  */
 async function pickLatestImage() {
 	let xml: string | undefined;
@@ -462,17 +464,27 @@ async function pickLatestImage() {
 		/<remotePackage path="([^"]+)">(.*?)<\/remotePackage>/gs,
 	)) {
 		const match =
-			/^system-images;android-(\d+(?:\.\d+)?);google_apis_playstore;x86_64$/.exec(
+			/^system-images;android-(\d+(?:\.\d+)?);google_apis_playstore(_ps16k)?;x86_64$/.exec(
 				packagePath,
 			);
 		const url = /<url>([^<]+)<\/url>/.exec(body)?.[1];
 
 		if (match && url && body.includes('<channelRef ref="channel-0"/>')) {
-			images.push({ apiLevel: Number(match[1]), path: packagePath, url });
+			images.push({
+				apiLevel: Number(match[1]),
+				largePages: !!match[2],
+				path: packagePath,
+				url,
+			});
 		}
 	}
 
-	const latest = images.sort((a, b) => a.apiLevel - b.apiLevel).at(-1);
+	const latest = images
+		.sort(
+			(a, b) =>
+				a.apiLevel - b.apiLevel || Number(b.largePages) - Number(a.largePages),
+		)
+		.at(-1);
 
 	if (!latest) {
 		throw new Error("The SDK repository listed no stable Google Play images.");
@@ -482,47 +494,70 @@ async function pickLatestImage() {
 }
 
 /**
- * Pulls Gboard out of the product partition.
+ * Pulls Gboard out of the product partition, which is EROFS in 4KB page size
+ * images and ext4 in 16KB ones.
  *
- * The partition is EROFS, which is compressed, so erofs-utils reads it.
- * It needs version 1.8.5 or newer, for `dump.erofs --cat`: Homebrew has one, as
- * does apt on Ubuntu 25.04 and newer.
+ * EROFS is compressed, so erofs-utils reads it. It needs version 1.8.5 or
+ * newer, for `dump.erofs --cat`: Homebrew has one, as does apt on Ubuntu 25.04
+ * and newer. ext4 is read by debugfs, from e2fsprogs, which Ubuntu comes with.
+ * debugfs always starts its error output with its version, and reports a
+ * missing file only there, rather than in its exit code.
  */
 async function readApk(productPath: string) {
-	const superblock = Buffer.alloc(4);
+	const superblock = Buffer.alloc(58);
 	const product = await fs.open(productPath);
 
 	try {
-		await product.read(superblock, 0, 4, 1024);
+		await product.read(superblock, 0, superblock.length, 1024);
 	} finally {
 		await product.close();
 	}
 
-	if (superblock.readUInt32LE(0) !== 0xe0f5e1e2) {
+	const reader =
+		superblock.readUInt32LE(0) === 0xe0f5e1e2
+			? {
+					args: ["--cat", `--path=${apkPath}`, productPath],
+					command: "dump.erofs",
+					needs:
+						"erofs-utils 1.8.5 or newer, such as with `brew install erofs-utils`",
+				}
+			: superblock.readUInt16LE(56) === 0xef53
+				? {
+						args: ["-R", `cat ${apkPath}`, productPath],
+						banner: /^debugfs \S+ \(.+\)\n/,
+						command: "debugfs",
+						needs:
+							"debugfs, from e2fsprogs, such as with `brew install e2fsprogs` and its sbin directory on the PATH",
+					}
+				: undefined;
+
+	if (!reader) {
 		throw new Error(
-			"The product partition isn't EROFS, so erofs-utils can't read Gboard out of it.",
+			"The product partition is neither EROFS nor ext4, so Gboard can't be read out of it.",
 		);
 	}
 
-	const result = spawnSync(
-		"dump.erofs",
-		["--cat", `--path=${apkPath}`, productPath],
-		{ maxBuffer: 512 * 1024 * 1024, stdio: ["ignore", "pipe", "pipe"] },
-	);
+	const result = spawnSync(reader.command, reader.args, {
+		maxBuffer: 512 * 1024 * 1024,
+		stdio: ["ignore", "pipe", "pipe"],
+	});
 
-	const failure = `Could not read ${apkPath} out of the product partition. That needs erofs-utils 1.8.5 or newer, such as with \`brew install erofs-utils\`.`;
+	const failure = `Could not read ${apkPath} out of the product partition. That needs ${reader.needs}.`;
 
 	if (result.error) {
 		throw new Error(failure, { cause: result.error });
 	}
 
-	const stderr = result.stderr.toString().trim();
+	const stderr = result.stderr
+		.toString()
+		.replace(reader.banner ?? "", "")
+		.trim();
 
 	if (result.status !== 0 || !result.stdout.length || stderr) {
 		throw new Error(
 			[
 				failure,
-				result.signal && `dump.erofs was killed by ${result.signal}.`,
+				result.signal && `${reader.command} was killed by ${result.signal}.`,
 				stderr,
 			]
 				.filter(Boolean)
@@ -695,7 +730,11 @@ function toEntries(terms: Map<string, string[]>) {
 	}));
 }
 
-function validate(entries: AndroidItem[], previous: Snapshot | undefined) {
+function validate(
+	entries: AndroidItem[],
+	pack: string,
+	previous: Snapshot | undefined,
+) {
 	const problems = checkCounts(entries, previous?.entries, [
 		{ ...emojiCount, minimum: minimumEntries },
 		{
@@ -713,6 +752,13 @@ function validate(entries: AndroidItem[], previous: Snapshot | undefined) {
 	if (empty.length) {
 		problems.push(
 			`${empty.length.toString()} emoji have no keywords, such as ${empty[0].emoji}.`,
+		);
+	}
+
+	// Pack names end in when they were built, all with the same digits.
+	if (previous && pack < previous.pack) {
+		problems.push(
+			`Gboard's ${pack} is older than the snapshot's ${previous.pack}.`,
 		);
 	}
 
