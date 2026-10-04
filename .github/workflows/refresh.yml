@@ -147,13 +147,6 @@ jobs:
           $summary
           CHANGESET
 
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
-          git checkout -b "$branch"
-          git add "$changeset" "$snapshot"
-          git commit -m "$title"
-          git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
-
           body=$(cat <<BODY
           ## PR Checklist
 
@@ -169,15 +162,58 @@ jobs:
           )
 
           if [ -n "$pr_number" ]; then
-            gh pr edit "$pr_number" --body "$body" --title "$title"
+            compare="repos/$GH_REPO/compare/main...$branch"
+            merge_base=$(gh api "$compare" --jq .merge_base_commit.sha)
+            bot_commit=$(gh api "$compare" --jq '[.commits[] | select(.commit.author.name == "github-actions[bot]")] | last | .sha // empty')
+            git fetch --depth=1 origin "refs/heads/$branch:refs/remotes/origin/$branch" "$merge_base" $bot_commit
+
+            # The changeset is named after the run that wrote it.
+            previous_changeset=$(git diff --name-only --diff-filter=A "$merge_base" "origin/$branch" -- ".changeset/refresh-$PLATFORM-data-*.md")
+
+            if git diff --quiet "$merge_base" HEAD -- "$snapshot" &&
+              git diff --quiet "origin/$branch" -- "$snapshot" &&
+              [ -n "$previous_changeset" ] &&
+              [ "$(git show "origin/$branch:$previous_changeset")" = "$(cat "$changeset")" ]; then
+              echo "#$pr_number already has this $NAME emoji data."
+              exit 0
+            fi
+
+            if [ -n "$bot_commit" ]; then
+              previous_title=$(git log -1 --format=%s "$bot_commit")
+              previous_body=$(git log -1 --format=%b "$bot_commit")
+            fi
+          fi
+
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git checkout -b "$branch"
+          git add "$changeset" "$snapshot"
+          # The next refresh reads the title and body back from this message.
+          git commit --cleanup=verbatim -m "$title" -m "$body"
+          git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
+
+          if [ -z "$pr_number" ]; then
+            gh pr create \
+              --base main \
+              --body "$body" \
+              --head "$branch" \
+              --title "$title"
             exit 0
           fi
 
-          gh pr create \
-            --base main \
-            --body "$body" \
-            --head "$branch" \
-            --title "$title"
+          edits=()
+
+          if [ "$title" != "$previous_title" ]; then
+            edits+=(--title "$title")
+          fi
+
+          if [ "$body" != "$previous_body" ]; then
+            edits+=(--body "$body")
+          fi
+
+          if [ ${#edits[@]} -gt 0 ]; then
+            gh pr edit "$pr_number" "${edits[@]}"
+          fi
       - env:
           GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ github.token }}
