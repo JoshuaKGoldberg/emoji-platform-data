@@ -147,13 +147,6 @@ jobs:
           $summary
           CHANGESET
 
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
-          git checkout -b "$branch"
-          git add "$changeset" "$snapshot"
-          git commit -m "$title"
-          git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
-
           body=$(cat <<BODY
           ## PR Checklist
 
@@ -169,15 +162,52 @@ jobs:
           )
 
           if [ -n "$pr_number" ]; then
-            gh pr edit "$pr_number" --body "$body" --title "$title"
+            git fetch --depth=1 origin "refs/heads/$branch:refs/remotes/origin/$branch"
+
+            # The branch is rebuilt from main each time, and its changeset is
+            # named after the run that wrote it, so only their contents say
+            # whether this refresh would change anything.
+            if git show "origin/$branch:$snapshot" | cmp -s - "$snapshot" &&
+              git diff --name-only --diff-filter=A HEAD "origin/$branch" -- ".changeset/refresh-$PLATFORM-data-*.md" | xargs -I {} git show "origin/$branch:{}" | cmp -s - "$changeset"; then
+              echo "#$pr_number already has this $NAME emoji data."
+              exit 0
+            fi
+
+            previous_title=$(git log -1 --format=%s "origin/$branch")
+            previous_body=$(git log -1 --format=%b "origin/$branch")
+          fi
+
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git checkout -b "$branch"
+          git add "$changeset" "$snapshot"
+          # The next refresh reads the title and body back from here, so that it
+          # only replaces maintainers' edits to them when its own would change.
+          git commit --cleanup=verbatim -m "$title" -m "$body"
+          git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" "HEAD:refs/heads/$branch"
+
+          if [ -z "$pr_number" ]; then
+            gh pr create \
+              --base main \
+              --body "$body" \
+              --head "$branch" \
+              --title "$title"
             exit 0
           fi
 
-          gh pr create \
-            --base main \
-            --body "$body" \
-            --head "$branch" \
-            --title "$title"
+          edits=()
+
+          if [ "$title" != "$previous_title" ]; then
+            edits+=(--title "$title")
+          fi
+
+          if [ "$body" != "$previous_body" ]; then
+            edits+=(--body "$body")
+          fi
+
+          if [ ${#edits[@]} -gt 0 ]; then
+            gh pr edit "$pr_number" "${edits[@]}"
+          fi
       - env:
           GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ github.token }}
