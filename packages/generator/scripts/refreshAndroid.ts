@@ -142,7 +142,7 @@ function countKeywords(entries: AndroidItem[]) {
  * Streams the system image out of the remote zip, keeping only the product
  * partition, which is where Gboard is.
  *
- * The image is a ~2.8GB disk: a GPT partition table, whose `super` partition
+ * The image is a disk: a GPT partition table, whose `super` partition
  * holds Android's dynamic partitions, one of which is `product`. It's deflated
  * as one stream, so it can't be read piecemeal the way WeChat's app is, but it
  * doesn't need to all be on disk at once either. The partition tables come
@@ -435,9 +435,8 @@ function findZipEntry(
  *
  * The SDK's repository lists them in an XML file whose name carries a schema
  * version, which is bumped now and then, so the newest schema that exists is
- * the one read. Extension builds and betas are left out. Newer API levels
- * might only have images for 16KB memory pages, so those are read too, but an
- * API level's 4KB image is preferred when it has both.
+ * the one read. Extension builds and betas are left out, and an API level's
+ * 4KB page size image is preferred over its 16KB one.
  */
 async function pickLatestImage() {
 	let xml: string | undefined;
@@ -513,23 +512,7 @@ async function readApk(productPath: string) {
 		await product.close();
 	}
 
-	const reader =
-		superblock.readUInt32LE(0) === 0xe0f5e1e2
-			? {
-					args: ["--cat", `--path=${apkPath}`, productPath],
-					command: "dump.erofs",
-					needs:
-						"erofs-utils 1.8.5 or newer, such as with `brew install erofs-utils`",
-				}
-			: superblock.readUInt16LE(56) === 0xef53
-				? {
-						args: ["-R", `cat ${apkPath}`, productPath],
-						banner: /^debugfs \S+ \(.+\)\n/,
-						command: "debugfs",
-						needs:
-							"debugfs, from e2fsprogs, such as with `brew install e2fsprogs` and its sbin directory on the PATH",
-					}
-				: undefined;
+	const reader = pickReader(superblock, productPath);
 
 	if (!reader) {
 		throw new Error(
@@ -566,6 +549,33 @@ async function readApk(productPath: string) {
 	}
 
 	return result.stdout;
+}
+
+/**
+ * Picks the program that reads files out of the product partition, by the
+ * filesystem its superblock says it is.
+ */
+function pickReader(superblock: Buffer, productPath: string) {
+	if (superblock.readUInt32LE(0) === 0xe0f5e1e2) {
+		return {
+			args: ["--cat", `--path=${apkPath}`, productPath],
+			command: "dump.erofs",
+			needs:
+				"erofs-utils 1.8.5 or newer, such as with `brew install erofs-utils`",
+		};
+	}
+
+	if (superblock.readUInt16LE(56) === 0xef53) {
+		return {
+			args: ["-R", `cat ${apkPath}`, productPath],
+			banner: /^debugfs \S+ \(.+\)\n/,
+			command: "debugfs",
+			needs:
+				"debugfs, from e2fsprogs, such as with `brew install e2fsprogs` and its sbin directory on the PATH",
+		};
+	}
+
+	return undefined;
 }
 
 /**
@@ -755,7 +765,7 @@ function validate(
 		);
 	}
 
-	// Pack names end in when they were built, all with the same digits.
+	// Pack names end in a fixed-width build timestamp, so they sort by age.
 	if (previous && pack < previous.pack) {
 		problems.push(
 			`Gboard's ${pack} is older than the snapshot's ${previous.pack}.`,

@@ -21,12 +21,12 @@ pnpm --filter @emoji-platform-data/generator refresh:android
 
 [`packages/generator/scripts/refreshAndroid.ts`](../generator/scripts/refreshAndroid.ts) takes the newest stable x86_64 Google Play image from the SDK's listing, other than extension builds and betas, preferring the 4KB page size image over the 16KB one when an API level has both, and asks Google's CDN for the image as-is, since it reports gzipped sizes otherwise.
 
-The image is a ~2.3GB zip whose `system.img`, deflated as one ~2.8GB stream, is read without being on disk all at once:
+The image is a ~2.5GB zip whose `system.img`, deflated as one stream of ~2.8GB for 4KB page size images or ~8.6GB for 16KB ones, is read without being on disk all at once:
 
 1. The zip's central directory, read with range requests, says where `system.img` is
 2. `system.img` streams in and inflates, and its CRC-32 is checked against the zip's at the end
 3. Its first few megabytes hold a GPT partition table, whose `super` partition holds [Android's dynamic partitions](https://source.android.com/docs/core/ota/dynamic_partitions), whose metadata says which ranges of `super` make up the `product` partition
-4. Only those ranges are written to disk, as a ~1.75GB `product.img`
+4. Only those ranges are written to disk, as a `product.img` of ~1.75GB for 4KB page size images or ~2.85GB for 16KB ones
 
 `/app/LatinIMEGooglePrebuilt/LatinIMEGooglePrebuilt.apk` is read out of `product.img` by `dump.erofs --cat` when it's EROFS, as in 4KB page size images, or by `debugfs -R cat` when it's ext4, as in 16KB ones, and the emoji zip inside that app is read in memory.
 
