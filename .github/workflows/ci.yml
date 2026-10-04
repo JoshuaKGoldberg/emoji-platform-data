@@ -3,6 +3,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
 
 jobs:
+  changesets:
+    if: github.event_name == 'pull_request'
+    name: Changesets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 2
+      - uses: ./.github/actions/prepare
+      - run: .github/scripts/check-changesets.sh
   lint:
     name: Lint
     runs-on: ubuntu-latest

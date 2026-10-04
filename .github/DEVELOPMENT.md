@@ -136,6 +136,8 @@ pnpm changeset
 
 That creates a Markdown file in `.changeset/` naming the affected package(s), the semver bump for each, and a summary that becomes their `CHANGELOG.md` entry.
 Changes that don't affect published packages, such as CI or repository tooling, don't need one.
+The `Changesets` CI job builds each pull request and the `main` it would merge into, and fails if a package's built output changed without a changeset in the pull request naming it.
+That includes changes that come from dependency updates, such as a new `emoji-toolkit` version.
 
 Every push to `main` runs the `Release` workflow, which does one of two things:
 
