@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 # Fails unless the changesets that HEAD adds or changes, compared to its first
-# parent, name every package whose built output HEAD changes. Both are built,
-# so changes that come from dependencies are caught along with code changes.
+# parent, name every data package whose built output HEAD changes.
 set -euo pipefail
 
 hash_packages="$(cd "$(dirname "$0")" && pwd)/hash-packages.sh"
 base=$(mktemp -d)
 results=$(mktemp -d)
+trap 'rm -rf "$base" "$results"' EXIT
 
 git archive HEAD^1 | tar -x -C "$base"
-(cd "$base" && pnpm install --frozen-lockfile > /dev/null && pnpm build > /dev/null && "$hash_packages") | sort > "$results/before.txt"
+(cd "$base" && pnpm install --frozen-lockfile && pnpm build)
+(cd "$base" && "$hash_packages") | sort > "$results/before.txt"
 
-pnpm build > /dev/null
+pnpm build
 "$hash_packages" | sort > "$results/after.txt"
 
 changed=$(comm -13 "$results/before.txt" "$results/after.txt" | cut -d ' ' -f 1)
@@ -19,9 +20,9 @@ changed=$(comm -13 "$results/before.txt" "$results/after.txt" | cut -d ' ' -f 1)
 named=$(
 	git diff --diff-filter=AM --name-only --no-renames HEAD^1 HEAD -- '.changeset/*.md' ':!.changeset/README.md' \
 		| while read -r changeset; do
-			awk '/^---$/ { fences++; next } fences == 1' "$changeset"
+			awk '{ sub(/\r$/, "") } /^---[[:space:]]*$/ { fences++; next } fences == 1' "$changeset"
 		done \
-		| sed -E "s/^[\"']?([^\"':]+)[\"']?[[:space:]]*:.*$/\1/" \
+		| sed -E "s/^[[:space:]]*[\"']?([^\"':]+)[\"']?[[:space:]]*:.*$/\1/; s/[[:space:]]+$//" \
 		| sort -u
 )
 
