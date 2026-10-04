@@ -162,9 +162,10 @@ jobs:
           )
 
           if [ -n "$pr_number" ]; then
-            git fetch --shallow-exclude=main origin "refs/heads/$branch:refs/remotes/origin/$branch"
-            merge_base=$(gh api "repos/$GH_REPO/compare/main...$branch" --jq .merge_base_commit.sha)
-            git fetch --depth=1 origin "$merge_base"
+            compare="repos/$GH_REPO/compare/main...$branch"
+            merge_base=$(gh api "$compare" --jq .merge_base_commit.sha)
+            bot_commit=$(gh api "$compare" --jq '[.commits[] | select(.commit.author.name == "github-actions[bot]")] | last | .sha // empty')
+            git fetch --depth=1 origin "refs/heads/$branch:refs/remotes/origin/$branch" "$merge_base" $bot_commit
 
             # The changeset is named after the run that wrote it.
             previous_changeset=$(git diff --name-only --diff-filter=A "$merge_base" "origin/$branch" -- ".changeset/refresh-$PLATFORM-data-*.md")
@@ -177,8 +178,10 @@ jobs:
               exit 0
             fi
 
-            previous_title=$(git log -1 --author='github-actions\[bot\]' --format=%s "origin/$branch")
-            previous_body=$(git log -1 --author='github-actions\[bot\]' --format=%b "origin/$branch")
+            if [ -n "$bot_commit" ]; then
+              previous_title=$(git log -1 --format=%s "$bot_commit")
+              previous_body=$(git log -1 --format=%b "$bot_commit")
+            fi
           fi
 
           git config user.email "github-actions[bot]@users.noreply.github.com"
