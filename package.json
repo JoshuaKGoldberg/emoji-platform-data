@@ -36,7 +36,7 @@
 		"@types/node": "26.6.2",
 		"@vitest/coverage-v8": "5.0.2",
 		"cspell": "10.3.3",
-		"eslint": "10.11.0",
+		"eslint": "10.12.0",
 		"eslint-plugin-jsdoc": "65.0.0",
 		"eslint-plugin-jsonc": "3.4.2",
 		"eslint-plugin-markdown-links": "0.9.1",
