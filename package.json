@@ -55,7 +55,7 @@
 		"prettier-plugin-sentences-per-line": "0.2.5",
 		"prettier-plugin-sh": "0.20.0",
 		"tsx": "4.23.15",
-		"typescript": "6.0.3",
+		"typescript": "7.0.2",
 		"typescript-eslint": "8.71.1",
 		"vitest": "5.0.2"
 	},
