@@ -227,23 +227,23 @@ importers:
         specifier: 17.6.0
         version: 17.6.0
       prettier:
-        specifier: 3.9.8
-        version: 3.9.8
+        specifier: 3.10.0
+        version: 3.10.0
       prettier-plugin-curly:
         specifier: 0.4.1
-        version: 0.4.1(prettier@3.9.8)
+        version: 0.4.1(prettier@3.10.0)
       prettier-plugin-packagejson:
         specifier: 3.1.0
-        version: 3.1.0(prettier@3.9.8)
+        version: 3.1.0(prettier@3.10.0)
       prettier-plugin-padding-lines:
         specifier: 0.1.0
-        version: 0.1.0(prettier@3.9.8)
+        version: 0.1.0(prettier@3.10.0)
       prettier-plugin-sentences-per-line:
         specifier: 0.2.5
-        version: 0.2.5(prettier@3.9.8)
+        version: 0.2.5(prettier@3.10.0)
       prettier-plugin-sh:
         specifier: 0.20.0
-        version: 0.20.0(prettier@3.9.8)
+        version: 0.20.0(prettier@3.10.0)
       tsx:
         specifier: 4.23.15
         version: 4.23.15
@@ -2607,8 +2607,8 @@ packages:
     peerDependencies:
       prettier: ^3.6.0
 
-  prettier@3.9.8:
-    resolution: {integrity: sha512-WRFq3Wn3WId7LLROfMLdH7xaFr2jR62wU8nLO6rQUOLOxNZUviyJQs1M0iIhLexSFy+L+w0ch66wtoO2jRjG0A==}
+  prettier@3.10.0:
+    resolution: {integrity: sha512-mBi4765LgjO1PFjlEs7pUeK0nb1bw71c+N4/ItfeUWNdY5cV2pRKaFpbbFRYmDJMO+5ZwzGxHRqHxFZna7iv5w==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5317,32 +5317,32 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-curly@0.4.1(prettier@3.9.8):
+  prettier-plugin-curly@0.4.1(prettier@3.10.0):
     dependencies:
-      prettier: 3.9.8
+      prettier: 3.10.0
 
-  prettier-plugin-packagejson@3.1.0(prettier@3.9.8):
+  prettier-plugin-packagejson@3.1.0(prettier@3.10.0):
     dependencies:
       sort-package-json: 4.1.0
     optionalDependencies:
-      prettier: 3.9.8
+      prettier: 3.10.0
 
-  prettier-plugin-padding-lines@0.1.0(prettier@3.9.8):
+  prettier-plugin-padding-lines@0.1.0(prettier@3.10.0):
     dependencies:
-      prettier: 3.9.8
+      prettier: 3.10.0
 
-  prettier-plugin-sentences-per-line@0.2.5(prettier@3.9.8):
+  prettier-plugin-sentences-per-line@0.2.5(prettier@3.10.0):
     dependencies:
-      prettier: 3.9.8
+      prettier: 3.10.0
       sentences-per-line: 0.5.6
 
-  prettier-plugin-sh@0.20.0(prettier@3.9.8):
+  prettier-plugin-sh@0.20.0(prettier@3.10.0):
     dependencies:
       '@reteps/dockerfmt': 0.5.4
-      prettier: 3.9.8
+      prettier: 3.10.0
       sh-syntax: 0.7.0
 
-  prettier@3.9.8: {}
+  prettier@3.10.0: {}
 
   proc-log@6.1.0: {}
 
