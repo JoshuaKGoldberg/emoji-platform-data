@@ -1,5 +1,5 @@
 {
-	"chunk": "gantry-v2-shared.d025037e7b5faaa6.min.js",
+	"chunk": "client-boot.f1ee82e6b687ec0e.min.js",
 	"entries": [
 		{
 			"aliases": [],
@@ -199521,6 +199521,74 @@
 		},
 		{
 			"aliases": [],
+			"emoji": "🧑‍🩰",
+			"keywords": [
+				"ballet",
+				"dancer"
+			],
+			"keywordsByLocale": {
+				"de-DE": [
+					"ballet",
+					"tänzerin"
+				],
+				"en-GB": [
+					"ballet",
+					"dancer"
+				],
+				"es-ES": [
+					"ballet",
+					"bailarina"
+				],
+				"es-LA": [
+					"ballet",
+					"bailarín"
+				],
+				"fr-FR": [
+					"ballet",
+					"danseuse"
+				],
+				"it-IT": [
+					"ballo",
+					"ballerini"
+				],
+				"ja-JP": [
+					"バレエ",
+					"ダンサー"
+				],
+				"ko-KR": [
+					"ballet",
+					"댄서"
+				],
+				"pt-BR": [
+					"balé",
+					"dançarina"
+				],
+				"zh-CN": [
+					"芭蕾舞",
+					"舞者"
+				],
+				"zh-TW": [
+					"芭蕾",
+					"舞者"
+				]
+			},
+			"name": "ballet_dancer",
+			"namesByLocale": {
+				"de-DE": "ballet_dancer",
+				"en-GB": "ballet_dancer",
+				"es-ES": "bailarina_de_ballet",
+				"es-LA": "bailarín_de_ballet",
+				"fr-FR": "danseur_classique",
+				"it-IT": "danza_classica",
+				"ja-JP": "バレエダンサー",
+				"ko-KR": "발레_댄서",
+				"pt-BR": "bailarina",
+				"zh-CN": "芭蕾舞者",
+				"zh-TW": "芭蕾舞者"
+			}
+		},
+		{
+			"aliases": [],
 			"emoji": "🧔",
 			"keywords": [
 				"beard",
@@ -200822,6 +200890,120 @@
 		},
 		{
 			"aliases": [],
+			"emoji": "🫪",
+			"keywords": [
+				"anxiety",
+				"bloated",
+				"panic",
+				"shocked",
+				"surprised",
+				"vulnerable"
+			],
+			"keywordsByLocale": {
+				"de-DE": [
+					"Angst",
+					"aufgebläht",
+					"panik",
+					"schockiert",
+					"überrascht",
+					"verletzlich"
+				],
+				"en-GB": [
+					"anxiety",
+					"bloated",
+					"panic",
+					"shocked",
+					"surprised",
+					"vulnerable"
+				],
+				"es-ES": [
+					"ansiedad",
+					"hinchado",
+					"pánico",
+					"sorprendido",
+					"vulnerable"
+				],
+				"es-LA": [
+					"ansiedad",
+					"hinchado",
+					"pánico",
+					"sorprendido",
+					"vulnerable"
+				],
+				"fr-FR": [
+					"anxiété",
+					"gonflé",
+					"panique",
+					"choqué",
+					"surprise",
+					"vulnérable"
+				],
+				"it-IT": [
+					"ansia",
+					"gonfio",
+					"da_paura",
+					"scioccato",
+					"sorpreso",
+					"vulnerabilità"
+				],
+				"ja-JP": [
+					"不安",
+					"膨れた",
+					"パニック",
+					"ショック",
+					"びっくり",
+					"傷つきやすい"
+				],
+				"ko-KR": [
+					"불안",
+					"배부른",
+					"패닉",
+					"충격받은",
+					"놀란",
+					"연약함"
+				],
+				"pt-BR": [
+					"ansiedade",
+					"inchado",
+					"pânico",
+					"chocado",
+					"surpresa",
+					"vulnerável"
+				],
+				"zh-CN": [
+					"焦虑",
+					"臃肿",
+					"恐慌",
+					"震惊的",
+					"惊讶",
+					"脆弱"
+				],
+				"zh-TW": [
+					"焦慮",
+					"臃腫",
+					"恐慌",
+					"很震驚",
+					"驚訝",
+					"脆弱"
+				]
+			},
+			"name": "distorted_face",
+			"namesByLocale": {
+				"de-DE": "distorted_face",
+				"en-GB": "distorted_face",
+				"es-ES": "cara_deformada",
+				"es-LA": "cara_distorsionada",
+				"fr-FR": "visage_déformé",
+				"it-IT": "viso_distorto",
+				"ja-JP": "ゆがんだ顔",
+				"ko-KR": "찡그린_얼굴",
+				"pt-BR": "rosto_distorcido",
+				"zh-CN": "扭曲的脸",
+				"zh-TW": "扭曲的臉"
+			}
+		},
+		{
+			"aliases": [],
 			"emoji": "🧝",
 			"keywords": [
 				"elves",
@@ -201364,6 +201546,129 @@
 				"pt-BR": "família",
 				"zh-CN": "家庭",
 				"zh-TW": "家庭"
+			}
+		},
+		{
+			"aliases": [],
+			"emoji": "🫯",
+			"keywords": [
+				"argument",
+				"brawl",
+				"debate",
+				"disagreement",
+				"fight",
+				"ruckus",
+				"wrestle"
+			],
+			"keywordsByLocale": {
+				"de-DE": [
+					"Argument",
+					"Schlägerei",
+					"Debatte",
+					"Meinungsverschiedenheit",
+					"kampf",
+					"ruckus",
+					"wrestling"
+				],
+				"en-GB": [
+					"argument",
+					"brawl",
+					"debate",
+					"disagreement",
+					"fight",
+					"ruckus",
+					"wrestle"
+				],
+				"es-ES": [
+					"discusión",
+					"pelea",
+					"debate",
+					"desacuerdo",
+					"lucha",
+					"alboroto"
+				],
+				"es-LA": [
+					"discusión",
+					"pelea",
+					"altercado",
+					"pleito",
+					"lucha"
+				],
+				"fr-FR": [
+					"Argument",
+					"bagarre",
+					"débat",
+					"désaccord",
+					"chaos",
+					"lutte"
+				],
+				"it-IT": [
+					"argomento",
+					"rissa",
+					"dibattito",
+					"disaccordo",
+					"combattimento",
+					"baruffa",
+					"lotta"
+				],
+				"ja-JP": [
+					"議論",
+					"乱闘",
+					"討論",
+					"意見の相違",
+					"戦う",
+					"騒動",
+					"格闘"
+				],
+				"ko-KR": [
+					"논쟁",
+					"난투",
+					"토론",
+					"의견 불일치",
+					"싸움",
+					"소란",
+					"레슬링"
+				],
+				"pt-BR": [
+					"argumento",
+					"briga",
+					"debate",
+					"discordância",
+					"tumulto",
+					"lutar"
+				],
+				"zh-CN": [
+					"争论",
+					"斗殴",
+					"辩论",
+					"分歧",
+					"打架",
+					"喧闹",
+					"摔跤"
+				],
+				"zh-TW": [
+					"爭吵",
+					"鬥毆",
+					"辯論",
+					"分歧",
+					"戰鬥",
+					"騷動",
+					"摔角"
+				]
+			},
+			"name": "fight_cloud",
+			"namesByLocale": {
+				"de-DE": "fight_cloud",
+				"en-GB": "fight_cloud",
+				"es-ES": "nube_de_pelea",
+				"es-LA": "nube_de_pelea",
+				"fr-FR": "nuage_bagarre",
+				"it-IT": "nuvola_combattimento",
+				"ja-JP": "ケンカ雲",
+				"ko-KR": "논쟁_분위기",
+				"pt-BR": "nuvem_de_luta",
+				"zh-CN": "战斗云",
+				"zh-TW": "打鬥雲霧"
 			}
 		},
 		{
@@ -202021,6 +202326,146 @@
 		},
 		{
 			"aliases": [],
+			"emoji": "🫈",
+			"keywords": [
+				"bigfoot",
+				"cryptid",
+				"forest",
+				"giant",
+				"hairy",
+				"sasquatch",
+				"woodwose",
+				"yeti"
+			],
+			"keywordsByLocale": {
+				"de-DE": [
+					"Bigfoot",
+					"Kryptid",
+					"wald",
+					"Riese",
+					"haarig",
+					"sasquatch",
+					"Woodwose",
+					"yeti"
+				],
+				"en-GB": [
+					"bigfoot",
+					"cryptid",
+					"forest",
+					"giant",
+					"hairy",
+					"sasquatch",
+					"woodwose",
+					"yeti"
+				],
+				"es-ES": [
+					"bigfoot",
+					"pie grande",
+					"bosque",
+					"gigante",
+					"peludo",
+					"sasquatch",
+					"hombre_salvaje",
+					"yeti"
+				],
+				"es-LA": [
+					"pie_grande",
+					"críptido",
+					"bosque",
+					"gigante",
+					"peludo",
+					"sasquatch",
+					"salvaje",
+					"yeti"
+				],
+				"fr-FR": [
+					"bigfoot",
+					"cryptide",
+					"forêt",
+					"géant",
+					"poilu",
+					"sasquatch",
+					"bois_rose",
+					"yéti"
+				],
+				"it-IT": [
+					"bigfoot",
+					"mostro",
+					"foresta",
+					"gigante",
+					"peloso",
+					"sasquatch",
+					"uomo_selvatico",
+					"yeti"
+				],
+				"ja-JP": [
+					"ビッグフット",
+					"未確認動物",
+					"森",
+					"巨人",
+					"毛深い",
+					"サスカッチ",
+					"森の野人",
+					"雪男"
+				],
+				"ko-KR": [
+					"빅풋",
+					"미확인 생물",
+					"숲",
+					"거인",
+					"털북숭이",
+					"사스콰치",
+					"야생인",
+					"설인"
+				],
+				"pt-BR": [
+					"pé_grande",
+					"criptídeo",
+					"floresta",
+					"gigante",
+					"peludo",
+					"sasquatch",
+					"homem_selvagem",
+					"yeti"
+				],
+				"zh-CN": [
+					"大脚怪",
+					"神秘生物",
+					"森林",
+					"巨人",
+					"多毛的",
+					"大脚野人",
+					"林中野人",
+					"雪人"
+				],
+				"zh-TW": [
+					"大腳怪",
+					"神秘生物",
+					"森林",
+					"巨人",
+					"毛茸茸",
+					"北美野人",
+					"森林野人",
+					"雪人"
+				]
+			},
+			"name": "hairy_creature",
+			"namesByLocale": {
+				"de-DE": "hairy_creature",
+				"en-GB": "hairy_creature",
+				"es-ES": "criatura_peluda",
+				"es-LA": "criatura_peluda",
+				"fr-FR": "créature_poilue",
+				"it-IT": "creatura_pelosa",
+				"ja-JP": "毛むくじゃらの生き物",
+				"ko-KR": "털북숭이_생물",
+				"pt-BR": "criatura_peluda",
+				"zh-CN": "毛茸茸的生物",
+				"zh-TW": "毛茸茸的生物"
+			}
+		},
+		{
+			"aliases": [],
 			"emoji": "🤾",
 			"keywords": [
 				"athletics",
@@ -202672,6 +203117,134 @@
 				"pt-BR": "pessoa_ajoelhada",
 				"zh-CN": "跪着的人",
 				"zh-TW": "跪下的人"
+			}
+		},
+		{
+			"aliases": [],
+			"emoji": "🛘",
+			"keywords": [
+				"avalanche",
+				"danger",
+				"disaster",
+				"earthquake",
+				"mountain",
+				"mudslide",
+				"rocks"
+			],
+			"keywordsByLocale": {
+				"de-DE": [
+					"Lawine",
+					"gefahr",
+					"disaster",
+					"erdbeben",
+					"berg",
+					"Schlammlawine",
+					"Steine"
+				],
+				"en-GB": [
+					"avalanche",
+					"danger",
+					"disaster",
+					"earthquake",
+					"mountain",
+					"mudslide",
+					"rocks"
+				],
+				"es-ES": [
+					"alud",
+					"peligro",
+					"desastre",
+					"terremoto",
+					"montaña",
+					"alud de barro",
+					"rocas"
+				],
+				"es-LA": [
+					"avalancha",
+					"peligro",
+					"desastre",
+					"sismo",
+					"montaña",
+					"alud",
+					"rocas"
+				],
+				"fr-FR": [
+					"avalanche",
+					"danger",
+					"catastrophe",
+					"séisme",
+					"montagne",
+					"coulée_de_boue",
+					"rochers"
+				],
+				"it-IT": [
+					"valanga",
+					"pericolo",
+					"disastro",
+					"terremoto",
+					"montagna",
+					"colata_di_fango",
+					"rocce"
+				],
+				"ja-JP": [
+					"雪崩",
+					"危険",
+					"災害",
+					"地震",
+					"山",
+					"土石流",
+					"岩"
+				],
+				"ko-KR": [
+					"눈사태",
+					"위험",
+					"재난",
+					"지진",
+					"산",
+					"흙사태",
+					"암석"
+				],
+				"pt-BR": [
+					"avalanche",
+					"perigo",
+					"desastre",
+					"terremoto",
+					"montanha",
+					"deslizamento de lama",
+					"pedras"
+				],
+				"zh-CN": [
+					"雪崩",
+					"危险",
+					"灾难",
+					"震惊",
+					"高山",
+					"泥石流",
+					"岩石"
+				],
+				"zh-TW": [
+					"雪崩",
+					"危險",
+					"災難",
+					"地震",
+					"山",
+					"土石流",
+					"岩石"
+				]
+			},
+			"name": "landslide",
+			"namesByLocale": {
+				"de-DE": "erdrutsch",
+				"en-GB": "landslide",
+				"es-ES": "avalancha",
+				"es-LA": "derrumbe",
+				"fr-FR": "glissement_de_terrain",
+				"it-IT": "frana",
+				"ja-JP": "土砂崩れ",
+				"ko-KR": "산사태",
+				"pt-BR": "deslizamento_de_terra",
+				"zh-CN": "山体滑坡",
+				"zh-TW": "山崩"
 			}
 		},
 		{
@@ -203709,6 +204282,84 @@
 				"pt-BR": "mulher_ok",
 				"zh-CN": "比出确定手势的女人",
 				"zh-TW": "比_ok_的女人"
+			}
+		},
+		{
+			"aliases": [],
+			"emoji": "🫍",
+			"keywords": [
+				"marine",
+				"ocean",
+				"whale"
+			],
+			"keywordsByLocale": {
+				"de-DE": [
+					"marine",
+					"ozean",
+					"wal"
+				],
+				"en-GB": [
+					"marine",
+					"ocean",
+					"whale"
+				],
+				"es-ES": [
+					"marino",
+					"océano",
+					"ballena"
+				],
+				"es-LA": [
+					"marino",
+					"océano",
+					"ballena"
+				],
+				"fr-FR": [
+					"marine",
+					"océan",
+					"baleine"
+				],
+				"it-IT": [
+					"marino",
+					"oceano",
+					"balena"
+				],
+				"ja-JP": [
+					"海",
+					"クジラ"
+				],
+				"ko-KR": [
+					"바다의",
+					"대양",
+					"고래"
+				],
+				"pt-BR": [
+					"marinho",
+					"oceano",
+					"baleia"
+				],
+				"zh-CN": [
+					"海洋动物",
+					"海洋",
+					"鲸"
+				],
+				"zh-TW": [
+					"海洋",
+					"鯨魚"
+				]
+			},
+			"name": "orca",
+			"namesByLocale": {
+				"de-DE": "orca",
+				"en-GB": "orca",
+				"es-ES": "orca",
+				"es-LA": "orca",
+				"fr-FR": "orque",
+				"it-IT": "orca",
+				"ja-JP": "シャチ",
+				"ko-KR": "범고래",
+				"pt-BR": "orca",
+				"zh-CN": "虎鲸",
+				"zh-TW": "虎鯨"
 			}
 		},
 		{
@@ -206429,6 +207080,272 @@
 				"pt-BR": "nadador",
 				"zh-CN": "游泳者",
 				"zh-TW": "泳者"
+			}
+		},
+		{
+			"aliases": [],
+			"emoji": "🪎",
+			"keywords": [
+				"gem",
+				"gold",
+				"jewels",
+				"loot",
+				"money",
+				"prize",
+				"silver",
+				"valuables",
+				"wealth"
+			],
+			"keywordsByLocale": {
+				"de-DE": [
+					"Edelstein",
+					"gold",
+					"Juwelen",
+					"Beute",
+					"Geld",
+					"pokal",
+					"silber",
+					"Wertsachen",
+					"Reichtum"
+				],
+				"en-GB": [
+					"gem",
+					"gold",
+					"jewels",
+					"loot",
+					"money",
+					"prize",
+					"silver",
+					"valuables",
+					"wealth"
+				],
+				"es-ES": [
+					"joya",
+					"oro",
+					"joyas",
+					"botín",
+					"dinero",
+					"premio",
+					"plata",
+					"tesoro",
+					"riqueza"
+				],
+				"es-LA": [
+					"joya",
+					"oro",
+					"joyas",
+					"botín",
+					"dinero",
+					"premio",
+					"plata",
+					"valioso",
+					"riquezas"
+				],
+				"fr-FR": [
+					"pierre_précieuse",
+					"or",
+					"bijoux",
+					"butin",
+					"monnaie",
+					"prix",
+					"argent",
+					"objets_de_valeur",
+					"richesse"
+				],
+				"it-IT": [
+					"gemma",
+					"oro",
+					"gioielli",
+					"bottino",
+					"soldi",
+					"premio",
+					"argento",
+					"tesoro",
+					"ricchezza"
+				],
+				"ja-JP": [
+					"宝石",
+					"ゴールド",
+					"宝物",
+					"お金",
+					"賞",
+					"シルバー",
+					"貴重品",
+					"富"
+				],
+				"ko-KR": [
+					"보석",
+					"금",
+					"전리품",
+					"돈",
+					"상",
+					"은",
+					"보물",
+					"부자"
+				],
+				"pt-BR": [
+					"precioso",
+					"ouro",
+					"joias",
+					"saque",
+					"dinheiro",
+					"prêmio",
+					"prata",
+					"objetos de valor",
+					"riqueza"
+				],
+				"zh-CN": [
+					"宝石",
+					"黄金",
+					"珠宝",
+					"战利品",
+					"钱",
+					"奖品",
+					"银",
+					"贵重物品",
+					"财富"
+				],
+				"zh-TW": [
+					"寶石",
+					"金",
+					"珠寶",
+					"戰利品",
+					"錢",
+					"獎項",
+					"銀",
+					"貴重物品",
+					"財富"
+				]
+			},
+			"name": "treasure_chest",
+			"namesByLocale": {
+				"de-DE": "treasure_chest",
+				"en-GB": "treasure_chest",
+				"es-ES": "cofre_del_tesoro",
+				"es-LA": "cofre_del_tesoro",
+				"fr-FR": "coffre_au_trésor",
+				"it-IT": "forziere_del_tesoro",
+				"ja-JP": "宝箱",
+				"ko-KR": "보물_상자",
+				"pt-BR": "baú_do_tesouro",
+				"zh-CN": "宝箱",
+				"zh-TW": "寶箱"
+			}
+		},
+		{
+			"aliases": [],
+			"emoji": "🪊",
+			"keywords": [
+				"brass",
+				"instrument",
+				"jazz",
+				"music",
+				"sad",
+				"slide"
+			],
+			"keywordsByLocale": {
+				"de-DE": [
+					"Messing",
+					"Instrument",
+					"fuchteln",
+					"Musik",
+					"traurig",
+					"folie"
+				],
+				"en-GB": [
+					"brass",
+					"instrument",
+					"jazz",
+					"music",
+					"sad",
+					"slide"
+				],
+				"es-ES": [
+					"trombón",
+					"instrumento",
+					"jazz",
+					"música",
+					"triste",
+					"deslizar"
+				],
+				"es-LA": [
+					"metal",
+					"instrumento",
+					"jazz",
+					"música",
+					"triste",
+					"tobogán"
+				],
+				"fr-FR": [
+					"laiton",
+					"instrument",
+					"jazz",
+					"musique",
+					"triste",
+					"diapositive"
+				],
+				"it-IT": [
+					"ottone",
+					"strumento",
+					"jazz",
+					"musica",
+					"triste",
+					"slide"
+				],
+				"ja-JP": [
+					"金管楽器",
+					"楽器",
+					"披露",
+					"音楽",
+					"悲しい",
+					"斜め"
+				],
+				"ko-KR": [
+					"금관악기",
+					"계기",
+					"재즈",
+					"음악",
+					"슬픈",
+					"미끄럼틀"
+				],
+				"pt-BR": [
+					"latão",
+					"instrumento",
+					"jazz",
+					"música",
+					"chateado",
+					"deslizar"
+				],
+				"zh-CN": [
+					"铜管乐器",
+					"乐器",
+					"爵士",
+					"音乐",
+					"悲伤",
+					"滑动"
+				],
+				"zh-TW": [
+					"銅管樂器",
+					"樂器",
+					"爵士樂",
+					"音樂",
+					"難過",
+					"滑"
+				]
+			},
+			"name": "trombone",
+			"namesByLocale": {
+				"de-DE": "posaunenton",
+				"en-GB": "trombone",
+				"es-ES": "trombón",
+				"es-LA": "trombón",
+				"fr-FR": "trombone",
+				"it-IT": "trombone",
+				"ja-JP": "トロンボーン",
+				"ko-KR": "트롬본",
+				"pt-BR": "trombone",
+				"zh-CN": "长号",
+				"zh-TW": "長號"
 			}
 		},
 		{
