@@ -188,8 +188,8 @@ importers:
         specifier: 10.0.1
         version: 10.0.1(eslint@10.15.0(jiti@2.7.0))
       '@eslint/markdown':
-        specifier: 8.0.3
-        version: 8.0.3
+        specifier: 9.0.0
+        version: 9.0.0
       '@types/node':
         specifier: 26.6.2
         version: 26.6.2
@@ -210,7 +210,7 @@ importers:
         version: 3.4.2(eslint@10.15.0(jiti@2.7.0))
       eslint-plugin-markdown-links:
         specifier: 0.9.1
-        version: 0.9.1(@eslint/markdown@8.0.3)(eslint@10.15.0(jiti@2.7.0))
+        version: 0.9.1(@eslint/markdown@9.0.0)(eslint@10.15.0(jiti@2.7.0))
       eslint-plugin-n:
         specifier: 18.5.0
         version: 18.5.0(eslint@10.15.0(jiti@2.7.0))(typescript@6.0.3)
@@ -962,8 +962,8 @@ packages:
       eslint:
         optional: true
 
-  '@eslint/markdown@8.0.3':
-    resolution: {integrity: sha512-rBTSSShrq7e4O+PWfeE4azH4/CWPNrC+VGxBXiW00o3vYVJnznsZiDayj3KC9JztIMVRZxZHn2nrDIUau/4j7A==}
+  '@eslint/markdown@9.0.0':
+    resolution: {integrity: sha512-287jt3NwhChN7TLsWq44IB5vUAKwwNXafzLlR1CMcQK5/4mAwbwwAzqr/S7gCYRRJOSHCgGXzIV9uPCh1P810A==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
   '@eslint/object-schema@3.0.5':
@@ -3551,7 +3551,7 @@ snapshots:
     optionalDependencies:
       eslint: 10.15.0(jiti@2.7.0)
 
-  '@eslint/markdown@8.0.3':
+  '@eslint/markdown@9.0.0':
     dependencies:
       '@eslint/core': 1.2.1
       '@eslint/plugin-kit': 0.7.3
@@ -4370,9 +4370,9 @@ snapshots:
     transitivePeerDependencies:
       - '@eslint/json'
 
-  eslint-plugin-markdown-links@0.9.1(@eslint/markdown@8.0.3)(eslint@10.15.0(jiti@2.7.0)):
+  eslint-plugin-markdown-links@0.9.1(@eslint/markdown@9.0.0)(eslint@10.15.0(jiti@2.7.0)):
     dependencies:
-      '@eslint/markdown': 8.0.3
+      '@eslint/markdown': 9.0.0
       '@mdit-vue/shared': 3.0.2
       entities: 8.1.0
       eslint: 10.15.0(jiti@2.7.0)
