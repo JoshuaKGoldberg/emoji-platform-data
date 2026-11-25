@@ -7,7 +7,7 @@ export const base: UserConfig = {
     enabled: 'ci-only',
     profile: 'esm-only',
   },
-  clean: ['./node_modules/.cache/tsbuild/'],
+  clean: ['./dist/', './node_modules/.cache/tsbuild/'],
   // Building referenced packages first keeps their types from being `any`
   dts: { tsc: { build: true, incremental: true } },
   entry: ['src/index.ts'],
