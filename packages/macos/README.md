@@ -18,9 +18,9 @@ npm i @emoji-platform-data/macos
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/macos";
+import { byEmoji, byTitle } from '@emoji-platform-data/macos';
 
-console.log(byEmoji["🐙"]);
+console.log(byEmoji['🐙']);
 /*
 {
 	appleName: "octopus",

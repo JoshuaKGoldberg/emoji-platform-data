@@ -1,9 +1,5 @@
 {
-  "dictionaries": [
-    "node",
-    "npm",
-    "typescript"
-  ],
+  "dictionaries": ["node", "npm", "typescript"],
   "ignorePaths": [
     "*.tsbuildinfo",
     ".all-contributorsrc",

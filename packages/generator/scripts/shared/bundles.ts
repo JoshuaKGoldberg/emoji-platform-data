@@ -1,19 +1,19 @@
 interface ScriptSearch<Data> {
-	/** What `read` looks for, as it reads in "contained emoji data". */
-	description: string;
+  /** What `read` looks for, as it reads in "contained emoji data". */
+  description: string;
 
-	fetchScript: (script: string) => Promise<string>;
+  fetchScript: (script: string) => Promise<string>;
 
-	/** How the chunk expected to hold what `read` looks for is named. */
-	prefix: string;
+  /** How the chunk expected to hold what `read` looks for is named. */
+  prefix: string;
 
-	read: (script: string) => Data | undefined;
+  read: (script: string) => Data | undefined;
 
-	/** The scripts the page lists, in the order it lists them. */
-	scripts: string[];
+  /** The scripts the page lists, in the order it lists them. */
+  scripts: string[];
 
-	/** The page that listed the scripts. */
-	source: string;
+  /** The page that listed the scripts. */
+  source: string;
 }
 
 /**
@@ -25,26 +25,26 @@ interface ScriptSearch<Data> {
  * sits or what its first key is, since neither is the client's to keep stable.
  */
 export function* extractJsonBlobs(script: string): Generator<unknown, void, unknown> {
-	const prefix = "JSON.parse('";
+  const prefix = "JSON.parse('";
 
-	for (let start = script.indexOf(prefix); start !== -1;) {
-		const open = start + prefix.length;
-		let end = open;
+  for (let start = script.indexOf(prefix); start !== -1;) {
+    const open = start + prefix.length;
+    let end = open;
 
-		while (end < script.length && script[end] !== "'") {
-			end += script[end] === "\\" ? 2 : 1;
-		}
+    while (end < script.length && script[end] !== "'") {
+      end += script[end] === '\\' ? 2 : 1;
+    }
 
-		const literal = toJsonEscapes(script.slice(open, end));
+    const literal = toJsonEscapes(script.slice(open, end));
 
-		try {
-			yield JSON.parse(literal) as unknown;
-		} catch {
-			// A literal that doesn't parse isn't one of the blobs being looked for.
-		}
+    try {
+      yield JSON.parse(literal) as unknown;
+    } catch {
+      // A literal that doesn't parse isn't one of the blobs being looked for.
+    }
 
-		start = script.indexOf(prefix, end);
-	}
+    start = script.indexOf(prefix, end);
+  }
 }
 
 /**
@@ -55,9 +55,9 @@ export function* extractJsonBlobs(script: string): Generator<unknown, void, unkn
  * that stops matching, and quietly taking the first of two would be a coin flip.
  */
 export function findOnly(script: string, pattern: RegExp): RegExpExecArray | undefined {
-	const matches = [...script.matchAll(pattern)];
+  const matches = [...script.matchAll(pattern)];
 
-	return matches.length === 1 ? matches[0] : undefined;
+  return matches.length === 1 ? matches[0] : undefined;
 }
 
 /**
@@ -65,15 +65,13 @@ export function findOnly(script: string, pattern: RegExp): RegExpExecArray | und
  * the page lists them.
  */
 export function listScripts(page: string, pattern: RegExp, source: string): string[] {
-	const scripts = [
-		...new Set([...page.matchAll(pattern)].map((match) => match[1])),
-	];
+  const scripts = [...new Set([...page.matchAll(pattern)].map((match) => match[1]))];
 
-	if (!scripts.length) {
-		throw new Error(`No scripts were listed by ${source}.`);
-	}
+  if (!scripts.length) {
+    throw new Error(`No scripts were listed by ${source}.`);
+  }
 
-	return scripts;
+  return scripts;
 }
 
 /**
@@ -85,30 +83,27 @@ export function listScripts(page: string, pattern: RegExp, source: string): stri
  * to reading every script, which is slower but doesn't depend on the names.
  */
 export async function searchScripts<Data>({
-	description,
-	fetchScript,
-	prefix,
-	read,
-	scripts,
-	source,
+  description,
+  fetchScript,
+  prefix,
+  read,
+  scripts,
+  source,
 }: ScriptSearch<Data>): Promise<{ chunk: string; data: Data }> {
-	const named = scripts.filter((script) => script.startsWith(prefix));
-	const ordered = [
-		...named,
-		...scripts.filter((script) => !named.includes(script)),
-	];
+  const named = scripts.filter((script) => script.startsWith(prefix));
+  const ordered = [...named, ...scripts.filter((script) => !named.includes(script))];
 
-	for (const chunk of ordered) {
-		const data = read(await fetchScript(chunk));
+  for (const chunk of ordered) {
+    const data = read(await fetchScript(chunk));
 
-		if (data !== undefined) {
-			return { chunk, data };
-		}
-	}
+    if (data !== undefined) {
+      return { chunk, data };
+    }
+  }
 
-	throw new Error(
-		`None of the ${scripts.length.toString()} scripts listed by ${source} contained ${description}.`,
-	);
+  throw new Error(
+    `None of the ${scripts.length.toString()} scripts listed by ${source} contained ${description}.`,
+  );
 }
 
 /**
@@ -117,20 +112,18 @@ export async function searchScripts<Data>({
  * that an escaped backslash followed by "x41" stays an escaped backslash.
  */
 export function toJsonEscapes(literal: string): string {
-	return literal.replaceAll(
-		/\\(?:x([0-9a-fA-F]{2})|u\{([0-9a-fA-F]+)\}|[\s\S])/g,
-		(escape, hex: string | undefined, codePoint: string | undefined) => {
-			if (hex) {
-				return `\\u00${hex}`;
-			}
+  return literal.replaceAll(
+    /\\(?:x([0-9a-fA-F]{2})|u\{([0-9a-fA-F]+)\}|[\s\S])/g,
+    (escape, hex: string | undefined, codePoint: string | undefined) => {
+      if (hex) {
+        return `\\u00${hex}`;
+      }
 
-			if (codePoint) {
-				return JSON.stringify(
-					String.fromCodePoint(parseInt(codePoint, 16)),
-				).slice(1, -1);
-			}
+      if (codePoint) {
+        return JSON.stringify(String.fromCodePoint(parseInt(codePoint, 16))).slice(1, -1);
+      }
 
-			return escape === "\\'" ? "'" : escape;
-		},
-	);
+      return escape === "\\'" ? "'" : escape;
+    },
+  );
 }

@@ -25,9 +25,9 @@ npm i emoji-platform-data
 ```
 
 ```ts
-import { byEmoji, byTitle } from "emoji-platform-data";
+import { byEmoji, byTitle } from 'emoji-platform-data';
 
-console.log(byEmoji["💖"]);
+console.log(byEmoji['💖']);
 console.log(byTitle.SparklingHeart);
 /*
 {

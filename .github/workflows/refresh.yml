@@ -287,5 +287,5 @@ name: Refresh Data
 
 on:
   schedule:
-    - cron: "0 14 * * *"
+    - cron: '0 14 * * *'
   workflow_dispatch: ~

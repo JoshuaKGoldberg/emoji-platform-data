@@ -1,41 +1,41 @@
-import * as path from "node:path";
+import * as path from 'node:path';
 
-import type { GnomeItem } from "../src/dataTypes.ts";
-import { fetchOk, readBuffer } from "./shared/fetch.ts";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
+import type { GnomeItem } from '../src/dataTypes.ts';
+import { fetchOk, readBuffer } from './shared/fetch.ts';
+import { readPreviousSnapshot, writeSnapshot } from './shared/snapshots.ts';
 import {
-	checkCanaries,
-	checkCounts,
-	countWithKeywords,
-	emojiCount,
-	emojiWithKeywordsCount,
-	throwIfProblems,
-} from "./shared/validate.ts";
+  checkCanaries,
+  checkCounts,
+  countWithKeywords,
+  emojiCount,
+  emojiWithKeywordsCount,
+  throwIfProblems,
+} from './shared/validate.ts';
 
 /** One emoji as a locale's data file lists it. */
 interface RawItem {
-	emoji: string;
+  emoji: string;
 
-	/** The picker section the emoji is in, as the Emojibase group number `categories` is keyed by. */
-	group: number;
+  /** The picker section the emoji is in, as the Emojibase group number `categories` is keyed by. */
+  group: number;
 
-	/** The emoji's name in English, such as "octopus". */
-	nameEnglish: string;
+  /** The emoji's name in English, such as "octopus". */
+  nameEnglish: string;
 
-	/** The emoji's name in the file's locale. */
-	nameLocal: string;
+  /** The emoji's name in the file's locale. */
+  nameLocal: string;
 
-	/** The emoji's keywords in English. */
-	keywordsEnglish: string[];
+  /** The emoji's keywords in English. */
+  keywordsEnglish: string[];
 
-	/** The emoji's keywords in the file's locale. */
-	keywordsLocal: string[];
+  /** The emoji's keywords in the file's locale. */
+  keywordsLocal: string[];
 }
 
 interface Snapshot {
-	entries: GnomeItem[];
-	gtk: string;
-	locales: string[];
+  entries: GnomeItem[];
+  gtk: string;
+  locales: string[];
 }
 
 /**
@@ -44,15 +44,15 @@ interface Snapshot {
  * picker doesn't show.
  */
 const categories = new Map([
-	[0, "Smileys & People"],
-	[1, "Body & Clothing"],
-	[3, "Animals & Nature"],
-	[4, "Food & Drink"],
-	[5, "Travel & Places"],
-	[6, "Activities"],
-	[7, "Objects"],
-	[8, "Symbols"],
-	[9, "Flags"],
+  [0, 'Smileys & People'],
+  [1, 'Body & Clothing'],
+  [3, 'Animals & Nature'],
+  [4, 'Food & Drink'],
+  [5, 'Travel & Places'],
+  [6, 'Activities'],
+  [7, 'Objects'],
+  [8, 'Symbols'],
+  [9, 'Flags'],
 ]);
 
 /**
@@ -61,41 +61,41 @@ const categories = new Map([
  * coming apart from the English is caught as well as the English going missing.
  */
 const canaryTerms = {
-	"🎉": { keyword: "庆祝", locale: "zh", name: "拉炮彩带" },
-	"🐙": { keyword: "tintenfisch", locale: "de", name: "Oktopus" },
-	"👍": { keyword: "jawohl", locale: "de", name: "Daumen hoch" },
-	"😂": { keyword: "爆笑", locale: "ja", name: "嬉し泣き" },
+  '🎉': { keyword: '庆祝', locale: 'zh', name: '拉炮彩带' },
+  '🐙': { keyword: 'tintenfisch', locale: 'de', name: 'Oktopus' },
+  '👍': { keyword: 'jawohl', locale: 'de', name: 'Daumen hoch' },
+  '😂': { keyword: '爆笑', locale: 'ja', name: '嬉し泣き' },
 };
 
 /** The locales GTK translates its emoji into, beyond the English source. */
 const expectedLocales = [
-	"bn",
-	"da",
-	"de",
-	"es",
-	"et",
-	"fi",
-	"fr",
-	"hi",
-	"hu",
-	"it",
-	"ja",
-	"ko",
-	"lt",
-	"ms",
-	"nb",
-	"nl",
-	"pl",
-	"pt",
-	"ru",
-	"sv",
-	"th",
-	"uk",
-	"vi",
-	"zh",
+  'bn',
+  'da',
+  'de',
+  'es',
+  'et',
+  'fi',
+  'fr',
+  'hi',
+  'hu',
+  'it',
+  'ja',
+  'ko',
+  'lt',
+  'ms',
+  'nb',
+  'nl',
+  'pl',
+  'pt',
+  'ru',
+  'sv',
+  'th',
+  'uk',
+  'vi',
+  'zh',
 ];
 
-const gitlabProject = "https://gitlab.gnome.org/api/v4/projects/GNOME%2Fgtk";
+const gitlabProject = 'https://gitlab.gnome.org/api/v4/projects/GNOME%2Fgtk';
 
 const maximumConcurrentFetches = 5;
 
@@ -106,10 +106,10 @@ const minimumEntriesPerCategory = 50;
 
 const minimumEntriesWithKeywords = 1800;
 
-const snapshotPath = path.join(import.meta.dirname, "../gnome.json");
+const snapshotPath = path.join(import.meta.dirname, '../gnome.json');
 
 /** The locale the English data is in, which is also every file's fallback. */
-const sourceLocale = "en";
+const sourceLocale = 'en';
 
 const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 
@@ -117,18 +117,18 @@ const tag = process.argv[2] ?? (await pickLatestStableTag());
 const files = await listDataFiles(tag);
 
 const byLocale = new Map(
-	await mapConcurrently(
-		[...files],
-		maximumConcurrentFetches,
-		async ([locale, file]) =>
-			[locale, readEmojiData(await fetchBuffer(rawUrl(tag, file)))] as const,
-	),
+  await mapConcurrently(
+    [...files],
+    maximumConcurrentFetches,
+    async ([locale, file]) =>
+      [locale, readEmojiData(await fetchBuffer(rawUrl(tag, file)))] as const,
+  ),
 );
 
 const english = byLocale.get(sourceLocale);
 
 if (!english) {
-	throw new Error(`GTK ${tag} has no ${sourceLocale}.data.`);
+  throw new Error(`GTK ${tag} has no ${sourceLocale}.data.`);
 }
 
 byLocale.delete(sourceLocale);
@@ -145,59 +145,59 @@ const snapshot: Snapshot = { entries, gtk: tag, locales };
 // Rewriting the snapshot for a new tag alone would churn it -and open empty
 // refresh pull requests- for data that hasn't changed.
 await writeSnapshot({
-	dataFields: ["entries", "locales"],
-	details: `, with keywords for ${countWithKeywords(entries).toString()} of them, in ${(locales.length + 1).toString()} locales`,
-	from: `GTK ${tag}`,
-	previous,
-	snapshot,
-	snapshotPath,
+  dataFields: ['entries', 'locales'],
+  details: `, with keywords for ${countWithKeywords(entries).toString()} of them, in ${(locales.length + 1).toString()} locales`,
+  from: `GTK ${tag}`,
+  previous,
+  snapshot,
+  snapshotPath,
 });
 
 function alignUp(position: number, alignment: number) {
-	return Math.ceil(position / alignment) * alignment;
+  return Math.ceil(position / alignment) * alignment;
 }
 
 async function fetchBuffer(url: string) {
-	return await readBuffer(await fetchOk(url));
+  return await readBuffer(await fetchOk(url));
 }
 
 async function fetchJson<T>(url: string) {
-	return JSON.parse((await fetchBuffer(url)).toString("utf8")) as T;
+  return JSON.parse((await fetchBuffer(url)).toString('utf8')) as T;
 }
 
 /**
  * The emoji data files at a tag, keyed by their locale.
  */
 async function listDataFiles(tag: string) {
-	const tree = await fetchJson<{ name: string; path: string }[]>(
-		`${gitlabProject}/repository/tree?path=gtk/emoji&ref=${encodeURIComponent(tag)}&per_page=100`,
-	);
+  const tree = await fetchJson<{ name: string; path: string }[]>(
+    `${gitlabProject}/repository/tree?path=gtk/emoji&ref=${encodeURIComponent(tag)}&per_page=100`,
+  );
 
-	return new Map(
-		tree
-			.filter((file) => file.name.endsWith(".data"))
-			.map((file) => [file.name.slice(0, -".data".length), file.path]),
-	);
+  return new Map(
+    tree
+      .filter((file) => file.name.endsWith('.data'))
+      .map((file) => [file.name.slice(0, -'.data'.length), file.path]),
+  );
 }
 
 async function mapConcurrently<Item, Result>(
-	items: Item[],
-	limit: number,
-	callback: (item: Item) => Promise<Result>,
+  items: Item[],
+  limit: number,
+  callback: (item: Item) => Promise<Result>,
 ) {
-	const results: Result[] = [];
-	let next = 0;
+  const results: Result[] = [];
+  let next = 0;
 
-	await Promise.all(
-		Array.from({ length: limit }, async () => {
-			while (next < items.length) {
-				const index = next++;
-				results[index] = await callback(items[index]);
-			}
-		}),
-	);
+  await Promise.all(
+    Array.from({ length: limit }, async () => {
+      while (next < items.length) {
+        const index = next++;
+        results[index] = await callback(items[index]);
+      }
+    }),
+  );
 
-	return results;
+  return results;
 }
 
 /**
@@ -205,31 +205,31 @@ async function mapConcurrently<Item, Result>(
  * an odd minor version, such as 4.23.4, and its stable ones with an even one.
  */
 async function pickLatestStableTag() {
-	const tags = await fetchJson<{ name: string }[]>(
-		`${gitlabProject}/repository/tags?search=${encodeURIComponent("^4.")}&per_page=100`,
-	);
+  const tags = await fetchJson<{ name: string }[]>(
+    `${gitlabProject}/repository/tags?search=${encodeURIComponent('^4.')}&per_page=100`,
+  );
 
-	const stable = tags
-		.flatMap(({ name }) => {
-			const match = /^4\.(\d+)\.(\d+)$/.exec(name);
+  const stable = tags
+    .flatMap(({ name }) => {
+      const match = /^4\.(\d+)\.(\d+)$/.exec(name);
 
-			return match && Number(match[1]) % 2 === 0
-				? [{ minor: Number(match[1]), name, patch: Number(match[2]) }]
-				: [];
-		})
-		.sort((a, b) => a.minor - b.minor || a.patch - b.patch);
+      return match && Number(match[1]) % 2 === 0
+        ? [{ minor: Number(match[1]), name, patch: Number(match[2]) }]
+        : [];
+    })
+    .sort((a, b) => a.minor - b.minor || a.patch - b.patch);
 
-	const latest = stable.at(-1);
+  const latest = stable.at(-1);
 
-	if (!latest) {
-		throw new Error("GitLab listed no stable GTK 4 releases.");
-	}
+  if (!latest) {
+    throw new Error('GitLab listed no stable GTK 4 releases.');
+  }
 
-	return latest.name;
+  return latest.name;
 }
 
 function rawUrl(tag: string, file: string) {
-	return `https://gitlab.gnome.org/GNOME/gtk/-/raw/${encodeURIComponent(tag)}/${file}`;
+  return `https://gitlab.gnome.org/GNOME/gtk/-/raw/${encodeURIComponent(tag)}/${file}`;
 }
 
 /**
@@ -242,84 +242,86 @@ function rawUrl(tag: string, file: string) {
  * @see https://docs.gtk.org/glib/gvariant-format-strings.html
  */
 function readEmojiData(data: Buffer) {
-	return splitVariableArray(data, 4).map((item): RawItem => {
-		const [codePoints, nameEnglish, nameLocal, keywordsEnglish, keywordsLocal] =
-			splitTuple(item, [4, 1, 1, 1, 1]);
-		const group = item.readUInt32LE(alignUp(endOfTupleMembers(item, 5), 4));
+  return splitVariableArray(data, 4).map((item): RawItem => {
+    const [codePoints, nameEnglish, nameLocal, keywordsEnglish, keywordsLocal] = splitTuple(
+      item,
+      [4, 1, 1, 1, 1],
+    );
+    const group = item.readUInt32LE(alignUp(endOfTupleMembers(item, 5), 4));
 
-		return {
-			emoji: toEmoji(codePoints),
-			group,
-			keywordsEnglish: splitVariableArray(keywordsEnglish, 1).map(readString),
-			keywordsLocal: splitVariableArray(keywordsLocal, 1).map(readString),
-			nameEnglish: readString(nameEnglish),
-			nameLocal: readString(nameLocal),
-		};
-	});
+    return {
+      emoji: toEmoji(codePoints),
+      group,
+      keywordsEnglish: splitVariableArray(keywordsEnglish, 1).map(readString),
+      keywordsLocal: splitVariableArray(keywordsLocal, 1).map(readString),
+      nameEnglish: readString(nameEnglish),
+      nameLocal: readString(nameLocal),
+    };
+  });
 }
 
 /** Where the last of a tuple's variable-size members ends. */
 function endOfTupleMembers(tuple: Buffer, count: number) {
-	const size = offsetSize(tuple.length);
+  const size = offsetSize(tuple.length);
 
-	return tuple.readUIntLE(tuple.length - size * count, size);
+  return tuple.readUIntLE(tuple.length - size * count, size);
 }
 
 /** How many bytes a container of this size writes each of its offsets in. */
 function offsetSize(containerSize: number) {
-	return containerSize <= 0xff ? 1 : containerSize <= 0xffff ? 2 : 4;
+  return containerSize <= 0xff ? 1 : containerSize <= 0xffff ? 2 : 4;
 }
 
 function readString(bytes: Buffer) {
-	if (bytes.at(-1) !== 0) {
-		throw new Error("Found a string that isn't null-terminated.");
-	}
+  if (bytes.at(-1) !== 0) {
+    throw new Error("Found a string that isn't null-terminated.");
+  }
 
-	return bytes.toString("utf8", 0, bytes.length - 1);
+  return bytes.toString('utf8', 0, bytes.length - 1);
 }
 
 function splitTuple(tuple: Buffer, alignments: number[]) {
-	const size = offsetSize(tuple.length);
-	const members: Buffer[] = [];
-	let start = 0;
+  const size = offsetSize(tuple.length);
+  const members: Buffer[] = [];
+  let start = 0;
 
-	for (let index = 0; index < alignments.length; index += 1) {
-		start = alignUp(start, alignments[index]);
+  for (let index = 0; index < alignments.length; index += 1) {
+    start = alignUp(start, alignments[index]);
 
-		const end = tuple.readUIntLE(tuple.length - size * (index + 1), size);
-		members.push(tuple.subarray(start, end));
-		start = end;
-	}
+    const end = tuple.readUIntLE(tuple.length - size * (index + 1), size);
+    members.push(tuple.subarray(start, end));
+    start = end;
+  }
 
-	return members;
+  return members;
 }
 
 function splitVariableArray(array: Buffer, alignment: number) {
-	if (!array.length) {
-		return [];
-	}
+  if (!array.length) {
+    return [];
+  }
 
-	const size = offsetSize(array.length);
-	const offsetsStart = array.readUIntLE(array.length - size, size);
+  const size = offsetSize(array.length);
+  const offsetsStart = array.readUIntLE(array.length - size, size);
 
-	// The last offset is where the last element ends, which is where the
-	// offsets themselves begin, so it also says how many there are.
-	if ((array.length - offsetsStart) % size) {
-		throw new Error("Found an array whose offsets don't divide evenly.");
-	}
+  // The last offset is where the last element ends, which is where the
+  // offsets themselves begin, so it also says how many there are.
+  if ((array.length - offsetsStart) % size) {
+    throw new Error("Found an array whose offsets don't divide evenly.");
+  }
 
-	const elements: Buffer[] = [];
-	let start = 0;
+  const elements: Buffer[] = [];
+  let start = 0;
 
-	for (let position = offsetsStart; position < array.length; position += size) {
-		start = alignUp(start, alignment);
+  for (let position = offsetsStart; position < array.length; position += size) {
+    start = alignUp(start, alignment);
 
-		const end = array.readUIntLE(position, size);
-		elements.push(array.subarray(start, end));
-		start = end;
-	}
+    const end = array.readUIntLE(position, size);
+    elements.push(array.subarray(start, end));
+    start = end;
+  }
 
-	return elements;
+  return elements;
 }
 
 /**
@@ -328,19 +330,19 @@ function splitVariableArray(array: Buffer, alignment: number) {
  * plain emoji needs an emoji presentation selector in its place.
  */
 function toEmoji(codePoints: Buffer) {
-	const glyph: number[] = [];
+  const glyph: number[] = [];
 
-	for (let position = 0; position < codePoints.length; position += 4) {
-		const codePoint = codePoints.readUInt32LE(position);
+  for (let position = 0; position < codePoints.length; position += 4) {
+    const codePoint = codePoints.readUInt32LE(position);
 
-		if (codePoint === 0) {
-			glyph.push(0xfe0f);
-		} else if (codePoint !== 0x1f3fb) {
-			glyph.push(codePoint);
-		}
-	}
+    if (codePoint === 0) {
+      glyph.push(0xfe0f);
+    } else if (codePoint !== 0x1f3fb) {
+      glyph.push(codePoint);
+    }
+  }
 
-	return String.fromCodePoint(...glyph);
+  return String.fromCodePoint(...glyph);
 }
 
 /**
@@ -358,126 +360,114 @@ function toEmoji(codePoints: Buffer) {
  * joined to the English emoji of the same English name.
  */
 function toEntries(english: RawItem[], byLocale: Map<string, RawItem[]>) {
-	const entries = new Map<string, GnomeItem>();
-	let order = 0;
+  const entries = new Map<string, GnomeItem>();
+  let order = 0;
 
-	const shown = english
-		.map((item, index) => ({ index, item }))
-		.filter(({ item }) => categories.has(item.group))
-		.sort((a, b) => a.item.group - b.item.group || a.index - b.index)
-		.map(({ item }) => item);
+  const shown = english
+    .map((item, index) => ({ index, item }))
+    .filter(({ item }) => categories.has(item.group))
+    .sort((a, b) => a.item.group - b.item.group || a.index - b.index)
+    .map(({ item }) => item);
 
-	for (const item of shown) {
-		entries.set(item.emoji, {
-			category: categories.get(item.group),
-			emoji: item.emoji,
-			keywords: item.keywordsEnglish,
-			keywordsByLocale: {},
-			name: item.nameEnglish,
-			namesByLocale: {},
-			order: order++,
-		});
-	}
+  for (const item of shown) {
+    entries.set(item.emoji, {
+      category: categories.get(item.group),
+      emoji: item.emoji,
+      keywords: item.keywordsEnglish,
+      keywordsByLocale: {},
+      name: item.nameEnglish,
+      namesByLocale: {},
+      order: order++,
+    });
+  }
 
-	for (const item of english) {
-		if (!entries.has(item.emoji)) {
-			entries.set(item.emoji, {
-				emoji: item.emoji,
-				keywords: item.keywordsEnglish,
-				keywordsByLocale: {},
-				name: item.nameEnglish,
-				namesByLocale: {},
-			});
-		}
-	}
+  for (const item of english) {
+    if (!entries.has(item.emoji)) {
+      entries.set(item.emoji, {
+        emoji: item.emoji,
+        keywords: item.keywordsEnglish,
+        keywordsByLocale: {},
+        name: item.nameEnglish,
+        namesByLocale: {},
+      });
+    }
+  }
 
-	const englishByName = new Map(
-		english.map((item) => [item.nameEnglish, item.emoji]),
-	);
+  const englishByName = new Map(english.map((item) => [item.nameEnglish, item.emoji]));
 
-	for (const locale of [...byLocale.keys()].sort()) {
-		for (const item of byLocale.get(locale) ?? []) {
-			let entry =
-				entries.get(item.emoji) ??
-				entries.get(englishByName.get(item.nameEnglish) ?? "");
+  for (const locale of [...byLocale.keys()].sort()) {
+    for (const item of byLocale.get(locale) ?? []) {
+      let entry = entries.get(item.emoji) ?? entries.get(englishByName.get(item.nameEnglish) ?? '');
 
-			if (!entry) {
-				entry = {
-					category: categories.get(item.group),
-					emoji: item.emoji,
-					keywords: item.keywordsEnglish,
-					keywordsByLocale: {},
-					name: item.nameEnglish,
-					namesByLocale: {},
-				};
-				entries.set(item.emoji, entry);
-			}
+      if (!entry) {
+        entry = {
+          category: categories.get(item.group),
+          emoji: item.emoji,
+          keywords: item.keywordsEnglish,
+          keywordsByLocale: {},
+          name: item.nameEnglish,
+          namesByLocale: {},
+        };
+        entries.set(item.emoji, entry);
+      }
 
-			entry.keywordsByLocale[locale] = item.keywordsLocal;
-			entry.namesByLocale[locale] = item.nameLocal;
-		}
-	}
+      entry.keywordsByLocale[locale] = item.keywordsLocal;
+      entry.namesByLocale[locale] = item.nameLocal;
+    }
+  }
 
-	return [...entries.values()];
+  return [...entries.values()];
 }
 
-function validate(
-	entries: GnomeItem[],
-	locales: string[],
-	previous: Snapshot | undefined,
-) {
-	const problems = checkCounts(entries, previous?.entries, [
-		{ ...emojiCount, minimum: minimumEntries },
-		{ ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
-	]);
+function validate(entries: GnomeItem[], locales: string[], previous: Snapshot | undefined) {
+  const problems = checkCounts(entries, previous?.entries, [
+    { ...emojiCount, minimum: minimumEntries },
+    { ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
+  ]);
 
-	for (const category of categories.values()) {
-		const count = entries.filter((entry) => entry.category === category).length;
+  for (const category of categories.values()) {
+    const count = entries.filter((entry) => entry.category === category).length;
 
-		if (count < minimumEntriesPerCategory) {
-			problems.push(
-				`Category '${category}' has ${count.toString()} emoji, out of at least ${minimumEntriesPerCategory.toString()} expected.`,
-			);
-		}
-	}
+    if (count < minimumEntriesPerCategory) {
+      problems.push(
+        `Category '${category}' has ${count.toString()} emoji, out of at least ${minimumEntriesPerCategory.toString()} expected.`,
+      );
+    }
+  }
 
-	for (const locale of expectedLocales) {
-		if (!locales.includes(locale)) {
-			problems.push(`Locale '${locale}' is missing.`);
-			continue;
-		}
+  for (const locale of expectedLocales) {
+    if (!locales.includes(locale)) {
+      problems.push(`Locale '${locale}' is missing.`);
+      continue;
+    }
 
-		const translated = entries.filter(
-			(entry) => entry.namesByLocale[locale],
-		).length;
+    const translated = entries.filter((entry) => entry.namesByLocale[locale]).length;
 
-		if (translated < entries.length * 0.95) {
-			problems.push(
-				`Only ${translated.toString()} of ${entries.length.toString()} emoji have a name in '${locale}'.`,
-			);
-		}
-	}
+    if (translated < entries.length * 0.95) {
+      problems.push(
+        `Only ${translated.toString()} of ${entries.length.toString()} emoji have a name in '${locale}'.`,
+      );
+    }
+  }
 
-	checkCanaries(problems, entries, canaryTerms, (entry, canary, emoji) => {
-		if (!entry.keywords.length) {
-			problems.push(`${emoji} no longer has English keywords.`);
-		}
+  checkCanaries(problems, entries, canaryTerms, (entry, canary, emoji) => {
+    if (!entry.keywords.length) {
+      problems.push(`${emoji} no longer has English keywords.`);
+    }
 
-		if (entry.namesByLocale[canary.locale] !== canary.name) {
-			problems.push(
-				`${emoji} is no longer named '${canary.name}' in '${canary.locale}'.`,
-			);
-		}
+    if (entry.namesByLocale[canary.locale] !== canary.name) {
+      problems.push(`${emoji} is no longer named '${canary.name}' in '${canary.locale}'.`);
+    }
 
-		if (
-			!(canary.locale in entry.keywordsByLocale) ||
-			!entry.keywordsByLocale[canary.locale].includes(canary.keyword)
-		) {
-			problems.push(
-				`${emoji} no longer lists the keyword '${canary.keyword}' in '${canary.locale}'.`,
-			);
-		}
-	});
+    if (
+      !(canary.locale in entry.keywordsByLocale) ||
+      !entry.keywordsByLocale[canary.locale].includes(canary.keyword)
+    ) {
+      problems.push(
+        `${emoji} no longer lists the keyword '${canary.keyword}' in '${canary.locale}'.`,
+      );
+    }
+  });
 
-	throwIfProblems(problems, "for GNOME");
+  throwIfProblems(problems, 'for GNOME');
 }

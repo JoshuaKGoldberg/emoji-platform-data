@@ -18,9 +18,9 @@ npm i @emoji-platform-data/discord
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/discord";
+import { byEmoji, byTitle } from '@emoji-platform-data/discord';
 
-console.log(byEmoji["👍"]);
+console.log(byEmoji['👍']);
 /*
 {
 	aliases: ["+1", "thumbup", "thumbs_up"],

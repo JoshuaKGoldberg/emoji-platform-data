@@ -1,26 +1,19 @@
-import type { GeneratedEmojipediaData } from "./emojipedia.ts";
-import type { AllWeChatData, WeChatItem } from "./types.ts";
-import {
-	getEntryCldr,
-	readSnapshot,
-	toCodePointNotation,
-	toUnicode,
-} from "./utils.ts";
+import type { GeneratedEmojipediaData } from './emojipedia.ts';
+import type { AllWeChatData, WeChatItem } from './types.ts';
+import { getEntryCldr, readSnapshot, toCodePointNotation, toUnicode } from './utils.ts';
 
 /**
  * Reads the WeChat data snapshot committed alongside this package.
  */
 export function generateWeChat(
-	emojipedia: GeneratedEmojipediaData,
+  emojipedia: GeneratedEmojipediaData,
 ): Promise<Partial<AllWeChatData>> {
-	return readSnapshot("wechat", (entry: WeChatItem) => {
-		// WeChat names its emoji in Chinese, so unlike every other platform
-		// here there's no name to fall back to matching a title by. Emoji
-		// nothing else names are titled by their code points instead.
-		const unicode = toUnicode(entry.emoji);
+  return readSnapshot('wechat', (entry: WeChatItem) => {
+    // WeChat names its emoji in Chinese, so unlike every other platform
+    // here there's no name to fall back to matching a title by. Emoji
+    // nothing else names are titled by their code points instead.
+    const unicode = toUnicode(entry.emoji);
 
-		return getEntryCldr(emojipedia, entry.emoji, [
-			toCodePointNotation(unicode),
-		]);
-	});
+    return getEntryCldr(emojipedia, entry.emoji, [toCodePointNotation(unicode)]);
+  });
 }

@@ -18,9 +18,9 @@ npm i @emoji-platform-data/emoji-mart
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/emoji-mart";
+import { byEmoji, byTitle } from '@emoji-platform-data/emoji-mart';
 
-console.log(byEmoji["🐙"]);
+console.log(byEmoji['🐙']);
 /*
 {
 	category: "nature",

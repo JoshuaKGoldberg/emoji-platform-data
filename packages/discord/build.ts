@@ -1,3 +1,3 @@
-import { rebuildSourceDirectory } from "@emoji-platform-data/generator";
+import { rebuildSourceDirectory } from '@emoji-platform-data/generator';
 
-await rebuildSourceDirectory({ directory: "lib", source: "discord" });
+await rebuildSourceDirectory({ directory: 'lib', source: 'discord' });

@@ -1,57 +1,47 @@
-import * as path from "node:path";
+import * as path from 'node:path';
 
-import type { DiscordItem } from "../src/dataTypes.ts";
+import type { DiscordItem } from '../src/dataTypes.ts';
+import { extractJsonBlobs, findOnly, listScripts, searchScripts } from './shared/bundles.ts';
+import { fetchText, fetchUrl, readText, requestTimeout } from './shared/fetch.ts';
+import { readPreviousSnapshot, writeSnapshot } from './shared/snapshots.ts';
 import {
-	extractJsonBlobs,
-	findOnly,
-	listScripts,
-	searchScripts,
-} from "./shared/bundles.ts";
-import {
-	fetchText,
-	fetchUrl,
-	readText,
-	requestTimeout,
-} from "./shared/fetch.ts";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
-import {
-	checkCanaryShortcodes,
-	checkCounts,
-	checkDuplicates,
-	countWithKeywords,
-	emojiCount,
-	emojiWithKeywordsCount,
-	throwIfProblems,
-} from "./shared/validate.ts";
+  checkCanaryShortcodes,
+  checkCounts,
+  checkDuplicates,
+  countWithKeywords,
+  emojiCount,
+  emojiWithKeywordsCount,
+  throwIfProblems,
+} from './shared/validate.ts';
 
 interface RawData {
-	emojis: RawEmoji[];
+  emojis: RawEmoji[];
 
-	/** Each category's `[start, end)` range of indices into `emojis`. */
-	emojisByCategory: Record<string, [number, number]>;
+  /** Each category's `[start, end)` range of indices into `emojis`. */
+  emojisByCategory: Record<string, [number, number]>;
 }
 
 interface RawEmoji {
-	/** Set only on skin tone variants of another emoji, and only ever to `true`. */
-	hasDiversityParent?: true;
+  /** Set only on skin tone variants of another emoji, and only ever to `true`. */
+  hasDiversityParent?: true;
 
-	/** Set only on skin tone variants of another emoji, and only ever to `true`. */
-	hasMultiDiversityParent?: true;
+  /** Set only on skin tone variants of another emoji, and only ever to `true`. */
+  hasMultiDiversityParent?: true;
 
-	names: string[];
-	surrogates: string;
-	unicodeVersion: number;
+  names: string[];
+  surrogates: string;
+  unicodeVersion: number;
 }
 
 /** Search keywords, keyed by the emoji's first name. */
 type RawKeywords = Record<string, string[]>;
 
 interface Snapshot {
-	dataChunk: string;
-	entries: DiscordItem[];
-	keywordChunk: string;
-	locale: string;
-	source: string;
+  dataChunk: string;
+  entries: DiscordItem[];
+  keywordChunk: string;
+  locale: string;
+  source: string;
 }
 
 /**
@@ -62,37 +52,37 @@ interface Snapshot {
  * name, so these catch the two coming apart as well as either going missing.
  */
 const canaryTerms = {
-	"❤️": { keyword: "love", name: "heart" },
-	"🎉": { keyword: "celebrate", name: "tada" },
-	"🐙": { keyword: "creature", name: "octopus" },
-	"👍": { keyword: "like", name: "thumbsup" },
+  '❤️': { keyword: 'love', name: 'heart' },
+  '🎉': { keyword: 'celebrate', name: 'tada' },
+  '🐙': { keyword: 'creature', name: 'octopus' },
+  '👍': { keyword: 'like', name: 'thumbsup' },
 };
 
 /**
  * The page listing the scripts the web client loads.
  */
-const defaultSource = "https://discord.com/app";
+const defaultSource = 'https://discord.com/app';
 
 /**
  * The categories the picker lists, kept as a list rather than read from the
  * data so that one disappearing is caught rather than silently accepted.
  */
 const expectedCategories = [
-	"activity",
-	"flags",
-	"food",
-	"nature",
-	"objects",
-	"people",
-	"symbols",
-	"travel",
+  'activity',
+  'flags',
+  'food',
+  'nature',
+  'objects',
+  'people',
+  'symbols',
+  'travel',
 ];
 
 /**
  * The locale whose keywords this package uses.
  * Discord ships a set per locale; this package is English-only, as macOS is.
  */
-const locale = "en-US";
+const locale = 'en-US';
 
 /** The smallest category holds over a hundred emoji, so this is a wide margin. */
 const minimumEntriesPerCategory = 50;
@@ -112,18 +102,18 @@ const minimumEntriesWithKeywords = 1200;
 const minimumKeywordNameOverlap = 0.5;
 
 /** The chunk Discord splits its emoji data into, when it still names it that. */
-const dataChunkPrefix = "vnd-emoji.";
+const dataChunkPrefix = 'vnd-emoji.';
 
 /** The chunk holding the client itself, when it still names it that. */
-const clientChunkPrefix = "web.";
+const clientChunkPrefix = 'web.';
 
 /**
  * The emoji store's search method, used to find the module that loads the
  * keywords. Only a shortcut: losing it falls back to trying every locale map.
  */
-const searchMethod = "nameMatchesChain";
+const searchMethod = 'nameMatchesChain';
 
-const snapshotPath = path.join(import.meta.dirname, "../discord.json");
+const snapshotPath = path.join(import.meta.dirname, '../discord.json');
 
 const source = process.argv[2] ?? defaultSource;
 const origin = new URL(source).origin;
@@ -144,33 +134,33 @@ const entries = toEntries(data, keywords);
 validate(entries, previous);
 
 const snapshot: Snapshot = {
-	dataChunk,
-	entries,
-	keywordChunk,
-	locale,
-	source,
+  dataChunk,
+  entries,
+  keywordChunk,
+  locale,
+  source,
 };
 
 // Discord redeploys constantly, and every deploy renames the chunks. Rewriting
 // the file for a rename alone would churn it -and open empty refresh pull
 // requests- for data that hasn't changed.
 await writeSnapshot({
-	details: `, with keywords for ${countWithKeywords(entries).toString()} of them from ${keywordChunk}`,
-	from: dataChunk,
-	previous,
-	snapshot,
-	snapshotPath,
+  details: `, with keywords for ${countWithKeywords(entries).toString()} of them from ${keywordChunk}`,
+  from: dataChunk,
+  previous,
+  snapshot,
+  snapshotPath,
 });
 
 async function fetchScript(chunk: string) {
-	let script = fetchedScripts.get(chunk);
+  let script = fetchedScripts.get(chunk);
 
-	if (!script) {
-		script = fetchText(`${origin}/assets/${chunk}`);
-		fetchedScripts.set(chunk, script);
-	}
+  if (!script) {
+    script = fetchText(`${origin}/assets/${chunk}`);
+    fetchedScripts.set(chunk, script);
+  }
 
-	return await script;
+  return await script;
 }
 
 /**
@@ -181,9 +171,7 @@ async function fetchScript(chunk: string) {
  * renamed.
  */
 function isClientScript(script: string) {
-	return localeChunkIds(script).some(
-		(chunkId) => chunkFileNames(script, chunkId).length > 0,
-	);
+  return localeChunkIds(script).some((chunkId) => chunkFileNames(script, chunkId).length > 0);
 }
 
 /**
@@ -191,50 +179,49 @@ function isClientScript(script: string) {
  * client's other per-locale string maps.
  */
 function isKeywords(value: unknown): value is RawKeywords {
-	if (typeof value !== "object" || value === null || Array.isArray(value)) {
-		return false;
-	}
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
 
-	const entries = Object.entries(value);
+  const entries = Object.entries(value);
 
-	if (
-		!entries.length ||
-		!entries.every(
-			([, terms]) =>
-				Array.isArray(terms) && terms.every((term) => typeof term === "string"),
-		)
-	) {
-		return false;
-	}
+  if (
+    !entries.length ||
+    !entries.every(
+      ([, terms]) => Array.isArray(terms) && terms.every((term) => typeof term === 'string'),
+    )
+  ) {
+    return false;
+  }
 
-	const known = entries.filter(([name]) => names.has(name)).length;
+  const known = entries.filter(([name]) => names.has(name)).length;
 
-	return known / entries.length >= minimumKeywordNameOverlap;
+  return known / entries.length >= minimumKeywordNameOverlap;
 }
 
 function isRawData(value: unknown): value is RawData {
-	if (typeof value !== "object" || value === null) {
-		return false;
-	}
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
 
-	const { emojis, emojisByCategory } = value as Record<string, unknown>;
+  const { emojis, emojisByCategory } = value as Record<string, unknown>;
 
-	return (
-		Array.isArray(emojis) &&
-		emojis.length > 0 &&
-		emojis.every(
-			(emoji: unknown) =>
-				typeof emoji === "object" &&
-				emoji !== null &&
-				Array.isArray((emoji as Record<string, unknown>).names) &&
-				typeof (emoji as Record<string, unknown>).surrogates === "string",
-		) &&
-		typeof emojisByCategory === "object" &&
-		emojisByCategory !== null &&
-		Object.values(emojisByCategory as Record<string, unknown>).every(
-			(range: unknown) => Array.isArray(range) && range.length === 2,
-		)
-	);
+  return (
+    Array.isArray(emojis) &&
+    emojis.length > 0 &&
+    emojis.every(
+      (emoji: unknown) =>
+        typeof emoji === 'object' &&
+        emoji !== null &&
+        Array.isArray((emoji as Record<string, unknown>).names) &&
+        typeof (emoji as Record<string, unknown>).surrogates === 'string',
+    ) &&
+    typeof emojisByCategory === 'object' &&
+    emojisByCategory !== null &&
+    Object.values(emojisByCategory as Record<string, unknown>).every(
+      (range: unknown) => Array.isArray(range) && range.length === 2,
+    )
+  );
 }
 
 /**
@@ -244,18 +231,15 @@ function isRawData(value: unknown): value is RawData {
  * Which is which is settled by reading them, not by picking one here.
  */
 function localeChunkIds(client: string) {
-	return [
-		...new Set(
-			[
-				...client.matchAll(
-					RegExp(
-						`"?${locale}"?\\s*:\\s*\\(\\)\\s*=>\\s*\\w+\\.e\\(\\s*"?(\\d+)"?\\s*\\)`,
-						"g",
-					),
-				),
-			].map((match) => match[1]),
-		),
-	];
+  return [
+    ...new Set(
+      [
+        ...client.matchAll(
+          RegExp(`"?${locale}"?\\s*:\\s*\\(\\)\\s*=>\\s*\\w+\\.e\\(\\s*"?(\\d+)"?\\s*\\)`, 'g'),
+        ),
+      ].map((match) => match[1]),
+    ),
+  ];
 }
 
 /**
@@ -267,55 +251,49 @@ function localeChunkIds(client: string) {
  * form the client spells out for the id and lets the fetch decide.
  */
 function chunkFileNames(client: string, chunkId: string) {
-	const fileNames: string[] = [];
+  const fileNames: string[] = [];
 
-	const literal = findOnly(
-		client,
-		RegExp(`"${chunkId}"===\\w+\\?"([\\w.-]+\\.js)"`, "g"),
-	)?.[1];
+  const literal = findOnly(client, RegExp(`"${chunkId}"===\\w+\\?"([\\w.-]+\\.js)"`, 'g'))?.[1];
 
-	if (literal) {
-		fileNames.push(literal);
-	}
+  if (literal) {
+    fileNames.push(literal);
+  }
 
-	const suffixed = findOnly(
-		client,
-		RegExp(`"${chunkId}"===\\w+\\?""\\+\\w+\\+"(\\.[0-9a-f]+\\.js)"`, "g"),
-	)?.[1];
+  const suffixed = findOnly(
+    client,
+    RegExp(`"${chunkId}"===\\w+\\?""\\+\\w+\\+"(\\.[0-9a-f]+\\.js)"`, 'g'),
+  )?.[1];
 
-	if (suffixed) {
-		fileNames.push(`${chunkId}${suffixed}`);
-	}
+  if (suffixed) {
+    fileNames.push(`${chunkId}${suffixed}`);
+  }
 
-	const mapped = findOnly(
-		client,
-		RegExp(`[,{]"?${chunkId}"?:"([0-9a-f]+)"`, "g"),
-	)?.[1];
+  const mapped = findOnly(client, RegExp(`[,{]"?${chunkId}"?:"([0-9a-f]+)"`, 'g'))?.[1];
 
-	if (mapped) {
-		fileNames.push(`${mapped}.js`);
-	}
+  if (mapped) {
+    fileNames.push(`${mapped}.js`);
+  }
 
-	return fileNames;
+  return fileNames;
 }
 
 async function readEmojiData() {
-	return await searchScripts({
-		description: "emoji data",
-		fetchScript,
-		prefix: dataChunkPrefix,
-		read: (script) => {
-			for (const blob of extractJsonBlobs(script)) {
-				if (isRawData(blob)) {
-					return blob;
-				}
-			}
+  return await searchScripts({
+    description: 'emoji data',
+    fetchScript,
+    prefix: dataChunkPrefix,
+    read: (script) => {
+      for (const blob of extractJsonBlobs(script)) {
+        if (isRawData(blob)) {
+          return blob;
+        }
+      }
 
-			return undefined;
-		},
-		scripts,
-		source,
-	});
+      return undefined;
+    },
+    scripts,
+    source,
+  });
 }
 
 /**
@@ -331,40 +309,40 @@ async function readEmojiData() {
  * one that turns out to hold keywords for emoji that exist.
  */
 async function readKeywords() {
-	const { chunk, data: client } = await searchScripts({
-		description: "the client's locale chunk map",
-		fetchScript,
-		prefix: clientChunkPrefix,
-		read: (script) => (isClientScript(script) ? script : undefined),
-		scripts,
-		source,
-	});
+  const { chunk, data: client } = await searchScripts({
+    description: "the client's locale chunk map",
+    fetchScript,
+    prefix: clientChunkPrefix,
+    read: (script) => (isClientScript(script) ? script : undefined),
+    scripts,
+    source,
+  });
 
-	const referenced = referencedLocaleChunkId(client);
-	const candidates = [
-		...(referenced ? [referenced] : []),
-		...localeChunkIds(client).filter((id) => id !== referenced),
-	];
+  const referenced = referencedLocaleChunkId(client);
+  const candidates = [
+    ...(referenced ? [referenced] : []),
+    ...localeChunkIds(client).filter((id) => id !== referenced),
+  ];
 
-	if (!referenced) {
-		console.warn(
-			`Could not follow ${searchMethod} to the keywords in ${chunk}; trying all ${candidates.length.toString()} locale chunks.`,
-		);
-	}
+  if (!referenced) {
+    console.warn(
+      `Could not follow ${searchMethod} to the keywords in ${chunk}; trying all ${candidates.length.toString()} locale chunks.`,
+    );
+  }
 
-	for (const chunkId of candidates) {
-		for (const fileName of chunkFileNames(client, chunkId)) {
-			const keywords = await tryReadKeywords(fileName);
+  for (const chunkId of candidates) {
+    for (const fileName of chunkFileNames(client, chunkId)) {
+      const keywords = await tryReadKeywords(fileName);
 
-			if (keywords) {
-				return { chunk: fileName, keywords };
-			}
-		}
-	}
+      if (keywords) {
+        return { chunk: fileName, keywords };
+      }
+    }
+  }
 
-	throw new Error(
-		`None of the ${candidates.length.toString()} ${locale} chunks loaded by ${chunk} contained emoji keywords.`,
-	);
+  throw new Error(
+    `None of the ${candidates.length.toString()} ${locale} chunks loaded by ${chunk} contained emoji keywords.`,
+  );
 }
 
 /**
@@ -372,22 +350,19 @@ async function readKeywords() {
  * keywords, when the client still looks the way it did when this was written.
  */
 function referencedLocaleChunkId(client: string) {
-	const module = findOnly(
-		searchModule(client),
-		/\w+\((\d+)\)\.\w+\[\w+\]/g,
-	)?.[1];
+  const module = findOnly(searchModule(client), /\w+\((\d+)\)\.\w+\[\w+\]/g)?.[1];
 
-	if (!module) {
-		return undefined;
-	}
+  if (!module) {
+    return undefined;
+  }
 
-	return findOnly(
-		client,
-		RegExp(
-			`\\b${module}\\(\\w+,\\w+,\\w+\\)\\{.*?"?${locale}"?\\s*:\\s*\\(\\)\\s*=>\\s*\\w+\\.e\\(\\s*"?(\\d+)"?\\s*\\)`,
-			"gs",
-		),
-	)?.[1];
+  return findOnly(
+    client,
+    RegExp(
+      `\\b${module}\\(\\w+,\\w+,\\w+\\)\\{.*?"?${locale}"?\\s*:\\s*\\(\\)\\s*=>\\s*\\w+\\.e\\(\\s*"?(\\d+)"?\\s*\\)`,
+      'gs',
+    ),
+  )?.[1];
 }
 
 /**
@@ -395,19 +370,19 @@ function referencedLocaleChunkId(client: string) {
  * the reference being looked for there can't be some other module's.
  */
 function searchModule(client: string) {
-	const index = client.indexOf(searchMethod);
+  const index = client.indexOf(searchMethod);
 
-	if (index === -1) {
-		return "";
-	}
+  if (index === -1) {
+    return '';
+  }
 
-	const headers = [
-		...client.matchAll(/\b\d{4,7}\(\w+,\w+,\w+\)\{"use strict"/g),
-	].map((header) => header.index);
-	const start = headers.filter((header) => header < index).at(-1) ?? 0;
-	const end = headers.find((header) => header > index);
+  const headers = [...client.matchAll(/\b\d{4,7}\(\w+,\w+,\w+\)\{"use strict"/g)].map(
+    (header) => header.index,
+  );
+  const start = headers.filter((header) => header < index).at(-1) ?? 0;
+  const end = headers.find((header) => header > index);
 
-	return client.slice(start, end);
+  return client.slice(start, end);
 }
 
 /**
@@ -419,41 +394,38 @@ function searchModule(client: string) {
  * emoji's, so there's nothing in them to fold back in, and keeping them would
  * give one emoji a tone axis nothing else in the data set has.
  */
-function toEntries(
-	{ emojis, emojisByCategory }: RawData,
-	keywords: RawKeywords,
-) {
-	const entries: DiscordItem[] = [];
+function toEntries({ emojis, emojisByCategory }: RawData, keywords: RawKeywords) {
+  const entries: DiscordItem[] = [];
 
-	for (const [category, [start, end]] of Object.entries(emojisByCategory)) {
-		if (end > emojis.length) {
-			throw new Error(
-				`Category '${category}' runs to index ${end.toString()}, but only ${emojis.length.toString()} emoji were read.`,
-			);
-		}
+  for (const [category, [start, end]] of Object.entries(emojisByCategory)) {
+    if (end > emojis.length) {
+      throw new Error(
+        `Category '${category}' runs to index ${end.toString()}, but only ${emojis.length.toString()} emoji were read.`,
+      );
+    }
 
-		for (let order = start; order < end; order += 1) {
-			const emoji = emojis[order];
+    for (let order = start; order < end; order += 1) {
+      const emoji = emojis[order];
 
-			if (emoji.hasDiversityParent ?? emoji.hasMultiDiversityParent) {
-				continue;
-			}
+      if (emoji.hasDiversityParent ?? emoji.hasMultiDiversityParent) {
+        continue;
+      }
 
-			const [name, ...aliases] = emoji.names;
+      const [name, ...aliases] = emoji.names;
 
-			entries.push({
-				aliases,
-				category,
-				emoji: emoji.surrogates,
-				keywords: keywords[name] ?? [],
-				name,
-				order,
-				unicodeVersion: emoji.unicodeVersion,
-			});
-		}
-	}
+      entries.push({
+        aliases,
+        category,
+        emoji: emoji.surrogates,
+        keywords: keywords[name] ?? [],
+        name,
+        order,
+        unicodeVersion: emoji.unicodeVersion,
+      });
+    }
+  }
 
-	return entries.sort((a, b) => a.order - b.order);
+  return entries.sort((a, b) => a.order - b.order);
 }
 
 /**
@@ -461,21 +433,21 @@ function toEntries(
  * a file name that doesn't resolve- as a miss rather than a failure.
  */
 async function tryReadKeywords(fileName: string) {
-	const response = await fetchUrl(`${origin}/assets/${fileName}`, {
-		signal: AbortSignal.timeout(requestTimeout),
-	});
+  const response = await fetchUrl(`${origin}/assets/${fileName}`, {
+    signal: AbortSignal.timeout(requestTimeout),
+  });
 
-	if (!response.ok) {
-		return undefined;
-	}
+  if (!response.ok) {
+    return undefined;
+  }
 
-	for (const blob of extractJsonBlobs(await readText(response))) {
-		if (isKeywords(blob)) {
-			return blob;
-		}
-	}
+  for (const blob of extractJsonBlobs(await readText(response))) {
+    if (isKeywords(blob)) {
+      return blob;
+    }
+  }
 
-	return undefined;
+  return undefined;
 }
 
 /**
@@ -487,31 +459,31 @@ async function tryReadKeywords(fileName: string) {
  * shouldn't overwrite the snapshot with what it found.
  */
 function validate(entries: DiscordItem[], previous: Snapshot | undefined) {
-	const problems = checkCounts(entries, previous?.entries, [
-		{ ...emojiCount, minimum: minimumEntries },
-		{ ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
-	]);
+  const problems = checkCounts(entries, previous?.entries, [
+    { ...emojiCount, minimum: minimumEntries },
+    { ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
+  ]);
 
-	for (const category of expectedCategories) {
-		const count = entries.filter((entry) => entry.category === category).length;
+  for (const category of expectedCategories) {
+    const count = entries.filter((entry) => entry.category === category).length;
 
-		if (count < minimumEntriesPerCategory) {
-			problems.push(
-				`Category '${category}' has ${count.toString()} emoji, out of at least ${minimumEntriesPerCategory.toString()} expected.`,
-			);
-		}
-	}
+    if (count < minimumEntriesPerCategory) {
+      problems.push(
+        `Category '${category}' has ${count.toString()} emoji, out of at least ${minimumEntriesPerCategory.toString()} expected.`,
+      );
+    }
+  }
 
-	checkCanaryShortcodes(problems, entries, canaryTerms);
-	checkDuplicates(problems, entries);
+  checkCanaryShortcodes(problems, entries, canaryTerms);
+  checkDuplicates(problems, entries);
 
-	const unnamed = entries.filter((entry) => !entry.name);
+  const unnamed = entries.filter((entry) => !entry.name);
 
-	if (unnamed.length) {
-		problems.push(
-			`${unnamed.length.toString()} emoji have no shortcode, such as ${unnamed[0].emoji}.`,
-		);
-	}
+  if (unnamed.length) {
+    problems.push(
+      `${unnamed.length.toString()} emoji have no shortcode, such as ${unnamed[0].emoji}.`,
+    );
+  }
 
-	throwIfProblems(problems, "for Discord");
+  throwIfProblems(problems, 'for Discord');
 }

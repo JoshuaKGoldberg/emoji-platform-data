@@ -1,58 +1,53 @@
-import * as path from "node:path";
+import * as path from 'node:path';
 
-import { compareStrings } from "../src/compareStrings.ts";
-import type { WeChatItem } from "../src/dataTypes.ts";
-import { fetchText } from "./shared/fetch.ts";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
+import { compareStrings } from '../src/compareStrings.ts';
+import type { WeChatItem } from '../src/dataTypes.ts';
+import { fetchText } from './shared/fetch.ts';
+import { readPreviousSnapshot, writeSnapshot } from './shared/snapshots.ts';
 import {
-	checkCanaryKeywords,
-	checkCounts,
-	checkDuplicates,
-	countWithKeywords,
-	emojiCount,
-	emojiWithKeywordsCount,
-	throwIfProblems,
-} from "./shared/validate.ts";
-import type {
-	ZipEntry} from "./shared/zip.ts";
-import {
-	readCentralDirectory,
-	readZipEntries,
-	readZipFile
-} from "./shared/zip.ts";
+  checkCanaryKeywords,
+  checkCounts,
+  checkDuplicates,
+  countWithKeywords,
+  emojiCount,
+  emojiWithKeywordsCount,
+  throwIfProblems,
+} from './shared/validate.ts';
+import type { ZipEntry } from './shared/zip.ts';
+import { readCentralDirectory, readZipEntries, readZipFile } from './shared/zip.ts';
 
 /** The picker's category listing, in the order it shows the emoji in. */
 interface RawCategories {
-	sections: RawSection[];
+  sections: RawSection[];
 }
 
 interface RawItem {
-	/**
-	 * WeChat's own wording for the emoji, such as "笑出眼泪的脸" for 😂.
-	 * Left out of the snapshot: these read as translations of the Unicode names
-	 * rather than terms anyone would search for, unlike the keywords.
-	 */
-	desc: string;
+  /**
+   * WeChat's own wording for the emoji, such as "笑出眼泪的脸" for 😂.
+   * Left out of the snapshot: these read as translations of the Unicode names
+   * rather than terms anyone would search for, unlike the keywords.
+   */
+  desc: string;
 
-	/** The emoji itself, as the picker writes it. */
-	key: string;
+  /** The emoji itself, as the picker writes it. */
+  key: string;
 }
 
 /** The search terms for one emoji, and the glyph the search index writes it as. */
 interface RawKeywords {
-	emoji: string;
-	terms: string[];
+  emoji: string;
+  terms: string[];
 }
 
 interface RawSection {
-	category_name: string;
-	items: RawItem[];
+  category_name: string;
+  items: RawItem[];
 }
 
 interface Snapshot {
-	apk: string;
-	entries: WeChatItem[];
-	source: string;
+  apk: string;
+  entries: WeChatItem[];
+  source: string;
 }
 
 /**
@@ -62,41 +57,39 @@ interface Snapshot {
  * from each script catches the two coming apart as well as either going missing.
  */
 const canaryTerms = {
-	"❤️": ["love", "爱心"],
-	"🎉": ["celebrate", "庆祝"],
-	"🐙": ["octopus", "章鱼"],
-	"👍": ["good", "赞"],
+  '❤️': ['love', '爱心'],
+  '🎉': ['celebrate', '庆祝'],
+  '🐙': ['octopus', '章鱼'],
+  '👍': ['good', '赞'],
 };
 
 /** The picker's category listing, in picker order. */
-const categoriesPath =
-	"assets/flutter_assets/packages/new_life/assets/system_emoji_category.json";
+const categoriesPath = 'assets/flutter_assets/packages/new_life/assets/system_emoji_category.json';
 
 /** How much of the zip's tail to read when looking for its central directory. */
 const centralDirectoryTailSize = 4096;
 
 /** The page listing the builds Tencent currently ships. */
-const defaultSource = "https://weixin.qq.com/";
+const defaultSource = 'https://weixin.qq.com/';
 
 /**
  * The categories the picker lists, kept as a list rather than read from the
  * data so that one disappearing is caught rather than silently accepted.
  */
 const expectedCategories = [
-	"人物",
-	"动物",
-	"活动",
-	"物体",
-	"符号",
-	"自然",
-	"表情与手势",
-	"食物与饮料",
-	"旅行与地点",
+  '人物',
+  '动物',
+  '活动',
+  '物体',
+  '符号',
+  '自然',
+  '表情与手势',
+  '食物与饮料',
+  '旅行与地点',
 ];
 
 /** The search index: one row per term, listing what that term matches. */
-const keywordsPath =
-	"assets/flutter_assets/packages/flutter_mmui/assets/emoji_map.csv";
+const keywordsPath = 'assets/flutter_assets/packages/flutter_mmui/assets/emoji_map.csv';
 
 const minimumEntries = 1500;
 
@@ -109,28 +102,26 @@ const minimumEntriesPerCategory = 50;
  */
 const minimumEntriesWithKeywords = 1400;
 
-const snapshotPath = path.join(import.meta.dirname, "../wechat.json");
+const snapshotPath = path.join(import.meta.dirname, '../wechat.json');
 
 const source = process.argv[2] ?? defaultSource;
 
 const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 
-const apkUrl = source.endsWith(".apk")
-	? source
-	: pickLatestApk(await fetchText(source));
-const apk = new URL(apkUrl).pathname.split("/").at(-1) ?? apkUrl;
+const apkUrl = source.endsWith('.apk') ? source : pickLatestApk(await fetchText(source));
+const apk = new URL(apkUrl).pathname.split('/').at(-1) ?? apkUrl;
 
 // The app is a ~280MB zip, but only two files in it matter. Reading the zip's
 // index and then just those two costs under 2MB, so this stays a job any
 // machine -or a CI runner- can do on a whim.
 const zipEntries = readZipEntries(
-	await readCentralDirectory(apkUrl, { tailSize: centralDirectoryTailSize }),
+  await readCentralDirectory(apkUrl, { tailSize: centralDirectoryTailSize }),
 );
 
 const categories = JSON.parse(
-	(await readApkFile(categoriesPath)).toString("utf8"),
+  (await readApkFile(categoriesPath)).toString('utf8'),
 ) as RawCategories;
-const keywords = toKeywords((await readApkFile(keywordsPath)).toString("utf8"));
+const keywords = toKeywords((await readApkFile(keywordsPath)).toString('utf8'));
 
 const entries = toEntries(categories, keywords);
 
@@ -142,11 +133,11 @@ const snapshot: Snapshot = { apk, entries, source };
 // version. Rewriting the snapshot for a version bump alone would churn it -and
 // open empty refresh pull requests- for data that hasn't changed.
 await writeSnapshot({
-	details: `, with keywords for ${countWithKeywords(entries).toString()} of them`,
-	from: apk,
-	previous,
-	snapshot,
-	snapshotPath,
+  details: `, with keywords for ${countWithKeywords(entries).toString()} of them`,
+  from: apk,
+  previous,
+  snapshot,
+  snapshotPath,
 });
 
 /**
@@ -155,15 +146,15 @@ await writeSnapshot({
  * that stops matching.
  */
 function findZipEntry(entries: ZipEntry[], name: string) {
-	const matches = entries.filter((entry) => entry.name === name);
+  const matches = entries.filter((entry) => entry.name === name);
 
-	if (matches.length !== 1) {
-		throw new Error(
-			`Expected exactly one '${name}' in the app, but found ${matches.length.toString()}.`,
-		);
-	}
+  if (matches.length !== 1) {
+    throw new Error(
+      `Expected exactly one '${name}' in the app, but found ${matches.length.toString()}.`,
+    );
+  }
 
-	return matches[0];
+  return matches[0];
 }
 
 /**
@@ -172,16 +163,16 @@ function findZipEntry(entries: ZipEntry[], name: string) {
  * emoji.
  */
 function hasPrivateUseCharacter(emoji: string) {
-	// Code points are the unit the private use areas are defined in.
-	// eslint-disable-next-line @typescript-eslint/no-misused-spread
-	return [...emoji].some((character) => {
-		const codePoint = character.codePointAt(0) ?? 0;
+  // Code points are the unit the private use areas are defined in.
+  // eslint-disable-next-line @typescript-eslint/no-misused-spread
+  return [...emoji].some((character) => {
+    const codePoint = character.codePointAt(0) ?? 0;
 
-		return (
-			(codePoint >= 0xe000 && codePoint <= 0xf8ff) ||
-			(codePoint >= 0xf0000 && codePoint <= 0x10fffd)
-		);
-	});
+    return (
+      (codePoint >= 0xe000 && codePoint <= 0xf8ff) ||
+      (codePoint >= 0xf0000 && codePoint <= 0x10fffd)
+    );
+  });
 }
 
 /**
@@ -191,36 +182,33 @@ function hasPrivateUseCharacter(emoji: string) {
  * devices, so these are ordered rather than taken as they come.
  */
 function listApkUrls(page: string) {
-	const pattern =
-		/https:\/\/[\w.-]+\/weixin\/android\/weixin(\d+)android(\d+)(?:_[\w.-]*)?\.apk/g;
+  const pattern = /https:\/\/[\w.-]+\/weixin\/android\/weixin(\d+)android(\d+)(?:_[\w.-]*)?\.apk/g;
 
-	return [...page.matchAll(pattern)]
-		.map((match) => ({
-			build: Number(match[2]),
-			url: match[0],
-			version: Number(match[1]),
-		}))
-		.sort((a, b) => a.version - b.version || a.build - b.build);
+  return [...page.matchAll(pattern)]
+    .map((match) => ({
+      build: Number(match[2]),
+      url: match[0],
+      version: Number(match[1]),
+    }))
+    .sort((a, b) => a.version - b.version || a.build - b.build);
 }
 
 function pickLatestApk(page: string) {
-	const candidates = listApkUrls(page);
-	const latest = candidates.at(-1);
+  const candidates = listApkUrls(page);
+  const latest = candidates.at(-1);
 
-	if (!latest) {
-		throw new Error(
-			`No Android build was listed on the page, so there's nothing to read.`,
-		);
-	}
+  if (!latest) {
+    throw new Error(`No Android build was listed on the page, so there's nothing to read.`);
+  }
 
-	return latest.url;
+  return latest.url;
 }
 
 /**
  * Reads one file out of the app.
  */
 async function readApkFile(name: string) {
-	return await readZipFile(apkUrl, findZipEntry(zipEntries, name));
+  return await readZipFile(apkUrl, findZipEntry(zipEntries, name));
 }
 
 /**
@@ -231,44 +219,41 @@ async function readApkFile(name: string) {
  * Everything either one knows is kept, so the picker's order and categories
  * come through without losing the terms.
  */
-function toEntries(
-	categories: RawCategories,
-	keywords: Map<string, RawKeywords>,
-) {
-	const entries: WeChatItem[] = [];
-	const listed = new Set<string>();
-	let order = 0;
+function toEntries(categories: RawCategories, keywords: Map<string, RawKeywords>) {
+  const entries: WeChatItem[] = [];
+  const listed = new Set<string>();
+  let order = 0;
 
-	for (const section of categories.sections) {
-		for (const item of section.items) {
-			const position = order;
-			order += 1;
+  for (const section of categories.sections) {
+    for (const item of section.items) {
+      const position = order;
+      order += 1;
 
-			if (hasPrivateUseCharacter(item.key)) {
-				continue;
-			}
+      if (hasPrivateUseCharacter(item.key)) {
+        continue;
+      }
 
-			const key = withoutVariationSelectors(item.key);
-			listed.add(key);
+      const key = withoutVariationSelectors(item.key);
+      listed.add(key);
 
-			entries.push({
-				category: section.category_name,
-				emoji: item.key,
-				keywords: keywords.get(key)?.terms ?? [],
-				order: position,
-			});
-		}
-	}
+      entries.push({
+        category: section.category_name,
+        emoji: item.key,
+        keywords: keywords.get(key)?.terms ?? [],
+        order: position,
+      });
+    }
+  }
 
-	const unlisted = [...keywords.values()]
-		.filter((keyword) => !listed.has(withoutVariationSelectors(keyword.emoji)))
-		.sort((a, b) => compareStrings(a.emoji, b.emoji));
+  const unlisted = [...keywords.values()]
+    .filter((keyword) => !listed.has(withoutVariationSelectors(keyword.emoji)))
+    .sort((a, b) => compareStrings(a.emoji, b.emoji));
 
-	for (const keyword of unlisted) {
-		entries.push({ emoji: keyword.emoji, keywords: keyword.terms });
-	}
+  for (const keyword of unlisted) {
+    entries.push({ emoji: keyword.emoji, keywords: keyword.terms });
+  }
 
-	return entries;
+  return entries;
 }
 
 /**
@@ -279,81 +264,74 @@ function toEntries(
  * rather than unicode emoji, so there's nothing to key them by here.
  */
 function toKeywords(csv: string) {
-	const keywords = new Map<string, RawKeywords>();
+  const keywords = new Map<string, RawKeywords>();
 
-	for (const line of csv.split(/\r?\n/)) {
-		const afterTerm = line.indexOf(",");
-		const afterSticker = line.indexOf(",", afterTerm + 1);
+  for (const line of csv.split(/\r?\n/)) {
+    const afterTerm = line.indexOf(',');
+    const afterSticker = line.indexOf(',', afterTerm + 1);
 
-		if (afterTerm === -1 || afterSticker === -1) {
-			continue;
-		}
+    if (afterTerm === -1 || afterSticker === -1) {
+      continue;
+    }
 
-		const term = line.slice(0, afterTerm).trim();
-		if (!term) {
-			continue;
-		}
+    const term = line.slice(0, afterTerm).trim();
+    if (!term) {
+      continue;
+    }
 
-		for (const emoji of line
-			.slice(afterSticker + 1)
-			.trim()
-			.split(/\s+/)) {
-			if (!emoji || hasPrivateUseCharacter(emoji)) {
-				continue;
-			}
+    for (const emoji of line
+      .slice(afterSticker + 1)
+      .trim()
+      .split(/\s+/)) {
+      if (!emoji || hasPrivateUseCharacter(emoji)) {
+        continue;
+      }
 
-			// A joiner only means something between two emoji, and the index has
-			// at least one stray one in front of an emoji it belongs to, U+200D 🦱.
-			const glyph = emoji.replaceAll(/^\u200D+|\u200D+$/g, "");
-			const key = withoutVariationSelectors(glyph);
-			const existing = keywords.get(key);
+      // A joiner only means something between two emoji, and the index has
+      // at least one stray one in front of an emoji it belongs to, U+200D 🦱.
+      const glyph = emoji.replaceAll(/^\u200D+|\u200D+$/g, '');
+      const key = withoutVariationSelectors(glyph);
+      const existing = keywords.get(key);
 
-			if (!existing) {
-				keywords.set(key, { emoji: glyph, terms: [term] });
-			} else if (!existing.terms.includes(term)) {
-				existing.terms.push(term);
-			}
-		}
-	}
+      if (!existing) {
+        keywords.set(key, { emoji: glyph, terms: [term] });
+      } else if (!existing.terms.includes(term)) {
+        existing.terms.push(term);
+      }
+    }
+  }
 
-	return keywords;
+  return keywords;
 }
 
 function validate(entries: WeChatItem[], previous: Snapshot | undefined) {
-	const problems = checkCounts(entries, previous?.entries, [
-		{ ...emojiCount, minimum: minimumEntries },
-		{ ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
-	]);
+  const problems = checkCounts(entries, previous?.entries, [
+    { ...emojiCount, minimum: minimumEntries },
+    { ...emojiWithKeywordsCount, minimum: minimumEntriesWithKeywords },
+  ]);
 
-	for (const category of expectedCategories) {
-		const count = entries.filter((entry) => entry.category === category).length;
+  for (const category of expectedCategories) {
+    const count = entries.filter((entry) => entry.category === category).length;
 
-		if (count < minimumEntriesPerCategory) {
-			problems.push(
-				`Category '${category}' has ${count.toString()} emoji, out of at least ${minimumEntriesPerCategory.toString()} expected.`,
-			);
-		}
-	}
+    if (count < minimumEntriesPerCategory) {
+      problems.push(
+        `Category '${category}' has ${count.toString()} emoji, out of at least ${minimumEntriesPerCategory.toString()} expected.`,
+      );
+    }
+  }
 
-	checkCanaryKeywords(
-		problems,
-		entries,
-		canaryTerms,
-		withoutVariationSelectors,
-	);
-	checkDuplicates(problems, entries, withoutVariationSelectors);
+  checkCanaryKeywords(problems, entries, canaryTerms, withoutVariationSelectors);
+  checkDuplicates(problems, entries, withoutVariationSelectors);
 
-	const empty = entries.filter(
-		(entry) => !entry.keywords.length && entry.category === undefined,
-	);
+  const empty = entries.filter((entry) => !entry.keywords.length && entry.category === undefined);
 
-	if (empty.length) {
-		problems.push(
-			`${empty.length.toString()} emoji have neither a category nor keywords, such as ${empty[0].emoji}.`,
-		);
-	}
+  if (empty.length) {
+    problems.push(
+      `${empty.length.toString()} emoji have neither a category nor keywords, such as ${empty[0].emoji}.`,
+    );
+  }
 
-	throwIfProblems(problems, "for WeChat");
+  throwIfProblems(problems, 'for WeChat');
 }
 
 /**
@@ -361,5 +339,5 @@ function validate(entries: WeChatItem[], previous: Snapshot | undefined) {
  * writes ❤️ as U+2764 U+FE0F, while the picker's listing has U+2764.
  */
 function withoutVariationSelectors(emoji: string) {
-	return emoji.replaceAll("\uFE0F", "");
+  return emoji.replaceAll('\uFE0F', '');
 }

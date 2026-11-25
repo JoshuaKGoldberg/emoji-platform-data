@@ -18,9 +18,9 @@ npm i @emoji-platform-data/gnome
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/gnome";
+import { byEmoji, byTitle } from '@emoji-platform-data/gnome';
 
-console.log(byEmoji["🐙"]);
+console.log(byEmoji['🐙']);
 /*
 {
 	category: "Animals & Nature",

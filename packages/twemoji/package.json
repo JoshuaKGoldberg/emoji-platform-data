@@ -1,37 +1,37 @@
 {
-	"name": "@emoji-platform-data/twemoji",
-	"version": "0.7.0",
-	"description": "Static export of Twemoji metadata for unicode emojis. 🐦",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/JoshuaKGoldberg/emoji-platform-data.git",
-		"directory": "packages/twemoji"
-	},
-	"license": "MIT",
-	"author": {
-		"name": "Josh Goldberg",
-		"email": "npm@joshuakgoldberg.com"
-	},
-	"sideEffects": false,
-	"type": "module",
-	"exports": {
-		".": "./lib/index.mjs",
-		"./byTitle": "./lib/byTitle.mjs"
-	},
-	"files": [
-		"lib/"
-	],
-	"scripts": {
-		"build": "node build.ts"
-	},
-	"devDependencies": {
-		"@emoji-platform-data/generator": "workspace:*"
-	},
-	"engines": {
-		"node": ">=24"
-	},
-	"publishConfig": {
-		"access": "public",
-		"provenance": true
-	}
+  "name": "@emoji-platform-data/twemoji",
+  "version": "0.7.0",
+  "description": "Static export of Twemoji metadata for unicode emojis. 🐦",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoshuaKGoldberg/emoji-platform-data.git",
+    "directory": "packages/twemoji"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Josh Goldberg",
+    "email": "npm@joshuakgoldberg.com"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.mjs",
+    "./byTitle": "./lib/byTitle.mjs"
+  },
+  "files": [
+    "lib/"
+  ],
+  "scripts": {
+    "build": "node build.ts"
+  },
+  "devDependencies": {
+    "@emoji-platform-data/generator": "workspace:*"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
 }

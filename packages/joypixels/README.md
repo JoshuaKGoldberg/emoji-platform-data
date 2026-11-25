@@ -18,9 +18,9 @@ npm i @emoji-platform-data/joypixels
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/joypixels";
+import { byEmoji, byTitle } from '@emoji-platform-data/joypixels';
 
-console.log(byEmoji["❤️"]);
+console.log(byEmoji['❤️']);
 /*
 {
 	aliases: ["red_heart"],

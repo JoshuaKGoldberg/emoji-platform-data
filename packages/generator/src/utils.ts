@@ -1,47 +1,48 @@
-import * as fs from "node:fs/promises";
-import * as path from "node:path";
-import { titleCase } from "title-case";
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
 
-import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import { titleCase } from 'title-case';
+
+import type { GeneratedEmojipediaData } from './emojipedia.ts';
 
 /**
  * Titles that appear more than once.
  */
 export function getDuplicateTitles(titles: string[]): Set<string> {
-	const seen = new Set<string>();
-	const duplicates = new Set<string>();
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
 
-	for (const title of titles) {
-		if (seen.has(title)) {
-			duplicates.add(title);
-		} else {
-			seen.add(title);
-		}
-	}
+  for (const title of titles) {
+    if (seen.has(title)) {
+      duplicates.add(title);
+    } else {
+      seen.add(title);
+    }
+  }
 
-	return duplicates;
+  return duplicates;
 }
 
 export function getEntryCldr(
-	emojipedia: GeneratedEmojipediaData,
-	glyph: string | undefined,
-	entries: string[],
+  emojipedia: GeneratedEmojipediaData,
+  glyph: string | undefined,
+  entries: string[],
 ): string {
-	const byGlyphAlias = glyph && getGlyphAlias(emojipedia, glyph);
-	if (byGlyphAlias) {
-		return byGlyphAlias;
-	}
+  const byGlyphAlias = glyph && getGlyphAlias(emojipedia, glyph);
+  if (byGlyphAlias) {
+    return byGlyphAlias;
+  }
 
-	for (const entry of entries) {
-		const aliased = emojipedia.aliases.get(normalizeTitle(entry));
-		if (aliased) {
-			return aliased;
-		}
-	}
+  for (const entry of entries) {
+    const aliased = emojipedia.aliases.get(normalizeTitle(entry));
+    if (aliased) {
+      return aliased;
+    }
+  }
 
-	return titleCase(entries[0].replaceAll("_", " "))
-		.replaceAll("#", "Hash")
-		.replaceAll("*", "Asterisk");
+  return titleCase(entries[0].replaceAll('_', ' '))
+    .replaceAll('#', 'Hash')
+    .replaceAll('*', 'Asterisk');
 }
 
 /**
@@ -50,13 +51,11 @@ export function getEntryCldr(
  * fits, such as `U+A9`, while platforms pad to at least four digits (`00a9`).
  */
 export function normalizeCodepoints(codepointsHex: string[]): string[] {
-	return codepointsHex.map((hex) =>
-		hex.replace("U+", "").toLowerCase().padStart(4, "0"),
-	);
+  return codepointsHex.map((hex) => hex.replace('U+', '').toLowerCase().padStart(4, '0'));
 }
 
 export function normalizeTitle(text: string): string {
-	return text.replaceAll(/\W/g, "").toLowerCase();
+  return text.replaceAll(/\W/g, '').toLowerCase();
 }
 
 /**
@@ -65,20 +64,14 @@ export function normalizeTitle(text: string): string {
  * while Emojipedia knows it as U+2B50.
  */
 function getGlyphAlias(emojipedia: GeneratedEmojipediaData, glyph: string) {
-	return (
-		emojipedia.aliases.get(glyph) ??
-		emojipedia.aliases.get(withoutVariationSelectors(glyph))
-	);
+  return emojipedia.aliases.get(glyph) ?? emojipedia.aliases.get(withoutVariationSelectors(glyph));
 }
 
 /**
  * Whether Emojipedia knows a glyph as its own emoji, rather than only by a name.
  */
-export function isKnownGlyph(
-	emojipedia: GeneratedEmojipediaData,
-	glyph: string,
-): boolean {
-	return getGlyphAlias(emojipedia, glyph) !== undefined;
+export function isKnownGlyph(emojipedia: GeneratedEmojipediaData, glyph: string): boolean {
+  return getGlyphAlias(emojipedia, glyph) !== undefined;
 }
 
 /**
@@ -86,29 +79,27 @@ export function isKnownGlyph(
  * to the same CLDR title, since the later entry would overwrite the earlier.
  */
 export function recordByCldr<T>(
-	platform: string,
-	entries: [string, T][],
+  platform: string,
+  entries: [string, T][],
 ): Partial<Record<string, T>> {
-	const record: Partial<Record<string, T>> = {};
+  const record: Partial<Record<string, T>> = {};
 
-	for (const [cldr, entry] of entries) {
-		if (cldr in record) {
-			throw new Error(`Multiple ${platform} entries resolve to '${cldr}'.`);
-		}
+  for (const [cldr, entry] of entries) {
+    if (cldr in record) {
+      throw new Error(`Multiple ${platform} entries resolve to '${cldr}'.`);
+    }
 
-		record[cldr] = entry;
-	}
+    record[cldr] = entry;
+  }
 
-	return record;
+  return record;
 }
 
 /**
  * The glyph for code points as platforms write them, such as "1f44b-1f3fd".
  */
 export function fromUnicode(unicode: string): string {
-	return String.fromCodePoint(
-		...unicode.split("-").map((hex) => parseInt(hex, 16)),
-	);
+  return String.fromCodePoint(...unicode.split('-').map((hex) => parseInt(hex, 16)));
 }
 
 /**
@@ -116,45 +107,42 @@ export function fromUnicode(unicode: string): string {
  * the title each entry resolves to.
  */
 export async function readSnapshot<Entry>(
-	platform: string,
-	getCldr: (entry: Entry) => string,
+  platform: string,
+  getCldr: (entry: Entry) => string,
 ): Promise<Partial<Record<string, Entry>>> {
-	const raw = await fs.readFile(
-		path.join(import.meta.dirname, `../${platform}.json`),
-		"utf8",
-	);
-	const { entries } = JSON.parse(raw) as { entries: Entry[] };
+  const raw = await fs.readFile(path.join(import.meta.dirname, `../${platform}.json`), 'utf8');
+  const { entries } = JSON.parse(raw) as { entries: Entry[] };
 
-	return recordByCldr(
-		platform,
-		entries.map((entry) => [getCldr(entry), entry]),
-	);
+  return recordByCldr(
+    platform,
+    entries.map((entry) => [getCldr(entry), entry]),
+  );
 }
 
 /**
  * Code points as Unicode writes them, such as "U+1F9D1 U+200D U+1F9B0".
  */
 export function toCodePointNotation(unicode: string): string {
-	return unicode
-		.split("-")
-		.map((hex) => `U+${hex.toUpperCase()}`)
-		.join(" ");
+  return unicode
+    .split('-')
+    .map((hex) => `U+${hex.toUpperCase()}`)
+    .join(' ');
 }
 
 export function toUnicode(emoji: string): string {
-	// Code points are the unit Emojipedia writes its codepoint lists in.
-	// eslint-disable-next-line @typescript-eslint/no-misused-spread
-	return [...emoji]
-		.map((character) =>
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			character.codePointAt(0)!.toString(16).padStart(4, "0"),
-		)
-		.join("-");
+  // Code points are the unit Emojipedia writes its codepoint lists in.
+  // eslint-disable-next-line @typescript-eslint/no-misused-spread
+  return [...emoji]
+    .map((character) =>
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      character.codePointAt(0)!.toString(16).padStart(4, '0'),
+    )
+    .join('-');
 }
 
 /**
  * A glyph without any of its U+FE0F variation selectors.
  */
 export function withoutVariationSelectors(glyph: string): string {
-	return glyph.replaceAll("\uFE0F", "");
+  return glyph.replaceAll('\uFE0F', '');
 }

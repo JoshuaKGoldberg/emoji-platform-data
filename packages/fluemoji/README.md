@@ -18,9 +18,9 @@ npm i @emoji-platform-data/fluemoji
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/fluemoji";
+import { byEmoji, byTitle } from '@emoji-platform-data/fluemoji';
 
-console.log(byEmoji["💖"]);
+console.log(byEmoji['💖']);
 console.log(byTitle.SparklingHeart);
 ```
 

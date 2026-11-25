@@ -18,9 +18,9 @@ npm i @emoji-platform-data/windows
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/windows";
+import { byEmoji, byTitle } from '@emoji-platform-data/windows';
 
-console.log(byEmoji["😂"]);
+console.log(byEmoji['😂']);
 /*
 {
 	emoji: "😂",

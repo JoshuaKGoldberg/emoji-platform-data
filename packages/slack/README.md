@@ -18,9 +18,9 @@ npm i @emoji-platform-data/slack
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/slack";
+import { byEmoji, byTitle } from '@emoji-platform-data/slack';
 
-console.log(byEmoji["🐙"]);
+console.log(byEmoji['🐙']);
 /*
 {
 	aliases: [],

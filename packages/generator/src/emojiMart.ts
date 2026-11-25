@@ -1,10 +1,11 @@
-import type { EmojiMartData } from "@emoji-mart/data";
-import * as fs from "node:fs/promises";
-import { fileURLToPath } from "node:url";
+import * as fs from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 
-import type { GeneratedEmojipediaData } from "./emojipedia.ts";
-import type { AllEmojiMartData, EmojiMartItem } from "./types.ts";
-import { getEntryCldr, recordByCldr } from "./utils.ts";
+import type { EmojiMartData } from '@emoji-mart/data';
+
+import type { GeneratedEmojipediaData } from './emojipedia.ts';
+import type { AllEmojiMartData, EmojiMartItem } from './types.ts';
+import { getEntryCldr, recordByCldr } from './utils.ts';
 
 /**
  * Reads emoji-mart's Unicode 15 "native" set.
@@ -14,51 +15,49 @@ import { getEntryCldr, recordByCldr } from "./utils.ts";
  * know, and never emoji of its own.
  */
 export async function generateEmojiMart(
-	emojipedia: GeneratedEmojipediaData,
+  emojipedia: GeneratedEmojipediaData,
 ): Promise<Partial<AllEmojiMartData>> {
-	const data = JSON.parse(
-		await fs.readFile(
-			fileURLToPath(
-				import.meta.resolve("@emoji-mart/data/sets/15/native.json"),
-			),
-			"utf8",
-		),
-	) as EmojiMartData;
+  const data = JSON.parse(
+    await fs.readFile(
+      fileURLToPath(import.meta.resolve('@emoji-mart/data/sets/15/native.json')),
+      'utf8',
+    ),
+  ) as EmojiMartData;
 
-	const aliases = new Map<string, string[]>();
+  const aliases = new Map<string, string[]>();
 
-	for (const [alias, id] of Object.entries(data.aliases)) {
-		aliases.set(id, [...(aliases.get(id) ?? []), alias]);
-	}
+  for (const [alias, id] of Object.entries(data.aliases)) {
+    aliases.set(id, [...(aliases.get(id) ?? []), alias]);
+  }
 
-	const entries: [string, EmojiMartItem][] = [];
-	let order = 0;
+  const entries: [string, EmojiMartItem][] = [];
+  let order = 0;
 
-	// Walking the categories, rather than the emojis, is what gives each entry
-	// its category and its place in the picker's order. Every entry is listed by
-	// exactly one category.
-	for (const category of data.categories) {
-		for (const id of category.emojis) {
-			const entry = data.emojis[id];
-			const [skin] = entry.skins;
+  // Walking the categories, rather than the emojis, is what gives each entry
+  // its category and its place in the picker's order. Every entry is listed by
+  // exactly one category.
+  for (const category of data.categories) {
+    for (const id of category.emojis) {
+      const entry = data.emojis[id];
+      const [skin] = entry.skins;
 
-			const cldr = getEntryCldr(emojipedia, skin.native, [entry.name]);
+      const cldr = getEntryCldr(emojipedia, skin.native, [entry.name]);
 
-			const item: EmojiMartItem = {
-				aliases: aliases.get(entry.id),
-				category: category.id,
-				emoticons: entry.emoticons,
-				id: entry.id,
-				keywords: entry.keywords.filter(Boolean),
-				name: entry.name,
-				order: order++,
-				skins: entry.skins.map(({ native, unified }) => ({ native, unified })),
-				version: entry.version,
-			};
+      const item: EmojiMartItem = {
+        aliases: aliases.get(entry.id),
+        category: category.id,
+        emoticons: entry.emoticons,
+        id: entry.id,
+        keywords: entry.keywords.filter(Boolean),
+        name: entry.name,
+        order: order++,
+        skins: entry.skins.map(({ native, unified }) => ({ native, unified })),
+        version: entry.version,
+      };
 
-			entries.push([cldr, item]);
-		}
-	}
+      entries.push([cldr, item]);
+    }
+  }
 
-	return recordByCldr("emojiMart", entries);
+  return recordByCldr('emojiMart', entries);
 }

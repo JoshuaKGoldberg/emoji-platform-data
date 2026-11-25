@@ -1,57 +1,56 @@
-import { spawnSync } from "node:child_process";
-import * as crypto from "node:crypto";
-import * as fs from "node:fs/promises";
-import * as os from "node:os";
-import * as path from "node:path";
-import { Readable } from "node:stream";
-import { pipeline } from "node:stream/promises";
-import * as zlib from "node:zlib";
+import { spawnSync } from 'node:child_process';
+import * as crypto from 'node:crypto';
+import * as fs from 'node:fs/promises';
+import * as os from 'node:os';
+import * as path from 'node:path';
+import { Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
+import * as zlib from 'node:zlib';
 
-import { compareStrings } from "../src/compareStrings.ts";
-import type { AndroidItem } from "../src/dataTypes.ts";
-import { readMarisaKeys } from "./marisa.ts";
-import { fetchUrl, readText, requestTimeout } from "./shared/fetch.ts";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
+import { compareStrings } from '../src/compareStrings.ts';
+import type { AndroidItem } from '../src/dataTypes.ts';
+import { readMarisaKeys } from './marisa.ts';
+import { fetchUrl, readText, requestTimeout } from './shared/fetch.ts';
+import { readPreviousSnapshot, writeSnapshot } from './shared/snapshots.ts';
 import {
-	checkCanaryKeywords,
-	checkCounts,
-	emojiCount,
-	throwIfProblems,
-} from "./shared/validate.ts";
-import type {
-	ZipEntry} from "./shared/zip.ts";
+  checkCanaryKeywords,
+  checkCounts,
+  emojiCount,
+  throwIfProblems,
+} from './shared/validate.ts';
+import type { ZipEntry } from './shared/zip.ts';
 import {
-	fetchZipDataStart,
-	inflateZipEntry,
-	readCentralDirectory,
-	readZipEntries
-} from "./shared/zip.ts";
+  fetchZipDataStart,
+  inflateZipEntry,
+  readCentralDirectory,
+  readZipEntries,
+} from './shared/zip.ts';
 
 /** A byte range of the system image that belongs to the product partition. */
 interface ProductRange {
-	/** Where the range starts in the product partition. */
-	destination: number;
-	end: number;
-	start: number;
+  /** Where the range starts in the product partition. */
+  destination: number;
+  end: number;
+  start: number;
 }
 
 interface Snapshot {
-	entries: AndroidItem[];
-	image: string;
-	pack: string;
+  entries: AndroidItem[];
+  image: string;
+  pack: string;
 }
 
 /** A system image as the Android SDK's repository lists it. */
 interface SystemImage {
-	apiLevel: number;
-	/** Whether the image is for 16KB memory pages, rather than 4KB. */
-	largePages: boolean;
-	path: string;
-	url: string;
+  apiLevel: number;
+  /** Whether the image is for 16KB memory pages, rather than 4KB. */
+  largePages: boolean;
+  path: string;
+  url: string;
 }
 
 /** Where Gboard sits in the product partition of Google's system images. */
-const apkPath = "/app/LatinIMEGooglePrebuilt/LatinIMEGooglePrebuilt.apk";
+const apkPath = '/app/LatinIMEGooglePrebuilt/LatinIMEGooglePrebuilt.apk';
 
 /**
  * Emoji that should always come back, with terms they should always have.
@@ -59,10 +58,10 @@ const apkPath = "/app/LatinIMEGooglePrebuilt/LatinIMEGooglePrebuilt.apk";
  * to CLDR's is caught as well as data going missing.
  */
 const canaryTerms = {
-	"🎉": ["confetti", "tada"],
-	"🐙": ["kraken", "tentacle"],
-	"👍": ["good job", "yep"],
-	"😂": ["lmao", "lol"],
+  '🎉': ['confetti', 'tada'],
+  '🐙': ['kraken', 'tentacle'],
+  '👍': ['good job', 'yep'],
+  '😂': ['lmao', 'lol'],
 };
 
 /**
@@ -70,7 +69,7 @@ const canaryTerms = {
  * then reports the gzipped size, which says nothing about where the zip's
  * index is. Asking for the file as-is keeps sizes and ranges in its own bytes.
  */
-const asIs = { "Accept-Encoding": "identity" };
+const asIs = { 'Accept-Encoding': 'identity' };
 
 /** How much of the zip's tail to read when looking for its central directory. */
 const centralDirectoryTailSize = 65_536;
@@ -94,49 +93,48 @@ const minimumKeywords = 10_000;
 /** Emoji search data for English, which Gboard bundles rather than downloading. */
 const packPattern = /^assets\/emoji_en_us_\d{14}\.zip$/;
 
-const repositoryUrl =
-	"https://dl.google.com/android/repository/sys-img/google_apis_playstore/";
+const repositoryUrl = 'https://dl.google.com/android/repository/sys-img/google_apis_playstore/';
 
 const sectorSize = 512;
 
-const snapshotPath = path.join(import.meta.dirname, "../android.json");
+const snapshotPath = path.join(import.meta.dirname, '../android.json');
 
 const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
 
 const image = await pickLatestImage();
-const directory = await fs.mkdtemp(path.join(os.tmpdir(), "refresh-android-"));
+const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'refresh-android-'));
 
 try {
-	const productPath = path.join(directory, "product.img");
+  const productPath = path.join(directory, 'product.img');
 
-	console.log(`Reading the product partition out of ${image.path}...`);
-	await extractProduct(new URL(image.url, repositoryUrl).href, productPath);
+  console.log(`Reading the product partition out of ${image.path}...`);
+  await extractProduct(new URL(image.url, repositoryUrl).href, productPath);
 
-	const apk = await readApk(productPath);
-	const { contents, pack } = readPack(apk);
-	const entries = toEntries(readDictionary(contents));
+  const apk = await readApk(productPath);
+  const { contents, pack } = readPack(apk);
+  const entries = toEntries(readDictionary(contents));
 
-	validate(entries, pack, previous);
+  validate(entries, pack, previous);
 
-	const snapshot: Snapshot = { entries, image: image.path, pack };
+  const snapshot: Snapshot = { entries, image: image.path, pack };
 
-	// Google rebuilds its system images every few months, but Gboard's bundled
-	// emoji data changes less often than that. Rewriting the snapshot for a new
-	// image alone would churn it -and open empty refresh pull requests- for data
-	// that hasn't changed.
-	await writeSnapshot({
-		details: `, with ${countKeywords(entries).toString()} keywords between them`,
-		from: `${pack} in ${image.path}`,
-		previous,
-		snapshot,
-		snapshotPath,
-	});
+  // Google rebuilds its system images every few months, but Gboard's bundled
+  // emoji data changes less often than that. Rewriting the snapshot for a new
+  // image alone would churn it -and open empty refresh pull requests- for data
+  // that hasn't changed.
+  await writeSnapshot({
+    details: `, with ${countKeywords(entries).toString()} keywords between them`,
+    from: `${pack} in ${image.path}`,
+    previous,
+    snapshot,
+    snapshotPath,
+  });
 } finally {
-	await fs.rm(directory, { force: true, recursive: true });
+  await fs.rm(directory, { force: true, recursive: true });
 }
 
 function countKeywords(entries: AndroidItem[]) {
-	return entries.reduce((total, entry) => total + entry.keywords.length, 0);
+  return entries.reduce((total, entry) => total + entry.keywords.length, 0);
 }
 
 /**
@@ -151,133 +149,129 @@ function countKeywords(entries: AndroidItem[]) {
  * are written out.
  */
 async function extractProduct(url: string, productPath: string) {
-	const centralDirectory = await readCentralDirectory(url, {
-		headers: asIs,
-		tailSize: centralDirectoryTailSize,
-	});
-	const entry = findZipEntry(
-		readZipEntries(centralDirectory),
-		(name) => name.endsWith("/system.img"),
-		url,
-	);
+  const centralDirectory = await readCentralDirectory(url, {
+    headers: asIs,
+    tailSize: centralDirectoryTailSize,
+  });
+  const entry = findZipEntry(
+    readZipEntries(centralDirectory),
+    (name) => name.endsWith('/system.img'),
+    url,
+  );
 
-	if (entry.method !== 8) {
-		throw new Error(
-			`The system image is compressed with method ${entry.method.toString()}, which this script can't read.`,
-		);
-	}
+  if (entry.method !== 8) {
+    throw new Error(
+      `The system image is compressed with method ${entry.method.toString()}, which this script can't read.`,
+    );
+  }
 
-	const start = await fetchZipDataStart(url, entry, asIs);
-	const response = await fetchUrl(url, {
-		headers: {
-			...asIs,
-			Range: `bytes=${start.toString()}-${(start + entry.compressedSize - 1).toString()}`,
-		},
-		signal: AbortSignal.timeout(downloadTimeout),
-	});
+  const start = await fetchZipDataStart(url, entry, asIs);
+  const response = await fetchUrl(url, {
+    headers: {
+      ...asIs,
+      Range: `bytes=${start.toString()}-${(start + entry.compressedSize - 1).toString()}`,
+    },
+    signal: AbortSignal.timeout(downloadTimeout),
+  });
 
-	if (response.status !== 206 || !response.body) {
-		throw new Error(
-			`Expected a partial response from ${url}, but got ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
+  if (response.status !== 206 || !response.body) {
+    throw new Error(
+      `Expected a partial response from ${url}, but got ${response.status.toString()} ${response.statusText}.`,
+    );
+  }
 
-	const product = await fs.open(productPath, "w");
+  const product = await fs.open(productPath, 'w');
 
-	try {
-		const head: Buffer[] = [];
-		let headSize = 0;
-		let nextAttempt = 1024 * 1024;
-		let crc = 0;
-		let position = 0;
-		let ranges: ProductRange[] | undefined;
+  try {
+    const head: Buffer[] = [];
+    let headSize = 0;
+    let nextAttempt = 1024 * 1024;
+    let crc = 0;
+    let position = 0;
+    let ranges: ProductRange[] | undefined;
 
-		try {
-			await pipeline(
-				Readable.fromWeb(
-					response.body as Parameters<typeof Readable.fromWeb>[0],
-				),
-				zlib.createInflateRaw(),
-				async (inflated: AsyncIterable<Buffer>) => {
-					for await (const chunk of inflated) {
-						crc = zlib.crc32(chunk, crc);
+    try {
+      await pipeline(
+        Readable.fromWeb(response.body as Parameters<typeof Readable.fromWeb>[0]),
+        zlib.createInflateRaw(),
+        async (inflated: AsyncIterable<Buffer>) => {
+          for await (const chunk of inflated) {
+            crc = zlib.crc32(chunk, crc);
 
-						if (!ranges) {
-							head.push(chunk);
-							headSize += chunk.length;
+            if (!ranges) {
+              head.push(chunk);
+              headSize += chunk.length;
 
-							// Inflating yields small chunks, so the head is only put together
-							// and tried each time it's doubled, rather than for every one.
-							if (headSize < nextAttempt) {
-								continue;
-							}
+              // Inflating yields small chunks, so the head is only put together
+              // and tried each time it's doubled, rather than for every one.
+              if (headSize < nextAttempt) {
+                continue;
+              }
 
-							const joined = Buffer.concat(head);
-							ranges = findProductRanges(joined);
+              const joined = Buffer.concat(head);
+              ranges = findProductRanges(joined);
 
-							if (!ranges) {
-								if (headSize > headLimit) {
-									throw new Error(
-										`Found no product partition in the first ${headLimit.toString()} bytes of the system image.`,
-									);
-								}
+              if (!ranges) {
+                if (headSize > headLimit) {
+                  throw new Error(
+                    `Found no product partition in the first ${headLimit.toString()} bytes of the system image.`,
+                  );
+                }
 
-								nextAttempt *= 2;
-								continue;
-							}
+                nextAttempt *= 2;
+                continue;
+              }
 
-							await writeProductRanges(product, ranges, joined, 0);
-							position = headSize;
-							head.length = 0;
-							continue;
-						}
+              await writeProductRanges(product, ranges, joined, 0);
+              position = headSize;
+              head.length = 0;
+              continue;
+            }
 
-						await writeProductRanges(product, ranges, chunk, position);
-						position += chunk.length;
-					}
-				},
-			);
-		} catch (error) {
-			throw new Error(`Could not read the product partition out of ${url}.`, {
-				cause: error,
-			});
-		}
+            await writeProductRanges(product, ranges, chunk, position);
+            position += chunk.length;
+          }
+        },
+      );
+    } catch (error) {
+      throw new Error(`Could not read the product partition out of ${url}.`, {
+        cause: error,
+      });
+    }
 
-		if (position !== entry.size) {
-			throw new Error(
-				`The system image inflated to ${position.toString()} bytes, but the zip says it's ${entry.size.toString()}.`,
-			);
-		}
+    if (position !== entry.size) {
+      throw new Error(
+        `The system image inflated to ${position.toString()} bytes, but the zip says it's ${entry.size.toString()}.`,
+      );
+    }
 
-		if (crc !== entry.crc32) {
-			throw new Error(
-				"The system image doesn't match the checksum the zip lists for it.",
-			);
-		}
-	} finally {
-		await product.close();
-	}
+    if (crc !== entry.crc32) {
+      throw new Error("The system image doesn't match the checksum the zip lists for it.");
+    }
+  } finally {
+    await product.close();
+  }
 }
 
 /**
  * Fetches a file's text, or undefined if the server says there's no such file.
  */
 async function fetchText(url: string) {
-	const response = await fetchUrl(url, {
-		signal: AbortSignal.timeout(requestTimeout),
-	});
+  const response = await fetchUrl(url, {
+    signal: AbortSignal.timeout(requestTimeout),
+  });
 
-	if (response.status === 404) {
-		return undefined;
-	}
+  if (response.status === 404) {
+    return undefined;
+  }
 
-	if (!response.ok) {
-		throw new Error(
-			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
+  if (!response.ok) {
+    throw new Error(
+      `Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
+    );
+  }
 
-	return await readText(response);
+  return await readText(response);
 }
 
 /**
@@ -291,123 +285,117 @@ async function fetchText(url: string) {
  * @see https://android.googlesource.com/platform/system/core/+/refs/heads/main/fs_mgr/liblp/include/liblp/metadata_format.h
  */
 function findProductRanges(head: Buffer): ProductRange[] | undefined {
-	if (head.length < sectorSize * 2) {
-		return undefined;
-	}
+  if (head.length < sectorSize * 2) {
+    return undefined;
+  }
 
-	if (head.toString("latin1", sectorSize, sectorSize + 8) !== "EFI PART") {
-		throw new Error("The system image doesn't start with a GPT header.");
-	}
+  if (head.toString('latin1', sectorSize, sectorSize + 8) !== 'EFI PART') {
+    throw new Error("The system image doesn't start with a GPT header.");
+  }
 
-	const entriesStart =
-		Number(head.readBigUInt64LE(sectorSize + 72)) * sectorSize;
-	const entryCount = head.readUInt32LE(sectorSize + 80);
-	const entrySize = head.readUInt32LE(sectorSize + 84);
+  const entriesStart = Number(head.readBigUInt64LE(sectorSize + 72)) * sectorSize;
+  const entryCount = head.readUInt32LE(sectorSize + 80);
+  const entrySize = head.readUInt32LE(sectorSize + 84);
 
-	if (head.length < entriesStart + entryCount * entrySize) {
-		return undefined;
-	}
+  if (head.length < entriesStart + entryCount * entrySize) {
+    return undefined;
+  }
 
-	let superStart: number | undefined;
+  let superStart: number | undefined;
 
-	for (let index = 0; index < entryCount; index += 1) {
-		const entry = entriesStart + index * entrySize;
-		const name = head
-			.toString("utf16le", entry + 56, entry + 128)
-			.replace(/\0.*$/s, "");
+  for (let index = 0; index < entryCount; index += 1) {
+    const entry = entriesStart + index * entrySize;
+    const name = head.toString('utf16le', entry + 56, entry + 128).replace(/\0.*$/s, '');
 
-		if (name === "super") {
-			superStart = Number(head.readBigUInt64LE(entry + 32)) * sectorSize;
-		}
-	}
+    if (name === 'super') {
+      superStart = Number(head.readBigUInt64LE(entry + 32)) * sectorSize;
+    }
+  }
 
-	if (superStart === undefined) {
-		throw new Error("The system image has no super partition.");
-	}
+  if (superStart === undefined) {
+    throw new Error('The system image has no super partition.');
+  }
 
-	const geometry = superStart + 4096;
-	const metadata = superStart + 4096 * 3;
+  const geometry = superStart + 4096;
+  const metadata = superStart + 4096 * 3;
 
-	if (head.length < metadata + 128) {
-		return undefined;
-	}
+  if (head.length < metadata + 128) {
+    return undefined;
+  }
 
-	if (head.readUInt32LE(geometry) !== 0x616c4467) {
-		throw new Error("The super partition has no dynamic partition geometry.");
-	}
+  if (head.readUInt32LE(geometry) !== 0x616c4467) {
+    throw new Error('The super partition has no dynamic partition geometry.');
+  }
 
-	if (head.readUInt32LE(metadata) !== 0x414c5030) {
-		throw new Error("The super partition has no dynamic partition metadata.");
-	}
+  if (head.readUInt32LE(metadata) !== 0x414c5030) {
+    throw new Error('The super partition has no dynamic partition metadata.');
+  }
 
-	const headerSize = head.readUInt32LE(metadata + 8);
-	const tablesSize = head.readUInt32LE(metadata + 44);
-	const tables = metadata + headerSize;
+  const headerSize = head.readUInt32LE(metadata + 8);
+  const tablesSize = head.readUInt32LE(metadata + 44);
+  const tables = metadata + headerSize;
 
-	if (head.length < tables + tablesSize) {
-		return undefined;
-	}
+  if (head.length < tables + tablesSize) {
+    return undefined;
+  }
 
-	const tablesChecksum = crypto
-		.createHash("sha256")
-		.update(head.subarray(tables, tables + tablesSize))
-		.digest();
+  const tablesChecksum = crypto
+    .createHash('sha256')
+    .update(head.subarray(tables, tables + tablesSize))
+    .digest();
 
-	if (!tablesChecksum.equals(head.subarray(metadata + 48, metadata + 80))) {
-		throw new Error("The dynamic partition tables don't match their checksum.");
-	}
+  if (!tablesChecksum.equals(head.subarray(metadata + 48, metadata + 80))) {
+    throw new Error("The dynamic partition tables don't match their checksum.");
+  }
 
-	const readTable = (descriptor: number) => ({
-		count: head.readUInt32LE(metadata + descriptor + 4),
-		offset: tables + head.readUInt32LE(metadata + descriptor),
-		size: head.readUInt32LE(metadata + descriptor + 8),
-	});
+  const readTable = (descriptor: number) => ({
+    count: head.readUInt32LE(metadata + descriptor + 4),
+    offset: tables + head.readUInt32LE(metadata + descriptor),
+    size: head.readUInt32LE(metadata + descriptor + 8),
+  });
 
-	const partitions = readTable(80);
-	const extents = readTable(92);
-	const products: ProductRange[][] = [];
+  const partitions = readTable(80);
+  const extents = readTable(92);
+  const products: ProductRange[][] = [];
 
-	for (let index = 0; index < partitions.count; index += 1) {
-		const partition = partitions.offset + index * partitions.size;
-		const name = head
-			.toString("latin1", partition, partition + 36)
-			.replace(/\0.*$/s, "");
+  for (let index = 0; index < partitions.count; index += 1) {
+    const partition = partitions.offset + index * partitions.size;
+    const name = head.toString('latin1', partition, partition + 36).replace(/\0.*$/s, '');
 
-		if (!/^product(?:_a)?$/.test(name)) {
-			continue;
-		}
+    if (!/^product(?:_a)?$/.test(name)) {
+      continue;
+    }
 
-		const firstExtent = head.readUInt32LE(partition + 40);
-		const extentCount = head.readUInt32LE(partition + 44);
-		const ranges: ProductRange[] = [];
-		let destination = 0;
+    const firstExtent = head.readUInt32LE(partition + 40);
+    const extentCount = head.readUInt32LE(partition + 44);
+    const ranges: ProductRange[] = [];
+    let destination = 0;
 
-		for (let extent = 0; extent < extentCount; extent += 1) {
-			const at = extents.offset + (firstExtent + extent) * extents.size;
-			const length = Number(head.readBigUInt64LE(at)) * sectorSize;
-			const targetType = head.readUInt32LE(at + 8);
+    for (let extent = 0; extent < extentCount; extent += 1) {
+      const at = extents.offset + (firstExtent + extent) * extents.size;
+      const length = Number(head.readBigUInt64LE(at)) * sectorSize;
+      const targetType = head.readUInt32LE(at + 8);
 
-			// Zero extents read as zeros, which the file already does where
-			// nothing's written.
-			if (targetType === 0) {
-				const start =
-					superStart + Number(head.readBigUInt64LE(at + 12)) * sectorSize;
-				ranges.push({ destination, end: start + length, start });
-			}
+      // Zero extents read as zeros, which the file already does where
+      // nothing's written.
+      if (targetType === 0) {
+        const start = superStart + Number(head.readBigUInt64LE(at + 12)) * sectorSize;
+        ranges.push({ destination, end: start + length, start });
+      }
 
-			destination += length;
-		}
+      destination += length;
+    }
 
-		products.push(ranges);
-	}
+    products.push(ranges);
+  }
 
-	if (products.length !== 1) {
-		throw new Error(
-			`Expected exactly one product partition, but found ${products.length.toString()}.`,
-		);
-	}
+  if (products.length !== 1) {
+    throw new Error(
+      `Expected exactly one product partition, but found ${products.length.toString()}.`,
+    );
+  }
 
-	return products[0];
+  return products[0];
 }
 
 /**
@@ -415,20 +403,16 @@ function findProductRanges(head: Buffer): ProductRange[] | undefined {
  * starts matching twice is as much a sign of the image having moved on as one
  * that stops matching.
  */
-function findZipEntry(
-	entries: ZipEntry[],
-	matches: (name: string) => boolean,
-	source: string,
-) {
-	const found = entries.filter((entry) => matches(entry.name));
+function findZipEntry(entries: ZipEntry[], matches: (name: string) => boolean, source: string) {
+  const found = entries.filter((entry) => matches(entry.name));
 
-	if (found.length !== 1) {
-		throw new Error(
-			`Expected exactly one matching file in ${source}, but found ${found.length.toString()}: ${found.map((entry) => entry.name).join(", ")}.`,
-		);
-	}
+  if (found.length !== 1) {
+    throw new Error(
+      `Expected exactly one matching file in ${source}, but found ${found.length.toString()}: ${found.map((entry) => entry.name).join(', ')}.`,
+    );
+  }
 
-	return found[0];
+  return found[0];
 }
 
 /**
@@ -440,57 +424,52 @@ function findZipEntry(
  * 4KB page size image is preferred over its 16KB one.
  */
 async function pickLatestImage() {
-	let xml: string | undefined;
+  let xml: string | undefined;
 
-	for (let version = knownListingVersion; ; version += 1) {
-		const listing = await fetchText(
-			`${repositoryUrl}sys-img2-${version.toString()}.xml`,
-		);
+  for (let version = knownListingVersion; ; version += 1) {
+    const listing = await fetchText(`${repositoryUrl}sys-img2-${version.toString()}.xml`);
 
-		if (listing === undefined) {
-			break;
-		}
+    if (listing === undefined) {
+      break;
+    }
 
-		xml = listing;
-	}
+    xml = listing;
+  }
 
-	if (!xml) {
-		throw new Error(`Found no system image listing in ${repositoryUrl}.`);
-	}
+  if (!xml) {
+    throw new Error(`Found no system image listing in ${repositoryUrl}.`);
+  }
 
-	const images: SystemImage[] = [];
+  const images: SystemImage[] = [];
 
-	for (const [, packagePath, body] of xml.matchAll(
-		/<remotePackage path="([^"]+)">(.*?)<\/remotePackage>/gs,
-	)) {
-		const match =
-			/^system-images;android-(\d+(?:\.\d+)?);google_apis_playstore(_ps16k)?;x86_64$/.exec(
-				packagePath,
-			);
-		const url = /<url>([^<]+)<\/url>/.exec(body)?.[1];
+  for (const [, packagePath, body] of xml.matchAll(
+    /<remotePackage path="([^"]+)">(.*?)<\/remotePackage>/gs,
+  )) {
+    const match =
+      /^system-images;android-(\d+(?:\.\d+)?);google_apis_playstore(_ps16k)?;x86_64$/.exec(
+        packagePath,
+      );
+    const url = /<url>([^<]+)<\/url>/.exec(body)?.[1];
 
-		if (match && url && body.includes('<channelRef ref="channel-0"/>')) {
-			images.push({
-				apiLevel: Number(match[1]),
-				largePages: !!match[2],
-				path: packagePath,
-				url,
-			});
-		}
-	}
+    if (match && url && body.includes('<channelRef ref="channel-0"/>')) {
+      images.push({
+        apiLevel: Number(match[1]),
+        largePages: !!match[2],
+        path: packagePath,
+        url,
+      });
+    }
+  }
 
-	const latest = images
-		.sort(
-			(a, b) =>
-				a.apiLevel - b.apiLevel || Number(b.largePages) - Number(a.largePages),
-		)
-		.at(-1);
+  const latest = images
+    .sort((a, b) => a.apiLevel - b.apiLevel || Number(b.largePages) - Number(a.largePages))
+    .at(-1);
 
-	if (!latest) {
-		throw new Error("The SDK repository listed no stable Google Play images.");
-	}
+  if (!latest) {
+    throw new Error('The SDK repository listed no stable Google Play images.');
+  }
 
-	return latest;
+  return latest;
 }
 
 /**
@@ -504,52 +483,48 @@ async function pickLatestImage() {
  * missing file only there, rather than in its exit code.
  */
 async function readApk(productPath: string) {
-	const superblock = Buffer.alloc(58);
-	const product = await fs.open(productPath);
+  const superblock = Buffer.alloc(58);
+  const product = await fs.open(productPath);
 
-	try {
-		await product.read(superblock, 0, superblock.length, 1024);
-	} finally {
-		await product.close();
-	}
+  try {
+    await product.read(superblock, 0, superblock.length, 1024);
+  } finally {
+    await product.close();
+  }
 
-	const reader = pickReader(superblock, productPath);
+  const reader = pickReader(superblock, productPath);
 
-	if (!reader) {
-		throw new Error(
-			"The product partition is neither EROFS nor ext4, so Gboard can't be read out of it.",
-		);
-	}
+  if (!reader) {
+    throw new Error(
+      "The product partition is neither EROFS nor ext4, so Gboard can't be read out of it.",
+    );
+  }
 
-	const result = spawnSync(reader.command, reader.args, {
-		maxBuffer: 512 * 1024 * 1024,
-		stdio: ["ignore", "pipe", "pipe"],
-	});
+  const result = spawnSync(reader.command, reader.args, {
+    maxBuffer: 512 * 1024 * 1024,
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
 
-	const failure = `Could not read ${apkPath} out of the product partition. That needs ${reader.needs}.`;
+  const failure = `Could not read ${apkPath} out of the product partition. That needs ${reader.needs}.`;
 
-	if (result.error) {
-		throw new Error(failure, { cause: result.error });
-	}
+  if (result.error) {
+    throw new Error(failure, { cause: result.error });
+  }
 
-	const stderr = result.stderr
-		.toString()
-		.replace(reader.banner ?? "", "")
-		.trim();
+  const stderr = result.stderr
+    .toString()
+    .replace(reader.banner ?? '', '')
+    .trim();
 
-	if (result.status !== 0 || !result.stdout.length || stderr) {
-		throw new Error(
-			[
-				failure,
-				result.signal && `${reader.command} was killed by ${result.signal}.`,
-				stderr,
-			]
-				.filter(Boolean)
-				.join("\n"),
-		);
-	}
+  if (result.status !== 0 || !result.stdout.length || stderr) {
+    throw new Error(
+      [failure, result.signal && `${reader.command} was killed by ${result.signal}.`, stderr]
+        .filter(Boolean)
+        .join('\n'),
+    );
+  }
 
-	return result.stdout;
+  return result.stdout;
 }
 
 /**
@@ -557,26 +532,25 @@ async function readApk(productPath: string) {
  * filesystem its superblock says it is.
  */
 function pickReader(superblock: Buffer, productPath: string) {
-	if (superblock.readUInt32LE(0) === 0xe0f5e1e2) {
-		return {
-			args: ["--cat", `--path=${apkPath}`, productPath],
-			command: "dump.erofs",
-			needs:
-				"erofs-utils 1.8.5 or newer, such as with `brew install erofs-utils`",
-		};
-	}
+  if (superblock.readUInt32LE(0) === 0xe0f5e1e2) {
+    return {
+      args: ['--cat', `--path=${apkPath}`, productPath],
+      command: 'dump.erofs',
+      needs: 'erofs-utils 1.8.5 or newer, such as with `brew install erofs-utils`',
+    };
+  }
 
-	if (superblock.readUInt16LE(56) === 0xef53) {
-		return {
-			args: ["-R", `cat ${apkPath}`, productPath],
-			banner: /^debugfs \S+ \(.+\)\n/,
-			command: "debugfs",
-			needs:
-				"debugfs, from e2fsprogs, such as with `brew install e2fsprogs` and its sbin directory on the PATH",
-		};
-	}
+  if (superblock.readUInt16LE(56) === 0xef53) {
+    return {
+      args: ['-R', `cat ${apkPath}`, productPath],
+      banner: /^debugfs \S+ \(.+\)\n/,
+      command: 'debugfs',
+      needs:
+        'debugfs, from e2fsprogs, such as with `brew install e2fsprogs` and its sbin directory on the PATH',
+    };
+  }
 
-	return undefined;
+  return undefined;
 }
 
 /**
@@ -588,119 +562,111 @@ function pickReader(superblock: Buffer, productPath: string) {
  * and aligned to eight bytes.
  */
 function readDictionary(contents: Buffer) {
-	if (contents.readUInt32LE(0) !== dictionaryMagic) {
-		throw new Error("The emoji dictionary doesn't start as expected.");
-	}
+  if (contents.readUInt32LE(0) !== dictionaryMagic) {
+    throw new Error("The emoji dictionary doesn't start as expected.");
+  }
 
-	const { end, keys } = readMarisaKeys(contents, 16);
-	let position = end;
+  const { end, keys } = readMarisaKeys(contents, 16);
+  let position = end;
 
-	const listsSize = Number(contents.readBigUInt64LE(position));
-	const listsEnd = position + 8 + listsSize;
-	position += 8;
+  const listsSize = Number(contents.readBigUInt64LE(position));
+  const listsEnd = position + 8 + listsSize;
+  position += 8;
 
-	const termCount = contents.readUInt32LE(position);
-	position += 4;
+  const termCount = contents.readUInt32LE(position);
+  position += 4;
 
-	if (termCount !== keys.length) {
-		throw new Error(
-			`The emoji dictionary lists emoji for ${termCount.toString()} terms, but its trie has ${keys.length.toString()}.`,
-		);
-	}
+  if (termCount !== keys.length) {
+    throw new Error(
+      `The emoji dictionary lists emoji for ${termCount.toString()} terms, but its trie has ${keys.length.toString()}.`,
+    );
+  }
 
-	const lists: number[][] = [];
+  const lists: number[][] = [];
 
-	for (let term = 0; term < termCount; term += 1) {
-		const count = contents.readUInt32LE(position);
-		position += 4;
+  for (let term = 0; term < termCount; term += 1) {
+    const count = contents.readUInt32LE(position);
+    position += 4;
 
-		const list: number[] = [];
-		for (let index = 0; index < count; index += 1) {
-			list.push(contents.readUInt32LE(position));
-			position += 4;
-		}
+    const list: number[] = [];
+    for (let index = 0; index < count; index += 1) {
+      list.push(contents.readUInt32LE(position));
+      position += 4;
+    }
 
-		lists.push(list);
-	}
+    lists.push(list);
+  }
 
-	if (position !== listsEnd) {
-		throw new Error(
-			`The emoji dictionary's term lists ended at ${position.toString()}, not ${listsEnd.toString()}.`,
-		);
-	}
+  if (position !== listsEnd) {
+    throw new Error(
+      `The emoji dictionary's term lists ended at ${position.toString()}, not ${listsEnd.toString()}.`,
+    );
+  }
 
-	position = Math.ceil(position / 8) * 8;
+  position = Math.ceil(position / 8) * 8;
 
-	const emojiCount = Number(contents.readBigUInt64LE(position));
-	const emojiSize = Number(contents.readBigUInt64LE(position + 8));
-	position += 16;
+  const emojiCount = Number(contents.readBigUInt64LE(position));
+  const emojiSize = Number(contents.readBigUInt64LE(position + 8));
+  position += 16;
 
-	const emojiEnd = position + emojiSize;
-	const emoji: string[] = [];
+  const emojiEnd = position + emojiSize;
+  const emoji: string[] = [];
 
-	while (position < emojiEnd) {
-		const length = contents[position];
-		emoji.push(contents.toString("utf8", position + 1, position + 1 + length));
-		position += 1 + length;
-	}
+  while (position < emojiEnd) {
+    const length = contents[position];
+    emoji.push(contents.toString('utf8', position + 1, position + 1 + length));
+    position += 1 + length;
+  }
 
-	if (emoji.length !== emojiCount || position !== contents.length) {
-		throw new Error(
-			`The emoji dictionary's emoji list has ${emoji.length.toString()} emoji and ends at ${position.toString()}, not ${emojiCount.toString()} and ${contents.length.toString()}.`,
-		);
-	}
+  if (emoji.length !== emojiCount || position !== contents.length) {
+    throw new Error(
+      `The emoji dictionary's emoji list has ${emoji.length.toString()} emoji and ends at ${position.toString()}, not ${emojiCount.toString()} and ${contents.length.toString()}.`,
+    );
+  }
 
-	const terms = new Map(emoji.map((glyph) => [glyph, [] as string[]]));
+  const terms = new Map(emoji.map((glyph) => [glyph, [] as string[]]));
 
-	for (const [term, list] of lists.entries()) {
-		for (const index of list) {
-			const glyph = emoji.at(index);
+  for (const [term, list] of lists.entries()) {
+    for (const index of list) {
+      const glyph = emoji.at(index);
 
-			if (glyph === undefined) {
-				throw new Error(
-					`The term '${keys[term]}' points to emoji ${index.toString()}, past the ${emoji.length.toString()} there are.`,
-				);
-			}
+      if (glyph === undefined) {
+        throw new Error(
+          `The term '${keys[term]}' points to emoji ${index.toString()}, past the ${emoji.length.toString()} there are.`,
+        );
+      }
 
-			terms.get(glyph)?.push(keys[term]);
-		}
-	}
+      terms.get(glyph)?.push(keys[term]);
+    }
+  }
 
-	return terms;
+  return terms;
 }
 
 function readLocalZipEntries(zip: Buffer, source: string) {
-	const end = zip.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
+  const end = zip.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
 
-	if (end === -1) {
-		throw new Error(`${source} doesn't end like a zip file.`);
-	}
+  if (end === -1) {
+    throw new Error(`${source} doesn't end like a zip file.`);
+  }
 
-	const directorySize = zip.readUInt32LE(end + 12);
-	const directoryOffset = zip.readUInt32LE(end + 16);
+  const directorySize = zip.readUInt32LE(end + 12);
+  const directoryOffset = zip.readUInt32LE(end + 16);
 
-	return readZipEntries(
-		zip.subarray(directoryOffset, directoryOffset + directorySize),
-	);
+  return readZipEntries(zip.subarray(directoryOffset, directoryOffset + directorySize));
 }
 
 function readLocalZipFile(zip: Buffer, entry: ZipEntry) {
-	if (zip.readUInt32LE(entry.offset) !== 0x04034b50) {
-		throw new Error(
-			`'${entry.name}' has no local file header where the zip's central directory puts it.`,
-		);
-	}
+  if (zip.readUInt32LE(entry.offset) !== 0x04034b50) {
+    throw new Error(
+      `'${entry.name}' has no local file header where the zip's central directory puts it.`,
+    );
+  }
 
-	const start =
-		entry.offset +
-		30 +
-		zip.readUInt16LE(entry.offset + 26) +
-		zip.readUInt16LE(entry.offset + 28);
+  const start =
+    entry.offset + 30 + zip.readUInt16LE(entry.offset + 26) + zip.readUInt16LE(entry.offset + 28);
 
-	return inflateZipEntry(
-		entry,
-		zip.subarray(start, start + entry.compressedSize),
-	);
+  return inflateZipEntry(entry, zip.subarray(start, start + entry.compressedSize));
 }
 
 /**
@@ -712,22 +678,22 @@ function readLocalZipFile(zip: Buffer, entry: ZipEntry) {
  * built, such as emoji_en_us_20250115185814.
  */
 function readPack(apk: Buffer) {
-	const packEntry = findZipEntry(
-		readLocalZipEntries(apk, "Gboard"),
-		(name) => packPattern.test(name),
-		"Gboard",
-	);
-	const pack = readLocalZipFile(apk, packEntry);
-	const dictionaryEntry = findZipEntry(
-		readLocalZipEntries(pack, packEntry.name),
-		(name) => name === "en_us",
-		packEntry.name,
-	);
+  const packEntry = findZipEntry(
+    readLocalZipEntries(apk, 'Gboard'),
+    (name) => packPattern.test(name),
+    'Gboard',
+  );
+  const pack = readLocalZipFile(apk, packEntry);
+  const dictionaryEntry = findZipEntry(
+    readLocalZipEntries(pack, packEntry.name),
+    (name) => name === 'en_us',
+    packEntry.name,
+  );
 
-	return {
-		contents: readLocalZipFile(pack, dictionaryEntry),
-		pack: path.basename(packEntry.name, ".zip"),
-	};
+  return {
+    contents: readLocalZipFile(pack, dictionaryEntry),
+    pack: path.basename(packEntry.name, '.zip'),
+  };
 }
 
 /**
@@ -735,45 +701,37 @@ function readPack(apk: Buffer) {
  * Keywords are sorted, since the order they come in is only the trie's.
  */
 function toEntries(terms: Map<string, string[]>) {
-	return [...terms].map(([emoji, keywords]) => ({
-		emoji,
-		keywords: keywords.sort(compareStrings),
-	}));
+  return [...terms].map(([emoji, keywords]) => ({
+    emoji,
+    keywords: keywords.sort(compareStrings),
+  }));
 }
 
-function validate(
-	entries: AndroidItem[],
-	pack: string,
-	previous: Snapshot | undefined,
-) {
-	const problems = checkCounts(entries, previous?.entries, [
-		{ ...emojiCount, minimum: minimumEntries },
-		{
-			count: countKeywords,
-			counted: "keywords were read",
-			minimum: minimumKeywords,
-			name: "Keyword count",
-		},
-	]);
+function validate(entries: AndroidItem[], pack: string, previous: Snapshot | undefined) {
+  const problems = checkCounts(entries, previous?.entries, [
+    { ...emojiCount, minimum: minimumEntries },
+    {
+      count: countKeywords,
+      counted: 'keywords were read',
+      minimum: minimumKeywords,
+      name: 'Keyword count',
+    },
+  ]);
 
-	checkCanaryKeywords(problems, entries, canaryTerms);
+  checkCanaryKeywords(problems, entries, canaryTerms);
 
-	const empty = entries.filter((entry) => !entry.keywords.length);
+  const empty = entries.filter((entry) => !entry.keywords.length);
 
-	if (empty.length) {
-		problems.push(
-			`${empty.length.toString()} emoji have no keywords, such as ${empty[0].emoji}.`,
-		);
-	}
+  if (empty.length) {
+    problems.push(`${empty.length.toString()} emoji have no keywords, such as ${empty[0].emoji}.`);
+  }
 
-	// Pack names end in a fixed-width build timestamp, so they sort by age.
-	if (previous && pack < previous.pack) {
-		problems.push(
-			`Gboard's ${pack} is older than the snapshot's ${previous.pack}.`,
-		);
-	}
+  // Pack names end in a fixed-width build timestamp, so they sort by age.
+  if (previous && pack < previous.pack) {
+    problems.push(`Gboard's ${pack} is older than the snapshot's ${previous.pack}.`);
+  }
 
-	throwIfProblems(problems, "for Android");
+  throwIfProblems(problems, 'for Android');
 }
 
 /**
@@ -781,24 +739,24 @@ function validate(
  * partition to where it goes in the product partition.
  */
 async function writeProductRanges(
-	product: fs.FileHandle,
-	ranges: ProductRange[],
-	chunk: Buffer,
-	chunkStart: number,
+  product: fs.FileHandle,
+  ranges: ProductRange[],
+  chunk: Buffer,
+  chunkStart: number,
 ) {
-	const chunkEnd = chunkStart + chunk.length;
+  const chunkEnd = chunkStart + chunk.length;
 
-	for (const range of ranges) {
-		const start = Math.max(range.start, chunkStart);
-		const end = Math.min(range.end, chunkEnd);
+  for (const range of ranges) {
+    const start = Math.max(range.start, chunkStart);
+    const end = Math.min(range.end, chunkEnd);
 
-		if (start < end) {
-			await product.write(
-				chunk,
-				start - chunkStart,
-				end - start,
-				range.destination + start - range.start,
-			);
-		}
-	}
+    if (start < end) {
+      await product.write(
+        chunk,
+        start - chunkStart,
+        end - start,
+        range.destination + start - range.start,
+      );
+    }
+  }
 }

@@ -18,9 +18,9 @@ npm i @emoji-platform-data/wechat
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/wechat";
+import { byEmoji, byTitle } from '@emoji-platform-data/wechat';
 
-console.log(byEmoji["🐙"]);
+console.log(byEmoji['🐙']);
 /*
 {
 	category: "动物",

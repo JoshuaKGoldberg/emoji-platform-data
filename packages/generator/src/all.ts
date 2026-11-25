@@ -1,129 +1,127 @@
-import { generateAndroid } from "./android.ts";
-import { compareStrings } from "./compareStrings.ts";
-import { generateDiscord } from "./discord.ts";
-import { generateEmojiMart } from "./emojiMart.ts";
-import { generateEmojipedia } from "./emojipedia.ts";
-import { generateFluemoji } from "./fluemoji.ts";
-import { generateGemoji } from "./gemoji.ts";
-import { generateGnome } from "./gnome.ts";
-import { generateJoyPixels } from "./joypixels.ts";
-import { generateMacOS } from "./macos.ts";
-import { generateSlack } from "./slack.ts";
-import { generateTwemoji } from "./twemoji.ts";
-import type { AllEmojiPlatformData, EmojiPlatformData } from "./types.ts";
-import { fromUnicode, withoutVariationSelectors } from "./utils.ts";
-import { generateWeChat } from "./wechat.ts";
-import { generateWindows } from "./windows.ts";
+import { generateAndroid } from './android.ts';
+import { compareStrings } from './compareStrings.ts';
+import { generateDiscord } from './discord.ts';
+import { generateEmojiMart } from './emojiMart.ts';
+import { generateEmojipedia } from './emojipedia.ts';
+import { generateFluemoji } from './fluemoji.ts';
+import { generateGemoji } from './gemoji.ts';
+import { generateGnome } from './gnome.ts';
+import { generateJoyPixels } from './joypixels.ts';
+import { generateMacOS } from './macos.ts';
+import { generateSlack } from './slack.ts';
+import { generateTwemoji } from './twemoji.ts';
+import type { AllEmojiPlatformData, EmojiPlatformData } from './types.ts';
+import { fromUnicode, withoutVariationSelectors } from './utils.ts';
+import { generateWeChat } from './wechat.ts';
+import { generateWindows } from './windows.ts';
 
 export interface GenerateAllSettings {
-	/**
-	 * Directory containing microsoft/fluentui-emoji's assets/ folder.
-	 * @default the fluemoji dependency installed alongside this package
-	 */
-	fluemojiDirectory?: string;
+  /**
+   * Directory containing microsoft/fluentui-emoji's assets/ folder.
+   * @default the fluemoji dependency installed alongside this package
+   */
+  fluemojiDirectory?: string;
 }
 
 export async function generateAll({
-	fluemojiDirectory,
+  fluemojiDirectory,
 }: GenerateAllSettings = {}): Promise<AllEmojiPlatformData> {
-	const allEmojipedia = generateEmojipedia();
-	const allGemoji = generateGemoji(allEmojipedia);
-	const [
-		allAndroid,
-		allDiscord,
-		allEmojiMart,
-		allFluemoji,
-		allGnome,
-		allJoyPixels,
-		allMacOS,
-		allSlack,
-		allTwemoji,
-		allWeChat,
-		allWindows,
-	] = await Promise.all([
-		generateAndroid(allEmojipedia),
-		generateDiscord(allEmojipedia),
-		generateEmojiMart(allEmojipedia),
-		generateFluemoji(allEmojipedia, fluemojiDirectory),
-		generateGnome(allEmojipedia),
-		generateJoyPixels(allEmojipedia),
-		generateMacOS(allEmojipedia),
-		generateSlack(allEmojipedia),
-		generateTwemoji(allEmojipedia),
-		generateWeChat(allEmojipedia),
-		generateWindows(allEmojipedia),
-	]);
-	const allPlatforms = [
-		allAndroid,
-		allDiscord,
-		allEmojiMart,
-		allFluemoji,
-		allGemoji,
-		allGnome,
-		allJoyPixels,
-		allMacOS,
-		allSlack,
-		allTwemoji,
-		allWeChat,
-		allWindows,
-	];
+  const allEmojipedia = generateEmojipedia();
+  const allGemoji = generateGemoji(allEmojipedia);
+  const [
+    allAndroid,
+    allDiscord,
+    allEmojiMart,
+    allFluemoji,
+    allGnome,
+    allJoyPixels,
+    allMacOS,
+    allSlack,
+    allTwemoji,
+    allWeChat,
+    allWindows,
+  ] = await Promise.all([
+    generateAndroid(allEmojipedia),
+    generateDiscord(allEmojipedia),
+    generateEmojiMart(allEmojipedia),
+    generateFluemoji(allEmojipedia, fluemojiDirectory),
+    generateGnome(allEmojipedia),
+    generateJoyPixels(allEmojipedia),
+    generateMacOS(allEmojipedia),
+    generateSlack(allEmojipedia),
+    generateTwemoji(allEmojipedia),
+    generateWeChat(allEmojipedia),
+    generateWindows(allEmojipedia),
+  ]);
+  const allPlatforms = [
+    allAndroid,
+    allDiscord,
+    allEmojiMart,
+    allFluemoji,
+    allGemoji,
+    allGnome,
+    allJoyPixels,
+    allMacOS,
+    allSlack,
+    allTwemoji,
+    allWeChat,
+    allWindows,
+  ];
 
-	const allKeys = new Set(
-		[allEmojipedia.byCldr, ...allPlatforms].flatMap((platform) =>
-			Object.keys(platform),
-		),
-	);
+  const allKeys = new Set(
+    [allEmojipedia.byCldr, ...allPlatforms].flatMap((platform) => Object.keys(platform)),
+  );
 
-	const byTitle = Object.fromEntries(
-		Array.from(allKeys)
-			.map((title): [string, EmojiPlatformData] => {
-				const android = allAndroid[title];
-				const discord = allDiscord[title];
-				const emojiMart = allEmojiMart[title];
-				const emojipedia = allEmojipedia.byCldr[title];
-				const fluemoji = allFluemoji[title];
-				const gemoji = allGemoji[title];
-				const gnome = allGnome[title];
-				const joypixels = allJoyPixels[title];
-				const macos = allMacOS[title];
-				const slack = allSlack[title];
-				const twemoji = allTwemoji[title];
-				const wechat = allWeChat[title];
-				const windows = allWindows[title];
+  const byTitle = Object.fromEntries(
+    Array.from(allKeys)
+      .map((title): [string, EmojiPlatformData] => {
+        const android = allAndroid[title];
+        const discord = allDiscord[title];
+        const emojiMart = allEmojiMart[title];
+        const emojipedia = allEmojipedia.byCldr[title];
+        const fluemoji = allFluemoji[title];
+        const gemoji = allGemoji[title];
+        const gnome = allGnome[title];
+        const joypixels = allJoyPixels[title];
+        const macos = allMacOS[title];
+        const slack = allSlack[title];
+        const twemoji = allTwemoji[title];
+        const wechat = allWeChat[title];
+        const windows = allWindows[title];
 
-				const platforms = {
-					android,
-					discord,
-					emojiMart,
-					emojipedia,
-					fluemoji,
-					gemoji,
-					gnome,
-					joypixels,
-					macos,
-					slack,
-					twemoji,
-					wechat,
-					windows,
-				};
+        const platforms = {
+          android,
+          discord,
+          emojiMart,
+          emojipedia,
+          fluemoji,
+          gemoji,
+          gnome,
+          joypixels,
+          macos,
+          slack,
+          twemoji,
+          wechat,
+          windows,
+        };
 
-				const platformData = {
-					...platforms,
-					emoji: emojipedia?.code ?? getPlatformGlyphs(platforms)[0],
-					slug: emojipedia?.slug ?? slugify(twemoji?.description ?? title),
-					title,
-				};
+        const platformData = {
+          ...platforms,
+          emoji: emojipedia?.code ?? getPlatformGlyphs(platforms)[0],
+          slug: emojipedia?.slug ?? slugify(twemoji?.description ?? title),
+          title,
+        };
 
-				return [title, platformData];
-			})
-			.sort(([, a], [, b]) => compareStrings(a.slug, b.slug)),
-	);
+        return [title, platformData];
+      })
+      .sort(([, a], [, b]) => compareStrings(a.slug, b.slug)),
+  );
 
-	return Object.fromEntries(
-		mergeSameEmoji(Object.values(byTitle).map(withPlatformGlyph))
-			.sort((a, b) => compareStrings(a.slug, b.slug))
-			.map((platformData) => [platformData.title, platformData]),
-	);
+  return Object.fromEntries(
+    mergeSameEmoji(Object.values(byTitle).map(withPlatformGlyph))
+      .sort((a, b) => compareStrings(a.slug, b.slug))
+      .map((platformData) => [platformData.title, platformData]),
+  );
 }
 
 /**
@@ -141,19 +139,19 @@ export async function generateAll({
  * title the emoji nothing else names, and those by their code points.
  */
 const titlePriority = [
-	"emojipedia",
-	"gemoji",
-	"twemoji",
-	"fluemoji",
-	"emojiMart",
-	"macos",
-	"discord",
-	"slack",
-	"joypixels",
-	"windows",
-	"gnome",
-	"wechat",
-	"android",
+  'emojipedia',
+  'gemoji',
+  'twemoji',
+  'fluemoji',
+  'emojiMart',
+  'macos',
+  'discord',
+  'slack',
+  'joypixels',
+  'windows',
+  'gnome',
+  'wechat',
+  'android',
 ] as const satisfies (keyof EmojiPlatformData)[];
 
 /**
@@ -164,36 +162,31 @@ const titlePriority = [
  * forms too, such as 🏳️‍⚧ for 🏳️‍⚧️ without its last U+FE0F.
  */
 export function getEmojiGlyphs(platformData: EmojiPlatformData): Set<string> {
-	return new Set(
-		[
-			platformData.emoji,
-			platformData.emojipedia?.code,
-			...getPlatformGlyphs(platformData),
-		]
-			.filter((glyph) => glyph !== undefined)
-			.flatMap(getVariationSelectorForms),
-	);
+  return new Set(
+    [platformData.emoji, platformData.emojipedia?.code, ...getPlatformGlyphs(platformData)]
+      .filter((glyph) => glyph !== undefined)
+      .flatMap(getVariationSelectorForms),
+  );
 }
 
 function getGlyphs(platformData: EmojiPlatformData) {
-	return new Set(
-		[platformData.emojipedia?.code, ...getPlatformGlyphs(platformData)]
-			.filter((glyph) => glyph !== undefined)
-			.map(withoutVariationSelectors),
-	);
+  return new Set(
+    [platformData.emojipedia?.code, ...getPlatformGlyphs(platformData)]
+      .filter((glyph) => glyph !== undefined)
+      .map(withoutVariationSelectors),
+  );
 }
 
 /**
  * A glyph with each combination of its variation selectors kept or left out.
  */
 function getVariationSelectorForms(glyph: string) {
-	const [first, ...rest] = glyph.split("\uFE0F");
+  const [first, ...rest] = glyph.split('\uFE0F');
 
-	return rest.reduce(
-		(forms, part) =>
-			forms.flatMap((form) => [`${form}\uFE0F${part}`, form + part]),
-		[first],
-	);
+  return rest.reduce(
+    (forms, part) => forms.flatMap((form) => [`${form}\uFE0F${part}`, form + part]),
+    [first],
+  );
 }
 
 /**
@@ -201,100 +194,95 @@ function getVariationSelectorForms(glyph: string) {
  * its `emoji` is taken from them.
  */
 function getPlatformGlyphs(platformData: Partial<EmojiPlatformData>) {
-	return [
-		platformData.discord?.emoji,
-		platformData.emojiMart?.skins[0]?.native,
-		platformData.fluemoji?.glyph,
-		platformData.gemoji?.emoji,
-		platformData.gnome?.emoji,
-		platformData.joypixels?.emoji,
-		platformData.macos?.emoji,
-		platformData.slack?.emoji,
-		platformData.twemoji && fromUnicode(platformData.twemoji.unicode),
-		platformData.wechat?.emoji,
-		platformData.windows?.emoji,
-		platformData.android?.emoji,
-	].filter((glyph) => glyph !== undefined);
+  return [
+    platformData.discord?.emoji,
+    platformData.emojiMart?.skins[0]?.native,
+    platformData.fluemoji?.glyph,
+    platformData.gemoji?.emoji,
+    platformData.gnome?.emoji,
+    platformData.joypixels?.emoji,
+    platformData.macos?.emoji,
+    platformData.slack?.emoji,
+    platformData.twemoji && fromUnicode(platformData.twemoji.unicode),
+    platformData.wechat?.emoji,
+    platformData.windows?.emoji,
+    platformData.android?.emoji,
+  ].filter((glyph) => glyph !== undefined);
 }
 
 function getTitlePriority(platformData: EmojiPlatformData) {
-	return titlePriority.findIndex((platform) => platformData[platform]);
+  return titlePriority.findIndex((platform) => platformData[platform]);
 }
 
 function mergeEntries(existing: EmojiPlatformData, entry: EmojiPlatformData) {
-	const [kept, merged] =
-		getTitlePriority(existing) <= getTitlePriority(entry)
-			? [existing, entry]
-			: [entry, existing];
+  const [kept, merged] =
+    getTitlePriority(existing) <= getTitlePriority(entry) ? [existing, entry] : [entry, existing];
 
-	for (const platform of titlePriority) {
-		if (kept[platform] && merged[platform]) {
-			throw new Error(
-				`'${kept.title}' and '${merged.title}' are the same emoji, but both have ${platform} data.`,
-			);
-		}
-	}
+  for (const platform of titlePriority) {
+    if (kept[platform] && merged[platform]) {
+      throw new Error(
+        `'${kept.title}' and '${merged.title}' are the same emoji, but both have ${platform} data.`,
+      );
+    }
+  }
 
-	return {
-		...kept,
-		...Object.fromEntries(
-			titlePriority
-				.filter((platform) => merged[platform])
-				.map((platform) => [platform, merged[platform]]),
-		),
-	};
+  return {
+    ...kept,
+    ...Object.fromEntries(
+      titlePriority
+        .filter((platform) => merged[platform])
+        .map((platform) => [platform, merged[platform]]),
+    ),
+  };
 }
 
 function mergeSameEmoji(entries: EmojiPlatformData[]) {
-	const merged: EmojiPlatformData[] = [];
-	const bySlug = new Map<string, number>();
-	const byGlyph = new Map<string, number>();
+  const merged: EmojiPlatformData[] = [];
+  const bySlug = new Map<string, number>();
+  const byGlyph = new Map<string, number>();
 
-	for (const entry of entries) {
-		const glyph = withoutVariationSelectors(entry.emoji);
-		const sameSlug = bySlug.get(entry.slug);
-		const index = sameSlug ?? byGlyph.get(glyph) ?? merged.length;
+  for (const entry of entries) {
+    const glyph = withoutVariationSelectors(entry.emoji);
+    const sameSlug = bySlug.get(entry.slug);
+    const index = sameSlug ?? byGlyph.get(glyph) ?? merged.length;
 
-		if (index === merged.length) {
-			merged.push(entry);
-		} else {
-			const existing = merged[index];
+    if (index === merged.length) {
+      merged.push(entry);
+    } else {
+      const existing = merged[index];
 
-			if (
-				index === sameSlug &&
-				![...getGlyphs(entry)].some((other) => getGlyphs(existing).has(other))
-			) {
-				throw new Error(
-					`'${existing.title}' and '${entry.title}' are different emoji with the same slug, '${entry.slug}'.`,
-				);
-			}
+      if (
+        index === sameSlug &&
+        ![...getGlyphs(entry)].some((other) => getGlyphs(existing).has(other))
+      ) {
+        throw new Error(
+          `'${existing.title}' and '${entry.title}' are different emoji with the same slug, '${entry.slug}'.`,
+        );
+      }
 
-			merged[index] = mergeEntries(existing, entry);
-		}
+      merged[index] = mergeEntries(existing, entry);
+    }
 
-		bySlug.set(entry.slug, index);
-		byGlyph.set(glyph, index);
-	}
+    bySlug.set(entry.slug, index);
+    byGlyph.set(glyph, index);
+  }
 
-	return merged;
+  return merged;
 }
 
 function withPlatformGlyph(platformData: EmojiPlatformData) {
-	const code = platformData.emojipedia?.code;
-	const glyphs = getPlatformGlyphs(platformData);
+  const code = platformData.emojipedia?.code;
+  const glyphs = getPlatformGlyphs(platformData);
 
-	if (
-		!code ||
-		!glyphs.length ||
-		glyphs.some(
-			(glyph) =>
-				withoutVariationSelectors(glyph) === withoutVariationSelectors(code),
-		)
-	) {
-		return platformData;
-	}
+  if (
+    !code ||
+    !glyphs.length ||
+    glyphs.some((glyph) => withoutVariationSelectors(glyph) === withoutVariationSelectors(code))
+  ) {
+    return platformData;
+  }
 
-	return { ...platformData, emoji: glyphs[0] };
+  return { ...platformData, emoji: glyphs[0] };
 }
 
 /**
@@ -303,8 +291,8 @@ function withPlatformGlyph(platformData: EmojiPlatformData) {
  * separator (`/`) has to go — macOS supplies both.
  */
 function slugify(text: string) {
-	return text
-		.toLowerCase()
-		.replaceAll(/[^a-z0-9]+/g, "-")
-		.replaceAll(/^-+|-+$/g, "");
+  return text
+    .toLowerCase()
+    .replaceAll(/[^a-z0-9]+/g, '-')
+    .replaceAll(/^-+|-+$/g, '');
 }

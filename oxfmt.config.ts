@@ -9,6 +9,7 @@ const config: OxfmtConfig = defineConfig({
     'packages/*/lib',
     'packages/generator/android.json',
     'packages/generator/discord.json',
+    'packages/generator/emoji.yml',
     'packages/generator/gnome.json',
     'packages/generator/macos.json',
     'packages/generator/slack.json',

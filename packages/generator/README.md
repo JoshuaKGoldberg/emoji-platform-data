@@ -20,13 +20,13 @@ npm i @emoji-platform-data/generator
 ```
 
 ```ts
-import { generateAll } from "@emoji-platform-data/generator";
+import { generateAll } from '@emoji-platform-data/generator';
 
 const byTitle = await generateAll({
-	fluemojiDirectory: "path/to/fluentui-emoji",
+  fluemojiDirectory: 'path/to/fluentui-emoji',
 });
 
-console.log(byTitle["Sparkling Heart"]);
+console.log(byTitle['Sparkling Heart']);
 ```
 
 Pass a clone of [`microsoft/fluentui-emoji`](https://github.com/microsoft/fluentui-emoji), which isn't on npm, as `fluemojiDirectory` to `generateAll`, `rebuildDirectory`, or `rebuildSourceDirectory`, unless it's installed alongside this package as `fluemoji`.

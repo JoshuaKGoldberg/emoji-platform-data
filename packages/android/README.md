@@ -18,9 +18,9 @@ npm i @emoji-platform-data/android
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/android";
+import { byEmoji, byTitle } from '@emoji-platform-data/android';
 
-console.log(byEmoji["🐙"]);
+console.log(byEmoji['🐙']);
 /*
 {
 	emoji: "🐙",

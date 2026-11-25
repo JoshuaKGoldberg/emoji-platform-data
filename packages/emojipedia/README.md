@@ -18,9 +18,9 @@ npm i @emoji-platform-data/emojipedia
 ```
 
 ```ts
-import { byEmoji, byTitle } from "@emoji-platform-data/emojipedia";
+import { byEmoji, byTitle } from '@emoji-platform-data/emojipedia';
 
-console.log(byEmoji["💖"]);
+console.log(byEmoji['💖']);
 console.log(byTitle.SparklingHeart);
 ```
 

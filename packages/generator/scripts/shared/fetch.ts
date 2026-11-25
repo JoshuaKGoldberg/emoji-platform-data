@@ -2,43 +2,43 @@
 export const requestTimeout = 60_000;
 
 export async function fetchOk(url: string, init?: RequestInit): Promise<Response> {
-	const response = await fetchUrl(url, {
-		signal: AbortSignal.timeout(requestTimeout),
-		...init,
-	});
-	if (!response.ok) {
-		throw new Error(
-			`Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
-		);
-	}
+  const response = await fetchUrl(url, {
+    signal: AbortSignal.timeout(requestTimeout),
+    ...init,
+  });
+  if (!response.ok) {
+    throw new Error(
+      `Could not fetch ${url}: ${response.status.toString()} ${response.statusText}.`,
+    );
+  }
 
-	return response;
+  return response;
 }
 
 export async function fetchText(url: string, init?: RequestInit): Promise<string> {
-	return await readText(await fetchOk(url, init));
+  return await readText(await fetchOk(url, init));
 }
 
 export async function fetchUrl(url: string, init?: RequestInit): Promise<Response> {
-	try {
-		return await fetch(url, init);
-	} catch (error) {
-		throw new Error(`Could not fetch ${url}.`, { cause: error });
-	}
+  try {
+    return await fetch(url, init);
+  } catch (error) {
+    throw new Error(`Could not fetch ${url}.`, { cause: error });
+  }
 }
 
 export async function readBuffer(response: Response): Promise<Buffer<ArrayBuffer>> {
-	return Buffer.from(await readBody(response, response.arrayBuffer()));
+  return Buffer.from(await readBody(response, response.arrayBuffer()));
 }
 
 export async function readText(response: Response): Promise<string> {
-	return await readBody(response, response.text());
+  return await readBody(response, response.text());
 }
 
 async function readBody<T>(response: Response, body: Promise<T>) {
-	try {
-		return await body;
-	} catch (error) {
-		throw new Error(`Could not read ${response.url}.`, { cause: error });
-	}
+  try {
+    return await body;
+  } catch (error) {
+    throw new Error(`Could not read ${response.url}.`, { cause: error });
+  }
 }
