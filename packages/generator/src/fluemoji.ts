@@ -46,7 +46,7 @@ export async function generateFluemoji(
  * For example, "woman in motorized wheelchair facing right" has the glyph of
  * "woman in motorized wheelchair", which causes it to overwrite that entry.
  * The `unicode` field is always correct, so it's used as the source of truth.
- * @see https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/20
+ * @see https://github.com/JoshuaKGoldberg/emoji-platform-data/issues/17
  */
 function repairGlyph(entry: FluemojiItem): FluemojiItem {
   const glyph = fromUnicode(entry.unicode.replaceAll(' ', '-'));
