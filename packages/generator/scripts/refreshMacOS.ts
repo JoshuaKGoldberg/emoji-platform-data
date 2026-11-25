@@ -5,17 +5,17 @@ import * as path from "node:path";
 import { promisify } from "node:util";
 import * as ts from "typescript";
 
-import { compareStrings } from "../src/compareStrings.js";
-import { MacOSItem } from "../src/dataTypes.js";
-import { withoutSkinTones } from "./shared/skinTones.js";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import { compareStrings } from "../src/compareStrings.ts";
+import type { MacOSItem } from "../src/dataTypes.ts";
+import { withoutSkinTones } from "./shared/skinTones.ts";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
 import {
 	checkCanaryKeywords,
 	checkCounts,
 	checkDuplicates,
 	emojiCount,
 	throwIfProblems,
-} from "./shared/validate.js";
+} from "./shared/validate.ts";
 
 interface RawEntry {
 	appleName: string;

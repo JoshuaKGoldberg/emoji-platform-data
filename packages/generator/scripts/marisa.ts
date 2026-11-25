@@ -42,10 +42,10 @@ const magic = "We love Marisa.\0";
 class Reader {
 	position: number;
 
-	constructor(
-		private data: Buffer,
-		position: number,
-	) {
+	private data: Buffer;
+
+	constructor(data: Buffer, position: number) {
+		this.data = data;
 		this.position = position;
 	}
 
@@ -82,7 +82,7 @@ class Reader {
  * Reads a serialized trie that starts at `offset`, returning its keys by ID
  * and where the trie's data ends.
  */
-export function readMarisaKeys(data: Buffer, offset: number) {
+export function readMarisaKeys(data: Buffer, offset: number): { end: number; keys: string[]; } {
 	const reader = new Reader(data, offset);
 
 	if (reader.bytes(magic.length).toString("latin1") !== magic) {

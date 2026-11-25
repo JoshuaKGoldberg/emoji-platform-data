@@ -1,7 +1,7 @@
 import * as fs from "node:fs/promises";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { generateEmojiMart } from "../packages/generator/src/emojiMart.js";
+import { generateEmojiMart } from "./emojiMart.ts";
 
 vi.mock("node:fs/promises", { spy: true });
 

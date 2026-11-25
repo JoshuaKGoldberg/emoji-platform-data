@@ -1,19 +1,19 @@
 import * as path from "node:path";
 
-import { DiscordItem } from "../src/dataTypes.js";
+import type { DiscordItem } from "../src/dataTypes.ts";
 import {
 	extractJsonBlobs,
 	findOnly,
 	listScripts,
 	searchScripts,
-} from "./shared/bundles.js";
+} from "./shared/bundles.ts";
 import {
 	fetchText,
 	fetchUrl,
 	readText,
 	requestTimeout,
-} from "./shared/fetch.js";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+} from "./shared/fetch.ts";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
 import {
 	checkCanaryShortcodes,
 	checkCounts,
@@ -22,7 +22,7 @@ import {
 	emojiCount,
 	emojiWithKeywordsCount,
 	throwIfProblems,
-} from "./shared/validate.js";
+} from "./shared/validate.ts";
 
 interface RawData {
 	emojis: RawEmoji[];

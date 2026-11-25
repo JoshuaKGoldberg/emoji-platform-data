@@ -1,7 +1,7 @@
 /** How long a request may take, body included. */
 export const requestTimeout = 60_000;
 
-export async function fetchOk(url: string, init?: RequestInit) {
+export async function fetchOk(url: string, init?: RequestInit): Promise<Response> {
 	const response = await fetchUrl(url, {
 		signal: AbortSignal.timeout(requestTimeout),
 		...init,
@@ -15,11 +15,11 @@ export async function fetchOk(url: string, init?: RequestInit) {
 	return response;
 }
 
-export async function fetchText(url: string, init?: RequestInit) {
+export async function fetchText(url: string, init?: RequestInit): Promise<string> {
 	return await readText(await fetchOk(url, init));
 }
 
-export async function fetchUrl(url: string, init?: RequestInit) {
+export async function fetchUrl(url: string, init?: RequestInit): Promise<Response> {
 	try {
 		return await fetch(url, init);
 	} catch (error) {
@@ -27,11 +27,11 @@ export async function fetchUrl(url: string, init?: RequestInit) {
 	}
 }
 
-export async function readBuffer(response: Response) {
+export async function readBuffer(response: Response): Promise<Buffer<ArrayBuffer>> {
 	return Buffer.from(await readBody(response, response.arrayBuffer()));
 }
 
-export async function readText(response: Response) {
+export async function readText(response: Response): Promise<string> {
 	return await readBody(response, response.text());
 }
 

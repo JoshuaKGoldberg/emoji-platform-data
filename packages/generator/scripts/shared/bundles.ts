@@ -24,7 +24,7 @@ interface ScriptSearch<Data> {
  * what's inside them. A blob is found by asking what it holds, not by where it
  * sits or what its first key is, since neither is the client's to keep stable.
  */
-export function* extractJsonBlobs(script: string) {
+export function* extractJsonBlobs(script: string): Generator<unknown, void, unknown> {
 	const prefix = "JSON.parse('";
 
 	for (let start = script.indexOf(prefix); start !== -1;) {
@@ -54,7 +54,7 @@ export function* extractJsonBlobs(script: string) {
  * starts matching twice is as much a sign of that code having moved on as one
  * that stops matching, and quietly taking the first of two would be a coin flip.
  */
-export function findOnly(script: string, pattern: RegExp) {
+export function findOnly(script: string, pattern: RegExp): RegExpExecArray | undefined {
 	const matches = [...script.matchAll(pattern)];
 
 	return matches.length === 1 ? matches[0] : undefined;
@@ -64,7 +64,7 @@ export function findOnly(script: string, pattern: RegExp) {
  * The scripts a page loads, as `pattern` captures their names, in the order
  * the page lists them.
  */
-export function listScripts(page: string, pattern: RegExp, source: string) {
+export function listScripts(page: string, pattern: RegExp, source: string): string[] {
 	const scripts = [
 		...new Set([...page.matchAll(pattern)].map((match) => match[1])),
 	];
@@ -116,7 +116,7 @@ export async function searchScripts<Data>({
  * as `\'`, `\x41`, and `\u{1F600}`, into JSON's. Each escape is read whole, so
  * that an escaped backslash followed by "x41" stays an escaped backslash.
  */
-export function toJsonEscapes(literal: string) {
+export function toJsonEscapes(literal: string): string {
 	return literal.replaceAll(
 		/\\(?:x([0-9a-fA-F]{2})|u\{([0-9a-fA-F]+)\}|[\s\S])/g,
 		(escape, hex: string | undefined, codePoint: string | undefined) => {

@@ -1,9 +1,9 @@
 import * as fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
-import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllJoyPixelsData, JoyPixelsItem } from "./types.js";
-import { fromUnicode, getEntryCldr, recordByCldr } from "./utils.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import type { AllJoyPixelsData, JoyPixelsItem } from "./types.ts";
+import { fromUnicode, getEntryCldr, recordByCldr } from "./utils.ts";
 
 /**
  * One entry of emoji-toolkit's emoji.json, keyed by its code points.

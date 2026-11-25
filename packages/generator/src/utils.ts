@@ -2,12 +2,12 @@ import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { titleCase } from "title-case";
 
-import { GeneratedEmojipediaData } from "./emojipedia.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
 
 /**
  * Titles that appear more than once.
  */
-export function getDuplicateTitles(titles: string[]) {
+export function getDuplicateTitles(titles: string[]): Set<string> {
 	const seen = new Set<string>();
 	const duplicates = new Set<string>();
 
@@ -26,7 +26,7 @@ export function getEntryCldr(
 	emojipedia: GeneratedEmojipediaData,
 	glyph: string | undefined,
 	entries: string[],
-) {
+): string {
 	const byGlyphAlias = glyph && getGlyphAlias(emojipedia, glyph);
 	if (byGlyphAlias) {
 		return byGlyphAlias;
@@ -49,13 +49,13 @@ export function getEntryCldr(
  * platforms write their codepoints in. Emojipedia writes the shortest hex that
  * fits, such as `U+A9`, while platforms pad to at least four digits (`00a9`).
  */
-export function normalizeCodepoints(codepointsHex: string[]) {
+export function normalizeCodepoints(codepointsHex: string[]): string[] {
 	return codepointsHex.map((hex) =>
 		hex.replace("U+", "").toLowerCase().padStart(4, "0"),
 	);
 }
 
-export function normalizeTitle(text: string) {
+export function normalizeTitle(text: string): string {
 	return text.replaceAll(/\W/g, "").toLowerCase();
 }
 
@@ -77,7 +77,7 @@ function getGlyphAlias(emojipedia: GeneratedEmojipediaData, glyph: string) {
 export function isKnownGlyph(
 	emojipedia: GeneratedEmojipediaData,
 	glyph: string,
-) {
+): boolean {
 	return getGlyphAlias(emojipedia, glyph) !== undefined;
 }
 
@@ -105,7 +105,7 @@ export function recordByCldr<T>(
 /**
  * The glyph for code points as platforms write them, such as "1f44b-1f3fd".
  */
-export function fromUnicode(unicode: string) {
+export function fromUnicode(unicode: string): string {
 	return String.fromCodePoint(
 		...unicode.split("-").map((hex) => parseInt(hex, 16)),
 	);
@@ -118,7 +118,7 @@ export function fromUnicode(unicode: string) {
 export async function readSnapshot<Entry>(
 	platform: string,
 	getCldr: (entry: Entry) => string,
-) {
+): Promise<Partial<Record<string, Entry>>> {
 	const raw = await fs.readFile(
 		path.join(import.meta.dirname, `../${platform}.json`),
 		"utf8",
@@ -134,14 +134,14 @@ export async function readSnapshot<Entry>(
 /**
  * Code points as Unicode writes them, such as "U+1F9D1 U+200D U+1F9B0".
  */
-export function toCodePointNotation(unicode: string) {
+export function toCodePointNotation(unicode: string): string {
 	return unicode
 		.split("-")
 		.map((hex) => `U+${hex.toUpperCase()}`)
 		.join(" ");
 }
 
-export function toUnicode(emoji: string) {
+export function toUnicode(emoji: string): string {
 	// Code points are the unit Emojipedia writes its codepoint lists in.
 	// eslint-disable-next-line @typescript-eslint/no-misused-spread
 	return [...emoji]
@@ -155,6 +155,6 @@ export function toUnicode(emoji: string) {
 /**
  * A glyph without any of its U+FE0F variation selectors.
  */
-export function withoutVariationSelectors(glyph: string) {
+export function withoutVariationSelectors(glyph: string): string {
 	return glyph.replaceAll("\uFE0F", "");
 }

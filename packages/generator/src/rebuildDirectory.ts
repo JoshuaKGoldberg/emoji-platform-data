@@ -1,10 +1,11 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
-import { generateAll, GenerateAllSettings, getEmojiGlyphs } from "./all.js";
-import { compareStrings } from "./compareStrings.js";
-import { formatExportLine } from "./formatExportLine.js";
-import { EmojiPlatformData } from "./types.js";
+import type { GenerateAllSettings} from "./all.ts";
+import { generateAll, getEmojiGlyphs } from "./all.ts";
+import { compareStrings } from "./compareStrings.ts";
+import { formatExportLine } from "./formatExportLine.ts";
+import type { EmojiPlatformData } from "./types.ts";
 
 export type EmojiPlatformDataSource =
 	| "android"
@@ -62,7 +63,7 @@ const sourceTypeNames: Record<EmojiPlatformDataSource, string> = {
 export async function rebuildDirectory({
 	directory,
 	...settings
-}: RebuildSettings) {
+}: RebuildSettings): Promise<void> {
 	const byTitle = await generateAll(settings);
 
 	await writeDataDirectory({
@@ -82,7 +83,7 @@ export async function rebuildSourceDirectory({
 	directory,
 	source,
 	...settings
-}: RebuildSourceSettings) {
+}: RebuildSourceSettings): Promise<void> {
 	const byTitle = await generateAll(settings);
 
 	await writeDataDirectory({

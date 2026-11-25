@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatExportLine } from "../packages/generator/src/formatExportLine.js";
+import { formatExportLine } from "./formatExportLine.ts";
 
 describe(formatExportLine, () => {
 	it.each([

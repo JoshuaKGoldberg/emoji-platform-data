@@ -7,6 +7,13 @@ const config: OxfmtConfig = defineConfig({
     'coverage',
     'packages/*/dist',
     'packages/*/lib',
+    'packages/generator/android.json',
+    'packages/generator/discord.json',
+    'packages/generator/gnome.json',
+    'packages/generator/macos.json',
+    'packages/generator/slack.json',
+    'packages/generator/wechat.json',
+    'packages/generator/windows.json',
     'pnpm-lock.yaml',
   ],
   overrides: [

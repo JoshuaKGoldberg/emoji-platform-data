@@ -1,10 +1,10 @@
-import { EmojiMartData } from "@emoji-mart/data";
+import type { EmojiMartData } from "@emoji-mart/data";
 import * as fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
-import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllEmojiMartData, EmojiMartItem } from "./types.js";
-import { getEntryCldr, recordByCldr } from "./utils.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import type { AllEmojiMartData, EmojiMartItem } from "./types.ts";
+import { getEntryCldr, recordByCldr } from "./utils.ts";
 
 /**
  * Reads emoji-mart's Unicode 15 "native" set.

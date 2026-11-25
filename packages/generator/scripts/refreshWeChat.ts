@@ -1,9 +1,9 @@
 import * as path from "node:path";
 
-import { compareStrings } from "../src/compareStrings.js";
-import { WeChatItem } from "../src/dataTypes.js";
-import { fetchText } from "./shared/fetch.js";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import { compareStrings } from "../src/compareStrings.ts";
+import type { WeChatItem } from "../src/dataTypes.ts";
+import { fetchText } from "./shared/fetch.ts";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
 import {
 	checkCanaryKeywords,
 	checkCounts,
@@ -12,13 +12,14 @@ import {
 	emojiCount,
 	emojiWithKeywordsCount,
 	throwIfProblems,
-} from "./shared/validate.js";
+} from "./shared/validate.ts";
+import type {
+	ZipEntry} from "./shared/zip.ts";
 import {
 	readCentralDirectory,
 	readZipEntries,
-	readZipFile,
-	ZipEntry,
-} from "./shared/zip.js";
+	readZipFile
+} from "./shared/zip.ts";
 
 /** The picker's category listing, in the order it shows the emoji in. */
 interface RawCategories {

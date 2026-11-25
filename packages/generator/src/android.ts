@@ -1,11 +1,11 @@
-import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllAndroidData, AndroidItem } from "./types.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import type { AllAndroidData, AndroidItem } from "./types.ts";
 import {
 	getEntryCldr,
 	readSnapshot,
 	toCodePointNotation,
 	toUnicode,
-} from "./utils.js";
+} from "./utils.ts";
 
 /**
  * Reads the Android data snapshot committed alongside this package.

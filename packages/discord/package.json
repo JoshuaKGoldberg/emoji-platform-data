@@ -22,7 +22,7 @@
 		"lib/"
 	],
 	"scripts": {
-		"build": "tsx build.ts"
+		"build": "node build.ts"
 	},
 	"devDependencies": {
 		"@emoji-platform-data/generator": "workspace:*"

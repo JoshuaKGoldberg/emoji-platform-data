@@ -1,19 +1,19 @@
-import { generateAndroid } from "./android.js";
-import { compareStrings } from "./compareStrings.js";
-import { generateDiscord } from "./discord.js";
-import { generateEmojiMart } from "./emojiMart.js";
-import { generateEmojipedia } from "./emojipedia.js";
-import { generateFluemoji } from "./fluemoji.js";
-import { generateGemoji } from "./gemoji.js";
-import { generateGnome } from "./gnome.js";
-import { generateJoyPixels } from "./joypixels.js";
-import { generateMacOS } from "./macos.js";
-import { generateSlack } from "./slack.js";
-import { generateTwemoji } from "./twemoji.js";
-import { AllEmojiPlatformData, EmojiPlatformData } from "./types.js";
-import { fromUnicode, withoutVariationSelectors } from "./utils.js";
-import { generateWeChat } from "./wechat.js";
-import { generateWindows } from "./windows.js";
+import { generateAndroid } from "./android.ts";
+import { compareStrings } from "./compareStrings.ts";
+import { generateDiscord } from "./discord.ts";
+import { generateEmojiMart } from "./emojiMart.ts";
+import { generateEmojipedia } from "./emojipedia.ts";
+import { generateFluemoji } from "./fluemoji.ts";
+import { generateGemoji } from "./gemoji.ts";
+import { generateGnome } from "./gnome.ts";
+import { generateJoyPixels } from "./joypixels.ts";
+import { generateMacOS } from "./macos.ts";
+import { generateSlack } from "./slack.ts";
+import { generateTwemoji } from "./twemoji.ts";
+import type { AllEmojiPlatformData, EmojiPlatformData } from "./types.ts";
+import { fromUnicode, withoutVariationSelectors } from "./utils.ts";
+import { generateWeChat } from "./wechat.ts";
+import { generateWindows } from "./windows.ts";
 
 export interface GenerateAllSettings {
 	/**
@@ -163,7 +163,7 @@ const titlePriority = [
  * Emojipedia and Twemoji write ⚓ (U+2693), and Unicode lists partly qualified
  * forms too, such as 🏳️‍⚧ for 🏳️‍⚧️ without its last U+FE0F.
  */
-export function getEmojiGlyphs(platformData: EmojiPlatformData) {
+export function getEmojiGlyphs(platformData: EmojiPlatformData): Set<string> {
 	return new Set(
 		[
 			platformData.emoji,

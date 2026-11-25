@@ -1,7 +1,7 @@
 import * as fs from "node:fs/promises";
 import { describe, expect, it, vi } from "vitest";
 
-import { generateJoyPixels } from "../packages/generator/src/joypixels.js";
+import { generateJoyPixels } from "./joypixels.ts";
 
 vi.mock("node:fs/promises", { spy: true });
 

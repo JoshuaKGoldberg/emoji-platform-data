@@ -1,31 +1,31 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { generateAll, getEmojiGlyphs } from "../packages/generator/src/all.js";
-import { generateDiscord } from "../packages/generator/src/discord.js";
-import { generateEmojipedia } from "../packages/generator/src/emojipedia.js";
-import { generateGemoji } from "../packages/generator/src/gemoji.js";
-import { generateMacOS } from "../packages/generator/src/macos.js";
-import { generateSlack } from "../packages/generator/src/slack.js";
-import { generateTwemoji } from "../packages/generator/src/twemoji.js";
-import {
+import { generateAll, getEmojiGlyphs } from "./all.ts";
+import { generateDiscord } from "./discord.ts";
+import { generateEmojipedia } from "./emojipedia.ts";
+import { generateGemoji } from "./gemoji.ts";
+import { generateMacOS } from "./macos.ts";
+import { generateSlack } from "./slack.ts";
+import { generateTwemoji } from "./twemoji.ts";
+import type {
 	DiscordItem,
 	EmojipediaItem,
 	GemojiItem,
 	MacOSItem,
 	SlackItem,
 	TwemojiItem,
-} from "../packages/generator/src/types.js";
+} from "./types.ts";
 
-vi.mock("../packages/generator/src/android.js", () => ({
+vi.mock("./android.ts", () => ({
 	generateAndroid: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/discord.js", () => ({
+vi.mock("./discord.ts", () => ({
 	generateDiscord: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/emojiMart.js", () => ({
+vi.mock("./emojiMart.ts", () => ({
 	generateEmojiMart: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/emojipedia.js", () => ({
+vi.mock("./emojipedia.ts", () => ({
 	generateEmojipedia: vi.fn(() => ({
 		aliases: new Map(),
 		byCldr: {},
@@ -33,31 +33,31 @@ vi.mock("../packages/generator/src/emojipedia.js", () => ({
 		items: [],
 	})),
 }));
-vi.mock("../packages/generator/src/fluemoji.js", () => ({
+vi.mock("./fluemoji.ts", () => ({
 	generateFluemoji: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/gemoji.js", () => ({
+vi.mock("./gemoji.ts", () => ({
 	generateGemoji: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/gnome.js", () => ({
+vi.mock("./gnome.ts", () => ({
 	generateGnome: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/joypixels.js", () => ({
+vi.mock("./joypixels.ts", () => ({
 	generateJoyPixels: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/macos.js", () => ({
+vi.mock("./macos.ts", () => ({
 	generateMacOS: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/slack.js", () => ({
+vi.mock("./slack.ts", () => ({
 	generateSlack: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/twemoji.js", () => ({
+vi.mock("./twemoji.ts", () => ({
 	generateTwemoji: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/wechat.js", () => ({
+vi.mock("./wechat.ts", () => ({
 	generateWeChat: vi.fn(() => ({})),
 }));
-vi.mock("../packages/generator/src/windows.js", () => ({
+vi.mock("./windows.ts", () => ({
 	generateWindows: vi.fn(() => ({})),
 }));
 

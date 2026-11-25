@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { compareStrings } from "../packages/generator/src/compareStrings.js";
+import { compareStrings } from "./compareStrings.ts";
 
 describe(compareStrings, () => {
 	it.each([

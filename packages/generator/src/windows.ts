@@ -1,6 +1,6 @@
-import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllWindowsData, WindowsItem } from "./types.js";
-import { getEntryCldr, readSnapshot } from "./utils.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import type { AllWindowsData, WindowsItem } from "./types.ts";
+import { getEntryCldr, readSnapshot } from "./utils.ts";
 
 /**
  * Reads the Windows data snapshot committed alongside this package.

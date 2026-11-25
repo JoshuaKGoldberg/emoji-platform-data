@@ -1,12 +1,12 @@
 import * as emojipedia from "emojipedia/data";
 
-import { AllEmojipediaData, EmojipediaItem } from "./types.js";
+import type { AllEmojipediaData, EmojipediaItem } from "./types.ts";
 import {
 	getDuplicateTitles,
 	normalizeTitle,
 	recordByCldr,
 	withoutVariationSelectors,
-} from "./utils.js";
+} from "./utils.ts";
 
 export interface GeneratedEmojipediaData {
 	aliases: Map<string, string>;

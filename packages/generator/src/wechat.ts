@@ -1,11 +1,11 @@
-import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllWeChatData, WeChatItem } from "./types.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import type { AllWeChatData, WeChatItem } from "./types.ts";
 import {
 	getEntryCldr,
 	readSnapshot,
 	toCodePointNotation,
 	toUnicode,
-} from "./utils.js";
+} from "./utils.ts";
 
 /**
  * Reads the WeChat data snapshot committed alongside this package.

@@ -1,8 +1,8 @@
 import * as path from "node:path";
 
-import { GnomeItem } from "../src/dataTypes.js";
-import { fetchOk, readBuffer } from "./shared/fetch.js";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import type { GnomeItem } from "../src/dataTypes.ts";
+import { fetchOk, readBuffer } from "./shared/fetch.ts";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
 import {
 	checkCanaries,
 	checkCounts,
@@ -10,7 +10,7 @@ import {
 	emojiCount,
 	emojiWithKeywordsCount,
 	throwIfProblems,
-} from "./shared/validate.js";
+} from "./shared/validate.ts";
 
 /** One emoji as a locale's data file lists it. */
 interface RawItem {

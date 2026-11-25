@@ -2,11 +2,11 @@ import fg from "fast-glob";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllFluemojiData, FluemojiItem } from "./types.js";
-import { fromUnicode, getEntryCldr, recordByCldr } from "./utils.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import type { AllFluemojiData, FluemojiItem } from "./types.ts";
+import { fromUnicode, getEntryCldr, recordByCldr } from "./utils.ts";
 
-export const defaultFluemojiDirectory = path.join(
+export const defaultFluemojiDirectory: string = path.join(
 	import.meta.dirname,
 	"../node_modules/fluemoji",
 );

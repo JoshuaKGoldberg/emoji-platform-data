@@ -1,6 +1,6 @@
 import * as zlib from "node:zlib";
 
-import { fetchUrl, readBuffer, requestTimeout } from "./fetch.js";
+import { fetchUrl, readBuffer, requestTimeout } from "./fetch.ts";
 
 /** Where one file sits inside a zip, and how it's compressed. */
 export interface ZipEntry {
@@ -56,7 +56,7 @@ export async function fetchZipDataStart(
 	url: string,
 	entry: ZipEntry,
 	headers?: Record<string, string>,
-) {
+): Promise<number> {
 	const header = await fetchRange(
 		url,
 		entry.offset,
@@ -73,7 +73,7 @@ export async function fetchZipDataStart(
 	return entry.offset + 30 + header.readUInt16LE(26) + header.readUInt16LE(28);
 }
 
-export function inflateZipEntry(entry: ZipEntry, compressed: Buffer) {
+export function inflateZipEntry(entry: ZipEntry, compressed: Buffer): Buffer {
 	checkZipMethod(entry);
 
 	return entry.method === 8 ? zlib.inflateRawSync(compressed) : compressed;
@@ -95,7 +95,7 @@ function checkZipMethod(entry: ZipEntry) {
 export async function readCentralDirectory(
 	url: string,
 	{ headers, tailSize }: RemoteZip,
-) {
+): Promise<Buffer<ArrayBuffer>> {
 	const head = await fetchUrl(url, {
 		headers,
 		method: "HEAD",
@@ -150,7 +150,7 @@ export async function readCentralDirectory(
 	);
 }
 
-export function readZipEntries(centralDirectory: Buffer) {
+export function readZipEntries(centralDirectory: Buffer): ZipEntry[] {
 	const entries: ZipEntry[] = [];
 	let position = 0;
 
@@ -191,7 +191,7 @@ export async function readZipFile(
 	url: string,
 	entry: ZipEntry,
 	headers?: Record<string, string>,
-) {
+): Promise<Buffer> {
 	checkZipMethod(entry);
 
 	const start = await fetchZipDataStart(url, entry, headers);

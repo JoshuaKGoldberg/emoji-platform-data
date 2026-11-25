@@ -1,8 +1,8 @@
 import { gemoji } from "gemoji";
 
-import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllGemojiData } from "./types.js";
-import { getEntryCldr, recordByCldr } from "./utils.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import type { AllGemojiData } from "./types.ts";
+import { getEntryCldr, recordByCldr } from "./utils.ts";
 
 export function generateGemoji(
 	emojipedia: GeneratedEmojipediaData,

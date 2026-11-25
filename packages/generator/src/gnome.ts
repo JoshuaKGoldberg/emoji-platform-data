@@ -1,6 +1,6 @@
-import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllGnomeData, GnomeItem } from "./types.js";
-import { getEntryCldr, readSnapshot } from "./utils.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import type { AllGnomeData, GnomeItem } from "./types.ts";
+import { getEntryCldr, readSnapshot } from "./utils.ts";
 
 /**
  * Reads the GNOME data snapshot committed alongside this package.

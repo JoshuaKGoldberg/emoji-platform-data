@@ -7,24 +7,25 @@ import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import * as zlib from "node:zlib";
 
-import { compareStrings } from "../src/compareStrings.js";
-import { AndroidItem } from "../src/dataTypes.js";
-import { readMarisaKeys } from "./marisa.js";
-import { fetchUrl, readText, requestTimeout } from "./shared/fetch.js";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import { compareStrings } from "../src/compareStrings.ts";
+import type { AndroidItem } from "../src/dataTypes.ts";
+import { readMarisaKeys } from "./marisa.ts";
+import { fetchUrl, readText, requestTimeout } from "./shared/fetch.ts";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
 import {
 	checkCanaryKeywords,
 	checkCounts,
 	emojiCount,
 	throwIfProblems,
-} from "./shared/validate.js";
+} from "./shared/validate.ts";
+import type {
+	ZipEntry} from "./shared/zip.ts";
 import {
 	fetchZipDataStart,
 	inflateZipEntry,
 	readCentralDirectory,
-	readZipEntries,
-	ZipEntry,
-} from "./shared/zip.js";
+	readZipEntries
+} from "./shared/zip.ts";
 
 /** A byte range of the system image that belongs to the product partition. */
 interface ProductRange {

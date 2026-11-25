@@ -1,6 +1,6 @@
-import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllMacOSData, MacOSItem } from "./types.js";
-import { getEntryCldr, readSnapshot } from "./utils.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import type { AllMacOSData, MacOSItem } from "./types.ts";
+import { getEntryCldr, readSnapshot } from "./utils.ts";
 
 /**
  * Reads the macOS data snapshot committed alongside this package.

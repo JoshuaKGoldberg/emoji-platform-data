@@ -2,8 +2,8 @@ import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { parse } from "yaml";
 
-import { GeneratedEmojipediaData } from "./emojipedia.js";
-import { AllTwemojiData, TwemojiItem } from "./types.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import type { AllTwemojiData, TwemojiItem } from "./types.ts";
 import {
 	fromUnicode,
 	getDuplicateTitles,
@@ -11,7 +11,7 @@ import {
 	isKnownGlyph,
 	recordByCldr,
 	toCodePointNotation,
-} from "./utils.js";
+} from "./utils.ts";
 
 interface TwemojiGroupRaw {
 	id: string;

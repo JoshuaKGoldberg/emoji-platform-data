@@ -4,10 +4,10 @@ import * as fs from "node:fs/promises";
 import * as os from "node:os";
 import * as path from "node:path";
 
-import { WindowsItem } from "../src/dataTypes.js";
-import { fetchUrl, readBuffer, readText } from "./shared/fetch.js";
-import { withoutSkinTones } from "./shared/skinTones.js";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import type { WindowsItem } from "../src/dataTypes.ts";
+import { fetchUrl, readBuffer, readText } from "./shared/fetch.ts";
+import { withoutSkinTones } from "./shared/skinTones.ts";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
 import {
 	checkCanaryKeywords,
 	checkCounts,
@@ -15,7 +15,7 @@ import {
 	emojiCount,
 	emojiWithKeywordsCount,
 	throwIfProblems,
-} from "./shared/validate.js";
+} from "./shared/validate.ts";
 
 /** One build as UUP dump lists it. */
 interface RawBuild {

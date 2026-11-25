@@ -7,7 +7,7 @@ import {
 	recordByCldr,
 	toCodePointNotation,
 	toUnicode,
-} from "../packages/generator/src/utils.js";
+} from "./utils.ts";
 
 const glyphs = [
 	["\u00A9", "00a9"],

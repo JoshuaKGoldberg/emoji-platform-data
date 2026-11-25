@@ -21,13 +21,13 @@ const grinningFace = {
 
 vi.doMock(
 	createRequire(
-		new URL("../packages/generator/package.json", import.meta.url),
+		new URL("../package.json", import.meta.url),
 	).resolve("emojipedia/data"),
 	() => ({ grinningFace, manInTuxedo, personInTuxedo }),
 );
 
 const { generateEmojipedia } =
-	await import("../packages/generator/src/emojipedia.js");
+	await import("./emojipedia.ts");
 
 describe(generateEmojipedia, () => {
 	it("titles an item by its CLDR name when another item has the same title", () => {

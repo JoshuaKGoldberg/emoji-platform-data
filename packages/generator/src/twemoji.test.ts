@@ -1,8 +1,8 @@
 import * as fs from "node:fs/promises";
 import { describe, expect, it, vi } from "vitest";
 
-import { generateTwemoji } from "../packages/generator/src/twemoji.js";
-import { normalizeTitle } from "../packages/generator/src/utils.js";
+import { generateTwemoji } from "./twemoji.ts";
+import { normalizeTitle } from "./utils.ts";
 
 vi.mock("node:fs/promises", { spy: true });
 

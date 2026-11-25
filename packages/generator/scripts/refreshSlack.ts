@@ -1,17 +1,17 @@
 import * as crypto from "node:crypto";
 import * as path from "node:path";
 
-import { compareStrings } from "../src/compareStrings.js";
-import { SlackItem } from "../src/dataTypes.js";
+import { compareStrings } from "../src/compareStrings.ts";
+import type { SlackItem } from "../src/dataTypes.ts";
 import {
 	extractJsonBlobs,
 	findOnly,
 	listScripts,
 	searchScripts,
 	toJsonEscapes,
-} from "./shared/bundles.js";
-import { fetchText } from "./shared/fetch.js";
-import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+} from "./shared/bundles.ts";
+import { fetchText } from "./shared/fetch.ts";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.ts";
 import {
 	checkCanaryShortcodes,
 	checkCounts,
@@ -20,7 +20,7 @@ import {
 	emojiCount,
 	emojiWithKeywordsCount,
 	throwIfProblems,
-} from "./shared/validate.js";
+} from "./shared/validate.ts";
 
 /** One picker category, listing its emoji by shortcode in the order it shows them. */
 interface RawCategory {

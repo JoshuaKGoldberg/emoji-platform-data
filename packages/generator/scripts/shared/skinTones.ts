@@ -1,5 +1,5 @@
 const skinToneModifiers = /[\u{1F3FB}-\u{1F3FF}]/gu;
 
-export function withoutSkinTones(emoji: string) {
+export function withoutSkinTones(emoji: string): string {
 	return emoji.replaceAll(skinToneModifiers, "");
 }

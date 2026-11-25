@@ -25,7 +25,7 @@ interface ShortcodeEntry extends Entry {
 }
 
 export const emojiCount = {
-	count: (entries: unknown[]) => entries.length,
+	count: (entries: unknown[]): number => entries.length,
 	counted: "emoji were read",
 	name: "Emoji count",
 };
@@ -47,7 +47,7 @@ export function checkCanaries<CanaryEntry extends { emoji: string }, Canary>(
 	canaries: Record<string, Canary>,
 	check: (entry: CanaryEntry, canary: Canary, emoji: string) => void,
 	toKey = (emoji: string) => emoji,
-) {
+): void {
 	for (const [emoji, canary] of Object.entries(canaries)) {
 		const entry = entries.find(
 			(candidate) => toKey(candidate.emoji) === toKey(emoji),
@@ -71,7 +71,7 @@ export function checkCanaryKeywords(
 	entries: Entry[],
 	canaries: Record<string, string[]>,
 	toKey?: (emoji: string) => string,
-) {
+): void {
 	checkCanaries(
 		problems,
 		entries,
@@ -95,7 +95,7 @@ export function checkCanaryShortcodes(
 	problems: string[],
 	entries: ShortcodeEntry[],
 	canaries: Record<string, { keyword: string; name: string }>,
-) {
+): void {
 	checkCanaries(
 		problems,
 		entries,
@@ -120,7 +120,7 @@ export function checkCounts<CountedEntry>(
 	entries: CountedEntry[],
 	previous: CountedEntry[] | undefined,
 	counts: Count<CountedEntry>[],
-) {
+): string[] {
 	const problems: string[] = [];
 	const values = counts.map(({ count }) => count(entries));
 
@@ -154,7 +154,7 @@ export function checkDuplicates(
 	problems: string[],
 	entries: { emoji: string }[],
 	toKey = (emoji: string) => emoji,
-) {
+): void {
 	const seen = new Set<string>();
 	const duplicates = entries.filter((entry) => {
 		const key = toKey(entry.emoji);
@@ -170,7 +170,7 @@ export function checkDuplicates(
 	}
 }
 
-export function countWithKeywords(entries: { keywords: string[] }[]) {
+export function countWithKeywords(entries: { keywords: string[] }[]): number {
 	return entries.filter((entry) => entry.keywords.length).length;
 }
 
@@ -178,7 +178,7 @@ export function countWithKeywords(entries: { keywords: string[] }[]) {
  * Refuses to go on to write the snapshot if any problems were found, naming
  * the data by how it was `read`, such as "for Slack" or "out of macOS".
  */
-export function throwIfProblems(problems: string[], read: string) {
+export function throwIfProblems(problems: string[], read: string): void {
 	if (problems.length) {
 		throw new Error(
 			[

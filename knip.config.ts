@@ -6,6 +6,10 @@ const config: KnipConfig = {
     '.': {
       ignoreDependencies: ['@changesets/cli'],
     },
+    'packages/generator': {
+      ignore: ['scripts/extractMacOS.ts'],
+      ignoreDependencies: ['fluemoji'],
+    },
   },
 };
 

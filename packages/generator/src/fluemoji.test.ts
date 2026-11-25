@@ -3,9 +3,9 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { GeneratedEmojipediaData } from "../packages/generator/src/emojipedia.js";
-import { generateFluemoji } from "../packages/generator/src/fluemoji.js";
-import { FluemojiItem } from "../packages/generator/src/types.js";
+import type { GeneratedEmojipediaData } from "./emojipedia.ts";
+import { generateFluemoji } from "./fluemoji.ts";
+import type { FluemojiItem } from "./types.ts";
 
 const emojipedia: GeneratedEmojipediaData = {
 	aliases: new Map(),

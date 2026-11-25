@@ -18,7 +18,7 @@ interface SnapshotWrite<Snapshot extends { entries: unknown[] }> {
 	snapshotPath: string;
 }
 
-export async function readPreviousSnapshot<Snapshot>(snapshotPath: string) {
+export async function readPreviousSnapshot<Snapshot>(snapshotPath: string): Promise<Snapshot | undefined> {
 	try {
 		return JSON.parse(await fs.readFile(snapshotPath, "utf8")) as Snapshot;
 	} catch (error) {
@@ -40,7 +40,7 @@ export async function writeSnapshot<Snapshot extends { entries: unknown[] }>({
 	previous,
 	snapshot,
 	snapshotPath,
-}: SnapshotWrite<Snapshot>) {
+}: SnapshotWrite<Snapshot>): Promise<void> {
 	const count = snapshot.entries.length.toString();
 
 	if (

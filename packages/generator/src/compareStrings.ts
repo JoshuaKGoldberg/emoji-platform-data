@@ -3,7 +3,7 @@
  * machines, locales, or versions of Node's ICU can't produce two different
  * orderings.
  */
-export function compareStrings(a: string, b: string) {
+export function compareStrings(a: string, b: string): -1 | 0 | 1 {
 	if (a < b) {
 		return -1;
 	}

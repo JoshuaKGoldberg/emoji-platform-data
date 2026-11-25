@@ -3,15 +3,16 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { generateAll } from "../packages/generator/src/all.js";
+import { generateAll } from "./all.ts";
+import type {
+	EmojiPlatformDataSource} from "./rebuildDirectory.ts";
 import {
-	EmojiPlatformDataSource,
 	rebuildDirectory,
 	rebuildSourceDirectory,
-} from "../packages/generator/src/rebuildDirectory.js";
-import { DiscordItem } from "../packages/generator/src/types.js";
+} from "./rebuildDirectory.ts";
+import type { DiscordItem } from "./types.ts";
 
-vi.mock("../packages/generator/src/all.js", { spy: true });
+vi.mock("./all.ts", { spy: true });
 
 const brokenChain = "⛓️‍💥";
 

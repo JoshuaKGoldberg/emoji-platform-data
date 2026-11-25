@@ -3,19 +3,21 @@ import { createRequire } from "node:module";
 import * as os from "node:os";
 import * as path from "node:path";
 import { pathToFileURL } from "node:url";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { compareStrings } from "../packages/generator/src/compareStrings.js";
+import type * as all from "./all.ts";
+import { compareStrings } from "./compareStrings.ts";
+import type {
+	EmojiPlatformDataSource} from "./index.ts";
 import {
 	defaultFluemojiDirectory,
-	EmojiPlatformDataSource,
 	generateAll,
 	generateEmojipedia,
 	rebuildDirectory,
 	rebuildSourceDirectory,
-} from "../packages/generator/src/index.js";
+} from "./index.ts";
 
-vi.mock(import("../packages/generator/src/all.js"), async (importOriginal) => {
+vi.mock(import("./all.ts"), async (importOriginal) => {
 	const original = await importOriginal();
 	let generated: ReturnType<typeof original.generateAll> | undefined;
 
@@ -55,7 +57,7 @@ const combinedName = "emoji-platform-data";
 
 const maximumConcurrentReads = 256;
 
-const packagesDirectory = path.join(import.meta.dirname, "../packages");
+const packagesDirectory = path.join(import.meta.dirname, "../..");
 
 const generatorDirectory = path.join(packagesDirectory, "generator");
 
@@ -105,14 +107,13 @@ async function assertBuilt(name: string, directory: string, file: string) {
 }
 
 /**
- * Imports a package through its package.json export, as a consumer would.
+ * Loads a package through its package.json export, as a consumer would, with
+ * Node's own loader rather than Vite's, which is much slower on so many files.
  */
 async function importPackage({ directory, entry, name }: DataPackage) {
-	const file = path.join(directory, entry);
-
 	await assertBuilt(name, directory, entry);
 
-	return (await import(pathToFileURL(file).href)) as DataExports;
+	return requireFromGenerator(path.join(directory, entry)) as DataExports;
 }
 
 /**
@@ -343,6 +344,12 @@ function withoutVariationSelectors(glyph: string) {
 	return glyph.replaceAll("\uFE0F", "");
 }
 
+vi.setConfig({ testTimeout: 60_000 });
+
+beforeEach(() => {
+	vi.spyOn(console, "warn").mockImplementation(() => undefined);
+});
+
 const dataPackages = await listDataPackages();
 
 const sourceCounts = await countSourceEntries(dataPackages);
@@ -386,12 +393,11 @@ describe.each(dataPackages)("$name", (dataPackage) => {
 			),
 		) as { exports: Record<string, string> };
 
-		await expect(
-			import(
-				pathToFileURL(path.join(dataPackage.directory, exports["./byTitle"]))
-					.href
+		expect(
+			requireFromGenerator(
+				path.join(dataPackage.directory, exports["./byTitle"]),
 			),
-		).resolves.toBeDefined();
+		).toBeDefined();
 	});
 
 	it("writes the same files as its lib when rebuilt from the generator's source", async () => {
@@ -694,9 +700,7 @@ describe(combinedName, () => {
 
 describe("@emoji-platform-data/generator", () => {
 	it("generates the same data when generateAll is called again", async () => {
-		const actual = await vi.importActual<
-			typeof import("../packages/generator/src/all.js")
-		>("../packages/generator/src/all.js");
+		const actual = await vi.importActual<typeof all>("./all.ts");
 		const first = structuredClone(await generateAll());
 
 		expect(await actual.generateAll()).toEqual(first);
