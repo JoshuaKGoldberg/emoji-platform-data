@@ -329,7 +329,7 @@ if (!combinedPackage) {
 }
 
 describe.each(dataPackages)('$name', (dataPackage) => {
-  it('exports byEmoji and byTitle when imported by Node', async () => {
+  it('exports byEmoji and byTitle when loaded by Node', async () => {
     const { byEmoji, byTitle } = await importPackage(dataPackage);
 
     expect(Object.keys(byEmoji).length).toBeGreaterThan(1000);
@@ -625,6 +625,25 @@ describe(combinedName, () => {
 });
 
 describe('@emoji-platform-data/generator', () => {
+  it("writes the same files as the combined package's lib when rebuilt from its own built output", async () => {
+    await assertBuilt('@emoji-platform-data/generator', generatorDirectory, 'dist/index.mjs');
+
+    const built = requireFromGenerator('./dist/index.mjs') as {
+      rebuildDirectory: typeof rebuildDirectory;
+    };
+    const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'emoji-platform-data-'));
+
+    try {
+      await built.rebuildDirectory({ directory });
+
+      expect(await readFiles(directory)).toEqual(
+        await readFiles(path.join(combinedPackage.directory, 'lib')),
+      );
+    } finally {
+      await fs.rm(directory, { force: true, recursive: true });
+    }
+  });
+
   it('generates the same data when generateAll is called again', async () => {
     const actual = await vi.importActual<typeof all>('./all.ts');
     const first = structuredClone(await generateAll());

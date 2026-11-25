@@ -31,7 +31,7 @@
     "lib/dataTypes.d.ts"
   ],
   "scripts": {
-    "build": "tsc -b && tsdown",
+    "build": "tsc -b --force && tsdown",
     "refresh:android": "node scripts/refreshAndroid.ts",
     "refresh:discord": "node scripts/refreshDiscord.ts",
     "refresh:gnome": "node scripts/refreshGnome.ts",
@@ -54,7 +54,8 @@
   "devDependencies": {
     "@emoji-platform-data/build": "workspace:^",
     "@types/node": "catalog:",
-    "fluemoji": "git+https://github.com/microsoft/fluentui-emoji.git"
+    "fluemoji": "git+https://github.com/microsoft/fluentui-emoji.git",
+    "typescript": "catalog:"
   },
   "engines": {
     "node": ">=24"

@@ -143,8 +143,10 @@ pnpm changeset
 That creates a Markdown file in `.changeset/` naming the affected package(s), the semver bump for each, and a summary that becomes their `CHANGELOG.md` entry.
 Changes that don't affect published packages, such as CI or repository tooling, don't need one.
 
-Every push to `main` runs the `Release` workflow, which needs a [GitHub App](https://docs.github.com/en/apps/creating-github-apps) with a `RELEASEBOT_APP_CLIENT_ID` Actions variable and a `RELEASEBOT_APP_PRIVATE_KEY` Actions secret.
-It does one of two things:
+The `Merge Changesets PR`, `Refresh Data`, `Release`, and `Transitions` workflows use a [GitHub App](https://docs.github.com/en/apps/creating-github-apps) with **Contents**, **Pull requests**, and **Workflows** write permissions.
+They're skipped until its client ID is added as a `RELEASEBOT_APP_CLIENT_ID` Actions variable, which also needs a private key as a `RELEASEBOT_APP_PRIVATE_KEY` Actions secret.
+
+Every push to `main` runs the `Release` workflow, which does one of two things:
 
 1. If any changesets are pending, it opens or updates a _`chore: version packages`_ pull request
 2. If no changesets are pending but some package version in the repository isn't on npm yet, it publishes those packages, then pushes a Git tag and GitHub release for each
@@ -155,6 +157,6 @@ A `Merge Changesets PR` workflow runs each Monday and enables auto-merge on the 
 You can also merge it yourself at any time, or run that workflow manually from the Actions tab.
 
 Publishing uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers).
-Each published package is configured on npm to trust this repository's `release.yml` workflow, which is also what earns the packages their [provenance](https://docs.npmjs.com/generating-provenance-statements) attestations.
+Each published package must be configured on npm to trust this repository's `release.yml` workflow, which is also what earns the packages their [provenance](https://docs.npmjs.com/generating-provenance-statements) attestations.
 npm can't yet enable trusted publishing for a package that doesn't exist on the registry ([npm/cli#8544](https://github.com/npm/cli/issues/8544)), so a new package needs one manual `pnpm publish` from a maintainer's machine before its trusted publisher can be configured.
 Every release after that goes through this workflow.
