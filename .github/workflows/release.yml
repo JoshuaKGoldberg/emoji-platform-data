@@ -101,10 +101,19 @@ jobs:
           pack-dir-artifact-id: ${{ needs.pack.outputs.pack-dir-artifact-id }}
       - name: Check whether an earlier run already released what failed to publish
         if: steps.publish.outcome == 'failure'
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           for tag in $(jq -r 'select(.private | not) | "\(.name)@\(.version)"' packages/*/package.json); do
-            if ! git ls-remote --exit-code --tags origin "refs/tags/$tag" > /dev/null; then
+            if ! ref=$(git ls-remote --exit-code --tags origin "refs/tags/$tag"); then
               echo "$tag has no Git tag, so it wasn't published."
+              exit 1
+            fi
+
+            # Tags from before this repository was migrated have no GitHub release.
+            if [ "$(cut -f 1 <<< "$ref")" = "$GITHUB_SHA" ] && ! gh release view "$tag" --json tagName > /dev/null; then
+              echo "$tag has a Git tag, but no GitHub release."
               exit 1
             fi
 
@@ -120,7 +129,7 @@ jobs:
           done
 
   comment:
-    if: needs.publish.outputs.published == 'true'
+    if: ${{ !cancelled() && needs.publish.outputs.published == 'true' }}
     name: Comment on Released PRs and Issues
     needs: publish
     runs-on: ubuntu-latest

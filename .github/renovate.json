@@ -1,10 +1,23 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "automerge": true,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "datasourceTemplate": "node-version",
+      "depNameTemplate": "node",
+      "managerFilePatterns": ["/^\\.github/actions/setup/action\\.yml$/"],
+      "matchStrings": [
+        "node-version:\\n\\s+description: .*\\n\\s+default: (?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ]
+    }
+  ],
   "extends": [":preserveSemverRanges", "config:best-practices", "replacements:all"],
   "labels": ["dependencies"],
   "minimumReleaseAge": "7 days",
-  "patch": { "enabled": false },
+  "patch": {
+    "enabled": false
+  },
   "pinDigests": false,
   "postUpdateOptions": ["pnpmDedupe"],
   "rebaseWhen": "conflicted"
