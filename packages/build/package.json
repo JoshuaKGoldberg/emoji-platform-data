@@ -1,0 +1,22 @@
+{
+  "name": "@emoji-platform-data/build",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared build configs for Emoji Platform Data",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoshuaKGoldberg/emoji-platform-data",
+    "directory": "packages/build"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tsdown": "./src/tsdown/index.ts"
+  },
+  "dependencies": {
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  }
+}

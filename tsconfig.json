@@ -1,0 +1,16 @@
+{
+  "extends": "@emoji-platform-data/build/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "tsBuildInfoFile": "node_modules/.cache/tsbuild/info.json"
+  },
+  "include": ["./*.config.ts", "./packages/*/*.config.ts"],
+  "references": [
+    {
+      "path": "./packages/build"
+    },
+    {
+      "path": "./packages/emoji-platform-data"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "name": "emoji-platform-data-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Static export of platform-specific metadata for unicode emojis. 🗝️",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoshuaKGoldberg/emoji-platform-data"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Josh Goldberg",
+    "email": "npm@joshuakgoldberg.com"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --recursive --filter \"./packages/*\" run build",
+    "format": "oxfmt",
+    "lint": "eslint . --max-warnings 0",
+    "lint:spelling": "cspell \"**\" \".github/**/*\"",
+    "prepare": "simple-git-hooks",
+    "test": "pnpm --recursive --filter \"./packages/*\" run test",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc -b"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "oxfmt --no-error-on-unmatched-pattern"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/core": "0.18.5",
+    "@changesets/changelog-github": "1.0.1",
+    "@changesets/cli": "3.0.3",
+    "@emoji-platform-data/build": "workspace:^",
+    "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
+    "@eslint/js": "10.0.1",
+    "@eslint/markdown": "9.0.0",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "5.1.1",
+    "@vitest/eslint-plugin": "1.6.28",
+    "console-fail-test": "0.10.0",
+    "cspell": "10.5.2",
+    "eslint": "10.15.0",
+    "eslint-plugin-jsdoc": "65.5.1",
+    "eslint-plugin-jsonc": "3.4.2",
+    "eslint-plugin-package-json": "1.14.0",
+    "eslint-plugin-perfectionist": "5.14.0",
+    "eslint-plugin-regexp": "3.3.3",
+    "eslint-plugin-yml": "3.10.0",
+    "jiti": "2.7.0",
+    "knip": "6.47.0",
+    "lint-staged": "17.6.1",
+    "oxfmt": "0.79.0",
+    "publint": "0.3.25",
+    "simple-git-hooks": "2.14.0",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "8.73.0",
+    "typescript7": "npm:typescript@7.0.2",
+    "vitest": "5.1.1"
+  },
+  "packageManager": "pnpm@12.21.0",
+  "engines": {
+    "node": ">=24"
+  }
+}

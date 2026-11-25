@@ -1,0 +1,14 @@
+{
+  "badgeTemplate": "<img alt=\"👪 All Contributors: <%= contributors.length %>\" src=\"https://img.shields.io/badge/%F0%9F%91%AA_all_contributors-<%= contributors.length %>-21bb42.svg\" />",
+  "commit": false,
+  "commitConvention": "angular",
+  "commitType": "docs",
+  "contributors": [],
+  "contributorsPerLine": 7,
+  "files": ["README.md"],
+  "imageSize": 100,
+  "projectName": "emoji-platform-data",
+  "projectOwner": "JoshuaKGoldberg",
+  "repoHost": "https://github.com",
+  "repoType": "github"
+}

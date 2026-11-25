@@ -1,0 +1,49 @@
+{
+  "name": "emoji-platform-data",
+  "version": "0.0.0",
+  "description": "Static export of platform-specific metadata for unicode emojis. 🗝️",
+  "keywords": [
+    "emojipedia",
+    "emojis",
+    "fluemoji",
+    "gemoji",
+    "twemoji",
+    "unicode"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoshuaKGoldberg/emoji-platform-data",
+    "directory": "packages/emoji-platform-data"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Josh Goldberg",
+    "email": "npm@joshuakgoldberg.com"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest run --config ../../vitest.config.ts --project emoji-platform-data"
+  },
+  "devDependencies": {
+    "@emoji-platform-data/build": "workspace:^",
+    "@types/node": "catalog:"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.mjs",
+      "./package.json": "./package.json"
+    }
+  }
+}

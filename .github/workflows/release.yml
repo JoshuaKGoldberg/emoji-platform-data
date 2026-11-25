@@ -1,0 +1,118 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  queue: max
+
+jobs:
+  select_mode:
+    name: Select Mode
+    if: github.event.repository.fork != true && vars.RELEASEBOT_APP_CLIENT_ID != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      mode: ${{ steps.select_mode.outputs.mode }}
+      publish-plan-artifact-id: ${{ steps.select_mode.outputs.publish-plan-artifact-id }}
+    steps:
+      - uses: $/.github/actions/setup
+      - uses: changesets/action/select-mode@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        id: select_mode
+
+  version:
+    name: Version
+    if: needs.select_mode.outputs.mode == 'version'
+    needs: select_mode
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: $/.github/actions/setup
+      - name: Create Token
+        id: create_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.RELEASEBOT_APP_CLIENT_ID }}
+          permission-contents: write
+          permission-pull-requests: write
+          private-key: ${{ secrets.RELEASEBOT_APP_PRIVATE_KEY }}
+      - name: Version Packages
+        uses: changesets/action/version@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          commit-message: 'chore: version packages'
+          github-token: ${{ steps.create_token.outputs.token }}
+          pr-title: 'chore: version packages'
+
+  pack:
+    name: Pack
+    if: needs.select_mode.outputs.mode == 'publish'
+    needs: select_mode
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      pack-dir-artifact-id: ${{ steps.pack.outputs.pack-dir-artifact-id }}
+    steps:
+      - uses: $/.github/actions/setup
+        with:
+          cache: false
+      - name: Build
+        run: pnpm build
+      - name: Pack
+        uses: changesets/action/pack@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        id: pack
+        with:
+          publish-plan-artifact-id: ${{ needs.select_mode.outputs.publish-plan-artifact-id }}
+
+  publish:
+    name: Publish
+    needs: pack
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      published: ${{ steps.publish.outputs.published }}
+      published-packages: ${{ steps.publish.outputs['published-packages'] }}
+    steps:
+      - uses: $/.github/actions/setup
+        with:
+          cache: false
+      - name: Create Token
+        id: create_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.RELEASEBOT_APP_CLIENT_ID }}
+          permission-contents: write
+          private-key: ${{ secrets.RELEASEBOT_APP_PRIVATE_KEY }}
+      - name: Publish Packages
+        id: publish
+        uses: changesets/action/publish@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          github-token: ${{ steps.create_token.outputs.token }}
+          pack-dir-artifact-id: ${{ needs.pack.outputs.pack-dir-artifact-id }}
+
+  comment:
+    if: ${{ !cancelled() && needs.publish.outputs.published == 'true' }}
+    name: Comment on Released PRs and Issues
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: marcalexiei/changesets-release-commenter@97096fbe9cde74fcae784df963274998e0090a7c # v0.3.1
+        with:
+          published-packages: ${{ needs.publish.outputs['published-packages'] }}

@@ -1,0 +1,14 @@
+catalog:
+  '@types/node': 26.6.6
+  tsdown: 0.23.7
+  typescript: npm:@typescript/typescript6@6.0.2
+packages:
+  - packages/*
+permissions:
+  simple-git-hooks:
+    build: false
+publicHoistPattern:
+  - '@typescript/old'
+tasks:
+  test:
+    dependsOn: []

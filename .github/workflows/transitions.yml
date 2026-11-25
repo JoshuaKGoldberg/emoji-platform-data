@@ -1,0 +1,40 @@
+name: Transitions
+
+on:
+  schedule:
+    - cron: 0 6 * * 1
+  workflow_dispatch: ~
+
+permissions: {}
+
+jobs:
+  transition:
+    name: Transition
+    if: github.event.repository.fork != true && vars.RELEASEBOT_APP_CLIENT_ID != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: $/.github/actions/setup
+      - name: Transition
+        run: npx --yes create-typescript-monorepo-bingo@latest --mode transition --offline --skip-requests
+      - name: Update Lockfile
+        run: pnpm install --no-frozen-lockfile
+      - name: Create Token
+        id: create_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.RELEASEBOT_APP_CLIENT_ID }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
+          private-key: ${{ secrets.RELEASEBOT_APP_PRIVATE_KEY }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
+        with:
+          branch: create-typescript-monorepo-bingo/transition
+          commit-message: 'chore: transition with create-typescript-monorepo-bingo'
+          body: This PR was created by [`create-typescript-monorepo-bingo`](https://github.com/JoshuaKGoldberg/create-typescript-monorepo-bingo).
+          delete-branch: true
+          title: 'chore: transition with create-typescript-monorepo-bingo'
+          token: ${{ steps.create_token.outputs.token }}

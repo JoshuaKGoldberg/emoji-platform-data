@@ -1,0 +1,32 @@
+{
+  "dictionaries": ["node", "npm", "typescript"],
+  "ignorePaths": [
+    "*.tsbuildinfo",
+    "CHANGELOG.md",
+    "coverage",
+    "node_modules",
+    "packages/*/dist",
+    "packages/*/lib",
+    "pnpm-lock.yaml"
+  ],
+  "words": [
+    "APP",
+    "autorelease",
+    "data",
+    "emoji",
+    "emojipedia",
+    "emojis",
+    "fluemoji",
+    "gemoji",
+    "goldberg",
+    "josh",
+    "joshuakgoldberg",
+    "marcalexiei",
+    "octoguide",
+    "platform",
+    "RELEASEBOT",
+    "twemoji",
+    "unicode",
+    "zizmor"
+  ]
+}
