@@ -20,17 +20,19 @@ This repository is a [pnpm workspace](https://pnpm.io/workspaces) containing sev
 - `android`, `discord`, `emoji-mart`, `emojipedia`, `fluemoji`, `gemoji`, `gnome`, `joypixels`, `macos`, `slack`, `twemoji`, `wechat`, `windows` (`@emoji-platform-data/*`): one data package per upstream source
 
 The data packages contain no source code of their own.
-Each has a small `build.ts` that calls the generator to regenerate its `lib/` directory, which is gitignored.
+Each has a small `build.ts` that calls the generator's source to regenerate its `lib/` directory, which is gitignored.
+
+`packages/build` (`@emoji-platform-data/build`) holds shared build configuration and isn't published.
 
 ## Building
 
-Run `pnpm build` to build the generator and then regenerate every data package's `lib/`:
+Run `pnpm build` to build the generator with [**tsdown**](https://tsdown.dev) and then regenerate every data package's `lib/`:
 
 ```shell
 pnpm build
 ```
 
-The data packages depend on the generator's built `lib/`, so the generator must be built before them.
+The data packages run the generator's source, but read the type declarations it builds, so the generator must be built before them.
 `pnpm build` runs the packages in dependency order.
 To rebuild only the generator after editing its `src/`, run:
 
@@ -65,7 +67,7 @@ When a platform's job fails, it opens a `🛠 Tooling: Refresh <platform> Data i
 
 ## Formatting
 
-[Prettier](https://prettier.io) is used to format code.
+[Oxfmt](https://oxc.rs/docs/guide/usage/formatter) is used to format code.
 It should be applied automatically when you save files in VS Code or make a Git commit.
 
 To manually reformat all files, you can run:
@@ -74,22 +76,28 @@ To manually reformat all files, you can run:
 pnpm format --write
 ```
 
-## Linting
-
-This package includes several forms of linting to enforce consistent code quality and styling.
-Each should be shown in VS Code, and can be run manually on the command-line:
-
-- `pnpm lint` ([ESLint](https://eslint.org) with [typescript-eslint](https://typescript-eslint.io)): Lints JavaScript and TypeScript source files
-- `pnpm lint:knip` ([knip](https://github.com/webpro/knip)): Detects unused files, dependencies, and code exports
-- `pnpm lint:packages` ([pnpm dedupe --check](https://pnpm.io/cli/dedupe)): Checks for unnecessarily duplicated packages in the `pnpm-lock.yaml` file
-- `pnpm lint:spelling` ([cspell](https://cspell.org)): Spell checks across all source files
-
-Read the individual documentation for each linter to understand how it can be configured and used best.
-
-For example, ESLint can be run with `--fix` to auto-fix some lint rule complaints:
+Run this once to leave commits that only format code out of `git blame`:
 
 ```shell
-pnpm run lint --fix
+git config blame.ignoreRevsFile .git-blame-ignore-revs
+```
+
+## Linting
+
+[ESLint](https://eslint.org) is used with [typescript-eslint](https://typescript-eslint.io) to lint source files:
+
+```shell
+pnpm lint
+```
+
+Add `--fix` to auto-fix some lint rule complaints.
+
+Other linters include [CSpell](https://cspell.org) for spelling, [Knip](https://knip.dev) for unused files, dependencies, and code exports, and [pnpm dedupe](https://pnpm.io/cli/dedupe) for unnecessarily duplicated packages in the `pnpm-lock.yaml` file:
+
+```shell
+pnpm lint:spelling
+pnpm knip
+pnpm dedupe --check
 ```
 
 ## Testing
@@ -101,27 +109,25 @@ pnpm build
 pnpm test
 ```
 
-`test/packages.test.ts` imports each data package through its `package.json` export, the way a consumer would, and has Node itself load it rather than Vite.
+`packages/generator/src/packages.test.ts` loads each data package through its `package.json` export, the way a consumer would, with Node.js's own loader rather than Vite's.
 It checks that `byEmoji` and `byTitle` agree, that every `byTitle` entry has a data file of its own, and that each single-platform package matches that platform's data in `emoji-platform-data`.
 Data packages are found by reading `packages/*`, so a new platform is tested as soon as it has a package.
 
-Each other `test/*.test.ts` file unit tests one of the generator's `src/` modules, such as `test/utils.test.ts` for `utils.ts`, with small synthetic entries in place of upstream data.
+Each other `packages/generator/src/*.test.ts` file unit tests the module it's next to, such as `utils.test.ts` for `utils.ts`, with small synthetic entries in place of upstream data.
+
+Run `pnpm test:coverage` to compute test coverage and place reports in the `coverage/` directory.
 
 ## Type Checking
 
 You should be able to see suggestions from [TypeScript](https://typescriptlang.org) in your editor for all open files.
 
-However, it can be useful to run the TypeScript command-line (`tsc`) to type check all files:
+Run the TypeScript command-line to type check all packages:
 
 ```shell
-pnpm tsc
+pnpm typecheck
 ```
 
-Add `--watch` to keep the type checker running in a watch mode that updates the display as you save files:
-
-```shell
-pnpm tsc --watch
-```
+The `typescript` dependency is aliased to TypeScript 6 for tools that use its JavaScript API.
 
 ## Releasing
 
@@ -137,7 +143,8 @@ pnpm changeset
 That creates a Markdown file in `.changeset/` naming the affected package(s), the semver bump for each, and a summary that becomes their `CHANGELOG.md` entry.
 Changes that don't affect published packages, such as CI or repository tooling, don't need one.
 
-Every push to `main` runs the `Release` workflow, which does one of two things:
+Every push to `main` runs the `Release` workflow, which needs a [GitHub App](https://docs.github.com/en/apps/creating-github-apps) with a `RELEASEBOT_APP_CLIENT_ID` Actions variable and a `RELEASEBOT_APP_PRIVATE_KEY` Actions secret.
+It does one of two things:
 
 1. If any changesets are pending, it opens or updates a _`chore: version packages`_ pull request
 2. If no changesets are pending but some package version in the repository isn't on npm yet, it publishes those packages, then pushes a Git tag and GitHub release for each

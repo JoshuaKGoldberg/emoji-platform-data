@@ -1,5 +1,6 @@
 jobs:
   refresh:
+    if: github.event.repository.fork != true && vars.RELEASEBOT_APP_CLIENT_ID != ''
     concurrency:
       group: ${{ github.workflow }}-${{ matrix.platform }}
     name: Refresh ${{ matrix.name }} Data
@@ -8,10 +9,7 @@ jobs:
       issues: write
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/prepare
+      - uses: $/.github/actions/setup
       # Ubuntu's own erofs-utils is too old to have dump.erofs --cat, but the
       # runner comes with Homebrew, just not on its PATH.
       - if: matrix.platform == 'android'
@@ -27,9 +25,17 @@ jobs:
         run: |
           set -o pipefail
           pnpm --filter @emoji-platform-data/generator "refresh:$PLATFORM" 2>&1 | tee "$RUNNER_TEMP/refresh.log"
+      - name: Create Token
+        id: create_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.RELEASEBOT_APP_CLIENT_ID }}
+          permission-contents: write
+          permission-pull-requests: write
+          private-key: ${{ secrets.RELEASEBOT_APP_PRIVATE_KEY }}
       - env:
           GH_REPO: ${{ github.repository }}
-          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GH_TOKEN: ${{ steps.create_token.outputs.token }}
           NAME: ${{ matrix.name }}
           PLATFORM: ${{ matrix.platform }}
         name: Open a pull request if the data changed
@@ -128,7 +134,7 @@ jobs:
             {
               echo "@emoji-platform-data/generator"
               comm -13 <(sort "$RUNNER_TEMP/before.txt") <(sort "$RUNNER_TEMP/after.txt") | cut -d ' ' -f 1
-            } | sort -u | sed "s/.*/\"&\": $bump/"
+            } | sort -u | sed "s/.*/'&': $bump/"
           )
 
           cat > "$changeset" <<CHANGESET

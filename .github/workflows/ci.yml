@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+
 jobs:
   build:
     name: Build
@@ -16,6 +20,20 @@ jobs:
     steps:
       - uses: $/.github/actions/setup
       - run: pnpm build
+
+  changesets:
+    name: Changesets
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: $/.github/actions/setup
+        with:
+          skip-checkout: true
+      - run: .github/scripts/check-changesets.sh
 
   dedupe_check:
     name: Dedupe Check
@@ -79,6 +97,7 @@ jobs:
       - uses: $/.github/actions/setup
         with:
           node-version: ${{ matrix.node-version }}
+      - run: pnpm build
       - run: pnpm test
 
   test_os:
@@ -96,6 +115,7 @@ jobs:
           - windows-latest
     steps:
       - uses: $/.github/actions/setup
+      - run: pnpm build
       - run: pnpm ${{ matrix.os == 'ubuntu-latest' && 'test:coverage' || 'test' }}
       - if: success() && (matrix.os == 'ubuntu-latest') && github.event.pull_request.head.repo.fork != true
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1

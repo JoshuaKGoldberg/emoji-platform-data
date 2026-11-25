@@ -1,12 +1,21 @@
 jobs:
   merge_changesets_pr:
     name: Merge Changesets PR
+    if: github.event.repository.fork != true && vars.RELEASEBOT_APP_CLIENT_ID != ''
     permissions: {}
     runs-on: ubuntu-latest
     steps:
+      - name: Create Token
+        id: create_token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.RELEASEBOT_APP_CLIENT_ID }}
+          permission-contents: write
+          permission-pull-requests: write
+          private-key: ${{ secrets.RELEASEBOT_APP_PRIVATE_KEY }}
       - env:
           GH_REPO: ${{ github.repository }}
-          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GH_TOKEN: ${{ steps.create_token.outputs.token }}
         name: Merge the Changesets PR if it is old enough
         run: |
           pr_json=$(gh pr list --head changeset-release/main --state open --json createdAt,isCrossRepository,number --jq '[.[] | select(.isCrossRepository | not)]')
