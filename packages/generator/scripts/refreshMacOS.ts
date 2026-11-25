@@ -1,0 +1,357 @@
+import { execFile } from "node:child_process";
+import * as fs from "node:fs/promises";
+import * as os from "node:os";
+import * as path from "node:path";
+import { promisify } from "node:util";
+import * as ts from "typescript";
+
+import { compareStrings } from "../src/compareStrings.js";
+import { MacOSItem } from "../src/dataTypes.js";
+import { withoutSkinTones } from "./shared/skinTones.js";
+import { readPreviousSnapshot, writeSnapshot } from "./shared/snapshots.js";
+import {
+	checkCanaryKeywords,
+	checkCounts,
+	checkDuplicates,
+	emojiCount,
+	throwIfProblems,
+} from "./shared/validate.js";
+
+interface RawEntry {
+	appleName: string;
+	category: null | string;
+	emoji: string;
+	isCommon: boolean;
+	keywordWeights: Record<string, number>;
+	order: null | number;
+	speechName: string;
+	unicodeName: string;
+	voiceOverName: string;
+}
+
+interface Snapshot {
+	coreEmojiVersion: string;
+	entries: MacOSItem[];
+	localeIdentifier: string;
+	macosVersion: string;
+}
+
+/**
+ * Emoji that should always come back, with a keyword they should always have.
+ *
+ * A failure part-way through the frameworks tends to produce entries that look
+ * structurally fine but have lost their keywords, which these catch.
+ */
+const canaryKeywords = {
+	"❤️": ["love"],
+	"🏳️‍🌈": ["pride"],
+	"🐙": ["octopus"],
+	"😀": ["grin"],
+};
+
+const coreEmojiInfoPlist =
+	"/System/Library/PrivateFrameworks/CoreEmoji.framework/Versions/A/Resources/Info.plist";
+
+/**
+ * The picker's search index only exists per-locale, and this package is
+ * English-only. en_US is the locale whose index macOS ships as SearchModel-en.
+ */
+const localeIdentifier = "en_US";
+
+/**
+ * The categories the extractor asks for by name, kept in step with the
+ * EMFEmojiCategory selectors in extractMacOS.ts. Iterating this rather than the
+ * categories present in the data is what catches one coming back empty: a
+ * missing key can't be under-count-checked.
+ */
+const expectedCategories = [
+	"Activity",
+	"Flags",
+	"FoodAndDrink",
+	"Nature",
+	"Objects",
+	"People",
+	"Symbols",
+	"TravelAndPlaces",
+];
+
+/** The smallest category holds over a hundred emoji, so this is a wide margin. */
+const minimumEntriesPerCategory = 50;
+
+const minimumEntries = 1500;
+
+const extractorPath = path.join(import.meta.dirname, "extractMacOS.ts");
+const snapshotPath = path.join(import.meta.dirname, "../macos.json");
+
+const run = promisify(execFile);
+
+if (process.platform !== "darwin") {
+	throw new Error(
+		`This script reads macOS's own emoji picker data, so it only runs on macOS. This is ${process.platform}.`,
+	);
+}
+
+const previous = await readPreviousSnapshot<Snapshot>(snapshotPath);
+const entries = foldSkinToneVariants(await runExtractor())
+	.filter(hasKeywords)
+	.map(toItem)
+	.sort(compareItems);
+
+validate(entries, previous);
+
+const [coreEmojiVersion, macosVersion] = await Promise.all([
+	readCoreEmojiVersion(),
+	readMacOSVersion(),
+]);
+
+const snapshot: Snapshot = {
+	coreEmojiVersion,
+	entries,
+	localeIdentifier,
+	macosVersion,
+};
+
+await writeSnapshot({
+	from: `macOS ${snapshot.macosVersion} (CoreEmoji ${snapshot.coreEmojiVersion})`,
+	previous,
+	snapshot,
+	snapshotPath,
+});
+
+/**
+ * Sorts by the order macOS's picker shows emoji in, keeping the handful that
+ * no category lists -such as ⚕️ and 🧑‍🤝‍🧑- together at the end.
+ */
+function compareItems(a: MacOSItem, b: MacOSItem) {
+	if (a.order === undefined) {
+		return b.order === undefined ? compareStrings(a.emoji, b.emoji) : 1;
+	}
+
+	if (b.order === undefined) {
+		return -1;
+	}
+
+	return a.order - b.order;
+}
+
+function countByCategory(entries: MacOSItem[]) {
+	const counts = new Map<string, number>();
+
+	for (const { category } of entries) {
+		if (category !== undefined) {
+			counts.set(category, (counts.get(category) ?? 0) + 1);
+		}
+	}
+
+	return counts;
+}
+
+/**
+ * Folds the skin-tone variants macOS's search index carries, but its picker
+ * doesn't list, into the tone-less emoji they belong to.
+ *
+ * These have no category or order: they exist only to route terms like `blm`
+ * to an emoji already in the data. Keeping them would give one emoji a partial
+ * tone axis that nothing else in the data set has, and dropping them outright
+ * would lose search terms the picker really does match. Each term keeps the
+ * strongest weight any variant gave it, so it sorts against the base emoji's
+ * own terms on the same scale.
+ *
+ * The search index lists some emoji both with and without U+FE0F, such as ☺️
+ * (U+263A U+FE0F) and ☺ (U+263A), and only one of the two has keywords, so
+ * that's the one a variant folds into.
+ */
+function foldSkinToneVariants(entries: RawEntry[]) {
+	const byEmoji = new Map<string, RawEntry>();
+
+	for (const entry of entries) {
+		const key = withoutVariationSelectors(entry.emoji);
+		const existing = byEmoji.get(key);
+
+		if (!existing || (!hasKeywords(existing) && hasKeywords(entry))) {
+			byEmoji.set(key, entry);
+		}
+	}
+
+	return entries.filter((entry) => {
+		const toneless = withoutSkinTones(entry.emoji);
+		const base =
+			toneless === entry.emoji
+				? undefined
+				: byEmoji.get(withoutVariationSelectors(toneless));
+
+		if (!base) {
+			return true;
+		}
+
+		for (const [term, weight] of Object.entries(entry.keywordWeights)) {
+			base.keywordWeights[term] = Math.max(
+				base.keywordWeights[term] ?? 0,
+				weight,
+			);
+		}
+
+		return false;
+	});
+}
+
+function hasKeywords(entry: RawEntry) {
+	return Object.keys(entry.keywordWeights).length > 0;
+}
+
+async function readCoreEmojiVersion() {
+	const { stdout } = await run("plutil", [
+		"-extract",
+		"CFBundleVersion",
+		"raw",
+		"-o",
+		"-",
+		coreEmojiInfoPlist,
+	]);
+
+	return stdout.trim();
+}
+
+async function readMacOSVersion() {
+	const { stdout } = await run("sw_vers", ["-productVersion"]);
+
+	return stdout.trim();
+}
+
+/**
+ * Compiles the extractor and runs it under osascript.
+ *
+ * osascript only runs JavaScript, so the extractor is transpiled to a
+ * temporary file first. It's written as a script rather than a module, which
+ * is what JavaScript for Automation expects, and takes its locale from the
+ * environment since osascript's own arguments aren't worth threading through.
+ */
+async function runExtractor() {
+	const directory = await fs.mkdtemp(
+		path.join(os.tmpdir(), "emoji-platform-data-"),
+	);
+
+	try {
+		const compiledPath = path.join(directory, "extractMacOS.js");
+		const { outputText } = ts.transpileModule(
+			await fs.readFile(extractorPath, "utf8"),
+			{
+				compilerOptions: {
+					module: ts.ModuleKind.ESNext,
+					target: ts.ScriptTarget.ES2022,
+				},
+			},
+		);
+
+		await fs.writeFile(compiledPath, outputText);
+
+		const { stdout } = await run(
+			"osascript",
+			["-l", "JavaScript", compiledPath],
+			{
+				env: { ...process.env, EMOJI_PLATFORM_DATA_LOCALE: localeIdentifier },
+				maxBuffer: 128 * 1024 * 1024,
+			},
+		);
+
+		return JSON.parse(stdout) as RawEntry[];
+	} catch (error) {
+		const details = (error as { stderr?: string }).stderr?.trim();
+
+		throw new Error(
+			[`Could not read macOS emoji data.`, details].filter(Boolean).join("\n"),
+			{ cause: error },
+		);
+	} finally {
+		await fs.rm(directory, { force: true, recursive: true });
+	}
+}
+
+/**
+ * Keeps only the fields the package publishes, dropping each keyword's search
+ * weight once it has served its purpose of ordering the keywords.
+ */
+function toItem(entry: RawEntry): MacOSItem {
+	return {
+		appleName: entry.appleName,
+		category: entry.category ?? undefined,
+		emoji: entry.emoji,
+		isCommon: entry.isCommon,
+		keywords: Object.entries(entry.keywordWeights)
+			.sort(
+				([aTerm, aWeight], [bTerm, bWeight]) =>
+					bWeight - aWeight || compareStrings(aTerm, bTerm),
+			)
+			.map(([term]) => term),
+		order: entry.order ?? undefined,
+		speechName: entry.speechName,
+		unicodeName: entry.unicodeName || undefined,
+		voiceOverName: entry.voiceOverName,
+	};
+}
+
+/**
+ * Refuses to write data that looks like a partial read of the frameworks.
+ *
+ * These are all private APIs: a macOS update can leave them in place but have
+ * them return nothing, which would otherwise overwrite the snapshot with a
+ * smaller, quietly wrong one.
+ */
+function validate(entries: MacOSItem[], previous: Snapshot | undefined) {
+	const problems = checkCounts(entries, previous?.entries, [
+		{ ...emojiCount, counted: "emoji have keywords", minimum: minimumEntries },
+	]);
+
+	checkCanaryKeywords(problems, entries, canaryKeywords);
+
+	const counts = countByCategory(entries);
+
+	for (const category of expectedCategories) {
+		const count = counts.get(category) ?? 0;
+
+		if (count < minimumEntriesPerCategory) {
+			problems.push(
+				`The ${category} category only has ${count.toString()} emoji, out of at least ${minimumEntriesPerCategory.toString()} expected.`,
+			);
+		}
+	}
+
+	for (const category of counts.keys()) {
+		if (!expectedCategories.includes(category)) {
+			problems.push(
+				`Unrecognized category ${category}; add it to expectedCategories.`,
+			);
+		}
+	}
+
+	const incomplete = entries.filter(
+		(entry) =>
+			!entry.appleName ||
+			!entry.keywords.length ||
+			!entry.speechName ||
+			!entry.voiceOverName,
+	);
+
+	if (incomplete.length) {
+		problems.push(
+			`${incomplete.length.toString()} emoji are missing a name or keywords, such as ${incomplete[0].emoji}.`,
+		);
+	}
+
+	const toned = entries.filter(
+		(entry) => withoutSkinTones(entry.emoji) !== entry.emoji,
+	);
+
+	if (toned.length) {
+		problems.push(
+			`${toned.length.toString()} skin tone variants weren't folded into their base emoji, such as ${toned[0].emoji}.`,
+		);
+	}
+
+	checkDuplicates(problems, entries, withoutVariationSelectors);
+	throwIfProblems(problems, "out of macOS");
+}
+
+function withoutVariationSelectors(emoji: string) {
+	return emoji.replaceAll("\uFE0F", "");
+}

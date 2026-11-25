@@ -1,22 +1,45 @@
+jobs:
+  octoguide:
+    if: ${{ !endsWith(github.actor, '[bot]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: octoguide/bot@95af986081bee9208897c7ad8e056b19fadf2dc9 # 0.33.0
+        with:
+          config: strict
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
 name: OctoGuide
 
 on:
-  pull_request_target: # zizmor: ignore[dangerous-triggers] -- reads PR metadata only, no checkout
+  discussion:
+    types:
+      - created
+      - edited
+  discussion_comment:
+    types:
+      - created
+      - deleted
+      - edited
+  issue_comment:
+    types:
+      - created
+      - deleted
+      - edited
+  issues:
+    types:
+      - edited
+      - opened
+  pull_request_review_comment:
+    types:
+      - created
+      - deleted
+      - edited
+  pull_request_target:
     types:
       - edited
       - opened
 
-jobs:
-  octoguide:
-    if: ${{ !endsWith(github.actor, '[bot]') && !contains(github.event.pull_request.labels.*.name, 'autorelease') }}
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-    steps:
-      - uses: octoguide/bot@8d29abce6793b35c6bfab51d4db6bfa62634b871 # 0.33.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          rules: |-
-            {
-              "pr-title-conventional": true
-            }
+permissions:
+  discussions: write
+  issues: write
+  pull-requests: write

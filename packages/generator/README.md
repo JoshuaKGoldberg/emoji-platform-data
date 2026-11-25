@@ -1,0 +1,39 @@
+<h1 align="center">@emoji-platform-data/generator</h1>
+
+<p align="center">
+	Generates platform-specific metadata for unicode emojis.
+	🏭
+</p>
+
+<p align="center">
+	<a href="https://github.com/JoshuaKGoldberg/emoji-platform-data/blob/main/LICENSE.md" target="_blank"><img alt="📝 License: MIT" src="https://img.shields.io/badge/%F0%9F%93%9D_license-MIT-21bb42.svg" /></a>
+	<a href="http://npmjs.com/package/@emoji-platform-data/generator" target="_blank"><img alt="📦 npm version" src="https://img.shields.io/npm/v/@emoji-platform-data/generator?color=21bb42&label=%F0%9F%93%A6%20npm" /></a>
+	<img alt="💪 TypeScript: Strict" src="https://img.shields.io/badge/%F0%9F%92%AA_typescript-strict-21bb42.svg" />
+</p>
+
+This package generates the [`emoji-platform-data`](https://github.com/JoshuaKGoldberg/emoji-platform-data) data packages, which most consumers want instead.
+
+## Usage
+
+```shell
+npm i @emoji-platform-data/generator
+```
+
+```ts
+import { generateAll } from "@emoji-platform-data/generator";
+
+const byTitle = await generateAll({
+	fluemojiDirectory: "path/to/fluentui-emoji",
+});
+
+console.log(byTitle["Sparkling Heart"]);
+```
+
+Pass a clone of [`microsoft/fluentui-emoji`](https://github.com/microsoft/fluentui-emoji), which isn't on npm, as `fluemojiDirectory` to `generateAll`, `rebuildDirectory`, or `rebuildSourceDirectory`, unless it's installed alongside this package as `fluemoji`.
+
+### APIs
+
+- `generateAll()`: generates the combined `EmojiPlatformData` for every emoji, keyed by Emojipedia title
+- `generateAndroid()`, `generateDiscord()`, `generateEmojiMart()`, `generateEmojipedia()`, `generateFluemoji()`, `generateGemoji()`, `generateGnome()`, `generateJoyPixels()`, `generateMacOS()`, `generateSlack()`, `generateTwemoji()`, `generateWeChat()`, `generateWindows()`: generate data for a single platform
+- `rebuildDirectory({ directory })`: writes a directory exporting the combined data, in the shape published as `emoji-platform-data`
+- `rebuildSourceDirectory({ directory, source })`: writes a directory exporting a single platform's data, in the shape published as `@emoji-platform-data/*`

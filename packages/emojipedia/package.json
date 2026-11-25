@@ -1,0 +1,37 @@
+{
+	"name": "@emoji-platform-data/emojipedia",
+	"version": "0.6.0",
+	"description": "Static export of Emojipedia metadata for unicode emojis. 📙",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JoshuaKGoldberg/emoji-platform-data.git",
+		"directory": "packages/emojipedia"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Josh Goldberg",
+		"email": "npm@joshuakgoldberg.com"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": "./lib/index.mjs",
+		"./byTitle": "./lib/byTitle.mjs"
+	},
+	"files": [
+		"lib/"
+	],
+	"scripts": {
+		"build": "tsx build.ts"
+	},
+	"devDependencies": {
+		"@emoji-platform-data/generator": "workspace:*"
+	},
+	"engines": {
+		"node": ">=24"
+	},
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
+	}
+}
