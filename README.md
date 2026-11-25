@@ -161,3 +161,5 @@ See [`.github/CONTRIBUTING.md`](./.github/CONTRIBUTING.md), then [`.github/DEVEL
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 <!-- spellchecker: enable -->
+
+> 💝 This monorepo was templated with [`create-typescript-monorepo-bingo`](https://github.com/JoshuaKGoldberg/create-typescript-monorepo-bingo) using the [Bingo framework](https://create.bingo).
